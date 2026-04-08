@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "tabWidth": 2,
+  "singleQuote": false,
+  "printWidth": 100,
+  "trailingComma": "es5",
+  "experimentalTailwindcss": {
+    "stylesheet": "./app/assets/css/main.css",
+    "attributes": ["class"],
+    "functions": ["clsx", "cn"]
+  },
+  "experimentalSortPackageJson": true,
+  "experimentalSortImports": {
+    "order": "desc",
+    "groups": [[]]
+  },
+  "ignorePatterns": []
+}
