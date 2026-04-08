@@ -1,2 +1,3 @@
 [install]
-registry = "https://hub.megan.ir/npm/"
+# registry = "https://hub.megan.ir/npm/"
+registry = "https://package-mirror.liara.ir/repository/npm/"

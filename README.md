@@ -1,75 +1,65 @@
-# Nuxt Minimal Starter
+# Hotel Management - Nuxt Frontend + Go Backend
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+The app now runs with:
 
-## Setup
+- Nuxt frontend/UI in this repository (`app/`)
+- Go backend API in `backend/`
 
-Make sure to install dependencies:
+The old Nuxt server routes were moved to `legacy_nuxt_server/` and replaced by proxying `/api/**` to Go.
+
+## Architecture
+
+- **Frontend:** Nuxt 4 + Nuxt UI
+- **Backend:** Go HTTP API + SQLite (WAL mode)
+- **Auth:** Cookie-based sessions (`auth_session`)
+
+## Go backend reliability defaults
+
+- SQLite WAL mode, foreign keys, busy timeout
+- Connection pool and request timeout controls
+- Panic recovery and structured logs
+- Graceful shutdown on SIGINT/SIGTERM
+- Health endpoints: `/healthz`, `/readyz`
+- Migration tracking table: `schema_migrations`
+- Expired session cleanup worker
+
+## Run
+
+1) Start backend:
 
 ```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+cd backend
+go mod tidy
+go run ./cmd/server
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+2) Start Nuxt frontend (project root):
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
+bun install
 bun run dev
 ```
 
-## Production
+Nuxt proxies API traffic to Go via `routeRules`.
 
-Build the application for production:
+## Environment variables
 
-```bash
-# npm
-npm run build
+Frontend / Nuxt:
 
-# pnpm
-pnpm build
+- `BACKEND_URL` (default `http://127.0.0.1:8080`)
+- `NUXT_PUBLIC_HOTEL_NAME`
 
-# yarn
-yarn build
+Backend:
 
-# bun
-bun run build
-```
+- `APP_ADDR` (default `:8080`)
+- `DB_PATH` (default `./data/hotel.db`)
+- `SESSION_COOKIE`
+- `SESSION_TTL_HOURS`
+- `REQUEST_TIMEOUT_SECONDS`
+- `SHUTDOWN_TIMEOUT_SECONDS`
+- `SEED_ADMIN_EMAIL`
+- `SEED_ADMIN_PASSWORD`
+- `SEED_ADMIN_FIRST_NAME`
+- `SEED_ADMIN_LAST_NAME`
 
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Default seeded admin: `admin@hotel.local` / `admin123`

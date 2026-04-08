@@ -44,6 +44,17 @@ export default defineNuxtConfig({
     experimental: {
       tasks: true,
     },
+    routeRules: {
+      "/api/**": {
+        proxy: `${process.env.BACKEND_URL || "http://127.0.0.1:8080"}/api/**`,
+      },
+      "/healthz": {
+        proxy: `${process.env.BACKEND_URL || "http://127.0.0.1:8080"}/healthz`,
+      },
+      "/readyz": {
+        proxy: `${process.env.BACKEND_URL || "http://127.0.0.1:8080"}/readyz`,
+      },
+    },
   },
 
   // Runtime config for environment variables
@@ -56,6 +67,7 @@ export default defineNuxtConfig({
     // Public runtime config
     public: {
       hotelName: process.env.NUXT_PUBLIC_HOTEL_NAME || "Hotel Management System",
+      backendUrl: process.env.BACKEND_URL || "http://127.0.0.1:8080",
     },
   },
 
