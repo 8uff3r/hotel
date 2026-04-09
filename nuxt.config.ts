@@ -9,11 +9,12 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxt/fonts",
     "@pinia/nuxt",
-    "@nuxthub/core",
+    // "@nuxthub/core",
     "pinia-plugin-persistedstate/nuxt",
   ],
 
   css: ["~/assets/css/main.css"],
+  ssr: false,
 
   fonts: {
     provider: "local",
@@ -25,36 +26,41 @@ export default defineNuxtConfig({
     size: "16px",
   },
 
-  hub: {
-    // Database configuration - PostgreSQL with PGlite for local development
-    db: {
-      applyMigrationsDuringBuild: false,
-      dialect: "postgresql",
-      casing: "snake_case",
+  // hub: {
+  //   // Database configuration - PostgreSQL with PGlite for local development
+  //   db: {
+  //     applyMigrationsDuringBuild: false,
+  //     dialect: "postgresql",
+  //     casing: "snake_case",
+  //   },
+  //   // Enable blob storage for file uploads
+  //   blob: true,
+  //   // Enable KV storage for caching
+  //   kv: true,
+  //   // Enable cache
+  //   cache: true,
+  // },
+
+  vite: {
+    server: {
+      proxy: {
+        "/api": {
+          target: "http://127.0.0.1:8080",
+          changeOrigin: true,
+        },
+        "/healthz": {
+          target: "http://127.0.0.1:8080",
+          changeOrigin: true,
+        },
+        "/readyz": {
+          target: "http://127.0.0.1:8080",
+          changeOrigin: true,
+        },
+      },
     },
-    // Enable blob storage for file uploads
-    blob: true,
-    // Enable KV storage for caching
-    kv: true,
-    // Enable cache
-    cache: true,
   },
   nitro: {
-    preset: "bun",
-    experimental: {
-      tasks: true,
-    },
-    routeRules: {
-      "/api/**": {
-        proxy: `${process.env.BACKEND_URL || "http://127.0.0.1:8080"}/api/**`,
-      },
-      "/healthz": {
-        proxy: `${process.env.BACKEND_URL || "http://127.0.0.1:8080"}/healthz`,
-      },
-      "/readyz": {
-        proxy: `${process.env.BACKEND_URL || "http://127.0.0.1:8080"}/readyz`,
-      },
-    },
+    preset: "static",
   },
 
   // Runtime config for environment variables
