@@ -1,6 +1,7 @@
 package httpapi
 
 import (
+	"log/slog"
 	"net/http"
 
 	"hotel/backend/internal/service"
@@ -20,10 +21,12 @@ func (a *API) listModel(model any) http.HandlerFunc {
 func (a *API) createModel(model any) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		entity := newPtr(model)
-		if !decode(r, entity, w) {
+		if err := decode(r, entity, w); err != nil {
+			slog.Error("", err)
 			return
 		}
 		if err := a.services.Crud.Create(r.Context(), entity); err != nil {
+			slog.Error("%s", err)
 			writeErr(w, 400, "create_failed")
 			return
 		}
@@ -59,7 +62,7 @@ func (a *API) updateModel(model any) http.HandlerFunc {
 			return
 		}
 		updates := map[string]any{}
-		if !decode(r, &updates, w) {
+		if err := decode(r, &updates, w); err != nil {
 			return
 		}
 		delete(updates, "id")

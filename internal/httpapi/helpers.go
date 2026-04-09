@@ -98,15 +98,15 @@ func parseID(raw string) (uint, error) {
 	return uint(id), nil
 }
 
-func decode(r *http.Request, dst any, w http.ResponseWriter) bool {
+func decode[T any](r *http.Request, dst T, w http.ResponseWriter) error {
 	defer r.Body.Close()
 	dec := json.NewDecoder(r.Body)
-	dec.DisallowUnknownFields()
+	// dec.DisallowUnknownFields()
 	if err := dec.Decode(dst); err != nil {
 		writeErr(w, http.StatusBadRequest, "invalid_payload")
-		return false
+		return err
 	}
-	return true
+	return nil
 }
 
 func writeErr(w http.ResponseWriter, code int, message string) {

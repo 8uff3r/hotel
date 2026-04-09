@@ -4,8 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"golang.org/x/crypto/bcrypt"
 	"hotel/backend/internal/models"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 func (a *API) usersList(w http.ResponseWriter, r *http.Request) {
@@ -23,7 +24,7 @@ func (a *API) usersList(w http.ResponseWriter, r *http.Request) {
 
 func (a *API) usersCreate(w http.ResponseWriter, r *http.Request) {
 	var in map[string]any
-	if !decode(r, &in, w) {
+	if err := decode(r, &in, w); err != nil {
 		return
 	}
 	email, _ := in["email"].(string)

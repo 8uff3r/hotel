@@ -9,7 +9,7 @@ import (
 
 func (a *API) login(w http.ResponseWriter, r *http.Request) {
 	var req struct{ Email, Password string }
-	if !decode(r, &req, w) {
+	if err := decode(r, &req, w); err != nil {
 		return
 	}
 	user, sid, expires, err := a.services.Auth.Login(r.Context(), req.Email, req.Password)
