@@ -2,12 +2,14 @@ package app
 
 import (
 	"context"
+	"embed"
 	"errors"
 	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 	"time"
 
@@ -18,9 +20,13 @@ import (
 	"hotel/backend/internal/repository"
 	"hotel/backend/internal/service"
 
+	"github.com/go-chi/chi/v5"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
+
+//go:embed .output/*
+var embeddedFiles embed.FS
 
 type App struct {
 	cfg      config.Config
@@ -43,12 +49,17 @@ func New(cfg config.Config) (*App, error) {
 
 	repos := repository.New(database)
 	svcs := service.New(repos, cfg.SessionTTL)
-	handler := httpapi.NewRouter(httpapi.Options{
+
+	r := chi.NewRouter()
+	handler := httpapi.NewRouter(r, httpapi.Options{
 		Logger:         logger,
 		SessionCookie:  cfg.SessionCookie,
 		RequestTimeout: cfg.RequestTimeout,
 		Services:       svcs,
 	})
+
+	notFoundHandlerFunc := spaHandler("../")
+	r.NotFound(notFoundHandlerFunc.ServeHTTP)
 
 	server := &http.Server{
 		Addr:         cfg.Addr,
@@ -139,4 +150,21 @@ func cleanupExpiredSessions(ctx context.Context, authRepo repository.AuthReposit
 			}
 		}
 	}
+}
+
+func spaHandler(dist string) http.Handler {
+	fs := http.FileServer(http.Dir(dist))
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		path := filepath.Join(dist, r.URL.Path)
+
+		// If file exists, serve it
+		if info, err := os.Stat(path); err == nil && !info.IsDir() {
+			fs.ServeHTTP(w, r)
+			return
+		}
+
+		// Otherwise, serve index.html (Vue Router)
+		http.ServeFile(w, r, filepath.Join(dist, "index.html"))
+	})
 }
