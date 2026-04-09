@@ -25,3 +25,4 @@ logs
 *.db
 
 legacy_nuxt_server/
+tmp/

@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"hotel/backend/internal/app"
+	app "hotel/backend"
 	"hotel/backend/internal/config"
 )
 

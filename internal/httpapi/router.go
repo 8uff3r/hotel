@@ -34,22 +34,24 @@ func NewRouter(r *chi.Mux, opts Options) http.Handler {
 	}
 
 	// Core middlewares
-	r.Use(a.timeoutMiddleware)
-	r.Use(a.recoverAndLogMiddleware)
+	r.Group(func(r chi.Router) {
+		r.Use(a.timeoutMiddleware)
+		r.Use(a.recoverAndLogMiddleware)
 
-	// Routes
+		// Routes
 
-	a.registerSystemRoutes(r)
-	r.Route("/api", func(r chi.Router) {
-		a.registerAuthRoutes(r)
-		r.Group(func(r chi.Router) {
-			r.Use(a.auth)
-			a.registerUserRoutes(r)
-			a.registerRoomRoutes(r)
-			a.registerGuestRoutes(r)
-			a.registerReservationRoutes(r)
-			a.registerAccountingRoutes(r)
-			a.registerParkingRoutes(r)
+		a.registerSystemRoutes(r)
+		r.Route("/api", func(r chi.Router) {
+			a.registerAuthRoutes(r)
+			r.Group(func(r chi.Router) {
+				r.Use(a.auth)
+				a.registerUserRoutes(r)
+				a.registerRoomRoutes(r)
+				a.registerGuestRoutes(r)
+				a.registerReservationRoutes(r)
+				a.registerAccountingRoutes(r)
+				a.registerParkingRoutes(r)
+			})
 		})
 	})
 

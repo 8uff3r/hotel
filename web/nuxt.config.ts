@@ -20,7 +20,10 @@ export default defineNuxtConfig({
     provider: "local",
   },
   icon: {
-    provider: "server",
+    provider: "none",
+    clientBundle: {
+      scan: true,
+    },
     collections: ["lucide"],
     fallbackToApi: false,
     size: "16px",
