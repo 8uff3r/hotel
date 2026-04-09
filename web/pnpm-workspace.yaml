@@ -1,6 +1,0 @@
-onlyBuiltDependencies:
-  - '@parcel/watcher'
-  - bcrypt
-  - esbuild
-  - sharp
-  - vue-demi
