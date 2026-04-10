@@ -25,7 +25,7 @@ The old Nuxt server routes were moved to `legacy_nuxt_server/` and replaced by p
 
 ## Run
 
-1) Start backend:
+1. Start backend:
 
 ```bash
 cd backend
@@ -33,7 +33,7 @@ go mod tidy
 go run ./cmd/server
 ```
 
-2) Start Nuxt frontend (project root):
+2. Start Nuxt frontend (project root):
 
 ```bash
 bun install

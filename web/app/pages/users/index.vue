@@ -190,18 +190,14 @@ const fetchUsers = async () => {
     const response = await $fetch(`/api/users?${params.toString()}`);
 
     let filteredData = response.data;
-    
+
     if (filters.role && filters.role !== "all") {
-      filteredData = filteredData.filter((u: UserRow) => 
-        u.roles.includes(filters.role)
-      );
+      filteredData = filteredData.filter((u: UserRow) => u.roles.includes(filters.role));
     }
-    
+
     if (filters.status && filters.status !== "all") {
       const isActive = filters.status === "active";
-      filteredData = filteredData.filter((u: UserRow) => 
-        u.isActive === isActive
-      );
+      filteredData = filteredData.filter((u: UserRow) => u.isActive === isActive);
     }
 
     users.value = filteredData;

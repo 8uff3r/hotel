@@ -35,7 +35,13 @@
           />
         </UFormField>
 
-        <UButton type="submit" block size="lg" :loading="authStore.loading" :disabled="authStore.loading">
+        <UButton
+          type="submit"
+          block
+          size="lg"
+          :loading="authStore.loading"
+          :disabled="authStore.loading"
+        >
           Sign In
         </UButton>
       </form>

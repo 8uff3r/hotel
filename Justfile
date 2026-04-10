@@ -15,3 +15,6 @@ backend-build:
 
 frontend-build:
     cd web && bun run build
+
+gen:
+    go run "internal/gen/typescript.go" && cd web && bun run fmt

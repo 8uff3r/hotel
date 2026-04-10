@@ -130,9 +130,12 @@ const roleOptions = computed(() =>
 
 const selectedRole = ref(authStore.currentRole);
 
-watch(() => authStore.currentRole, (newRole) => {
-  selectedRole.value = newRole;
-});
+watch(
+  () => authStore.currentRole,
+  (newRole) => {
+    selectedRole.value = newRole;
+  }
+);
 
 const handleRoleSwitch = () => {
   if (selectedRole.value) {
