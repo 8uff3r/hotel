@@ -28,12 +28,12 @@
 
           <div>
             <label class="mb-1 block text-sm font-medium">Hourly Rate ($)</label>
-            <UInput v-model="form.hourlyRate" placeholder="5.00" />
+            <UInput v-model="form.hourlyRate" type="number" placeholder="5.00" />
           </div>
 
           <div>
             <label class="mb-1 block text-sm font-medium">Daily Rate ($)</label>
-            <UInput v-model="form.dailyRate" placeholder="25.00" />
+            <UInput v-model="form.dailyRate" type="number" placeholder="25.00" />
           </div>
 
           <div>
@@ -88,9 +88,9 @@ const createParkingLot = async () => {
       body: {
         name: form.name,
         location: form.location || null,
-        totalSpots: parseInt(form.totalSpots) || 0,
-        hourlyRate: form.hourlyRate || "0",
-        dailyRate: form.dailyRate || "0",
+        totalSpots: Number.parseInt(form.totalSpots) || 0,
+        hourlyRate: Number.parseInt(form.hourlyRate) || 0,
+        dailyRate: Number.parseInt(form.dailyRate) || 0,
         status: form.status,
         description: form.description || null,
       },

@@ -68,13 +68,13 @@ hotel/app/pages/rooms/create.vue#L1-120
             <div class="flex flex-wrap gap-2">
               <UBadge
                 v-for="amenity in availableAmenities"
-                :key="amenity"
+                :key="amenity.id"
                 :variant="form.amenities.includes(amenity) ? 'solid' : 'outline'"
                 :color="form.amenities.includes(amenity) ? 'primary' : 'neutral'"
                 class="cursor-pointer"
                 @click="toggleAmenity(amenity)"
               >
-                {{ amenity }}
+                {{ amenity.name }}
               </UBadge>
             </div>
           </UFormField>
@@ -104,7 +104,7 @@ const form = reactive({
   basePrice: 0,
   status: "available" as "available" | "occupied" | "maintenance" | "out_of_order",
   description: "",
-  amenities: [] as string[],
+  amenities: [] as ListItem[],
 });
 
 const roomTypes = [
@@ -121,20 +121,11 @@ const statusOptions = [
   { value: "out_of_order", label: "Out of Order" },
 ];
 
-const availableAmenities = [
-  "WiFi",
-  "TV",
-  "Air Conditioning",
-  "Mini Bar",
-  "Safe",
-  "Ocean View",
-  "City View",
-  "Balcony",
-  "Jacuzzi",
-  "Room Service",
-];
-
-const toggleAmenity = (amenity: string) => {
+const { data: availableAmenities } = useAsyncData(async () => {
+  const res = await $fetch<{ data: ListItem[] }>("/api/rooms/amenities");
+  return res.data;
+});
+const toggleAmenity = (amenity: ListItem) => {
   const index = form.amenities.indexOf(amenity);
   if (index === -1) {
     form.amenities.push(amenity);
