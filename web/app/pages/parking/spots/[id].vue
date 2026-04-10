@@ -8,7 +8,7 @@
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Parking Spot Details</h1>
     </div>
 
-    <div v-if="loading" class="flex justify-center py-12">
+    <div v-if="pending" class="flex justify-center py-12">
       <UIcon name="i-lucide-loader-2" class="h-8 w-8 animate-spin" />
     </div>
 
@@ -26,7 +26,7 @@
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <label class="mb-1 block text-sm font-medium">Parking Lot *</label>
-            <USelect v-model="form.lotId" :items="lotOptions" required />
+            <HSelect v-model="form.lotId" :items="lotOptions" required />
           </div>
 
           <div>
@@ -41,12 +41,12 @@
 
           <div>
             <label class="mb-1 block text-sm font-medium">Spot Type</label>
-            <USelect v-model="form.spotType" :items="spotTypeOptions" />
+            <HSelect v-model="form.spotType" :items="spotTypeOptions" />
           </div>
 
           <div>
             <label class="mb-1 block text-sm font-medium">Status</label>
-            <USelect v-model="form.status" :items="statusOptions" />
+            <HSelect v-model="form.status" :items="statusOptions" />
           </div>
 
           <div>
@@ -77,13 +77,10 @@ definePageMeta({
 const route = useRoute();
 const spotId = Number(route.params.id);
 
-const spot = ref<any>(null);
-const loading = ref(true);
 const saving = ref(false);
-const lots = ref<any[]>([]);
 
-const form = reactive({
-  lotId: "",
+const form = reactive<ParkingSpot>({
+  lotId: 0,
   spotNumber: "",
   floor: "",
   spotType: "standard",
@@ -92,51 +89,36 @@ const form = reactive({
   description: "",
 });
 
-const lotOptions = ref<{ value: string; label: string }[]>([]);
+const { data: spotTypeOptions } = useAsyncData("parking-spot-types", async () => {
+  const res = await $fetch<{ data: ParkingSpotType[] }>("/api/parking/spots/types");
+  return res.data;
+});
+const { data: statusOptions } = useAsyncData("parking-spot-types", async () => {
+  const res = await $fetch<{ data: ParkingSpotStatus[] }>("/api/parking/spots/types");
+  return res.data;
+});
 
-const spotTypeOptions = [
-  { value: "standard", label: "Standard" },
-  { value: "handicap", label: "Handicap" },
-  { value: "electric", label: "Electric" },
-  { value: "compact", label: "Compact" },
-  { value: "large", label: "Large" },
-];
+const { data: lotOptions } = useAsyncData("parking-lots", async () => {
+  const res = await $fetch<{ data: ParkingLot[] }>("/api/parking/lots");
+  return res.data;
+});
 
-const statusOptions = [
-  { value: "available", label: "Available" },
-  { value: "occupied", label: "Occupied" },
-  { value: "reserved", label: "Reserved" },
-  { value: "maintenance", label: "Maintenance" },
-];
+const {
+  data: spot,
+  pending,
+  refresh,
+} = useAsyncData(async () => {
+  const res = await $fetch<ParkingSpot>(`/api/parking/spots/${spotId}`);
 
-const fetchData = async () => {
-  try {
-    const [spotRes, lotsRes] = await Promise.all([
-      $fetch(`/api/parking/spots/${spotId}`),
-      $fetch("/api/parking/lots"),
-    ]);
-
-    spot.value = spotRes;
-    lots.value = lotsRes.data;
-
-    lotOptions.value = lots.value.map((l: any) => ({
-      value: l.id.toString(),
-      label: l.name,
-    }));
-
-    form.lotId = spot.value.lotId?.toString() || "";
-    form.spotNumber = spot.value.spotNumber || "";
-    form.floor = spot.value.floor || "";
-    form.spotType = spot.value.spotType || "standard";
-    form.status = spot.value.status || "available";
-    form.isCovered = spot.value.isCovered || false;
-    form.description = spot.value.description || "";
-  } catch (error) {
-    console.error("Failed to fetch spot:", error);
-  } finally {
-    loading.value = false;
-  }
-};
+  form.lotId = res.lotId;
+  form.spotNumber = res.spotNumber || "";
+  form.floor = res.floor || "";
+  form.spotType = res.spotType || "standard";
+  form.status = res.status || "available";
+  form.isCovered = res.isCovered || false;
+  form.description = res.description || "";
+  return res;
+});
 
 const updateSpot = async () => {
   saving.value = true;
@@ -144,7 +126,7 @@ const updateSpot = async () => {
     await $fetch(`/api/parking/spots/${spotId}`, {
       method: "PUT",
       body: {
-        lotId: parseInt(form.lotId),
+        lotId: parseInt(form.lotId?.toString() ?? ""),
         spotNumber: form.spotNumber,
         floor: form.floor || null,
         spotType: form.spotType,
@@ -153,7 +135,7 @@ const updateSpot = async () => {
         description: form.description || null,
       },
     });
-    await fetchData();
+    refresh();
   } catch (error) {
     console.error("Failed to update spot:", error);
   } finally {
@@ -170,6 +152,4 @@ const getStatusColor = (status: string) => {
   };
   return colors[status] || "neutral";
 };
-
-onMounted(fetchData);
 </script>
