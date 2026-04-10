@@ -8,7 +8,7 @@
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Room {{ room?.roomNumber }}</h1>
     </div>
 
-    <div v-if="loading" class="flex justify-center py-12">
+    <div v-if="pending" class="flex justify-center py-12">
       <UIcon name="i-lucide-loader-2" class="h-8 w-8 animate-spin" />
     </div>
 
@@ -188,8 +188,6 @@ definePageMeta({
 const route = useRoute();
 const roomId = route.params.id as string;
 
-const room = ref<Room | null>(null);
-const loading = ref(true);
 const saving = ref(false);
 
 const form = reactive({
@@ -239,39 +237,21 @@ const toggleAmenity = (amenity: string) => {
   }
 };
 
-const fetchRoom = async () => {
-  loading.value = true;
-  try {
-    const response = await $fetch<{
-      data: { amenities: string | null; images: string | null } & Omit<
-        Room,
-        "amenities" | "images"
-      >;
-    }>(`/api/rooms/${roomId}`);
-    const roomData = response.data;
-    room.value = {
-      ...roomData,
-      amenities: roomData.amenities ? JSON.parse(roomData.amenities) : [],
-      images: roomData.images ? JSON.parse(roomData.images) : [],
-    } as Room;
+const { data: room, pending } = useAsyncData(async () => {
+  const response = await $fetch<Room>(`/api/rooms/${roomId}`);
 
-    // Populate form
-    if (room.value) {
-      form.roomNumber = room.value.roomNumber;
-      form.roomType = room.value.roomType;
-      form.floor = room.value.floor;
-      form.capacity = room.value.capacity;
-      form.basePrice = room.value.basePrice;
-      form.status = room.value.status;
-      form.description = room.value.description || "";
-      form.amenities = Array.isArray(room.value.amenities) ? room.value.amenities : [];
-    }
-  } catch (error) {
-    console.error("Failed to fetch room:", error);
-  } finally {
-    loading.value = false;
+  if (response) {
+    form.roomNumber = response.roomNumber;
+    form.roomType = response.roomType;
+    form.floor = response.floor;
+    form.capacity = response.capacity;
+    form.basePrice = response.basePrice;
+    form.status = response.status;
+    form.description = response.description || "";
+    form.amenities = Array.isArray(response.amenities) ? response.amenities : [];
   }
-};
+  return response;
+});
 
 const handleSubmit = async () => {
   saving.value = true;
@@ -298,6 +278,4 @@ const getStatusColor = (status: string): "success" | "warning" | "info" | "error
   };
   return colors[status] || "neutral";
 };
-
-onMounted(fetchRoom);
 </script>

@@ -19,7 +19,7 @@ type AuthRepository interface {
 
 type CrudRepository interface {
 	List(ctx context.Context, model any, out any, opts *ListOptions) error
-	GetByID(ctx context.Context, model any, id uint, out any) error
+	GetByID(ctx context.Context, model any, id uint, out any, opts *GetOptions) error
 	Create(ctx context.Context, model any) error
 	UpdateByID(ctx context.Context, model any, id uint, updates map[string]any) error
 	DeleteByID(ctx context.Context, model any, id uint) error
@@ -98,8 +98,20 @@ func (r *crudRepo) List(ctx context.Context, model any, out any, opts *ListOptio
 	return db.Order("id DESC").Find(out).Error
 
 }
-func (r *crudRepo) GetByID(ctx context.Context, model any, id uint, out any) error {
-	return r.db.WithContext(ctx).Model(model).First(out, id).Error
+
+type GetOptions struct {
+	Preload []string
+}
+
+func (r *crudRepo) GetByID(ctx context.Context, model any, id uint, out any, opts *GetOptions) error {
+	db := r.db.WithContext(ctx).Model(model)
+	if opts != nil && opts.Preload != nil {
+		for _, v := range opts.Preload {
+			db = db.Preload(v)
+		}
+	}
+
+	return db.First(out, id).Error
 }
 func (r *crudRepo) Create(ctx context.Context, model any) error {
 	return r.db.WithContext(ctx).Create(model).Error

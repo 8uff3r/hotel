@@ -9,7 +9,7 @@ import (
 
 func Seed(db *gorm.DB) {
 
-	if err := db.AutoMigrate(models.All()...); err != nil {
+	if err := db.AutoMigrate(models.AllPtr()...); err != nil {
 		panic(fmt.Sprintf("auto migrate: %s", err))
 	}
 	seed(db, []models.Amenity{

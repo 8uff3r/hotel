@@ -49,7 +49,7 @@ func Open(path string) (*gorm.DB, error) {
 		return nil, fmt.Errorf("set busy timeout: %w", err)
 	}
 
-	if err := db.AutoMigrate(models.All()...); err != nil {
+	if err := db.AutoMigrate(models.AllPtr()...); err != nil {
 		return nil, fmt.Errorf("auto migrate: %w", err)
 	}
 

@@ -70,8 +70,8 @@ type CrudService struct{ repo repository.CrudRepository }
 func (s *CrudService) List(ctx context.Context, model any, out any, opts *repository.ListOptions) error {
 	return s.repo.List(ctx, model, out, opts)
 }
-func (s *CrudService) GetByID(ctx context.Context, model any, id uint, out any) error {
-	return s.repo.GetByID(ctx, model, id, out)
+func (s *CrudService) GetByID(ctx context.Context, model any, id uint, out any, opts *repository.GetOptions) error {
+	return s.repo.GetByID(ctx, model, id, out, opts)
 }
 func (s *CrudService) Create(ctx context.Context, model any) error { return s.repo.Create(ctx, model) }
 func (s *CrudService) UpdateByID(ctx context.Context, model any, id uint, updates map[string]any) error {

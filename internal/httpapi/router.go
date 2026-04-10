@@ -86,7 +86,7 @@ func (a *API) registerRoomRoutes(r chi.Router) {
 			Preload: []string{"Amenities"},
 		}))
 		r.Post("/", a.createModel(&models.Room{}))
-		r.Get("/{id}", a.getModel(&models.Room{}))
+		r.Get("/{id}", a.getModel(&models.Room{}, &repository.GetOptions{Preload: []string{"Amenities"}}))
 		r.Put("/{id}", a.updateModel(&models.Room{}))
 		r.Delete("/{id}", a.deleteModel(&models.Room{}))
 
@@ -98,7 +98,7 @@ func (a *API) registerGuestRoutes(r chi.Router) {
 	r.Route("/guests", func(r chi.Router) {
 		r.Get("/", a.listModel(&models.Guest{}, nil))
 		r.Post("/", a.createModel(&models.Guest{}))
-		r.Get("/{id}", a.getModel(&models.Guest{}))
+		r.Get("/{id}", a.getModel(&models.Guest{}, nil))
 		r.Put("/{id}", a.updateModel(&models.Guest{}))
 	})
 }
@@ -107,7 +107,7 @@ func (a *API) registerReservationRoutes(r chi.Router) {
 	r.Route("/reservations", func(r chi.Router) {
 		r.Get("/", a.listModel(&models.Reservation{}, nil))
 		r.Post("/", a.createModel(&models.Reservation{}))
-		r.Get("/{id}", a.getModel(&models.Reservation{}))
+		r.Get("/{id}", a.getModel(&models.Reservation{}, nil))
 		r.Put("/{id}", a.updateModel(&models.Reservation{}))
 
 		r.Post("/{id}/check-in", a.reservationsCheckIn)
@@ -138,7 +138,7 @@ func (a *API) registerParkingRoutes(r chi.Router) {
 		r.Route("/lots", func(r chi.Router) {
 			r.Get("/", a.listModel(&models.ParkingLot{}, nil))
 			r.Post("/", a.createModel(&models.ParkingLot{}))
-			r.Get("/{id}", a.getModel(&models.ParkingLot{}))
+			r.Get("/{id}", a.getModel(&models.ParkingLot{}, nil))
 			r.Put("/{id}", a.updateModel(&models.ParkingLot{}))
 			r.Delete("/{id}", a.deleteModel(&models.ParkingLot{}))
 		})
@@ -146,7 +146,7 @@ func (a *API) registerParkingRoutes(r chi.Router) {
 		r.Route("/spots", func(r chi.Router) {
 			r.Get("/", a.listModel(&models.ParkingSpot{}, nil))
 			r.Post("/", a.createModel(&models.ParkingSpot{}))
-			r.Get("/{id}", a.getModel(&models.ParkingSpot{}))
+			r.Get("/{id}", a.getModel(&models.ParkingSpot{}, nil))
 			r.Put("/{id}", a.updateModel(&models.ParkingSpot{}))
 			r.Delete("/{id}", a.deleteModel(&models.ParkingSpot{}))
 		})
@@ -154,7 +154,7 @@ func (a *API) registerParkingRoutes(r chi.Router) {
 		r.Route("/vehicles", func(r chi.Router) {
 			r.Get("/", a.listModel(&models.Vehicle{}, nil))
 			r.Post("/", a.createModel(&models.Vehicle{}))
-			r.Get("/{id}", a.getModel(&models.Vehicle{}))
+			r.Get("/{id}", a.getModel(&models.Vehicle{}, nil))
 			r.Put("/{id}", a.updateModel(&models.Vehicle{}))
 			r.Delete("/{id}", a.deleteModel(&models.Vehicle{}))
 		})
@@ -162,7 +162,7 @@ func (a *API) registerParkingRoutes(r chi.Router) {
 		r.Route("/transactions", func(r chi.Router) {
 			r.Get("/", a.listModel(&models.ParkingTransaction{}, nil))
 			r.Post("/", a.createModel(&models.ParkingTransaction{}))
-			r.Get("/{id}", a.getModel(&models.ParkingTransaction{}))
+			r.Get("/{id}", a.getModel(&models.ParkingTransaction{}, nil))
 			r.Post("/{id}/check-out", a.transactionsCheckOut)
 		})
 	})

@@ -35,7 +35,7 @@ func (a *API) createModel(model any) http.HandlerFunc {
 	}
 }
 
-func (a *API) getModel(model any) http.HandlerFunc {
+func (a *API) getModel(model any, opts *repository.GetOptions) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id, err := parseID(r.PathValue("id"))
 		if err != nil {
@@ -43,7 +43,7 @@ func (a *API) getModel(model any) http.HandlerFunc {
 			return
 		}
 		entity := newPtr(model)
-		if err := a.services.Crud.GetByID(r.Context(), model, id, entity); err != nil {
+		if err := a.services.Crud.GetByID(r.Context(), model, id, entity, opts); err != nil {
 			if service.IsNotFound(err) {
 				writeErr(w, 404, "not_found")
 				return
