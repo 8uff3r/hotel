@@ -12,28 +12,28 @@
         <template #header>
           <span class="text-sm text-gray-500">Total Lots</span>
         </template>
-        <div class="text-3xl font-bold">{{ stats.totalLots }}</div>
+        <div class="text-3xl font-bold">{{ stats?.lots }}</div>
       </UCard>
 
       <UCard>
         <template #header>
           <span class="text-sm text-gray-500">Total Spots</span>
         </template>
-        <div class="text-3xl font-bold">{{ stats.totalSpots }}</div>
+        <div class="text-3xl font-bold">{{ stats?.spots }}</div>
       </UCard>
 
       <UCard>
         <template #header>
           <span class="text-sm text-gray-500">Available</span>
         </template>
-        <div class="text-3xl font-bold text-green-600">{{ stats.availableSpots }}</div>
+        <div class="text-3xl font-bold text-green-600">{{ stats?.availableSpots }}</div>
       </UCard>
 
       <UCard>
         <template #header>
           <span class="text-sm text-gray-500">Active Vehicles</span>
         </template>
-        <div class="text-3xl font-bold text-blue-600">{{ stats.activeTransactions }}</div>
+        <div class="text-3xl font-bold text-blue-600">{{ 0 }}</div>
       </UCard>
     </div>
 
@@ -105,43 +105,22 @@ definePageMeta({
   requiresRole: ["admin", "manager", "receptionist"],
 });
 
-const stats = reactive({
-  totalLots: 0,
-  totalSpots: 0,
-  availableSpots: 0,
-  activeTransactions: 0,
-});
+// const stats = reactive({
+//   totalLots: 0,
+//   totalSpots: 0,
+//   availableSpots: 0,
+//   activeTransactions: 0,
+// });
 
 const lots = ref<any[]>([]);
 const recentTransactions = ref<any[]>([]);
 
-const fetchStats = async () => {
-  try {
-    const [lotsRes, spotsRes, txRes] = await Promise.all([
-      $fetch("/api/parking/lots"),
-      $fetch("/api/parking/spots"),
-      $fetch("/api/parking/transactions"),
-    ]);
-
-    stats.totalLots = lotsRes.pagination.total;
-    stats.totalSpots = spotsRes.pagination.total;
-    stats.availableSpots = (spotsRes.data as any[]).filter(
-      (s: any) => s.status === "available"
-    ).length;
-    stats.activeTransactions = (txRes.data as any[]).filter(
-      (t: any) => t.status === "active"
-    ).length;
-
-    lots.value = (lotsRes.data as any[]).slice(0, 5);
-    recentTransactions.value = (txRes.data as any[]).slice(0, 5);
-  } catch (error) {
-    console.error("Failed to fetch parking stats:", error);
-  }
-};
+const { data: stats } = useAsyncData(async () => {
+  const res = await $fetch<ParkingStats>("/api/parking/stats");
+  return res;
+});
 
 const formatDate = (date: string) => {
   return new Date(date).toLocaleString();
 };
-
-onMounted(fetchStats);
 </script>

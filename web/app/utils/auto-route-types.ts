@@ -162,3 +162,17 @@ export interface ParkingTransaction {
   paymentMethod: string;
   notes: string;
 }
+
+export interface ParkingSpotType {
+  id?: number;
+  name: string;
+}
+export interface ParkingSpotStatus {
+  id?: number;
+  name: string;
+}
+export interface ParkingStats {
+  lots: number;
+  spots: number;
+  availableSpots: number;
+}
