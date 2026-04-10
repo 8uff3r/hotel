@@ -4,13 +4,14 @@ import (
 	"log/slog"
 	"net/http"
 
+	"hotel/backend/internal/repository"
 	"hotel/backend/internal/service"
 )
 
-func (a *API) listModel(model any) http.HandlerFunc {
+func (a *API) listModel(model any, opts *repository.ListOptions) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		out := newSlicePtr(model)
-		if err := a.services.Crud.List(r.Context(), model, out); err != nil {
+		if err := a.services.Crud.List(r.Context(), model, out, opts); err != nil {
 			writeErr(w, 500, "query_failed")
 			return
 		}

@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"hotel/backend/internal/models"
+	"hotel/backend/internal/repository"
 	"hotel/backend/internal/service"
 )
 
@@ -81,17 +82,21 @@ func (a *API) registerUserRoutes(r chi.Router) {
 
 func (a *API) registerRoomRoutes(r chi.Router) {
 	r.Route("/rooms", func(r chi.Router) {
-		r.Get("/", a.listModel(&models.Room{}))
+		r.Get("/", a.listModel(&models.Room{}, &repository.ListOptions{
+			Preload: []string{"Amenities"},
+		}))
 		r.Post("/", a.createModel(&models.Room{}))
 		r.Get("/{id}", a.getModel(&models.Room{}))
 		r.Put("/{id}", a.updateModel(&models.Room{}))
 		r.Delete("/{id}", a.deleteModel(&models.Room{}))
+
+		r.Get("/amenities", a.listModel(&models.Amenity{}, nil))
 	})
 }
 
 func (a *API) registerGuestRoutes(r chi.Router) {
 	r.Route("/guests", func(r chi.Router) {
-		r.Get("/", a.listModel(&models.Guest{}))
+		r.Get("/", a.listModel(&models.Guest{}, nil))
 		r.Post("/", a.createModel(&models.Guest{}))
 		r.Get("/{id}", a.getModel(&models.Guest{}))
 		r.Put("/{id}", a.updateModel(&models.Guest{}))
@@ -100,7 +105,7 @@ func (a *API) registerGuestRoutes(r chi.Router) {
 
 func (a *API) registerReservationRoutes(r chi.Router) {
 	r.Route("/reservations", func(r chi.Router) {
-		r.Get("/", a.listModel(&models.Reservation{}))
+		r.Get("/", a.listModel(&models.Reservation{}, nil))
 		r.Post("/", a.createModel(&models.Reservation{}))
 		r.Get("/{id}", a.getModel(&models.Reservation{}))
 		r.Put("/{id}", a.updateModel(&models.Reservation{}))
@@ -112,17 +117,17 @@ func (a *API) registerReservationRoutes(r chi.Router) {
 
 func (a *API) registerAccountingRoutes(r chi.Router) {
 	r.Route("/accounts", func(r chi.Router) {
-		r.Get("/", a.listModel(&models.Account{}))
+		r.Get("/", a.listModel(&models.Account{}, nil))
 		r.Post("/", a.createModel(&models.Account{}))
 	})
 
 	r.Route("/expenses", func(r chi.Router) {
-		r.Get("/", a.listModel(&models.Expense{}))
+		r.Get("/", a.listModel(&models.Expense{}, nil))
 		r.Post("/", a.createModel(&models.Expense{}))
 	})
 
 	r.Route("/income", func(r chi.Router) {
-		r.Get("/", a.listModel(&models.Income{}))
+		r.Get("/", a.listModel(&models.Income{}, nil))
 		r.Post("/", a.createModel(&models.Income{}))
 	})
 }
@@ -131,7 +136,7 @@ func (a *API) registerParkingRoutes(r chi.Router) {
 	r.Route("/parking", func(r chi.Router) {
 
 		r.Route("/lots", func(r chi.Router) {
-			r.Get("/", a.listModel(&models.ParkingLot{}))
+			r.Get("/", a.listModel(&models.ParkingLot{}, nil))
 			r.Post("/", a.createModel(&models.ParkingLot{}))
 			r.Get("/{id}", a.getModel(&models.ParkingLot{}))
 			r.Put("/{id}", a.updateModel(&models.ParkingLot{}))
@@ -139,7 +144,7 @@ func (a *API) registerParkingRoutes(r chi.Router) {
 		})
 
 		r.Route("/spots", func(r chi.Router) {
-			r.Get("/", a.listModel(&models.ParkingSpot{}))
+			r.Get("/", a.listModel(&models.ParkingSpot{}, nil))
 			r.Post("/", a.createModel(&models.ParkingSpot{}))
 			r.Get("/{id}", a.getModel(&models.ParkingSpot{}))
 			r.Put("/{id}", a.updateModel(&models.ParkingSpot{}))
@@ -147,7 +152,7 @@ func (a *API) registerParkingRoutes(r chi.Router) {
 		})
 
 		r.Route("/vehicles", func(r chi.Router) {
-			r.Get("/", a.listModel(&models.Vehicle{}))
+			r.Get("/", a.listModel(&models.Vehicle{}, nil))
 			r.Post("/", a.createModel(&models.Vehicle{}))
 			r.Get("/{id}", a.getModel(&models.Vehicle{}))
 			r.Put("/{id}", a.updateModel(&models.Vehicle{}))
@@ -155,7 +160,7 @@ func (a *API) registerParkingRoutes(r chi.Router) {
 		})
 
 		r.Route("/transactions", func(r chi.Router) {
-			r.Get("/", a.listModel(&models.ParkingTransaction{}))
+			r.Get("/", a.listModel(&models.ParkingTransaction{}, nil))
 			r.Post("/", a.createModel(&models.ParkingTransaction{}))
 			r.Get("/{id}", a.getModel(&models.ParkingTransaction{}))
 			r.Post("/{id}/check-out", a.transactionsCheckOut)

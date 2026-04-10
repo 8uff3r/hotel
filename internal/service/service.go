@@ -9,11 +9,12 @@ import (
 	"strings"
 	"time"
 
+	"hotel/backend/internal/models"
+	"hotel/backend/internal/repository"
+
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
-	"hotel/backend/internal/models"
-	"hotel/backend/internal/repository"
 )
 
 type Services struct {
@@ -66,8 +67,8 @@ func (s *AuthService) Me(ctx context.Context, sessionID string) (*models.User, e
 
 type CrudService struct{ repo repository.CrudRepository }
 
-func (s *CrudService) List(ctx context.Context, model any, out any) error {
-	return s.repo.List(ctx, model, out)
+func (s *CrudService) List(ctx context.Context, model any, out any, opts *repository.ListOptions) error {
+	return s.repo.List(ctx, model, out, opts)
 }
 func (s *CrudService) GetByID(ctx context.Context, model any, id uint, out any) error {
 	return s.repo.GetByID(ctx, model, id, out)

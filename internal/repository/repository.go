@@ -4,8 +4,9 @@ import (
 	"context"
 	"time"
 
-	"gorm.io/gorm"
 	"hotel/backend/internal/models"
+
+	"gorm.io/gorm"
 )
 
 type AuthRepository interface {
@@ -17,7 +18,7 @@ type AuthRepository interface {
 }
 
 type CrudRepository interface {
-	List(ctx context.Context, model any, out any) error
+	List(ctx context.Context, model any, out any, opts *ListOptions) error
 	GetByID(ctx context.Context, model any, id uint, out any) error
 	Create(ctx context.Context, model any) error
 	UpdateByID(ctx context.Context, model any, id uint, updates map[string]any) error
@@ -82,8 +83,20 @@ func (r *authRepo) CleanupExpired(ctx context.Context) error {
 
 type crudRepo struct{ db *gorm.DB }
 
-func (r *crudRepo) List(ctx context.Context, model any, out any) error {
-	return r.db.WithContext(ctx).Model(model).Order("id DESC").Find(out).Error
+type ListOptions struct {
+	Preload []string
+}
+
+func (r *crudRepo) List(ctx context.Context, model any, out any, opts *ListOptions) error {
+	db := r.db.WithContext(ctx).Model(model)
+	if opts != nil && opts.Preload != nil {
+		for _, v := range opts.Preload {
+			db = db.Preload(v)
+		}
+	}
+
+	return db.Order("id DESC").Find(out).Error
+
 }
 func (r *crudRepo) GetByID(ctx context.Context, model any, id uint, out any) error {
 	return r.db.WithContext(ctx).Model(model).First(out, id).Error

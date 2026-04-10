@@ -1,17 +1,23 @@
 package models
 
-import "time"
+import (
+	"time"
+)
+
+type Base struct {
+	ID        uint      `gorm:"primaryKey" json:"id"`
+	CreatedAt time.Time `json:"-"`
+	UpdatedAt time.Time `json:"-"`
+}
 
 type User struct {
-	ID           uint      `gorm:"primaryKey" json:"id"`
-	Email        string    `gorm:"uniqueIndex;not null" json:"email"`
-	PasswordHash string    `gorm:"not null" json:"-"`
-	FirstName    string    `gorm:"not null" json:"firstName"`
-	LastName     string    `gorm:"not null" json:"lastName"`
-	Role         string    `gorm:"not null;default:staff" json:"role"`
-	IsActive     bool      `gorm:"not null;default:true" json:"isActive"`
-	CreatedAt    time.Time `json:"createdAt"`
-	UpdatedAt    time.Time `json:"updatedAt"`
+	Base
+	Email        string `gorm:"uniqueIndex;not null" json:"email"`
+	PasswordHash string `gorm:"not null" json:"-"`
+	FirstName    string `gorm:"not null" json:"firstName"`
+	LastName     string `gorm:"not null" json:"lastName"`
+	Role         string `gorm:"not null;default:staff" json:"role"`
+	IsActive     bool   `gorm:"not null;default:true" json:"isActive"`
 }
 
 type Session struct {
@@ -23,17 +29,15 @@ type Session struct {
 }
 
 type Hotel struct {
-	ID        uint      `gorm:"primaryKey" json:"id"`
-	Name      string    `gorm:"not null" json:"name"`
-	Address   string    `gorm:"not null" json:"address"`
-	Phone     string    `json:"phone"`
-	Email     string    `json:"email"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	Base
+	Name    string `gorm:"not null" json:"name"`
+	Address string `gorm:"not null" json:"address"`
+	Phone   string `json:"phone"`
+	Email   string `json:"email"`
 }
 
 type Room struct {
-	ID          uint      `gorm:"primaryKey" json:"id"`
+	Base
 	HotelID     *uint     `json:"hotelId"`
 	RoomNumber  string    `gorm:"not null" json:"roomNumber"`
 	RoomType    string    `gorm:"not null;default:single" json:"roomType"`
@@ -41,29 +45,31 @@ type Room struct {
 	Capacity    int       `gorm:"not null;default:2" json:"capacity"`
 	BasePrice   float64   `gorm:"not null;default:0" json:"basePrice"`
 	Status      string    `gorm:"not null;default:available" json:"status"`
-	Amenities   string    `json:"amenities"`
+	Amenities   []Amenity `gorm:"many2many:room_amenities;" json:"amenities"`
 	Description string    `json:"description"`
-	CreatedAt   time.Time `json:"createdAt"`
-	UpdatedAt   time.Time `json:"updatedAt"`
+}
+
+type Amenity struct {
+	Base
+	Name string `json:"name"`
 }
 
 type Guest struct {
-	ID        uint      `gorm:"primaryKey" json:"id"`
-	FirstName string    `gorm:"not null" json:"firstName"`
-	LastName  string    `gorm:"not null" json:"lastName"`
-	Email     string    `json:"email"`
-	Phone     string    `json:"phone"`
-	IDType    string    `json:"idType"`
-	IDNumber  string    `json:"idNumber"`
-	Address   string    `json:"address"`
-	City      string    `json:"city"`
-	Country   string    `json:"country"`
-	Notes     string    `json:"notes"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	Base
+	FirstName string `gorm:"not null" json:"firstName"`
+	LastName  string `gorm:"not null" json:"lastName"`
+	Email     string `json:"email"`
+	Phone     string `json:"phone"`
+	IDType    string `json:"idType"`
+	IDNumber  string `json:"idNumber"`
+	Address   string `json:"address"`
+	City      string `json:"city"`
+	Country   string `json:"country"`
+	Notes     string `json:"notes"`
 }
 
 type Reservation struct {
+	Base
 	ID              uint       `gorm:"primaryKey" json:"id"`
 	HotelID         *uint      `json:"hotelId"`
 	GuestID         uint       `gorm:"not null" json:"guestId"`
@@ -79,28 +85,24 @@ type Reservation struct {
 	SpecialRequests string     `json:"specialRequests"`
 	NumberOfGuests  int        `gorm:"not null;default:1" json:"numberOfGuests"`
 	CreatedBy       *uint      `json:"createdBy"`
-	CreatedAt       time.Time  `json:"createdAt"`
-	UpdatedAt       time.Time  `json:"updatedAt"`
 }
 
 type Account struct {
-	ID             uint      `gorm:"primaryKey" json:"id"`
-	HotelID        *uint     `json:"hotelId"`
-	AccountCode    string    `gorm:"not null" json:"accountCode"`
-	AccountName    string    `gorm:"not null" json:"accountName"`
-	AccountType    string    `gorm:"not null" json:"accountType"`
-	AccountSubType string    `json:"accountSubType"`
-	ParentID       *uint     `json:"parentId"`
-	IsActive       bool      `gorm:"not null;default:true" json:"isActive"`
-	IsSystem       bool      `gorm:"not null;default:false" json:"isSystem"`
-	Description    string    `json:"description"`
-	NormalBalance  string    `gorm:"not null;default:debit" json:"normalBalance"`
-	CreatedAt      time.Time `json:"createdAt"`
-	UpdatedAt      time.Time `json:"updatedAt"`
+	Base
+	HotelID        *uint  `json:"hotelId"`
+	AccountCode    string `gorm:"not null" json:"accountCode"`
+	AccountName    string `gorm:"not null" json:"accountName"`
+	AccountType    string `gorm:"not null" json:"accountType"`
+	AccountSubType string `json:"accountSubType"`
+	ParentID       *uint  `json:"parentId"`
+	IsActive       bool   `gorm:"not null;default:true" json:"isActive"`
+	IsSystem       bool   `gorm:"not null;default:false" json:"isSystem"`
+	Description    string `json:"description"`
+	NormalBalance  string `gorm:"not null;default:debit" json:"normalBalance"`
 }
 
 type Expense struct {
-	ID            uint      `gorm:"primaryKey" json:"id"`
+	Base
 	HotelID       *uint     `json:"hotelId"`
 	ExpenseDate   time.Time `gorm:"not null" json:"expenseDate"`
 	Description   string    `gorm:"not null" json:"description"`
@@ -113,12 +115,10 @@ type Expense struct {
 	AccountID     *uint     `json:"accountId"`
 	Notes         string    `json:"notes"`
 	CreatedBy     *uint     `json:"createdBy"`
-	CreatedAt     time.Time `json:"createdAt"`
-	UpdatedAt     time.Time `json:"updatedAt"`
 }
 
 type Income struct {
-	ID            uint      `gorm:"primaryKey" json:"id"`
+	Base
 	HotelID       *uint     `json:"hotelId"`
 	IncomeDate    time.Time `gorm:"not null" json:"incomeDate"`
 	Description   string    `gorm:"not null" json:"description"`
@@ -132,53 +132,45 @@ type Income struct {
 	ReservationID *uint     `json:"reservationId"`
 	Notes         string    `json:"notes"`
 	CreatedBy     *uint     `json:"createdBy"`
-	CreatedAt     time.Time `json:"createdAt"`
-	UpdatedAt     time.Time `json:"updatedAt"`
 }
 
 type ParkingLot struct {
-	ID          uint      `gorm:"primaryKey" json:"id"`
-	HotelID     *uint     `json:"hotelId"`
-	Name        string    `gorm:"not null" json:"name"`
-	Location    string    `json:"location"`
-	TotalSpots  int       `gorm:"not null;default:0" json:"totalSpots"`
-	HourlyRate  float64   `gorm:"not null;default:0" json:"hourlyRate"`
-	DailyRate   float64   `gorm:"not null;default:0" json:"dailyRate"`
-	Status      string    `gorm:"not null;default:active" json:"status"`
-	Description string    `json:"description"`
-	CreatedAt   time.Time `json:"createdAt"`
-	UpdatedAt   time.Time `json:"updatedAt"`
+	Base
+	HotelID     *uint   `json:"hotelId"`
+	Name        string  `gorm:"not null" json:"name"`
+	Location    string  `json:"location"`
+	TotalSpots  int     `gorm:"not null;default:0" json:"totalSpots"`
+	HourlyRate  float64 `gorm:"not null;default:0" json:"hourlyRate"`
+	DailyRate   float64 `gorm:"not null;default:0" json:"dailyRate"`
+	Status      string  `gorm:"not null;default:active" json:"status"`
+	Description string  `json:"description"`
 }
 
 type ParkingSpot struct {
-	ID          uint      `gorm:"primaryKey" json:"id"`
-	LotID       *uint     `json:"lotId"`
-	SpotNumber  string    `gorm:"not null" json:"spotNumber"`
-	Floor       string    `json:"floor"`
-	SpotType    string    `gorm:"not null;default:standard" json:"spotType"`
-	Status      string    `gorm:"not null;default:available" json:"status"`
-	IsCovered   bool      `gorm:"not null;default:false" json:"isCovered"`
-	Description string    `json:"description"`
-	CreatedAt   time.Time `json:"createdAt"`
-	UpdatedAt   time.Time `json:"updatedAt"`
+	Base
+	LotID       *uint  `json:"lotId"`
+	SpotNumber  string `gorm:"not null" json:"spotNumber"`
+	Floor       string `json:"floor"`
+	SpotType    string `gorm:"not null;default:standard" json:"spotType"`
+	Status      string `gorm:"not null;default:available" json:"status"`
+	IsCovered   bool   `gorm:"not null;default:false" json:"isCovered"`
+	Description string `json:"description"`
 }
 
 type Vehicle struct {
-	ID           uint      `gorm:"primaryKey" json:"id"`
-	GuestID      *uint     `json:"guestId"`
-	LicensePlate string    `gorm:"not null" json:"licensePlate"`
-	VehicleType  string    `gorm:"not null;default:car" json:"vehicleType"`
-	Make         string    `json:"make"`
-	Model        string    `json:"model"`
-	Color        string    `json:"color"`
-	IsRegistered bool      `gorm:"not null;default:true" json:"isRegistered"`
-	Notes        string    `json:"notes"`
-	CreatedAt    time.Time `json:"createdAt"`
-	UpdatedAt    time.Time `json:"updatedAt"`
+	Base
+	GuestID      *uint  `json:"guestId"`
+	LicensePlate string `gorm:"not null" json:"licensePlate"`
+	VehicleType  string `gorm:"not null;default:car" json:"vehicleType"`
+	Make         string `json:"make"`
+	Model        string `json:"model"`
+	Color        string `json:"color"`
+	IsRegistered bool   `gorm:"not null;default:true" json:"isRegistered"`
+	Notes        string `json:"notes"`
 }
 
 type ParkingTransaction struct {
-	ID            uint       `gorm:"primaryKey" json:"id"`
+	Base
 	LotID         *uint      `json:"lotId"`
 	SpotID        *uint      `json:"spotId"`
 	GuestID       *uint      `json:"guestId"`
@@ -194,13 +186,11 @@ type ParkingTransaction struct {
 	PaymentStatus string     `gorm:"not null;default:pending" json:"paymentStatus"`
 	PaymentMethod string     `json:"paymentMethod"`
 	Notes         string     `json:"notes"`
-	CreatedAt     time.Time  `json:"createdAt"`
-	UpdatedAt     time.Time  `json:"updatedAt"`
 }
 
 func All() []any {
 	return []any{
 		&User{}, &Session{}, &Hotel{}, &Room{}, &Guest{}, &Reservation{}, &Account{},
-		&Expense{}, &Income{}, &ParkingLot{}, &ParkingSpot{}, &Vehicle{}, &ParkingTransaction{},
+		&Expense{}, &Income{}, &ParkingLot{}, &ParkingSpot{}, &Vehicle{}, &ParkingTransaction{}, &Amenity{},
 	}
 }

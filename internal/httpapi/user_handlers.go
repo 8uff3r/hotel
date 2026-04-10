@@ -11,7 +11,7 @@ import (
 
 func (a *API) usersList(w http.ResponseWriter, r *http.Request) {
 	var rows []models.User
-	if err := a.services.Crud.List(r.Context(), &models.User{}, &rows); err != nil {
+	if err := a.services.Crud.List(r.Context(), &models.User{}, &rows, nil); err != nil {
 		writeErr(w, 500, "query_failed")
 		return
 	}
