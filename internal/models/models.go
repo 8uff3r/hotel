@@ -70,7 +70,6 @@ type Guest struct {
 
 type Reservation struct {
 	Base
-	ID              uint       `gorm:"primaryKey" json:"id"`
 	HotelID         *uint      `json:"hotelId"`
 	GuestID         uint       `gorm:"not null" json:"guestId"`
 	RoomID          uint       `gorm:"not null" json:"roomId"`
@@ -188,9 +187,16 @@ type ParkingTransaction struct {
 	Notes         string     `json:"notes"`
 }
 
-func All() []any {
+func AllPtr() []any {
 	return []any{
 		&User{}, &Session{}, &Hotel{}, &Room{}, &Guest{}, &Reservation{}, &Account{},
 		&Expense{}, &Income{}, &ParkingLot{}, &ParkingSpot{}, &Vehicle{}, &ParkingTransaction{}, &Amenity{},
+	}
+}
+
+func All() []any {
+	return []any{
+		User{}, Session{}, Hotel{}, Room{}, Guest{}, Reservation{}, Account{},
+		Expense{}, Income{}, ParkingLot{}, ParkingSpot{}, Vehicle{}, ParkingTransaction{}, Amenity{},
 	}
 }
