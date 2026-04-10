@@ -16,7 +16,7 @@ import (
 	"hotel/backend/internal/httpapi/users"
 )
 
-func NewRouter(r *chi.Mux, a *h.API) http.Handler {
+func NewRouter(a *h.API, r *chi.Mux) http.Handler {
 
 	// Core middlewares, Added inside a group to not interfere with other routes (e.g. SPA routes)
 	r.Group(func(r chi.Router) {
