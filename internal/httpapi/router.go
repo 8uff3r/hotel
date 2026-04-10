@@ -34,7 +34,7 @@ func NewRouter(r *chi.Mux, opts Options) http.Handler {
 		services:       opts.Services,
 	}
 
-	// Core middlewares
+	// Core middlewares, Added inside a group to not interfere with other routes (e.g. SPA routes)
 	r.Group(func(r chi.Router) {
 		r.Use(a.timeoutMiddleware)
 		r.Use(a.recoverAndLogMiddleware)

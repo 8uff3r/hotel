@@ -26,20 +26,20 @@ type Services struct {
 
 func New(repos repository.Repositories, sessionTTL time.Duration) Services {
 	return Services{
-		Auth:        &AuthService{repo: repos.Auth, sessionTTL: sessionTTL},
-		Crud:        &CrudService{repo: repos.Crud},
-		Reservation: &ReservationService{repo: repos.Reservation},
-		ParkingTx:   &ParkingTxService{repo: repos.ParkingTx},
+		Auth:        &AuthService{AuthRepository: repos.Auth, sessionTTL: sessionTTL},
+		Crud:        &CrudService{CrudRepository: repos.Crud},
+		Reservation: &ReservationService{repos.Reservation},
+		ParkingTx:   &ParkingTxService{repos.ParkingTx},
 	}
 }
 
 type AuthService struct {
-	repo       repository.AuthRepository
+	repository.AuthRepository
 	sessionTTL time.Duration
 }
 
 func (s *AuthService) Login(ctx context.Context, email, password string) (*models.User, string, time.Time, error) {
-	user, err := s.repo.GetUserByEmail(ctx, strings.TrimSpace(email))
+	user, err := s.GetUserByEmail(ctx, strings.TrimSpace(email))
 	if err != nil || bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password)) != nil {
 		return nil, "", time.Time{}, errors.New("invalid credentials")
 	}
@@ -48,7 +48,7 @@ func (s *AuthService) Login(ctx context.Context, email, password string) (*model
 		return nil, "", time.Time{}, err
 	}
 	expires := time.Now().UTC().Add(s.sessionTTL)
-	if err := s.repo.CreateSession(ctx, models.Session{ID: token, UserID: user.ID, ExpiresAt: expires}); err != nil {
+	if err := s.CreateSession(ctx, models.Session{ID: token, UserID: user.ID, ExpiresAt: expires}); err != nil {
 		return nil, "", time.Time{}, err
 	}
 	return user, token, expires, nil
@@ -58,46 +58,21 @@ func (s *AuthService) Logout(ctx context.Context, sessionID string) error {
 	if sessionID == "" {
 		return nil
 	}
-	return s.repo.DeleteSession(ctx, sessionID)
+	return s.DeleteSession(ctx, sessionID)
 }
 
 func (s *AuthService) Me(ctx context.Context, sessionID string) (*models.User, error) {
-	return s.repo.GetUserBySession(ctx, sessionID)
+	return s.GetUserBySession(ctx, sessionID)
 }
 
-type CrudService struct{ repo repository.CrudRepository }
-
-func (s *CrudService) List(ctx context.Context, model any, out any, opts *repository.ListOptions) error {
-	return s.repo.List(ctx, model, out, opts)
-}
-func (s *CrudService) GetByID(ctx context.Context, model any, id uint, out any, opts *repository.GetOptions) error {
-	return s.repo.GetByID(ctx, model, id, out, opts)
-}
-func (s *CrudService) Create(ctx context.Context, model any) error { return s.repo.Create(ctx, model) }
-func (s *CrudService) UpdateByID(ctx context.Context, model any, id uint, updates map[string]any) error {
-	return s.repo.UpdateByID(ctx, model, id, updates)
-}
-func (s *CrudService) DeleteByID(ctx context.Context, model any, id uint) error {
-	return s.repo.DeleteByID(ctx, model, id)
-}
+type CrudService struct{ repository.CrudRepository }
 
 type ReservationService struct {
-	repo repository.ReservationRepository
-}
-
-func (s *ReservationService) CheckIn(ctx context.Context, id uint) error {
-	return s.repo.MarkCheckIn(ctx, id)
-}
-func (s *ReservationService) CheckOut(ctx context.Context, id uint) error {
-	return s.repo.MarkCheckOut(ctx, id)
+	repository.ReservationRepository
 }
 
 type ParkingTxService struct {
-	repo repository.ParkingTxRepository
-}
-
-func (s *ParkingTxService) CheckOut(ctx context.Context, id uint) error {
-	return s.repo.MarkCheckOut(ctx, id)
+	repository.ParkingTxRepository
 }
 
 func randomToken() (string, error) {

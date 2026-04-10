@@ -26,12 +26,12 @@ type CrudRepository interface {
 }
 
 type ReservationRepository interface {
-	MarkCheckIn(ctx context.Context, id uint) error
-	MarkCheckOut(ctx context.Context, id uint) error
+	CheckIn(ctx context.Context, id uint) error
+	CheckOut(ctx context.Context, id uint) error
 }
 
 type ParkingTxRepository interface {
-	MarkCheckOut(ctx context.Context, id uint) error
+	CheckOut(ctx context.Context, id uint) error
 }
 
 type Repositories struct {
@@ -139,7 +139,7 @@ func (r *crudRepo) DeleteByID(ctx context.Context, model any, id uint) error {
 
 type reservationRepo struct{ db *gorm.DB }
 
-func (r *reservationRepo) MarkCheckIn(ctx context.Context, id uint) error {
+func (r *reservationRepo) CheckIn(ctx context.Context, id uint) error {
 	res := r.db.WithContext(ctx).Model(&models.Reservation{}).Where("id = ?", id).Updates(map[string]any{"status": "checked_in", "actual_check_in": time.Now().UTC()})
 	if res.Error != nil {
 		return res.Error
@@ -149,7 +149,7 @@ func (r *reservationRepo) MarkCheckIn(ctx context.Context, id uint) error {
 	}
 	return nil
 }
-func (r *reservationRepo) MarkCheckOut(ctx context.Context, id uint) error {
+func (r *reservationRepo) CheckOut(ctx context.Context, id uint) error {
 	res := r.db.WithContext(ctx).Model(&models.Reservation{}).Where("id = ?", id).Updates(map[string]any{"status": "checked_out", "actual_check_out": time.Now().UTC()})
 	if res.Error != nil {
 		return res.Error
@@ -162,7 +162,7 @@ func (r *reservationRepo) MarkCheckOut(ctx context.Context, id uint) error {
 
 type parkingTxRepo struct{ db *gorm.DB }
 
-func (r *parkingTxRepo) MarkCheckOut(ctx context.Context, id uint) error {
+func (r *parkingTxRepo) CheckOut(ctx context.Context, id uint) error {
 	now := time.Now().UTC()
 	res := r.db.WithContext(ctx).Model(&models.ParkingTransaction{}).Where("id = ?", id).Updates(map[string]any{"status": "completed", "exit_time": now})
 	if res.Error != nil {
