@@ -46,11 +46,13 @@ func New(cfg config.Config) (*App, error) {
 	svcs := service.New(repos, cfg.SessionTTL)
 
 	r := chi.NewRouter()
-	handler := httpapi.NewRouter(r, httpapi.Options{
+	handler := NewRouter(r, httpapi.Options{
 		Logger:         logger,
 		SessionCookie:  cfg.SessionCookie,
 		RequestTimeout: cfg.RequestTimeout,
+		Db:             database,
 		Services:       svcs,
+		SessionTTL:     cfg.SessionTTL,
 	})
 
 	notFoundHandlerFunc := SPAHandler()

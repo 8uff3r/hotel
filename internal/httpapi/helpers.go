@@ -90,7 +90,7 @@ func camelToSnake(s string) string {
 	return strings.ToLower(b.String())
 }
 
-func parseID(raw string) (uint, error) {
+func ParseID(raw string) (uint, error) {
 	id, err := strconv.ParseUint(raw, 10, 64)
 	if err != nil || id < 1 {
 		return 0, errors.New("invalid id")
@@ -98,42 +98,42 @@ func parseID(raw string) (uint, error) {
 	return uint(id), nil
 }
 
-func decode[T any](r *http.Request, dst T, w http.ResponseWriter) error {
+func Decode[T any](r *http.Request, dst T, w http.ResponseWriter) error {
 	defer r.Body.Close()
 	dec := json.NewDecoder(r.Body)
 	// dec.DisallowUnknownFields()
 	if err := dec.Decode(dst); err != nil {
-		writeErr(w, http.StatusBadRequest, "invalid_payload")
+		WriteErr(w, http.StatusBadRequest, "invalid_payload")
 		return err
 	}
 	return nil
 }
 
-func writeErr(w http.ResponseWriter, code int, message string) {
+func WriteErr(w http.ResponseWriter, code int, message string) {
 	w.WriteHeader(code)
 	_ = json.NewEncoder(w).Encode(map[string]string{"error": message})
 }
 
-func writeJSON(w http.ResponseWriter, code int, v any) {
+func WriteJSON(w http.ResponseWriter, code int, v any) {
 	w.WriteHeader(code)
 	_ = json.NewEncoder(w).Encode(v)
 }
 
-func cookieValue(c *http.Cookie) string {
+func CookieValue(c *http.Cookie) string {
 	if c == nil {
 		return ""
 	}
 	return c.Value
 }
 
-func defaultStr(v, fallback string) string {
+func DefaultStr(v, fallback string) string {
 	if strings.TrimSpace(v) == "" {
 		return fallback
 	}
 	return v
 }
 
-func pickString(m map[string]any, keys ...string) string {
+func PickString(m map[string]any, keys ...string) string {
 	for _, k := range keys {
 		if v, ok := m[k].(string); ok {
 			return v

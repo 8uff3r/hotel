@@ -22,6 +22,7 @@ type Services struct {
 	Crud        *CrudService
 	Reservation *ReservationService
 	ParkingTx   *ParkingTxService
+	Parking     *ParkingService
 }
 
 func New(repos repository.Repositories, sessionTTL time.Duration) Services {
@@ -30,6 +31,7 @@ func New(repos repository.Repositories, sessionTTL time.Duration) Services {
 		Crud:        &CrudService{CrudRepository: repos.Crud},
 		Reservation: &ReservationService{repos.Reservation},
 		ParkingTx:   &ParkingTxService{repos.ParkingTx},
+		Parking:     &ParkingService{repos.Parking},
 	}
 }
 
@@ -43,7 +45,7 @@ func (s *AuthService) Login(ctx context.Context, email, password string) (*model
 	if err != nil || bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password)) != nil {
 		return nil, "", time.Time{}, errors.New("invalid credentials")
 	}
-	token, err := randomToken()
+	token, err := RandomToken()
 	if err != nil {
 		return nil, "", time.Time{}, err
 	}
@@ -75,7 +77,11 @@ type ParkingTxService struct {
 	repository.ParkingTxRepository
 }
 
-func randomToken() (string, error) {
+type ParkingService struct {
+	repository.ParkingRepository
+}
+
+func RandomToken() (string, error) {
 	buf := make([]byte, 32)
 	if _, err := rand.Read(buf); err != nil {
 		return "", fmt.Errorf("read random: %w", err)

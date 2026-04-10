@@ -24,6 +24,21 @@ func Seed(db *gorm.DB) {
 		{Name: "Jacuzzi"},
 		{Name: "Room Service"},
 	})
+
+	seed(db, []models.ParkingSpotType{
+		{Name: "Standard"},
+		{Name: "Handicap"},
+		{Name: "Electric"},
+		{Name: "Compact"},
+		{Name: "Large"},
+	})
+
+	seed(db, []models.ParkingSpotStatus{
+		{Name: "Available"},
+		{Name: "Occupied"},
+		{Name: "Reserved"},
+		{Name: "Maintenance"},
+	})
 }
 
 func seed[T any](db *gorm.DB, defaultValues []T) error {

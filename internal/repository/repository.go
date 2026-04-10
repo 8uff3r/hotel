@@ -34,11 +34,16 @@ type ParkingTxRepository interface {
 	CheckOut(ctx context.Context, id uint) error
 }
 
+type ParkingRepository interface {
+	Stats(ctx context.Context) (*models.ParkingStats, error)
+}
+
 type Repositories struct {
 	Auth        AuthRepository
 	Crud        CrudRepository
 	Reservation ReservationRepository
 	ParkingTx   ParkingTxRepository
+	Parking     ParkingRepository
 }
 
 func New(db *gorm.DB) Repositories {
@@ -47,6 +52,7 @@ func New(db *gorm.DB) Repositories {
 		Crud:        &crudRepo{db: db},
 		Reservation: &reservationRepo{db: db},
 		ParkingTx:   &parkingTxRepo{db: db},
+		Parking:     &parkingRepo{db: db},
 	}
 }
 
@@ -172,4 +178,28 @@ func (r *parkingTxRepo) CheckOut(ctx context.Context, id uint) error {
 		return gorm.ErrRecordNotFound
 	}
 	return nil
+}
+
+type parkingRepo struct{ db *gorm.DB }
+
+func (r *parkingRepo) Stats(ctx context.Context) (*models.ParkingStats, error) {
+	db := r.db.WithContext(ctx)
+	var totalLots int64
+	if err := db.Model(&models.ParkingLot{}).Count(&totalLots).Error; err != nil {
+		return nil, err
+	}
+
+	var totalSpots int64
+	if err := db.Model(&models.ParkingSpot{}).Count(&totalSpots).Error; err != nil {
+		return nil, err
+	}
+
+	var availableSpots int64
+	if err := db.Model(&models.ParkingSpot{}).Where("status = ?", "available").Count(&availableSpots).Error; err != nil {
+		return nil, err
+	}
+
+	println(totalLots, totalSpots, availableSpots)
+
+	return &models.ParkingStats{Lots: totalLots, Spots: totalSpots, AvailableSpots: availableSpots}, nil
 }

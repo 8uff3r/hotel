@@ -4,6 +4,14 @@ import (
 	"time"
 )
 
+type UserStatus string
+
+const (
+	StatusActive   UserStatus = "active"
+	StatusInactive UserStatus = "inactive"
+	StatusBanned   UserStatus = "banned"
+)
+
 type Base struct {
 	ID        uint      `gorm:"primaryKey" json:"id"`
 	CreatedAt time.Time `json:"-"`
@@ -50,6 +58,16 @@ type Room struct {
 }
 
 type Amenity struct {
+	Base
+	Name string `json:"name"`
+}
+
+type ParkingSpotType struct {
+	Base
+	Name string `json:"name"`
+}
+
+type ParkingSpotStatus struct {
 	Base
 	Name string `json:"name"`
 }
@@ -187,16 +205,23 @@ type ParkingTransaction struct {
 	Notes         string     `json:"notes"`
 }
 
+type ParkingStats struct {
+	Lots           int64 `json:"lots"`
+	Spots          int64 `json:"spots"`
+	AvailableSpots int64 `json:"availableSpots"`
+}
+
 func AllPtr() []any {
 	return []any{
 		&User{}, &Session{}, &Hotel{}, &Room{}, &Guest{}, &Reservation{}, &Account{},
 		&Expense{}, &Income{}, &ParkingLot{}, &ParkingSpot{}, &Vehicle{}, &ParkingTransaction{}, &Amenity{},
+		&ParkingSpotType{}, &ParkingSpotStatus{},
 	}
 }
 
 func All() []any {
 	return []any{
 		User{}, Session{}, Hotel{}, Room{}, Guest{}, Reservation{}, Account{},
-		Expense{}, Income{}, ParkingLot{}, ParkingSpot{}, Vehicle{}, ParkingTransaction{}, Amenity{},
+		Expense{}, Income{}, ParkingLot{}, ParkingSpot{}, Vehicle{}, ParkingTransaction{}, Amenity{}, ParkingSpotType{}, ParkingSpotStatus{}, ParkingStats{},
 	}
 }

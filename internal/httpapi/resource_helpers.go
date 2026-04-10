@@ -8,93 +8,93 @@ import (
 	"hotel/backend/internal/service"
 )
 
-func (a *API) listModel(model any, opts *repository.ListOptions) http.HandlerFunc {
+func (a *API) ListModel(model any, opts *repository.ListOptions) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		out := newSlicePtr(model)
-		if err := a.services.Crud.List(r.Context(), model, out, opts); err != nil {
-			writeErr(w, 500, "query_failed")
+		if err := a.Services.Crud.List(r.Context(), model, out, opts); err != nil {
+			WriteErr(w, 500, "query_failed")
 			return
 		}
-		writeJSON(w, 200, map[string]any{"data": out})
+		WriteJSON(w, 200, map[string]any{"data": out})
 	}
 }
 
-func (a *API) createModel(model any) http.HandlerFunc {
+func (a *API) CreateModel(model any) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		entity := newPtr(model)
-		if err := decode(r, entity, w); err != nil {
+		if err := Decode(r, entity, w); err != nil {
 			slog.Error("", err)
 			return
 		}
-		if err := a.services.Crud.Create(r.Context(), entity); err != nil {
+		if err := a.Services.Crud.Create(r.Context(), entity); err != nil {
 			slog.Error("%s", err)
-			writeErr(w, 400, "create_failed")
+			WriteErr(w, 400, "create_failed")
 			return
 		}
-		writeJSON(w, 201, entity)
+		WriteJSON(w, 201, entity)
 	}
 }
 
-func (a *API) getModel(model any, opts *repository.GetOptions) http.HandlerFunc {
+func (a *API) GetModel(model any, opts *repository.GetOptions) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		id, err := parseID(r.PathValue("id"))
+		id, err := ParseID(r.PathValue("id"))
 		if err != nil {
-			writeErr(w, 400, "invalid_id")
+			WriteErr(w, 400, "invalid_id")
 			return
 		}
 		entity := newPtr(model)
-		if err := a.services.Crud.GetByID(r.Context(), model, id, entity, opts); err != nil {
+		if err := a.Services.Crud.GetByID(r.Context(), model, id, entity, opts); err != nil {
 			if service.IsNotFound(err) {
-				writeErr(w, 404, "not_found")
+				WriteErr(w, 404, "not_found")
 				return
 			}
-			writeErr(w, 500, "query_failed")
+			WriteErr(w, 500, "query_failed")
 			return
 		}
-		writeJSON(w, 200, entity)
+		WriteJSON(w, 200, entity)
 	}
 }
 
-func (a *API) updateModel(model any) http.HandlerFunc {
+func (a *API) UpdateModel(model any) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		id, err := parseID(r.PathValue("id"))
+		id, err := ParseID(r.PathValue("id"))
 		if err != nil {
-			writeErr(w, 400, "invalid_id")
+			WriteErr(w, 400, "invalid_id")
 			return
 		}
 		updates := map[string]any{}
-		if err := decode(r, &updates, w); err != nil {
+		if err := Decode(r, &updates, w); err != nil {
 			return
 		}
 		delete(updates, "id")
 		normalizeUpdates(updates)
-		if err := a.services.Crud.UpdateByID(r.Context(), model, id, updates); err != nil {
+		if err := a.Services.Crud.UpdateByID(r.Context(), model, id, updates); err != nil {
 			if service.IsNotFound(err) {
-				writeErr(w, 404, "not_found")
+				WriteErr(w, 404, "not_found")
 				return
 			}
-			writeErr(w, 400, "update_failed")
+			WriteErr(w, 400, "update_failed")
 			return
 		}
-		writeJSON(w, 200, map[string]bool{"ok": true})
+		WriteJSON(w, 200, map[string]bool{"ok": true})
 	}
 }
 
-func (a *API) deleteModel(model any) http.HandlerFunc {
+func (a *API) DeleteModel(model any) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		id, err := parseID(r.PathValue("id"))
+		id, err := ParseID(r.PathValue("id"))
 		if err != nil {
-			writeErr(w, 400, "invalid_id")
+			WriteErr(w, 400, "invalid_id")
 			return
 		}
-		if err := a.services.Crud.DeleteByID(r.Context(), model, id); err != nil {
+		if err := a.Services.Crud.DeleteByID(r.Context(), model, id); err != nil {
 			if service.IsNotFound(err) {
-				writeErr(w, 404, "not_found")
+				WriteErr(w, 404, "not_found")
 				return
 			}
-			writeErr(w, 500, "delete_failed")
+			WriteErr(w, 500, "delete_failed")
 			return
 		}
-		writeJSON(w, 200, map[string]bool{"ok": true})
+		WriteJSON(w, 200, map[string]bool{"ok": true})
 	}
 }
