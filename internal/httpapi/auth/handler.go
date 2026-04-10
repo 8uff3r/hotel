@@ -17,6 +17,7 @@ func (m AuthModule) RegisterRoutes(api *h.API, r chi.Router) {
 	r.Post("/login", au.loginHandler)
 
 	r.Group(func(r chi.Router) {
+		r.Use(au.Auth)
 		r.Post("/logout", au.logout)
 		r.Get("/me", me)
 	})
