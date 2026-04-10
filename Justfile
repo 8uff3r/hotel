@@ -1,8 +1,17 @@
 [parallel]
-dev: backend frontend
+dev: backend-dev frontend-dev
 
-backend:
-	go run ./cmd/server
+backend-dev:
+	air
 
-frontend:
+frontend-dev:
 	cd web && bun run dev
+
+
+build: frontend-build backend-build
+
+backend-build:
+    go build ./cmd/server
+
+frontend-build:
+    cd web && bun run build
