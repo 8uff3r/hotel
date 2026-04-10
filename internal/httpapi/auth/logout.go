@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (a *auth) logout(w http.ResponseWriter, r *http.Request) {
+func (a *AuthModule) logout(w http.ResponseWriter, r *http.Request) {
 	cookie, _ := r.Cookie(a.SessionCookie)
 	_ = a.Services.Auth.Logout(r.Context(), h.CookieValue(cookie))
 	http.SetCookie(w, &http.Cookie{Name: a.SessionCookie, Value: "", Path: "/", MaxAge: -1, HttpOnly: true})

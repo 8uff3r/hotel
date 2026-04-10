@@ -46,7 +46,7 @@ func New(cfg config.Config) (*App, error) {
 	svcs := service.New(repos, cfg.SessionTTL)
 
 	r := chi.NewRouter()
-	handler := NewRouter(r, httpapi.Options{
+	handler := NewRouter(r, httpapi.API{
 		Logger:         logger,
 		SessionCookie:  cfg.SessionCookie,
 		RequestTimeout: cfg.RequestTimeout,

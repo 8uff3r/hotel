@@ -13,15 +13,6 @@ import (
 	"hotel/backend/internal/service"
 )
 
-type Options struct {
-	Logger         *slog.Logger
-	Db             *gorm.DB
-	SessionCookie  string
-	RequestTimeout time.Duration
-	Services       service.Services
-	SessionTTL     time.Duration
-}
-
 type API struct {
 	Logger         *slog.Logger
 	Db             *gorm.DB

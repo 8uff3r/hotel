@@ -7,7 +7,9 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func RegisterRoutes(api *h.API, r chi.Router) {
+type SystemModule struct{}
+
+func (m SystemModule) RegisterRoutes(api *h.API, r chi.Router) {
 	r.Get("/healthz", health)
 	r.Get("/readyz", ready)
 }

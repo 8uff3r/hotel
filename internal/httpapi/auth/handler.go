@@ -7,20 +7,18 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-type auth struct {
+type AuthModule struct {
 	*h.API
 }
 
-func RegisterRoutes(api *h.API, r chi.Router) {
-	au := auth{API: api}
+func (m AuthModule) RegisterRoutes(api *h.API, r chi.Router) {
+	au := AuthModule{API: api}
 
-	r.Route("/auth", func(r chi.Router) {
-		r.Post("/login", au.loginHandler)
+	r.Post("/login", au.loginHandler)
 
-		r.Group(func(r chi.Router) {
-			r.Post("/logout", au.logout)
-			r.Get("/me", me)
-		})
+	r.Group(func(r chi.Router) {
+		r.Post("/logout", au.logout)
+		r.Get("/me", me)
 	})
 }
 

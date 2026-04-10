@@ -10,20 +10,18 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type user struct {
+type UsersModule struct {
 	*h.API
 }
 
-func RegisterRoutes(api *h.API, r chi.Router) {
-	u := user{api}
+func (m UsersModule) RegisterRoutes(api *h.API, r chi.Router) {
+	u := UsersModule{api}
 
-	r.Route("/users", func(r chi.Router) {
-		r.Get("/", u.usersList)
-		r.Post("/", u.usersCreate)
-	})
+	r.Get("/", u.usersList)
+	r.Post("/", u.usersCreate)
 }
 
-func (u *user) usersList(w http.ResponseWriter, r *http.Request) {
+func (u *UsersModule) usersList(w http.ResponseWriter, r *http.Request) {
 	var rows []models.User
 	if err := u.Services.Crud.List(r.Context(), &models.User{}, &rows, nil); err != nil {
 		h.WriteErr(w, 500, "query_failed")
@@ -36,7 +34,7 @@ func (u *user) usersList(w http.ResponseWriter, r *http.Request) {
 	h.WriteJSON(w, 200, map[string]any{"data": out})
 }
 
-func (u *user) usersCreate(w http.ResponseWriter, r *http.Request) {
+func (u *UsersModule) usersCreate(w http.ResponseWriter, r *http.Request) {
 	var in map[string]any
 	if err := h.Decode(r, &in, w); err != nil {
 		return
