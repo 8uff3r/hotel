@@ -1,7 +1,7 @@
 /* Do not change, this code is generated from Golang structs */
 
 export interface User {
-  id: number;
+  id?: number;
   email: string;
   firstName: string;
   lastName: string;
@@ -16,18 +16,18 @@ export interface Session {
   createdAt: Time;
 }
 export interface Hotel {
-  id: number;
+  id?: number;
   name: string;
   address: string;
   phone: string;
   email: string;
 }
 export interface Amenity {
-  id: number;
+  id?: number;
   name: string;
 }
 export interface Room {
-  id: number;
+  id?: number;
   hotelId?: number;
   roomNumber: string;
   roomType: string;
@@ -39,7 +39,7 @@ export interface Room {
   description: string;
 }
 export interface Guest {
-  id: number;
+  id?: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -52,7 +52,7 @@ export interface Guest {
   notes: string;
 }
 export interface Reservation {
-  id: number;
+  id?: number;
   hotelId?: number;
   guestId: number;
   roomId: number;
@@ -69,7 +69,7 @@ export interface Reservation {
   createdBy?: number;
 }
 export interface Account {
-  id: number;
+  id?: number;
   hotelId?: number;
   accountCode: string;
   accountName: string;
@@ -82,7 +82,7 @@ export interface Account {
   normalBalance: string;
 }
 export interface Expense {
-  id: number;
+  id?: number;
   hotelId?: number;
   expenseDate: Time;
   description: string;
@@ -97,7 +97,7 @@ export interface Expense {
   createdBy?: number;
 }
 export interface Income {
-  id: number;
+  id?: number;
   hotelId?: number;
   incomeDate: Time;
   description: string;
@@ -113,7 +113,7 @@ export interface Income {
   createdBy?: number;
 }
 export interface ParkingLot {
-  id: number;
+  id?: number;
   hotelId?: number;
   name: string;
   location: string;
@@ -124,7 +124,7 @@ export interface ParkingLot {
   description: string;
 }
 export interface ParkingSpot {
-  id: number;
+  id?: number;
   lotId?: number;
   spotNumber: string;
   floor: string;
@@ -134,7 +134,7 @@ export interface ParkingSpot {
   description: string;
 }
 export interface Vehicle {
-  id: number;
+  id?: number;
   guestId?: number;
   licensePlate: string;
   vehicleType: string;
@@ -145,7 +145,7 @@ export interface Vehicle {
   notes: string;
 }
 export interface ParkingTransaction {
-  id: number;
+  id?: number;
   lotId?: number;
   spotId?: number;
   guestId?: number;
