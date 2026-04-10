@@ -16,30 +16,21 @@ import (
 	"hotel/backend/internal/httpapi/users"
 )
 
-func NewRouter(r *chi.Mux, opts h.API) http.Handler {
+func NewRouter(r *chi.Mux, a *h.API) http.Handler {
 
 	// Core middlewares, Added inside a group to not interfere with other routes (e.g. SPA routes)
 	r.Group(func(r chi.Router) {
-		a := &h.API{
-			Logger:         opts.Logger,
-			Db:             opts.Db,
-			SessionCookie:  opts.SessionCookie,
-			RequestTimeout: opts.RequestTimeout,
-			Services:       opts.Services,
-			SessionTTL:     opts.SessionTTL,
-		}
-
 		r.Use(a.TimeoutMiddleware)
 		r.Use(a.RecoverAndLogMiddleware)
 
 		// Routes
 
-		SetupRouter(a, r, map[string]ModuleRouter{"/": system.SystemModule{}}) // at /healthz and /readyz
+		SetupRouter(a, r, PathModuleMap{"/": system.SystemModule{}}) // at /healthz and /readyz
 		r.Route("/api", func(r chi.Router) {
-			SetupRouter(a, r, map[string]ModuleRouter{"/auth": auth.AuthModule{}})
+			SetupRouter(a, r, PathModuleMap{"/auth": auth.AuthModule{}})
 			r.Group(func(r chi.Router) {
 				r.Use(a.Auth)
-				SetupRouter(a, r, map[string]ModuleRouter{
+				SetupRouter(a, r, PathModuleMap{
 					"/accounting":  accounting.AccountingModule{},
 					"/guests":      guests.GuestsModule{},
 					"/parking":     parking.ParkingModule{},
@@ -59,7 +50,9 @@ type ModuleRouter interface {
 	RegisterRoutes(api *h.API, r chi.Router)
 }
 
-func SetupRouter(api *h.API, r chi.Router, modules map[string]ModuleRouter) {
+type PathModuleMap map[string]ModuleRouter
+
+func SetupRouter(api *h.API, r chi.Router, modules PathModuleMap) {
 	for path, mod := range modules {
 		r.Route(path, func(subRouter chi.Router) {
 			mod.RegisterRoutes(api, subRouter)
