@@ -59,17 +59,20 @@ type Room struct {
 
 type Amenity struct {
 	Base
-	Name string `json:"name"`
+	Name   string `json:"name"`
+	NameFa string `json:"nameFa"`
 }
 
 type ParkingSpotType struct {
 	Base
-	Name string `json:"name"`
+	Name   string `json:"name"`
+	NameFa string `json:"nameFa"`
 }
 
 type ParkingSpotStatus struct {
 	Base
-	Name string `json:"name"`
+	Name   string `json:"name"`
+	NameFa string `json:"nameFa"`
 }
 
 type Guest struct {
