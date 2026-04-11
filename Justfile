@@ -18,3 +18,6 @@ frontend-build:
 
 gen:
     go run "internal/gen/typescript.go" && cd web && bun run fmt
+
+seed:
+    go run cmd/server seed
