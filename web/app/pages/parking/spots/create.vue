@@ -2,10 +2,8 @@
   <div>
     <div class="mb-6">
       <UButton to="/parking/spots" variant="ghost" size="sm" class="mb-2">
-        <UIcon name="i-lucide-arrow-left" class="mr-1" />
-        Back to Spots
-      </UButton>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Create Parking Spot</h1>
+        <UIcon name="i-lucide-arrow-left" class="mr-1" />{{ t('parking.back_to_spots') }}</UButton>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('parking.create_parking_spot') }}</h1>
     </div>
 
     <UCard>
@@ -13,43 +11,43 @@
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <label class="mb-1 block text-sm font-medium">Parking Lot *</label>
-            <HSelect v-model="form.lotId" :items="lots" placeholder="Select lot" required />
+            <HSelect v-model="form.lotId" :items="lots" :placeholder="t('parking.select_lot')" required />
           </div>
 
           <div>
             <label class="mb-1 block text-sm font-medium">Spot Number *</label>
-            <UInput v-model="form.spotNumber" placeholder="A-101" required />
+            <UInput v-model="form.spotNumber" :placeholder="t('parking.a_101')" required />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Floor</label>
+            <label class="mb-1 block text-sm font-medium">{{ t('common.floor') }}</label>
             <UInput v-model="form.floor" placeholder="1" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Spot Type</label>
+            <label class="mb-1 block text-sm font-medium">{{ t('parking.spot_type') }}</label>
             <USelect v-model="form.spotType" :items="spotTypeOptions" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Status</label>
+            <label class="mb-1 block text-sm font-medium">{{ t('common.status') }}</label>
             <USelect v-model="form.status" :items="statusOptions" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Is Covered?</label>
-            <UCheckbox v-model="form.isCovered" label="Covered parking" />
+            <label class="mb-1 block text-sm font-medium">{{ t('parking.is_covered') }}</label>
+            <UCheckbox v-model="form.isCovered" :label="t('parking.covered_parking')" />
           </div>
 
           <div class="md:col-span-2">
-            <label class="mb-1 block text-sm font-medium">Description</label>
-            <UTextarea v-model="form.description" placeholder="Additional details..." :rows="3" />
+            <label class="mb-1 block text-sm font-medium">{{ t('common.description') }}</label>
+            <UTextarea v-model="form.description" :placeholder="t('parking.additional_details')" :rows="3" />
           </div>
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton type="button" variant="outline" to="/parking/spots">Cancel</UButton>
-          <UButton type="submit" color="primary" :loading="loading">Create</UButton>
+          <UButton type="button" variant="outline" to="/parking/spots">{{ t('common.cancel') }}</UButton>
+          <UButton type="submit" color="primary" :loading="loading">{{ t('parking.create') }}</UButton>
         </div>
       </form>
     </UCard>
@@ -71,6 +69,7 @@ const form = reactive({
   description: "",
 });
 
+const { t } = useI18n();
 const loading = ref(false);
 const router = useRouter();
 

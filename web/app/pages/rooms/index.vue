@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="mb-6 flex items-center justify-between">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Rooms</h1>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t("rooms.title") }}</h1>
       <UButton to="/rooms/create" color="primary">
         <UIcon name="i-lucide-plus" class="mr-2" />
-        Add Room
+        {{ t("rooms.addRoom") }}
       </UButton>
     </div>
 
@@ -13,7 +13,7 @@
       <div class="flex flex-wrap items-center gap-4">
         <UInput
           v-model="filters.search"
-          placeholder="Search rooms..."
+          :placeholder="t('rooms.searchPlaceholder')"
           icon="i-lucide-search"
           class="w-full sm:w-64"
           @input="debouncedSearch"
@@ -21,18 +21,18 @@
         <USelect
           v-model="filters.status"
           :items="statusOptions"
-          placeholder="All Statuses"
+          :placeholder="t('rooms.allStatuses')"
           class="w-full sm:w-40"
           @change="fetchRooms"
         />
         <USelect
           v-model="filters.roomType"
           :items="roomTypeOptions"
-          placeholder="All Types"
+          :placeholder="t('rooms.allTypes')"
           class="w-full sm:w-40"
           @change="fetchRooms"
         />
-        <UButton variant="outline" @click="clearFilters"> Clear </UButton>
+        <UButton variant="outline" @click="clearFilters"> {{ t("actions.clear") }} </UButton>
       </div>
     </UCard>
 
@@ -40,8 +40,8 @@
     <UCard>
       <template #header>
         <div class="flex items-center justify-between">
-          <span class="text-lg font-semibold">Room List</span>
-          <span class="text-sm text-gray-500">{{ pagination.total }} rooms</span>
+          <span class="text-lg font-semibold">{{ t("rooms.list") }}</span>
+          <span class="text-sm text-gray-500">{{ t("rooms.count", { count: pagination.total }) }}</span>
         </div>
       </template>
 
@@ -73,7 +73,7 @@
           {{ row.original.floor ?? "-" }}
         </template>
 
-        <template #capacity-cell="{ row }"> {{ row.original.capacity }} guests </template>
+        <template #capacity-cell="{ row }"> {{ t("rooms.capacityValue", { count: row.original.capacity }) }} </template>
 
         <template #actions-cell="{ row }">
           <div class="flex items-center gap-2">
@@ -90,7 +90,7 @@
       <template #footer>
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-500">
-            Page {{ pagination.page }} of {{ pagination.totalPages }}
+            {{ t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages }) }}
           </span>
           <UPagination
             v-model="page"
@@ -105,15 +105,15 @@
     <!-- Delete Confirmation Modal -->
     <UModal v-model="deleteModalOpen">
       <template #header>
-        <h2 class="text-lg font-semibold">Confirm Delete</h2>
+        <h2 class="text-lg font-semibold">{{ t("actions.confirmDelete") }}</h2>
       </template>
       <template #body>
-        <p>Are you sure you want to delete room {{ selectedRoom?.roomNumber }}?</p>
+        <p>{{ t("rooms.confirmDelete", { roomNumber: selectedRoom?.roomNumber }) }}</p>
       </template>
       <template #footer>
         <div class="flex justify-end gap-3">
-          <UButton variant="outline" @click="deleteModalOpen = false">Cancel</UButton>
-          <UButton color="error" :loading="deleting" @click="deleteRoom">Delete</UButton>
+          <UButton variant="outline" @click="deleteModalOpen = false">{{ t("actions.cancel") }}</UButton>
+          <UButton color="error" :loading="deleting" @click="deleteRoom">{{ t("actions.delete") }}</UButton>
         </div>
       </template>
     </UModal>
@@ -138,31 +138,32 @@ interface RoomRow {
   status: string;
 }
 
-const columns: TableColumn<RoomRow>[] = [
-  { accessorKey: "roomNumber", header: "Room #" },
-  { accessorKey: "roomType", header: "Type" },
-  { accessorKey: "floor", header: "Floor" },
-  { accessorKey: "capacity", header: "Capacity" },
-  { accessorKey: "basePrice", header: "Price" },
-  { accessorKey: "status", header: "Status" },
-  { accessorKey: "actions", header: "Actions" },
-];
+const { t } = useI18n();
+const columns = computed<TableColumn<RoomRow>[]>(() => [
+  { accessorKey: "roomNumber", header: t("rooms.columns.roomNumber") },
+  { accessorKey: "roomType", header: t("rooms.columns.type") },
+  { accessorKey: "floor", header: t("rooms.columns.floor") },
+  { accessorKey: "capacity", header: t("rooms.columns.capacity") },
+  { accessorKey: "basePrice", header: t("rooms.columns.price") },
+  { accessorKey: "status", header: t("rooms.columns.status") },
+  { accessorKey: "actions", header: t("rooms.columns.actions") },
+]);
 
-const statusOptions = [
-  { value: "all", label: "All Statuses" },
-  { value: "available", label: "Available" },
-  { value: "occupied", label: "Occupied" },
-  { value: "maintenance", label: "Maintenance" },
-  { value: "out_of_order", label: "Out of Order" },
-];
+const statusOptions = computed(() => [
+  { value: "all", label: t("rooms.allStatuses") },
+  { value: "available", label: t("rooms.statuses.available") },
+  { value: "occupied", label: t("rooms.statuses.occupied") },
+  { value: "maintenance", label: t("rooms.statuses.maintenance") },
+  { value: "out_of_order", label: t("rooms.statuses.outOfOrder") },
+]);
 
-const roomTypeOptions = [
-  { value: "all", label: "All Types" },
-  { value: "single", label: "Single" },
-  { value: "double", label: "Double" },
-  { value: "suite", label: "Suite" },
-  { value: "deluxe", label: "Deluxe" },
-];
+const roomTypeOptions = computed(() => [
+  { value: "all", label: t("rooms.allTypes") },
+  { value: "single", label: t("rooms.types.single") },
+  { value: "double", label: t("rooms.types.double") },
+  { value: "suite", label: t("rooms.types.suite") },
+  { value: "deluxe", label: t("rooms.types.deluxe") },
+]);
 
 const rooms = ref<RoomRow[]>([]);
 const loading = ref(false);

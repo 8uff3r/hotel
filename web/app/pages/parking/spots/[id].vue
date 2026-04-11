@@ -2,10 +2,8 @@
   <div>
     <div class="mb-6">
       <UButton to="/parking/spots" variant="ghost" size="sm" class="mb-2">
-        <UIcon name="i-lucide-arrow-left" class="mr-1" />
-        Back to Spots
-      </UButton>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Parking Spot Details</h1>
+        <UIcon name="i-lucide-arrow-left" class="mr-1" />{{ t('parking.back_to_spots') }}</UButton>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('parking.parking_spot_details') }}</h1>
     </div>
 
     <div v-if="pending" class="flex justify-center py-12">
@@ -15,7 +13,7 @@
     <UCard v-else-if="spot">
       <template #header>
         <div class="flex items-center justify-between">
-          <span class="font-semibold">Edit Parking Spot</span>
+          <span class="font-semibold">{{ t('parking.edit_parking_spot') }}</span>
           <UBadge :color="getStatusColor(spot.status) as any" variant="soft">
             {{ spot.status }}
           </UBadge>
@@ -51,7 +49,7 @@
 
           <div>
             <label class="mb-1 block text-sm font-medium">Is Covered?</label>
-            <UCheckbox v-model="form.isCovered" label="Covered parking" />
+            <UCheckbox v-model="form.isCovered" :label="t('parking.covered_parking')" />
           </div>
 
           <div class="md:col-span-2">
@@ -73,6 +71,7 @@
 definePageMeta({
   requiresRole: ["admin", "manager"],
 });
+const { t } = useI18n();
 
 const route = useRoute();
 const spotId = Number(route.params.id);

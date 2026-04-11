@@ -3,8 +3,9 @@
     <!-- Sidebar -->
     <aside
       :class="[
-        'fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-gray-900 text-white transition-transform duration-300',
+        'fixed inset-y-0 z-50 flex w-64 flex-col bg-gray-900 text-white transition-transform duration-300',
         sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
+        localeProperties.dir === 'rtl' ? 'right-0' : 'left-0',
       ]"
     >
       <!-- Logo -->
@@ -30,7 +31,7 @@
         <!-- Administrative Section -->
         <div class="mt-6">
           <p class="px-3 text-xs font-semibold tracking-wider text-gray-500 uppercase">
-            Administration
+            {{ t("layout.administration") }}
           </p>
           <ul class="mt-2 space-y-1">
             <li v-for="item in adminItems" :key="item.path">
@@ -83,7 +84,10 @@
     />
 
     <!-- Main Content -->
-    <div class="flex flex-1 flex-col lg:pl-64">
+    <div
+      class="flex flex-1 flex-col"
+      :class="localeProperties.dir === 'rtl' ? 'lg:pr-64' : 'lg:pl-64'"
+    >
       <!-- Top Bar -->
       <header
         class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 dark:border-gray-700 dark:bg-gray-900"
@@ -118,6 +122,7 @@ import { useAuthStore } from "~/stores/auth";
 const config = useRuntimeConfig();
 const authStore = useAuthStore();
 const router = useRouter();
+const { t, localeProperties } = useI18n();
 
 const sidebarOpen = ref(false);
 
@@ -145,23 +150,23 @@ const handleRoleSwitch = () => {
 
 // Navigation items
 const navItems = [
-  { path: "/", label: "Dashboard", icon: "i-lucide-layout-dashboard" },
-  { path: "/reservations", label: "Reservations", icon: "i-lucide-calendar-days" },
-  { path: "/rooms", label: "Rooms", icon: "i-lucide-bed" },
-  { path: "/guests", label: "Guests", icon: "i-lucide-users" },
-  { path: "/parking", label: "Parking", icon: "i-lucide-car" },
-  { path: "/attendance", label: "Attendance", icon: "i-lucide-clock" },
+  { path: "/", label: t("layout.nav.dashboard"), icon: "i-lucide-layout-dashboard" },
+  { path: "/reservations", label: t("layout.nav.reservations"), icon: "i-lucide-calendar-days" },
+  { path: "/rooms", label: t("layout.nav.rooms"), icon: "i-lucide-bed" },
+  { path: "/guests", label: t("layout.nav.guests"), icon: "i-lucide-users" },
+  { path: "/parking", label: t("layout.nav.parking"), icon: "i-lucide-car" },
+  { path: "/attendance", label: t("layout.nav.attendance"), icon: "i-lucide-clock" },
 ];
 
 const adminItems = computed(() => {
   const items = [
-    { path: "/accounting", label: "Accounting", icon: "i-lucide-wallet" },
-    { path: "/reports", label: "Reports", icon: "i-lucide-bar-chart-3" },
-    { path: "/settings", label: "Settings", icon: "i-lucide-settings" },
+    { path: "/accounting", label: t("layout.admin.accounting"), icon: "i-lucide-wallet" },
+    { path: "/reports", label: t("layout.admin.reports"), icon: "i-lucide-bar-chart-3" },
+    { path: "/settings", label: t("layout.admin.settings"), icon: "i-lucide-settings" },
   ];
 
   if (authStore.isAdmin) {
-    items.unshift({ path: "/users", label: "Users", icon: "i-lucide-users" });
+    items.unshift({ path: "/users", label: t("layout.admin.users"), icon: "i-lucide-users" });
   }
 
   return items;
@@ -171,14 +176,14 @@ const userName = computed(() => {
   if (authStore.user) {
     return `${authStore.user.firstName} ${authStore.user.lastName}`;
   }
-  return "User";
+  return t("layout.userFallback");
 });
 
 const currentRoleDisplay = computed(() => {
   if (authStore.currentRole) {
     return authStore.currentRole.charAt(0).toUpperCase() + authStore.currentRole.slice(1);
   }
-  return "Staff";
+  return t("roles.staff");
 });
 
 const handleLogout = async () => {

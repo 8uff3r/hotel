@@ -4,9 +4,9 @@
       <div>
         <UButton to="/users" variant="ghost" size="sm" class="mb-2">
           <UIcon name="i-lucide-arrow-left" class="mr-1" />
-          Back to Users
+          {{ t("actions.backToUsers") }}
         </UButton>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Create User</h1>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t("users.createTitle") }}</h1>
       </div>
     </div>
 
@@ -14,32 +14,32 @@
       <form @submit.prevent="createUser">
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <label class="mb-1 block text-sm font-medium">Email *</label>
-            <UInput v-model="form.email" type="email" placeholder="user@example.com" required />
+            <label class="mb-1 block text-sm font-medium">{{ t("forms.emailRequired") }}</label>
+            <UInput v-model="form.email" type="email" :placeholder="t('users.create.emailPlaceholder')" required />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Password *</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("forms.passwordRequired") }}</label>
             <UInput
               v-model="form.password"
               type="password"
-              placeholder="Minimum 6 characters"
+              :placeholder="t('users.create.passwordPlaceholder')"
               required
             />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">First Name *</label>
-            <UInput v-model="form.firstName" placeholder="John" required />
+            <label class="mb-1 block text-sm font-medium">{{ t("forms.firstNameRequired") }}</label>
+            <UInput v-model="form.firstName" :placeholder="t('forms.firstNamePlaceholder')" required />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Last Name *</label>
-            <UInput v-model="form.lastName" placeholder="Doe" required />
+            <label class="mb-1 block text-sm font-medium">{{ t("forms.lastNameRequired") }}</label>
+            <UInput v-model="form.lastName" :placeholder="t('forms.lastNamePlaceholder')" required />
           </div>
 
           <div class="md:col-span-2">
-            <label class="mb-1 block text-sm font-medium">Roles *</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("users.rolesRequired") }}</label>
             <div class="flex flex-wrap gap-4">
               <UCheckbox
                 v-for="role in roleOptions"
@@ -50,25 +50,25 @@
               />
             </div>
             <p v-if="form.roles.length === 0" class="mt-1 text-sm text-red-500">
-              At least one role is required
+              {{ t("users.rolesRequiredError") }}
             </p>
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Active</label>
-            <UCheckbox v-model="form.isActive" label="User account is active" />
+            <label class="mb-1 block text-sm font-medium">{{ t("users.active") }}</label>
+            <UCheckbox v-model="form.isActive" :label="t('users.activeAccount')" />
           </div>
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton type="button" variant="outline" to="/users">Cancel</UButton>
+          <UButton type="button" variant="outline" to="/users">{{ t("actions.cancel") }}</UButton>
           <UButton
             type="submit"
             color="primary"
             :loading="loading"
             :disabled="form.roles.length === 0"
           >
-            Create User
+            {{ t("users.createUser") }}
           </UButton>
         </div>
       </form>
@@ -80,6 +80,7 @@
 definePageMeta({
   requiresRole: ["admin"],
 });
+const { t } = useI18n();
 
 const form = reactive({
   email: "",
@@ -90,12 +91,12 @@ const form = reactive({
   isActive: true,
 });
 
-const roleOptions = [
-  { value: "admin", label: "Admin" },
-  { value: "manager", label: "Manager" },
-  { value: "receptionist", label: "Receptionist" },
-  { value: "staff", label: "Staff" },
-];
+const roleOptions = computed(() => [
+  { value: "admin", label: t("roles.admin") },
+  { value: "manager", label: t("roles.manager") },
+  { value: "receptionist", label: t("roles.receptionist") },
+  { value: "staff", label: t("roles.staff") },
+]);
 
 const toggleRole = (role: string, checked: boolean | string) => {
   const isChecked = !!checked;
@@ -133,7 +134,7 @@ const createUser = async () => {
     router.push("/users");
   } catch (error: any) {
     console.error("Failed to create user:", error);
-    alert(error.data?.message || "Failed to create user");
+    alert(error.data?.message || t("users.createFailed"));
   } finally {
     loading.value = false;
   }

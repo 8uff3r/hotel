@@ -2,22 +2,20 @@
   <div>
     <div class="mb-6">
       <UButton variant="ghost" to="/accounting/income" class="mb-4">
-        <UIcon name="i-lucide-arrow-left" class="mr-2" />
-        Back to Income
-      </UButton>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Record Income</h1>
+        <UIcon name="i-lucide-arrow-left" class="mr-2" />{{ t('accounting.back_to_income') }}</UButton>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('accounting.record_income') }}</h1>
     </div>
 
     <UCard>
       <form @submit.prevent="handleSubmit">
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
           <!-- Income Date -->
-          <UFormField label="Income Date" name="incomeDate" required>
+          <UFormField :label="t('accounting.income_date')" name="incomeDate" required>
             <UInput v-model="form.incomeDate" type="date" :disabled="loading" />
           </UFormField>
 
           <!-- Amount -->
-          <UFormField label="Amount ($)" name="amount" required>
+          <UFormField :label="t('accounting.amount')" name="amount" required>
             <UInput
               v-model.number="form.amount"
               type="number"
@@ -28,12 +26,12 @@
           </UFormField>
 
           <!-- Category -->
-          <UFormField label="Category" name="category" required>
+          <UFormField :label="t('accounting.category')" name="category" required>
             <USelect v-model="form.category" :items="categoryOptions" :disabled="loading" />
           </UFormField>
 
           <!-- Payment Status -->
-          <UFormField label="Payment Status" name="paymentStatus">
+          <UFormField :label="t('common.payment_status')" name="paymentStatus">
             <USelect
               v-model="form.paymentStatus"
               :items="paymentStatusOptions"
@@ -42,34 +40,34 @@
           </UFormField>
 
           <!-- Description -->
-          <UFormField label="Description" name="description" required class="md:col-span-2">
+          <UFormField :label="t('common.description')" name="description" required class="md:col-span-2">
             <UInput
               v-model="form.description"
-              placeholder="Income description"
+              :placeholder="t('accounting.income_description')"
               :disabled="loading"
             />
           </UFormField>
 
           <!-- Source -->
-          <UFormField label="Source" name="source">
+          <UFormField :label="t('accounting.source')" name="source">
             <UInput
               v-model="form.source"
-              placeholder="e.g., Guest Name, Company"
+              :placeholder="t('accounting.e_g_guest_name_company')"
               :disabled="loading"
             />
           </UFormField>
 
           <!-- Reference -->
-          <UFormField label="Reference" name="reference">
+          <UFormField :label="t('accounting.reference')" name="reference">
             <UInput
               v-model="form.reference"
-              placeholder="Invoice/Receipt number"
+              :placeholder="t('accounting.invoice_receipt_number')"
               :disabled="loading"
             />
           </UFormField>
 
           <!-- Payment Method -->
-          <UFormField label="Payment Method" name="paymentMethod">
+          <UFormField :label="t('accounting.payment_method')" name="paymentMethod">
             <USelect
               v-model="form.paymentMethod"
               :items="paymentMethodOptions"
@@ -78,20 +76,20 @@
           </UFormField>
 
           <!-- Reservation Link -->
-          <UFormField label="Reservation ID (Optional)" name="reservationId">
+          <UFormField :label="t('accounting.reservation_id_optional')" name="reservationId">
             <UInput
               v-model.number="form.reservationId"
               type="number"
-              placeholder="Link to reservation"
+              :placeholder="t('accounting.link_to_reservation')"
               :disabled="loading"
             />
           </UFormField>
 
           <!-- Notes -->
-          <UFormField label="Notes" name="notes" class="md:col-span-2">
+          <UFormField :label="t('common.notes')" name="notes" class="md:col-span-2">
             <UTextarea
               v-model="form.notes"
-              placeholder="Additional notes..."
+              :placeholder="t('accounting.additional_notes')"
               :rows="3"
               :disabled="loading"
             />
@@ -99,8 +97,8 @@
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton variant="outline" to="/accounting/income" :disabled="loading"> Cancel </UButton>
-          <UButton type="submit" color="success" :loading="loading"> Record Income </UButton>
+          <UButton variant="outline" to="/accounting/income" :disabled="loading">{{ t('common.cancel') }}</UButton>
+          <UButton type="submit" color="success" :loading="loading">{{ t('accounting.record_income') }}</UButton>
         </div>
       </form>
     </UCard>
@@ -112,6 +110,7 @@ definePageMeta({
   requiresRole: ["admin", "manager"],
 });
 
+const { t } = useI18n();
 const loading = ref(false);
 
 const form = reactive({

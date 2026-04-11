@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="mb-6 flex items-center justify-between">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Users</h1>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t("users.title") }}</h1>
       <UButton to="/users/create" color="primary">
         <UIcon name="i-lucide-plus" class="mr-2" />
-        Add User
+        {{ t("users.addUser") }}
       </UButton>
     </div>
 
@@ -13,7 +13,7 @@
       <div class="flex flex-wrap items-center gap-4">
         <UInput
           v-model="filters.search"
-          placeholder="Search by name or email..."
+          :placeholder="t('users.searchPlaceholder')"
           icon="i-lucide-search"
           class="w-full sm:w-64"
           @input="debouncedSearch"
@@ -21,18 +21,18 @@
         <USelect
           v-model="filters.role"
           :items="roleOptions"
-          placeholder="All Roles"
+          :placeholder="t('users.allRoles')"
           class="w-full sm:w-40"
           @change="fetchUsers"
         />
         <USelect
           v-model="filters.status"
           :items="statusOptions"
-          placeholder="All Status"
+          :placeholder="t('users.allStatus')"
           class="w-full sm:w-40"
           @change="fetchUsers"
         />
-        <UButton variant="outline" @click="clearFilters"> Clear </UButton>
+        <UButton variant="outline" @click="clearFilters"> {{ t("actions.clear") }} </UButton>
       </div>
     </UCard>
 
@@ -40,8 +40,8 @@
     <UCard>
       <template #header>
         <div class="flex items-center justify-between">
-          <span class="text-lg font-semibold">User List</span>
-          <span class="text-sm text-gray-500">{{ pagination.total }} users</span>
+          <span class="text-lg font-semibold">{{ t("users.list") }}</span>
+          <span class="text-sm text-gray-500">{{ t("users.count", { count: pagination.total }) }}</span>
         </div>
       </template>
 
@@ -80,7 +80,7 @@
 
         <template #status-cell="{ row }">
           <UBadge :color="row.original.isActive ? 'success' : 'error'" variant="soft">
-            {{ row.original.isActive ? "Active" : "Inactive" }}
+            {{ row.original.isActive ? t("statuses.active") : t("statuses.inactive") }}
           </UBadge>
         </template>
 
@@ -99,7 +99,7 @@
       <template #footer>
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-500">
-            Page {{ pagination.page }} of {{ pagination.totalPages }}
+            {{ t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages }) }}
           </span>
           <UPagination
             v-model="page"
@@ -129,27 +129,28 @@ interface UserRow {
   roles: string[];
 }
 
-const columns: TableColumn<UserRow>[] = [
-  { accessorKey: "id", header: "ID" },
-  { accessorKey: "name", header: "Name" },
-  { accessorKey: "roles", header: "Roles" },
-  { accessorKey: "status", header: "Status" },
-  { accessorKey: "actions", header: "Actions" },
-];
+const { t } = useI18n();
+const columns = computed<TableColumn<UserRow>[]>(() => [
+  { accessorKey: "id", header: t("users.columns.id") },
+  { accessorKey: "name", header: t("users.columns.name") },
+  { accessorKey: "roles", header: t("users.columns.roles") },
+  { accessorKey: "status", header: t("users.columns.status") },
+  { accessorKey: "actions", header: t("users.columns.actions") },
+]);
 
-const roleOptions = [
-  { value: "all", label: "All Roles" },
-  { value: "admin", label: "Admin" },
-  { value: "manager", label: "Manager" },
-  { value: "receptionist", label: "Receptionist" },
-  { value: "staff", label: "Staff" },
-];
+const roleOptions = computed(() => [
+  { value: "all", label: t("users.allRoles") },
+  { value: "admin", label: t("roles.admin") },
+  { value: "manager", label: t("roles.manager") },
+  { value: "receptionist", label: t("roles.receptionist") },
+  { value: "staff", label: t("roles.staff") },
+]);
 
-const statusOptions = [
-  { value: "all", label: "All Status" },
-  { value: "active", label: "Active" },
-  { value: "inactive", label: "Inactive" },
-];
+const statusOptions = computed(() => [
+  { value: "all", label: t("users.allStatus") },
+  { value: "active", label: t("statuses.active") },
+  { value: "inactive", label: t("statuses.inactive") },
+]);
 
 const users = ref<UserRow[]>([]);
 const loading = ref(false);
@@ -220,10 +221,10 @@ const clearFilters = () => {
 
 const formatRole = (role: string): string => {
   const roles: Record<string, string> = {
-    admin: "Admin",
-    manager: "Manager",
-    receptionist: "Receptionist",
-    staff: "Staff",
+    admin: t("roles.admin"),
+    manager: t("roles.manager"),
+    receptionist: t("roles.receptionist"),
+    staff: t("roles.staff"),
   };
   return roles[role] || role;
 };

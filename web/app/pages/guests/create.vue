@@ -3,74 +3,74 @@
     <div class="mb-6">
       <UButton variant="ghost" to="/guests" class="mb-4">
         <UIcon name="i-lucide-arrow-left" class="mr-2" />
-        Back to Guests
+        {{ t("actions.backToGuests") }}
       </UButton>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Add New Guest</h1>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t("guests.addNew") }}</h1>
     </div>
 
     <UCard>
       <form @submit.prevent="handleSubmit">
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
           <!-- First Name -->
-          <UFormField label="First Name" name="firstName" required>
-            <UInput v-model="form.firstName" placeholder="John" :disabled="loading" />
+          <UFormField :label="t('forms.firstName')" name="firstName" required>
+            <UInput v-model="form.firstName" :placeholder="t('forms.firstNamePlaceholder')" :disabled="loading" />
           </UFormField>
 
           <!-- Last Name -->
-          <UFormField label="Last Name" name="lastName" required>
-            <UInput v-model="form.lastName" placeholder="Doe" :disabled="loading" />
+          <UFormField :label="t('forms.lastName')" name="lastName" required>
+            <UInput v-model="form.lastName" :placeholder="t('forms.lastNamePlaceholder')" :disabled="loading" />
           </UFormField>
 
           <!-- Email -->
-          <UFormField label="Email" name="email">
+          <UFormField :label="t('forms.email')" name="email">
             <UInput
               v-model="form.email"
               type="email"
-              placeholder="john@example.com"
+              :placeholder="t('guests.emailPlaceholder')"
               :disabled="loading"
             />
           </UFormField>
 
           <!-- Phone -->
-          <UFormField label="Phone" name="phone">
-            <UInput v-model="form.phone" placeholder="+1 234 567 8900" :disabled="loading" />
+          <UFormField :label="t('forms.phone')" name="phone">
+            <UInput v-model="form.phone" :placeholder="t('guests.phonePlaceholder')" :disabled="loading" />
           </UFormField>
 
           <!-- ID Type -->
-          <UFormField label="ID Type" name="idType">
+          <UFormField :label="t('guests.idType')" name="idType">
             <USelect
               v-model="form.idType"
               :items="idTypeOptions"
-              placeholder="Select ID type"
+              :placeholder="t('guests.selectIdType')"
               :disabled="loading"
             />
           </UFormField>
 
           <!-- ID Number -->
-          <UFormField label="ID Number" name="idNumber">
-            <UInput v-model="form.idNumber" placeholder="ID number" :disabled="loading" />
+          <UFormField :label="t('guests.idNumber')" name="idNumber">
+            <UInput v-model="form.idNumber" :placeholder="t('guests.idNumberPlaceholder')" :disabled="loading" />
           </UFormField>
 
           <!-- Address -->
-          <UFormField label="Address" name="address" class="md:col-span-2">
-            <UInput v-model="form.address" placeholder="Street address" :disabled="loading" />
+          <UFormField :label="t('forms.address')" name="address" class="md:col-span-2">
+            <UInput v-model="form.address" :placeholder="t('forms.addressPlaceholder')" :disabled="loading" />
           </UFormField>
 
           <!-- City -->
-          <UFormField label="City" name="city">
-            <UInput v-model="form.city" placeholder="City" :disabled="loading" />
+          <UFormField :label="t('forms.city')" name="city">
+            <UInput v-model="form.city" :placeholder="t('forms.cityPlaceholder')" :disabled="loading" />
           </UFormField>
 
           <!-- Country -->
-          <UFormField label="Country" name="country">
-            <UInput v-model="form.country" placeholder="Country" :disabled="loading" />
+          <UFormField :label="t('forms.country')" name="country">
+            <UInput v-model="form.country" :placeholder="t('forms.countryPlaceholder')" :disabled="loading" />
           </UFormField>
 
           <!-- Notes -->
-          <UFormField label="Notes" name="notes" class="md:col-span-2">
+          <UFormField :label="t('forms.notes')" name="notes" class="md:col-span-2">
             <UTextarea
               v-model="form.notes"
-              placeholder="Additional notes..."
+              :placeholder="t('forms.notesPlaceholder')"
               :rows="3"
               :disabled="loading"
             />
@@ -78,8 +78,8 @@
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton variant="outline" to="/guests" :disabled="loading"> Cancel </UButton>
-          <UButton type="submit" color="primary" :loading="loading"> Create Guest </UButton>
+          <UButton variant="outline" to="/guests" :disabled="loading"> {{ t("actions.cancel") }} </UButton>
+          <UButton type="submit" color="primary" :loading="loading"> {{ t("guests.createGuest") }} </UButton>
         </div>
       </form>
     </UCard>
@@ -90,6 +90,7 @@
 definePageMeta({
   requiresRole: ["admin", "manager", "receptionist"],
 });
+const { t } = useI18n();
 
 const loading = ref(false);
 
@@ -119,12 +120,12 @@ const submitBody = computed(() => ({
   notes: form.notes || undefined,
 }));
 
-const idTypeOptions = [
-  { value: "passport", label: "Passport" },
-  { value: "national_id", label: "National ID" },
-  { value: "driver_license", label: "Driver License" },
-  { value: "other", label: "Other" },
-];
+const idTypeOptions = computed(() => [
+  { value: "passport", label: t("idTypes.passport") },
+  { value: "national_id", label: t("idTypes.nationalId") },
+  { value: "driver_license", label: t("idTypes.driverLicense") },
+  { value: "other", label: t("idTypes.other") },
+]);
 
 const handleSubmit = async () => {
   loading.value = true;

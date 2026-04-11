@@ -3,22 +3,18 @@
     <div class="mb-6 flex items-center justify-between">
       <div>
         <UButton to="/parking" variant="ghost" size="sm" class="mb-2">
-          <UIcon name="i-lucide-arrow-left" class="mr-1" />
-          Back to Parking
-        </UButton>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Vehicles</h1>
+          <UIcon name="i-lucide-arrow-left" class="mr-1" />{{ t('parking.back_to_parking') }}</UButton>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('parking.vehicles') }}</h1>
       </div>
       <UButton to="/parking/vehicles/create" color="primary">
-        <UIcon name="i-lucide-plus" class="mr-2" />
-        Add Vehicle
-      </UButton>
+        <UIcon name="i-lucide-plus" class="mr-2" />{{ t('parking.add_vehicle') }}</UButton>
     </div>
 
     <UCard class="mb-4">
       <div class="flex flex-wrap items-center gap-4">
         <UInput
           v-model="filters.search"
-          placeholder="Search by license plate..."
+          :placeholder="t('parking.search_by_license_plate')"
           icon="i-lucide-search"
           class="w-full sm:w-64"
           @input="debouncedSearch"
@@ -26,18 +22,18 @@
         <USelect
           v-model="filters.vehicleType"
           :items="typeOptions"
-          placeholder="All Types"
+          :placeholder="t('common.all_types')"
           class="w-full sm:w-40"
           @change="fetchVehicles"
         />
-        <UButton variant="outline" @click="clearFilters"> Clear </UButton>
+        <UButton variant="outline" @click="clearFilters">{{ t('common.clear') }}</UButton>
       </div>
     </UCard>
 
     <UCard>
       <template #header>
         <div class="flex items-center justify-between">
-          <span class="text-lg font-semibold">Registered Vehicles</span>
+          <span class="text-lg font-semibold">{{ t('parking.registered_vehicles') }}</span>
           <span class="text-sm text-gray-500">{{ pagination.total }} vehicles</span>
         </div>
       </template>
@@ -143,6 +139,7 @@ const columns: TableColumn<Vehicle>[] = [
 
 const vehicles = ref<Vehicle[]>([]);
 const guests = ref<any[]>([]);
+const { t } = useI18n();
 const loading = ref(false);
 const deleting = ref(false);
 const deleteModalOpen = ref(false);

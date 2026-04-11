@@ -4,41 +4,41 @@ hotel/app/pages/rooms/create.vue#L1-120
     <div class="mb-6">
       <UButton variant="ghost" to="/rooms" class="mb-4">
         <UIcon name="i-lucide-arrow-left" class="mr-2" />
-        Back to Rooms
+        {{ t("actions.backToRooms") }}
       </UButton>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Add New Room</h1>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t("rooms.addNew") }}</h1>
     </div>
 
     <UCard>
       <form @submit.prevent="handleSubmit">
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
           <!-- Room Number -->
-          <UFormField label="Room Number" name="roomNumber" required>
-            <UInput v-model="form.roomNumber" placeholder="e.g., 101, 205A" :disabled="loading" />
+          <UFormField :label="t('rooms.roomNumber')" name="roomNumber" required>
+            <UInput v-model="form.roomNumber" :placeholder="t('rooms.roomNumberPlaceholder')" :disabled="loading" />
           </UFormField>
 
           <!-- Room Type -->
-          <UFormField label="Room Type" name="roomType" required>
+          <UFormField :label="t('rooms.roomType')" name="roomType" required>
             <USelect v-model="form.roomType" :items="roomTypes" :disabled="loading" />
           </UFormField>
 
           <!-- Floor -->
-          <UFormField label="Floor" name="floor">
+          <UFormField :label="t('rooms.floor')" name="floor">
             <UInput
               v-model.number="form.floor"
               type="number"
-              placeholder="e.g., 1, 2"
+              :placeholder="t('rooms.floorPlaceholder')"
               :disabled="loading"
             />
           </UFormField>
 
           <!-- Capacity -->
-          <UFormField label="Capacity (guests)" name="capacity" required>
+          <UFormField :label="t('rooms.capacityGuests')" name="capacity" required>
             <UInput v-model.number="form.capacity" type="number" min="1" :disabled="loading" />
           </UFormField>
 
           <!-- Base Price -->
-          <UFormField label="Base Price ($)" name="basePrice" required>
+          <UFormField :label="t('rooms.basePrice')" name="basePrice" required>
             <UInput
               v-model.number="form.basePrice"
               type="number"
@@ -49,22 +49,22 @@ hotel/app/pages/rooms/create.vue#L1-120
           </UFormField>
 
           <!-- Status -->
-          <UFormField label="Status" name="status" required>
+          <UFormField :label="t('rooms.status')" name="status" required>
             <USelect v-model="form.status" :items="statusOptions" :disabled="loading" />
           </UFormField>
 
           <!-- Description -->
-          <UFormField label="Description" name="description" class="md:col-span-2">
+          <UFormField :label="t('forms.description')" name="description" class="md:col-span-2">
             <UTextarea
               v-model="form.description"
-              placeholder="Room description..."
+              :placeholder="t('rooms.descriptionPlaceholder')"
               :rows="3"
               :disabled="loading"
             />
           </UFormField>
 
           <!-- Amenities -->
-          <UFormField label="Amenities" name="amenities" class="md:col-span-2">
+          <UFormField :label="t('rooms.amenities')" name="amenities" class="md:col-span-2">
             <div class="flex flex-wrap gap-2">
               <UBadge
                 v-for="amenity in availableAmenities"
@@ -81,8 +81,8 @@ hotel/app/pages/rooms/create.vue#L1-120
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton variant="outline" to="/rooms" :disabled="loading"> Cancel </UButton>
-          <UButton type="submit" color="primary" :loading="loading"> Create Room </UButton>
+          <UButton variant="outline" to="/rooms" :disabled="loading"> {{ t("actions.cancel") }} </UButton>
+          <UButton type="submit" color="primary" :loading="loading"> {{ t("rooms.createRoom") }} </UButton>
         </div>
       </form>
     </UCard>
@@ -93,6 +93,7 @@ hotel/app/pages/rooms/create.vue#L1-120
 definePageMeta({
   requiresRole: ["admin", "manager"],
 });
+const { t } = useI18n();
 
 const loading = ref(false);
 
@@ -107,19 +108,19 @@ const form = reactive({
   amenities: [] as ListItem[],
 });
 
-const roomTypes = [
-  { value: "single", label: "Single" },
-  { value: "double", label: "Double" },
-  { value: "suite", label: "Suite" },
-  { value: "deluxe", label: "Deluxe" },
-];
+const roomTypes = computed(() => [
+  { value: "single", label: t("rooms.types.single") },
+  { value: "double", label: t("rooms.types.double") },
+  { value: "suite", label: t("rooms.types.suite") },
+  { value: "deluxe", label: t("rooms.types.deluxe") },
+]);
 
-const statusOptions = [
-  { value: "available", label: "Available" },
-  { value: "occupied", label: "Occupied" },
-  { value: "maintenance", label: "Maintenance" },
-  { value: "out_of_order", label: "Out of Order" },
-];
+const statusOptions = computed(() => [
+  { value: "available", label: t("rooms.statuses.available") },
+  { value: "occupied", label: t("rooms.statuses.occupied") },
+  { value: "maintenance", label: t("rooms.statuses.maintenance") },
+  { value: "out_of_order", label: t("rooms.statuses.outOfOrder") },
+]);
 
 const { data: availableAmenities } = useAsyncData(async () => {
   const res = await $fetch<{ data: ListItem[] }>("/api/rooms/amenities");

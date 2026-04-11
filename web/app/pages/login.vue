@@ -6,16 +6,19 @@
           <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
             {{ config.public.hotelName }}
           </h1>
-          <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Sign in to your account</p>
+          <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            {{ t("login.subtitle") }}
+          </p>
         </div>
       </template>
 
       <form @submit.prevent="handleLogin" class="flex w-full flex-col space-y-4">
-        <UFormField label="Email" name="email" class="mb-4">
+        <UFormField :label="t('forms.email')" name="email" class="mb-4">
           <UInput
             v-model="form.email"
             type="email"
-            placeholder="you@example.com"
+            dir="ltr"
+            :placeholder="t('login.emailPlaceholder')"
             icon="i-lucide-mail"
             size="lg"
             class="w-full"
@@ -23,11 +26,11 @@
           />
         </UFormField>
 
-        <UFormField label="Password" name="password" class="mb-6">
+        <UFormField :label="t('forms.password')" name="password" class="mb-6">
           <UInput
             v-model="form.password"
             type="password"
-            placeholder="Enter your password"
+            :placeholder="t('login.passwordPlaceholder')"
             icon="i-lucide-lock"
             size="lg"
             class="w-full"
@@ -42,7 +45,7 @@
           :loading="authStore.loading"
           :disabled="authStore.loading"
         >
-          Sign In
+          {{ t("login.submit") }}
         </UButton>
       </form>
 
@@ -64,6 +67,7 @@ definePageMeta({
 
 const config = useRuntimeConfig();
 const authStore = useAuthStore();
+const { t } = useI18n();
 
 const authError = ref<string | null>(null);
 
@@ -80,7 +84,7 @@ const handleLogin = async () => {
   if (result.success) {
     await navigateTo("/");
   } else {
-    authError.value = result.error || "Login failed";
+    authError.value = result.error || t("login.failed");
   }
 };
 </script>

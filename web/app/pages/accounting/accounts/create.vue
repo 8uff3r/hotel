@@ -2,40 +2,38 @@
   <div>
     <div class="mb-6">
       <UButton variant="ghost" to="/accounting/accounts" class="mb-4">
-        <UIcon name="i-lucide-arrow-left" class="mr-2" />
-        Back to Accounts
-      </UButton>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Add New Account</h1>
+        <UIcon name="i-lucide-arrow-left" class="mr-2" />{{ t('accounting.back_to_accounts') }}</UButton>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('accounting.add_new_account') }}</h1>
     </div>
 
     <UCard>
       <form @submit.prevent="handleSubmit">
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
           <!-- Account Code -->
-          <UFormField label="Account Code" name="accountCode" required>
+          <UFormField :label="t('accounting.account_code')" name="accountCode" required>
             <UInput
               v-model="form.accountCode"
-              placeholder="e.g., 1000, 2000, 4000"
+              :placeholder="t('accounting.e_g_1000_2000_4000')"
               :disabled="loading"
             />
           </UFormField>
 
           <!-- Account Name -->
-          <UFormField label="Account Name" name="accountName" required>
+          <UFormField :label="t('accounting.account_name')" name="accountName" required>
             <UInput
               v-model="form.accountName"
-              placeholder="e.g., Cash, Accounts Receivable"
+              :placeholder="t('accounting.e_g_cash_accounts_receivable')"
               :disabled="loading"
             />
           </UFormField>
 
           <!-- Account Type -->
-          <UFormField label="Account Type" name="accountType" required>
+          <UFormField :label="t('accounting.account_type')" name="accountType" required>
             <USelect v-model="form.accountType" :items="accountTypeOptions" :disabled="loading" />
           </UFormField>
 
           <!-- Normal Balance -->
-          <UFormField label="Normal Balance" name="normalBalance" required>
+          <UFormField :label="t('accounting.normal_balance')" name="normalBalance" required>
             <USelect
               v-model="form.normalBalance"
               :items="normalBalanceOptions"
@@ -44,29 +42,27 @@
           </UFormField>
 
           <!-- Description -->
-          <UFormField label="Description" name="description" class="md:col-span-2">
+          <UFormField :label="t('common.description')" name="description" class="md:col-span-2">
             <UTextarea
               v-model="form.description"
-              placeholder="Account description..."
+              :placeholder="t('accounting.account_description')"
               :rows="3"
               :disabled="loading"
             />
           </UFormField>
 
           <!-- Is Active -->
-          <UFormField label="Status" name="isActive">
+          <UFormField :label="t('common.status')" name="isActive">
             <div class="flex items-center gap-2">
               <UCheckbox v-model="form.isActive" :disabled="loading" />
-              <span class="text-sm text-gray-600">Active Account</span>
+              <span class="text-sm text-gray-600">{{ t('accounting.active_account') }}</span>
             </div>
           </UFormField>
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton variant="outline" to="/accounting/accounts" :disabled="loading">
-            Cancel
-          </UButton>
-          <UButton type="submit" color="primary" :loading="loading"> Create Account </UButton>
+          <UButton variant="outline" to="/accounting/accounts" :disabled="loading">{{ t('common.cancel') }}</UButton>
+          <UButton type="submit" color="primary" :loading="loading">{{ t('accounting.create_account') }}</UButton>
         </div>
       </form>
     </UCard>
@@ -78,6 +74,7 @@ definePageMeta({
   requiresRole: ["admin", "manager"],
 });
 
+const { t } = useI18n();
 const loading = ref(false);
 
 const form = reactive({

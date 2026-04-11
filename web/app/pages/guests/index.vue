@@ -2,10 +2,10 @@ hotel/app/pages/guests/index.vue ``` ```vue
 <template>
   <div>
     <div class="mb-6 flex items-center justify-between">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Guests</h1>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t("guests.title") }}</h1>
       <UButton to="/guests/create" color="primary">
         <UIcon name="i-lucide-plus" class="mr-2" />
-        Add Guest
+        {{ t("guests.addGuest") }}
       </UButton>
     </div>
 
@@ -14,7 +14,7 @@ hotel/app/pages/guests/index.vue ``` ```vue
       <div class="flex flex-wrap items-center gap-4">
         <UInput
           v-model="filters.search"
-          placeholder="Search by name, email, or phone..."
+          :placeholder="t('guests.searchPlaceholder')"
           icon="i-lucide-search"
           class="w-full sm:w-64"
           @input="debouncedSearch"
@@ -22,11 +22,11 @@ hotel/app/pages/guests/index.vue ``` ```vue
         <USelect
           v-model="filters.idType"
           :items="idTypeOptions"
-          placeholder="All ID Types"
+          :placeholder="t('guests.allIdTypes')"
           class="w-full sm:w-40"
           @change="fetchGuests"
         />
-        <UButton variant="outline" @click="clearFilters"> Clear </UButton>
+        <UButton variant="outline" @click="clearFilters"> {{ t("actions.clear") }} </UButton>
       </div>
     </UCard>
 
@@ -34,8 +34,8 @@ hotel/app/pages/guests/index.vue ``` ```vue
     <UCard>
       <template #header>
         <div class="flex items-center justify-between">
-          <span class="text-lg font-semibold">Guest List</span>
-          <span class="text-sm text-gray-500">{{ pagination.total }} guests</span>
+          <span class="text-lg font-semibold">{{ t("guests.list") }}</span>
+          <span class="text-sm text-gray-500">{{ t("guests.count", { count: pagination.total }) }}</span>
         </div>
       </template>
 
@@ -99,7 +99,7 @@ hotel/app/pages/guests/index.vue ``` ```vue
       <template #footer>
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-500">
-            Page {{ pagination.page }} of {{ pagination.totalPages }}
+            {{ t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages }) }}
           </span>
           <UPagination
             v-model="page"
@@ -132,22 +132,23 @@ interface GuestRow {
   country: string | null;
 }
 
-const columns: TableColumn<GuestRow>[] = [
-  { accessorKey: "id", header: "ID" },
-  { accessorKey: "name", header: "Name" },
-  { accessorKey: "phone", header: "Phone" },
-  { accessorKey: "idInfo", header: "ID Info" },
-  { accessorKey: "location", header: "Location" },
-  { accessorKey: "actions", header: "Actions" },
-];
+const { t } = useI18n();
+const columns = computed<TableColumn<GuestRow>[]>(() => [
+  { accessorKey: "id", header: t("guests.columns.id") },
+  { accessorKey: "name", header: t("guests.columns.name") },
+  { accessorKey: "phone", header: t("guests.columns.phone") },
+  { accessorKey: "idInfo", header: t("guests.columns.idInfo") },
+  { accessorKey: "location", header: t("guests.columns.location") },
+  { accessorKey: "actions", header: t("guests.columns.actions") },
+]);
 
-const idTypeOptions = [
-  { value: "all", label: "All ID Types" },
-  { value: "passport", label: "Passport" },
-  { value: "national_id", label: "National ID" },
-  { value: "driver_license", label: "Driver License" },
-  { value: "other", label: "Other" },
-];
+const idTypeOptions = computed(() => [
+  { value: "all", label: t("guests.allIdTypes") },
+  { value: "passport", label: t("idTypes.passport") },
+  { value: "national_id", label: t("idTypes.nationalId") },
+  { value: "driver_license", label: t("idTypes.driverLicense") },
+  { value: "other", label: t("idTypes.other") },
+]);
 
 const guests = ref<GuestRow[]>([]);
 const loading = ref(false);
@@ -206,10 +207,10 @@ const clearFilters = () => {
 const formatIdType = (idType: string | null): string => {
   if (!idType) return "";
   const types: Record<string, string> = {
-    passport: "Passport",
-    national_id: "National ID",
-    driver_license: "Driver License",
-    other: "Other",
+    passport: t("idTypes.passport"),
+    national_id: t("idTypes.nationalId"),
+    driver_license: t("idTypes.driverLicense"),
+    other: t("idTypes.other"),
   };
   return types[idType] || idType;
 };

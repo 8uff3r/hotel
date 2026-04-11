@@ -3,22 +3,18 @@
     <div class="mb-6 flex items-center justify-between">
       <div>
         <UButton to="/parking" variant="ghost" size="sm" class="mb-2">
-          <UIcon name="i-lucide-arrow-left" class="mr-1" />
-          Back to Parking
-        </UButton>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Parking Transactions</h1>
+          <UIcon name="i-lucide-arrow-left" class="mr-1" />{{ t('parking.back_to_parking') }}</UButton>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('parking.parking_transactions') }}</h1>
       </div>
       <UButton to="/parking/transactions/check-in" color="primary">
-        <UIcon name="i-lucide-car" class="mr-2" />
-        Check In
-      </UButton>
+        <UIcon name="i-lucide-car" class="mr-2" />{{ t('parking.check_in') }}</UButton>
     </div>
 
     <UCard class="mb-4">
       <div class="flex flex-wrap items-center gap-4">
         <UInput
           v-model="filters.search"
-          placeholder="Search by license plate..."
+          :placeholder="t('parking.search_by_license_plate')"
           icon="i-lucide-search"
           class="w-full sm:w-64"
           @input="debouncedSearch"
@@ -26,25 +22,25 @@
         <USelect
           v-model="filters.status"
           :items="statusOptions"
-          placeholder="All Statuses"
+          :placeholder="t('common.all_statuses')"
           class="w-full sm:w-40"
           @change="fetchTransactions"
         />
         <USelect
           v-model="filters.paymentStatus"
           :items="paymentStatusOptions"
-          placeholder="All Payments"
+          :placeholder="t('common.all_payments')"
           class="w-full sm:w-40"
           @change="fetchTransactions"
         />
-        <UButton variant="outline" @click="clearFilters"> Clear </UButton>
+        <UButton variant="outline" @click="clearFilters">{{ t('common.clear') }}</UButton>
       </div>
     </UCard>
 
     <UCard>
       <template #header>
         <div class="flex items-center justify-between">
-          <span class="text-lg font-semibold">Transactions</span>
+          <span class="text-lg font-semibold">{{ t('parking.transactions') }}</span>
           <span class="text-sm text-gray-500">{{ pagination.total }} transactions</span>
         </div>
       </template>
@@ -196,6 +192,7 @@ const columns: TableColumn<Transaction>[] = [
 ];
 
 const transactions = ref<Transaction[]>([]);
+const { t } = useI18n();
 const loading = ref(false);
 const checkoutModalOpen = ref(false);
 const selectedTx = ref<Transaction | null>(null);

@@ -2,10 +2,8 @@
   <div>
     <div class="mb-6">
       <UButton to="/parking/transactions" variant="ghost" size="sm" class="mb-2">
-        <UIcon name="i-lucide-arrow-left" class="mr-1" />
-        Back to Transactions
-      </UButton>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Transaction Details</h1>
+        <UIcon name="i-lucide-arrow-left" class="mr-1" />{{ t('parking.back_to_transactions') }}</UButton>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('parking.transaction_details') }}</h1>
     </div>
 
     <div v-if="loading" class="flex justify-center py-12">
@@ -16,7 +14,7 @@
       <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
         <UCard>
           <template #header>
-            <span class="text-sm text-gray-500">License Plate</span>
+            <span class="text-sm text-gray-500">{{ t('parking.license_plate') }}</span>
           </template>
           <div class="text-2xl font-bold">{{ transaction.licensePlate }}</div>
         </UCard>
@@ -142,6 +140,7 @@
 definePageMeta({
   requiresRole: ["admin", "manager", "receptionist"],
 });
+const { t } = useI18n();
 
 const route = useRoute();
 const transactionId = Number(route.params.id);

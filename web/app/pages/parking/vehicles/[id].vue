@@ -2,10 +2,8 @@
   <div>
     <div class="mb-6">
       <UButton to="/parking/vehicles" variant="ghost" size="sm" class="mb-2">
-        <UIcon name="i-lucide-arrow-left" class="mr-1" />
-        Back to Vehicles
-      </UButton>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Vehicle Details</h1>
+        <UIcon name="i-lucide-arrow-left" class="mr-1" />{{ t('parking.back_to_vehicles') }}</UButton>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('parking.vehicle_details') }}</h1>
     </div>
 
     <div v-if="loading" class="flex justify-center py-12">
@@ -15,7 +13,7 @@
     <UCard v-else-if="vehicle">
       <template #header>
         <div class="flex items-center justify-between">
-          <span class="font-semibold">Edit Vehicle</span>
+          <span class="font-semibold">{{ t('parking.edit_vehicle') }}</span>
           <UBadge :color="vehicle.isRegistered ? 'success' : 'warning'" variant="soft">
             {{ vehicle.isRegistered ? "Registered" : "Guest" }}
           </UBadge>
@@ -34,7 +32,7 @@
             <USelect
               v-model="form.guestId"
               :items="guestOptions"
-              placeholder="Select guest (optional)"
+              :placeholder="t('parking.select_guest_optional')"
               searchable
               clearable
             />
@@ -62,7 +60,7 @@
 
           <div>
             <label class="mb-1 block text-sm font-medium">Is Registered?</label>
-            <UCheckbox v-model="form.isRegistered" label="Registered vehicle" />
+            <UCheckbox v-model="form.isRegistered" :label="t('parking.registered_vehicle')" />
           </div>
 
           <div class="md:col-span-2">
@@ -84,6 +82,7 @@
 definePageMeta({
   requiresRole: ["admin", "manager", "receptionist"],
 });
+const { t } = useI18n();
 
 const route = useRoute();
 const vehicleId = Number(route.params.id);

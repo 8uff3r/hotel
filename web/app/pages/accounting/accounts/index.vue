@@ -1,11 +1,9 @@
 <template>
   <div>
     <div class="mb-6 flex items-center justify-between">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Chart of Accounts</h1>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('accounting.chart_of_accounts') }}</h1>
       <UButton to="/accounting/accounts/create" color="primary">
-        <UIcon name="i-lucide-plus" class="mr-2" />
-        Add Account
-      </UButton>
+        <UIcon name="i-lucide-plus" class="mr-2" />{{ t('accounting.add_account') }}</UButton>
     </div>
 
     <!-- Filters -->
@@ -13,7 +11,7 @@
       <div class="flex flex-wrap items-center gap-4">
         <UInput
           v-model="filters.search"
-          placeholder="Search by account name or code..."
+          :placeholder="t('accounting.search_by_account_name_or_code')"
           icon="i-lucide-search"
           class="w-full sm:w-64"
           @input="debouncedSearch"
@@ -21,11 +19,11 @@
         <USelect
           v-model="filters.accountType"
           :items="accountTypeOptions"
-          placeholder="All Types"
+          :placeholder="t('common.all_types')"
           class="w-full sm:w-40"
           @change="fetchAccounts"
         />
-        <UButton variant="outline" @click="clearFilters"> Clear </UButton>
+        <UButton variant="outline" @click="clearFilters">{{ t('common.clear') }}</UButton>
       </div>
     </UCard>
 
@@ -33,7 +31,7 @@
     <UCard>
       <template #header>
         <div class="flex items-center justify-between">
-          <span class="text-lg font-semibold">Account List</span>
+          <span class="text-lg font-semibold">{{ t('accounting.account_list') }}</span>
           <span class="text-sm text-gray-500">{{ pagination.total }} accounts</span>
         </div>
       </template>
@@ -135,6 +133,7 @@ const accountTypeOptions = [
 ];
 
 const accounts = ref<AccountRow[]>([]);
+const { t } = useI18n();
 const loading = ref(false);
 const page = ref(1);
 

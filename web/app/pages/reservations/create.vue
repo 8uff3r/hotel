@@ -2,10 +2,8 @@
   <div>
     <div class="mb-6">
       <UButton variant="ghost" to="/reservations" class="mb-4">
-        <UIcon name="i-lucide-arrow-left" class="mr-2" />
-        Back to Reservations
-      </UButton>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">New Reservation</h1>
+        <UIcon name="i-lucide-arrow-left" class="mr-2" />{{ t('reservations.back_to_reservations') }}</UButton>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('reservations.new_reservation') }}</h1>
     </div>
 
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -16,12 +14,12 @@
             <div class="space-y-6">
               <!-- Guest Selection -->
               <div>
-                <UFormField label="Guest" name="guestId" required>
+                <UFormField :label="t('common.guest')" name="guestId" required>
                   <USelect
                     v-model="form.guestId"
                     :items="guests"
                     :loading="loadingGuests"
-                    placeholder="Select a guest"
+                    :placeholder="t('reservations.select_a_guest')"
                     option-label="fullName"
                     option-value="id"
                     searchable
@@ -29,19 +27,17 @@
                   />
                 </UFormField>
                 <UButton variant="link" size="sm" class="mt-1 px-0" @click="showGuestModal = true">
-                  <UIcon name="i-lucide-plus" class="mr-1" />
-                  Add New Guest
-                </UButton>
+                  <UIcon name="i-lucide-plus" class="mr-1" />{{ t('reservations.add_new_guest') }}</UButton>
               </div>
 
               <!-- Room Selection -->
               <div>
-                <UFormField label="Room" name="roomId" required>
+                <UFormField :label="t('reservations.room')" name="roomId" required>
                   <USelect
                     v-model="form.roomId"
                     :items="availableRooms"
                     :loading="loadingRooms"
-                    placeholder="Select a room"
+                    :placeholder="t('reservations.select_a_room')"
                     option-label="label"
                     option-value="id"
                     @change="updatePricing"
@@ -51,7 +47,7 @@
 
               <!-- Dates -->
               <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <UFormField label="Check-in Date" name="checkInDate" required>
+                <UFormField :label="t('reservations.check_in_date')" name="checkInDate" required>
                   <UInput
                     v-model="form.checkInDate"
                     type="date"
@@ -59,7 +55,7 @@
                     @change="updatePricing"
                   />
                 </UFormField>
-                <UFormField label="Check-out Date" name="checkOutDate" required>
+                <UFormField :label="t('reservations.check_out_date')" name="checkOutDate" required>
                   <UInput
                     v-model="form.checkOutDate"
                     type="date"
@@ -70,7 +66,7 @@
               </div>
 
               <!-- Number of Guests -->
-              <UFormField label="Number of Guests" name="numberOfGuests" required>
+              <UFormField :label="t('reservations.number_of_guests')" name="numberOfGuests" required>
                 <UInput
                   v-model.number="form.numberOfGuests"
                   type="number"
@@ -82,7 +78,7 @@
               <!-- Pricing -->
               <div class="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
                 <div class="flex items-center justify-between">
-                  <span class="text-gray-600 dark:text-gray-400">Estimated Total</span>
+                  <span class="text-gray-600 dark:text-gray-400">{{ t('reservations.estimated_total') }}</span>
                   <span class="text-2xl font-bold">${{ estimatedTotal.toFixed(2) }}</span>
                 </div>
                 <p v-if="numberOfNights > 0" class="mt-1 text-sm text-gray-500">
@@ -94,7 +90,7 @@
 
               <!-- Payment -->
               <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <UFormField label="Amount Paid" name="paidAmount">
+                <UFormField :label="t('reservations.amount_paid')" name="paidAmount">
                   <UInput
                     v-model.number="form.paidAmount"
                     type="number"
@@ -103,26 +99,24 @@
                     @change="updatePaymentStatus"
                   />
                 </UFormField>
-                <UFormField label="Payment Status" name="paymentStatus">
+                <UFormField :label="t('common.payment_status')" name="paymentStatus">
                   <USelect v-model="form.paymentStatus" :items="paymentStatusOptions" disabled />
                 </UFormField>
               </div>
 
               <!-- Special Requests -->
-              <UFormField label="Special Requests" name="specialRequests">
+              <UFormField :label="t('reservations.special_requests')" name="specialRequests">
                 <UTextarea
                   v-model="form.specialRequests"
-                  placeholder="Any special requests..."
+                  :placeholder="t('reservations.any_special_requests')"
                   :rows="3"
                 />
               </UFormField>
 
               <!-- Actions -->
               <div class="flex justify-end gap-3">
-                <UButton variant="outline" to="/reservations" :disabled="loading"> Cancel </UButton>
-                <UButton type="submit" color="primary" :loading="loading">
-                  Create Reservation
-                </UButton>
+                <UButton variant="outline" to="/reservations" :disabled="loading">{{ t('common.cancel') }}</UButton>
+                <UButton type="submit" color="primary" :loading="loading">{{ t('reservations.create_reservation') }}</UButton>
               </div>
             </div>
           </form>
@@ -133,7 +127,7 @@
       <div>
         <UCard v-if="selectedRoom">
           <template #header>
-            <h3 class="text-lg font-semibold">Room Details</h3>
+            <h3 class="text-lg font-semibold">{{ t('common.room_details') }}</h3>
           </template>
           <div class="space-y-3">
             <div>
@@ -180,36 +174,36 @@
         <form @submit.prevent="createGuest" class="p-4">
           <div class="space-y-4">
             <div class="grid grid-cols-2 gap-4">
-              <UFormField label="First Name" name="newGuest.firstName" required>
-                <UInput v-model="newGuest.firstName" placeholder="John" />
+              <UFormField :label="t('reservations.first_name')" name="newGuest.firstName" required>
+                <UInput v-model="newGuest.firstName" :placeholder="t('reservations.john')" />
               </UFormField>
-              <UFormField label="Last Name" name="newGuest.lastName" required>
-                <UInput v-model="newGuest.lastName" placeholder="Doe" />
+              <UFormField :label="t('reservations.last_name')" name="newGuest.lastName" required>
+                <UInput v-model="newGuest.lastName" :placeholder="t('reservations.doe')" />
               </UFormField>
             </div>
-            <UFormField label="Email" name="newGuest.email">
-              <UInput v-model="newGuest.email" type="email" placeholder="john@example.com" />
+            <UFormField :label="t('reservations.email')" name="newGuest.email">
+              <UInput v-model="newGuest.email" type="email" :placeholder="t('reservations.john_example_com')" />
             </UFormField>
-            <UFormField label="Phone" name="newGuest.phone">
+            <UFormField :label="t('reservations.phone')" name="newGuest.phone">
               <UInput v-model="newGuest.phone" placeholder="+1 234 567 8900" />
             </UFormField>
             <div class="grid grid-cols-2 gap-4">
-              <UFormField label="ID Type" name="newGuest.idType">
-                <USelect v-model="newGuest.idType" :items="idTypeOptions" placeholder="Select" />
+              <UFormField :label="t('reservations.id_type')" name="newGuest.idType">
+                <USelect v-model="newGuest.idType" :items="idTypeOptions" :placeholder="t('reservations.select')" />
               </UFormField>
-              <UFormField label="ID Number" name="newGuest.idNumber">
-                <UInput v-model="newGuest.idNumber" placeholder="ID number" />
+              <UFormField :label="t('reservations.id_number')" name="newGuest.idNumber">
+                <UInput v-model="newGuest.idNumber" :placeholder="t('reservations.id_number_2')" />
               </UFormField>
             </div>
-            <UFormField label="Address" name="newGuest.address">
-              <UInput v-model="newGuest.address" placeholder="Street address" />
+            <UFormField :label="t('reservations.address')" name="newGuest.address">
+              <UInput v-model="newGuest.address" :placeholder="t('reservations.street_address')" />
             </UFormField>
             <div class="grid grid-cols-2 gap-4">
-              <UFormField label="City" name="newGuest.city">
-                <UInput v-model="newGuest.city" placeholder="City" />
+              <UFormField :label="t('reservations.city')" name="newGuest.city">
+                <UInput v-model="newGuest.city" :placeholder="t('reservations.city')" />
               </UFormField>
-              <UFormField label="Country" name="newGuest.country">
-                <UInput v-model="newGuest.country" placeholder="Country" />
+              <UFormField :label="t('reservations.country')" name="newGuest.country">
+                <UInput v-model="newGuest.country" :placeholder="t('reservations.country')" />
               </UFormField>
             </div>
           </div>
@@ -249,6 +243,7 @@ interface Room {
   amenities: string | null;
 }
 
+const { t } = useI18n();
 const loading = ref(false);
 const loadingGuests = ref(false);
 const loadingRooms = ref(false);

@@ -2,23 +2,21 @@
   <div>
     <div class="mb-6">
       <UButton to="/parking/transactions" variant="ghost" size="sm" class="mb-2">
-        <UIcon name="i-lucide-arrow-left" class="mr-1" />
-        Back to Transactions
-      </UButton>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Check In Vehicle</h1>
+        <UIcon name="i-lucide-arrow-left" class="mr-1" />{{ t('parking.back_to_transactions') }}</UButton>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('parking.check_in_vehicle') }}</h1>
     </div>
 
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
       <UCard>
         <template #header>
-          <span class="font-semibold">Vehicle Check In</span>
+          <span class="font-semibold">{{ t('parking.vehicle_check_in') }}</span>
         </template>
 
         <form @submit.prevent="checkIn">
           <div class="space-y-4">
             <div>
               <label class="mb-1 block text-sm font-medium">License Plate *</label>
-              <UInput v-model="form.licensePlate" placeholder="ABC-1234" required />
+              <UInput v-model="form.licensePlate" :placeholder="t('parking.abc_1234')" required />
             </div>
 
             <div>
@@ -26,7 +24,7 @@
               <USelect
                 v-model="form.lotId"
                 :items="lotOptions"
-                placeholder="Select lot"
+                :placeholder="t('parking.select_lot')"
                 required
                 @change="loadSpots"
               />
@@ -37,7 +35,7 @@
               <USelect
                 v-model="form.spotId"
                 :items="spotOptions"
-                placeholder="Select spot (auto-assign if empty)"
+                :placeholder="t('parking.select_spot_auto_assign_if_empty')"
               />
             </div>
 
@@ -46,7 +44,7 @@
               <USelect
                 v-model="form.guestId"
                 :items="guestOptions"
-                placeholder="Select guest (optional)"
+                :placeholder="t('parking.select_guest_optional')"
                 searchable
                 clearable
               />
@@ -57,7 +55,7 @@
               <USelect
                 v-model="form.reservationId"
                 :items="reservationOptions"
-                placeholder="Link to reservation (optional)"
+                :placeholder="t('parking.link_to_reservation_optional')"
                 clearable
               />
             </div>
@@ -119,6 +117,7 @@ const lotOptions = ref<{ value: string; label: string }[]>([]);
 const spotOptions = ref<{ value: string; label: string }[]>([]);
 const guestOptions = ref<{ value: string; label: string }[]>([]);
 const reservationOptions = ref<{ value: string; label: string }[]>([]);
+const { t } = useI18n();
 const loading = ref(false);
 const router = useRouter();
 

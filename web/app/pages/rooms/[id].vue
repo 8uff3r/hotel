@@ -2,9 +2,7 @@
   <div>
     <div class="mb-6">
       <UButton variant="ghost" to="/rooms" class="mb-4">
-        <UIcon name="i-lucide-arrow-left" class="mr-2" />
-        Back to Rooms
-      </UButton>
+        <UIcon name="i-lucide-arrow-left" class="mr-2" />{{ t('rooms.back_to_rooms') }}</UButton>
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Room {{ room?.roomNumber }}</h1>
     </div>
 
@@ -19,7 +17,7 @@
           <UCard>
             <template #header>
               <div class="flex items-center justify-between">
-                <span class="text-lg font-semibold">Room Details</span>
+                <span class="text-lg font-semibold">{{ t('common.room_details') }}</span>
                 <UBadge :color="getStatusColor(room.status)" variant="soft">
                   {{ room.status }}
                 </UBadge>
@@ -29,36 +27,36 @@
             <form @submit.prevent="handleSubmit">
               <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <!-- Room Number -->
-                <UFormField label="Room Number" name="roomNumber" required>
+                <UFormField :label="t('rooms.room_number')" name="roomNumber" required>
                   <UInput
                     v-model="form.roomNumber"
-                    placeholder="e.g., 101, 205A"
+                    :placeholder="t('rooms.e_g_101_205a')"
                     :disabled="saving"
                   />
                 </UFormField>
 
                 <!-- Room Type -->
-                <UFormField label="Room Type" name="roomType" required>
+                <UFormField :label="t('rooms.room_type')" name="roomType" required>
                   <USelect v-model="form.roomType" :items="roomTypes" :disabled="saving" />
                 </UFormField>
 
                 <!-- Floor -->
-                <UFormField label="Floor" name="floor">
+                <UFormField :label="t('common.floor')" name="floor">
                   <UInput
                     v-model.number="form.floor"
                     type="number"
-                    placeholder="e.g., 1, 2"
+                    :placeholder="t('rooms.e_g_1_2')"
                     :disabled="saving"
                   />
                 </UFormField>
 
                 <!-- Capacity -->
-                <UFormField label="Capacity (guests)" name="capacity" required>
+                <UFormField :label="t('rooms.capacity_guests')" name="capacity" required>
                   <UInput v-model.number="form.capacity" type="number" min="1" :disabled="saving" />
                 </UFormField>
 
                 <!-- Base Price -->
-                <UFormField label="Base Price ($)" name="basePrice" required>
+                <UFormField :label="t('rooms.base_price')" name="basePrice" required>
                   <UInput
                     v-model.number="form.basePrice"
                     type="number"
@@ -69,22 +67,22 @@
                 </UFormField>
 
                 <!-- Status -->
-                <UFormField label="Status" name="status" required>
+                <UFormField :label="t('common.status')" name="status" required>
                   <USelect v-model="form.status" :items="statusOptions" :disabled="saving" />
                 </UFormField>
 
                 <!-- Description -->
-                <UFormField label="Description" name="description" class="md:col-span-2">
+                <UFormField :label="t('common.description')" name="description" class="md:col-span-2">
                   <UTextarea
                     v-model="form.description"
-                    placeholder="Room description..."
+                    :placeholder="t('rooms.room_description')"
                     :rows="3"
                     :disabled="saving"
                   />
                 </UFormField>
 
                 <!-- Amenities -->
-                <UFormField label="Amenities" name="amenities" class="md:col-span-2">
+                <UFormField :label="t('rooms.amenities')" name="amenities" class="md:col-span-2">
                   <div class="flex flex-wrap gap-2">
                     <UBadge
                       v-for="amenity in availableAmenities"
@@ -179,11 +177,10 @@
 </template>
 
 <script setup lang="ts">
-import type { Room } from "~~/server/db/schema";
-
 definePageMeta({
   requiresRole: ["admin", "manager", "receptionist"],
 });
+const { t } = useI18n();
 
 const route = useRoute();
 const roomId = route.params.id as string;

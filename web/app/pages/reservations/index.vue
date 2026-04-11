@@ -1,11 +1,9 @@
 <template>
   <div>
     <div class="mb-6 flex items-center justify-between">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Reservations</h1>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('reservations.reservations') }}</h1>
       <UButton to="/reservations/create" color="primary">
-        <UIcon name="i-lucide-plus" class="mr-2" />
-        New Reservation
-      </UButton>
+        <UIcon name="i-lucide-plus" class="mr-2" />{{ t('reservations.new_reservation') }}</UButton>
     </div>
 
     <!-- Filters -->
@@ -13,7 +11,7 @@
       <div class="flex flex-wrap items-center gap-4">
         <UInput
           v-model="filters.search"
-          placeholder="Search by guest name..."
+          :placeholder="t('reservations.search_by_guest_name')"
           icon="i-lucide-search"
           class="w-full sm:w-64"
           @input="debouncedSearch"
@@ -21,14 +19,14 @@
         <USelect
           v-model="filters.status"
           :items="statusOptions"
-          placeholder="All Statuses"
+          :placeholder="t('common.all_statuses')"
           class="w-full sm:w-40"
           @change="fetchReservations"
         />
         <USelect
           v-model="filters.paymentStatus"
           :items="paymentStatusOptions"
-          placeholder="All Payments"
+          :placeholder="t('common.all_payments')"
           class="w-full sm:w-40"
           @change="fetchReservations"
         />
@@ -36,19 +34,19 @@
           <UInput
             v-model="filters.checkInFrom"
             type="date"
-            placeholder="Check-in from"
+            :placeholder="t('reservations.check_in_from')"
             class="w-full sm:w-40"
             @change="fetchReservations"
           />
           <UInput
             v-model="filters.checkInTo"
             type="date"
-            placeholder="Check-in to"
+            :placeholder="t('reservations.check_in_to')"
             class="w-full sm:w-40"
             @change="fetchReservations"
           />
         </div>
-        <UButton variant="outline" @click="clearFilters"> Clear </UButton>
+        <UButton variant="outline" @click="clearFilters">{{ t('common.clear') }}</UButton>
       </div>
     </UCard>
 
@@ -56,7 +54,7 @@
     <UCard>
       <template #header>
         <div class="flex items-center justify-between">
-          <span class="text-lg font-semibold">Reservation List</span>
+          <span class="text-lg font-semibold">{{ t('reservations.reservation_list') }}</span>
           <span class="text-sm text-gray-500">{{ pagination.total }} reservations</span>
         </div>
       </template>
@@ -225,6 +223,7 @@ const paymentStatusOptions = [
 ];
 
 const reservations = ref<ReservationRow[]>([]);
+const { t } = useI18n();
 const loading = ref(false);
 const page = ref(1);
 

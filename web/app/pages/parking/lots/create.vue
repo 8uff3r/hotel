@@ -2,10 +2,8 @@
   <div>
     <div class="mb-6">
       <UButton to="/parking/lots" variant="ghost" size="sm" class="mb-2">
-        <UIcon name="i-lucide-arrow-left" class="mr-1" />
-        Back to Parking Lots
-      </UButton>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Create Parking Lot</h1>
+        <UIcon name="i-lucide-arrow-left" class="mr-1" />{{ t('parking.back_to_parking_lots') }}</UButton>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('parking.create_parking_lot') }}</h1>
     </div>
 
     <UCard>
@@ -13,16 +11,16 @@
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <label class="mb-1 block text-sm font-medium">Name *</label>
-            <UInput v-model="form.name" placeholder="Main Parking" required />
+            <UInput v-model="form.name" :placeholder="t('parking.main_parking')" required />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Location</label>
-            <UInput v-model="form.location" placeholder="Ground floor" />
+            <label class="mb-1 block text-sm font-medium">{{ t('parking.location') }}</label>
+            <UInput v-model="form.location" :placeholder="t('parking.ground_floor')" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Total Spots</label>
+            <label class="mb-1 block text-sm font-medium">{{ t('parking.total_spots') }}</label>
             <UInput v-model="form.totalSpots" type="number" placeholder="50" />
           </div>
 
@@ -37,19 +35,19 @@
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Status</label>
-            <USelect v-model="form.status" :items="statusOptions" placeholder="Select status" />
+            <label class="mb-1 block text-sm font-medium">{{ t('common.status') }}</label>
+            <USelect v-model="form.status" :items="statusOptions" :placeholder="t('parking.select_status')" />
           </div>
 
           <div class="md:col-span-2">
-            <label class="mb-1 block text-sm font-medium">Description</label>
-            <UTextarea v-model="form.description" placeholder="Additional details..." :rows="3" />
+            <label class="mb-1 block text-sm font-medium">{{ t('common.description') }}</label>
+            <UTextarea v-model="form.description" :placeholder="t('parking.additional_details')" :rows="3" />
           </div>
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton type="button" variant="outline" to="/parking/lots">Cancel</UButton>
-          <UButton type="submit" color="primary" :loading="loading">Create</UButton>
+          <UButton type="button" variant="outline" to="/parking/lots">{{ t('common.cancel') }}</UButton>
+          <UButton type="submit" color="primary" :loading="loading">{{ t('parking.create') }}</UButton>
         </div>
       </form>
     </UCard>
@@ -77,6 +75,7 @@ const statusOptions = [
   { value: "closed", label: "Closed" },
 ];
 
+const { t } = useI18n();
 const loading = ref(false);
 const router = useRouter();
 

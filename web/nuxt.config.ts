@@ -9,20 +9,44 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxt/fonts",
     "@pinia/nuxt",
+    "@nuxtjs/i18n",
     // "@nuxthub/core",
     "pinia-plugin-persistedstate/nuxt",
   ],
 
+  i18n: {
+    baseUrl: "",
+    detectBrowserLanguage: false,
+    defaultLocale: "fa",
+    defaultDirection: "rtl",
+    strategy: "no_prefix",
+    langDir: "locales",
+    locales: [
+      { code: "fa", dir: "rtl", file: "fa.json" },
+      { code: "en", dir: "ltr", file: "en.json" },
+      // { code: "ar", dir: "rtl", file: "ar.json" },
+    ],
+  },
   css: ["~/assets/css/main.css"],
   ssr: false,
 
   fonts: {
     provider: "local",
+    defaults: {
+      weights: [100, 200, 300, 400, 500, 600, 700, 800, 900],
+    },
+    families: [
+      { name: "Vazirmatn FD", provider: "local" },
+      { name: "Vazirmatn", provider: "local" },
+    ],
   },
   icon: {
     provider: "none",
     clientBundle: {
-      scan: true,
+      scan: {
+        globExclude: ["dist", "build", "coverage", "test", "tests", ".*"],
+        globInclude: ["app/**/*.{vue,jsx,tsx,md,mdc,mdx}", "node_modules/@nuxt/ui/**/*"],
+      },
     },
     collections: ["lucide"],
     fallbackToApi: false,

@@ -2,11 +2,9 @@ hotel/app/pages/accounting/income/index.vue ``` ```vue
 <template>
   <div>
     <div class="mb-6 flex items-center justify-between">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Income</h1>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('accounting.income') }}</h1>
       <UButton to="/accounting/income/create" color="success">
-        <UIcon name="i-lucide-plus" class="mr-2" />
-        Record Income
-      </UButton>
+        <UIcon name="i-lucide-plus" class="mr-2" />{{ t('accounting.record_income') }}</UButton>
     </div>
 
     <!-- Filters -->
@@ -14,7 +12,7 @@ hotel/app/pages/accounting/income/index.vue ``` ```vue
       <div class="flex flex-wrap items-center gap-4">
         <UInput
           v-model="filters.search"
-          placeholder="Search by description..."
+          :placeholder="t('accounting.search_by_description')"
           icon="i-lucide-search"
           class="w-full sm:w-64"
           @input="debouncedSearch"
@@ -22,14 +20,14 @@ hotel/app/pages/accounting/income/index.vue ``` ```vue
         <USelect
           v-model="filters.category"
           :items="categoryOptions"
-          placeholder="All Categories"
+          :placeholder="t('accounting.all_categories')"
           class="w-full sm:w-40"
           @change="fetchIncome"
         />
         <USelect
           v-model="filters.paymentStatus"
           :items="paymentStatusOptions"
-          placeholder="All Payments"
+          :placeholder="t('common.all_payments')"
           class="w-full sm:w-40"
           @change="fetchIncome"
         />
@@ -37,19 +35,19 @@ hotel/app/pages/accounting/income/index.vue ``` ```vue
           <UInput
             v-model="filters.dateFrom"
             type="date"
-            placeholder="From"
+            :placeholder="t('accounting.from')"
             class="w-full sm:w-40"
             @change="fetchIncome"
           />
           <UInput
             v-model="filters.dateTo"
             type="date"
-            placeholder="To"
+            :placeholder="t('accounting.to')"
             class="w-full sm:w-40"
             @change="fetchIncome"
           />
         </div>
-        <UButton variant="outline" @click="clearFilters"> Clear </UButton>
+        <UButton variant="outline" @click="clearFilters">{{ t('common.clear') }}</UButton>
       </div>
     </UCard>
 
@@ -57,7 +55,7 @@ hotel/app/pages/accounting/income/index.vue ``` ```vue
     <UCard>
       <template #header>
         <div class="flex items-center justify-between">
-          <span class="text-lg font-semibold">Income Records</span>
+          <span class="text-lg font-semibold">{{ t('accounting.income_records') }}</span>
           <span class="text-sm text-gray-500">{{ pagination.total }} records</span>
         </div>
       </template>
@@ -167,6 +165,7 @@ const paymentStatusOptions = [
 ];
 
 const incomeList = ref<IncomeRow[]>([]);
+const { t } = useI18n();
 const loading = ref(false);
 const page = ref(1);
 

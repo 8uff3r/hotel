@@ -1,2 +1,11 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+
+@theme {
+  --font-vazirmatn: "Vazirmatn", sans-serif;
+  --font-vazirmatn-fd: "Vazirmatn-FD", sans-serif;
+}
+
+:root {
+  font-family: var(--font-vazirmatn-fd);
+}
