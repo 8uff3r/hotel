@@ -13,7 +13,7 @@
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <label class="mb-1 block text-sm font-medium">Parking Lot *</label>
-            <USelect v-model="form.lotId" :items="lotOptions" placeholder="Select lot" required />
+            <HSelect v-model="form.lotId" :items="lots" placeholder="Select lot" required />
           </div>
 
           <div>
@@ -62,7 +62,7 @@ definePageMeta({
 });
 
 const form = reactive({
-  lotId: "",
+  lotId: 0,
   spotNumber: "",
   floor: "",
   spotType: "standard",
@@ -71,7 +71,6 @@ const form = reactive({
   description: "",
 });
 
-const lotOptions = ref<{ value: string; label: string }[]>([]);
 const loading = ref(false);
 const router = useRouter();
 
@@ -90,17 +89,10 @@ const statusOptions = [
   { value: "maintenance", label: "Maintenance" },
 ];
 
-const fetchLots = async () => {
-  try {
-    const res = await $fetch("/api/parking/lots");
-    lotOptions.value = (res.data as any[]).map((l) => ({
-      value: l.id.toString(),
-      label: l.name,
-    }));
-  } catch (error) {
-    console.error("Failed to fetch lots:", error);
-  }
-};
+const { data: lots } = useAsyncData(async () => {
+  const res = await $fetch<{ data: ParkingLot[] }>("/api/parking/lots");
+  return res.data;
+});
 
 const createSpot = async () => {
   loading.value = true;
@@ -108,7 +100,7 @@ const createSpot = async () => {
     await $fetch("/api/parking/spots", {
       method: "POST",
       body: {
-        lotId: parseInt(form.lotId),
+        lotId: form.lotId,
         spotNumber: form.spotNumber,
         floor: form.floor || null,
         spotType: form.spotType,
@@ -124,6 +116,4 @@ const createSpot = async () => {
     loading.value = false;
   }
 };
-
-onMounted(fetchLots);
 </script>
