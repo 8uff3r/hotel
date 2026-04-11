@@ -76,35 +76,64 @@ type ParkingSpotStatus struct {
 }
 
 type Guest struct {
-	Base
-	FirstName string `gorm:"not null" json:"firstName"`
-	LastName  string `gorm:"not null" json:"lastName"`
-	Email     string `json:"email"`
-	Phone     string `json:"phone"`
-	IDType    string `json:"idType"`
-	IDNumber  string `json:"idNumber"`
-	Address   string `json:"address"`
-	City      string `json:"city"`
-	Country   string `json:"country"`
-	Notes     string `json:"notes"`
+	ID           uint      `gorm:"primaryKey" json:"id"`
+	FirstName    string    `gorm:"not null" json:"firstName"`
+	LastName     string    `gorm:"not null" json:"lastName"`
+	FatherName   string    `json:"fatherName"`
+	NationalID   string    `gorm:"index" json:"nationalId"`
+	IDNumber     string    `json:"idNumber"`
+	Nationality  string    `json:"nationality"`
+	Gender       string    `json:"gender"`
+	DateOfBirth  time.Time `json:"dateOfBirth"`
+	PlaceOfBirth string    `json:"placeOfBirth"`
+	Phone        string    `json:"phone"`
+	Address      string    `json:"address"`
+	PostalCode   string    `json:"postalCode"`
+	Occupation   string    `json:"occupation"`
+
+	Stays []Reservation `gorm:"foreignKey:GuestID" json:"stays,omitempty"`
 }
 
 type Reservation struct {
 	Base
-	HotelID         *uint      `json:"hotelId"`
-	GuestID         uint       `gorm:"not null" json:"guestId"`
-	RoomID          uint       `gorm:"not null" json:"roomId"`
-	CheckInDate     time.Time  `gorm:"not null" json:"checkInDate"`
-	CheckOutDate    time.Time  `gorm:"not null" json:"checkOutDate"`
-	ActualCheckIn   *time.Time `json:"actualCheckIn"`
-	ActualCheckOut  *time.Time `json:"actualCheckOut"`
-	Status          string     `gorm:"not null;default:pending" json:"status"`
-	TotalAmount     float64    `gorm:"not null;default:0" json:"totalAmount"`
-	PaidAmount      float64    `gorm:"not null;default:0" json:"paidAmount"`
-	PaymentStatus   string     `gorm:"not null;default:pending" json:"paymentStatus"`
-	SpecialRequests string     `json:"specialRequests"`
-	NumberOfGuests  int        `gorm:"not null;default:1" json:"numberOfGuests"`
-	CreatedBy       *uint      `json:"createdBy"`
+	ID      uint `gorm:"primaryKey" json:"id"`
+	GuestID uint `gorm:"not null;index" json:"guestId"`
+	RoomID  uint `gorm:"not null;index" json:"roomId"`
+
+	ReservationCode string `gorm:"index" json:"reservationCode"`
+
+	EntryDate      time.Time `gorm:"not null" json:"entryDate"`
+	DepartureDate  time.Time `json:"departureDate"`
+	DurationOfStay int       `json:"durationOfStay"`
+	NumberOfPeople int       `gorm:"not null;default:1" json:"numberOfPeople"`
+
+	Origin          string `json:"origin"`
+	Destination     string `json:"destination"`
+	PurposeOfTravel string `json:"purposeOfTravel"`
+
+	Breakfast bool `gorm:"not null;default:false" json:"breakfast"`
+	Guide     bool `gorm:"not null;default:false" json:"guide"`
+
+	RoomPrice float64 `gorm:"not null;default:0" json:"roomPrice"`
+
+	UserCheckIn  string `json:"userCheckIn"`
+	UserCheckOut string `json:"userCheckOut"`
+
+	Notes string `json:"notes"`
+
+	Guest Guest `gorm:"foreignKey:GuestID" json:"guest"`
+	Room  Room  `gorm:"foreignKey:RoomID" json:"room"`
+
+	Payment Payment `gorm:"foreignKey:ReservationID" json:"payment"`
+}
+
+type Payment struct {
+	ID            uint   `gorm:"primaryKey" json:"id"`
+	ReservationID uint   `gorm:"uniqueIndex;not null" json:"stayId"`
+	IsCash        bool   `gorm:"not null;default:false" json:"isCash"`
+	Agency        bool   `gorm:"not null;default:false" json:"agency"`
+	Referrer      string `json:"referrer"`
+	ContractType  string `json:"contractType"`
 }
 
 type Account struct {

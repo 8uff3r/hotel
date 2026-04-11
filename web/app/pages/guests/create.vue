@@ -11,75 +11,130 @@
     <UCard>
       <form @submit.prevent="handleSubmit">
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <!-- First Name -->
+          <UFormField label="Room Number" name="roomNumber">
+            <UInput v-model="form.roomNumber" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Referrer" name="referrer">
+            <UInput v-model="form.referrer" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Room Type" name="roomType">
+            <UInput v-model="form.roomType" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Register Card" name="registerCard">
+            <UInput v-model="form.registerCard" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Nationality" name="nationality">
+            <UInput v-model="form.nationality" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Room Price" name="roomPrice">
+            <UInput v-model.number="form.roomPrice" type="number" min="0" :disabled="loading" />
+          </UFormField>
+
           <UFormField :label="t('forms.firstName')" name="firstName" required>
-            <UInput v-model="form.firstName" :placeholder="t('forms.firstNamePlaceholder')" :disabled="loading" />
+            <UInput v-model="form.firstName" :disabled="loading" />
           </UFormField>
-
-          <!-- Last Name -->
           <UFormField :label="t('forms.lastName')" name="lastName" required>
-            <UInput v-model="form.lastName" :placeholder="t('forms.lastNamePlaceholder')" :disabled="loading" />
+            <UInput v-model="form.lastName" :disabled="loading" />
           </UFormField>
 
-          <!-- Email -->
-          <UFormField :label="t('forms.email')" name="email">
-            <UInput
-              v-model="form.email"
-              type="email"
-              :placeholder="t('guests.emailPlaceholder')"
-              :disabled="loading"
-            />
+          <UFormField label="Origin" name="origin">
+            <UInput v-model="form.origin" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Destination" name="destination">
+            <UInput v-model="form.destination" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Reservation Code" name="reservationCode">
+            <UInput v-model="form.reservationCode" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Father's Name" name="fatherName">
+            <UInput v-model="form.fatherName" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Purpose of Travel / Border Entry" name="purposeOfTravel">
+            <UInput v-model="form.purposeOfTravel" :disabled="loading" />
+          </UFormField>
+          <UFormField label="ID/Passport Number" name="idNumber">
+            <UInput v-model="form.idNumber" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Gender / Visa Validity" name="genderVisaValidity">
+            <UInput v-model="form.genderVisaValidity" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Date of Birth" name="dateOfBirth">
+            <UInput v-model="form.dateOfBirth" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Number of People" name="numberOfPeople">
+            <UInput v-model.number="form.numberOfPeople" type="number" min="1" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Guest Type" name="guestType">
+            <UInput v-model="form.guestType" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Contract Type" name="contractType">
+            <UInput v-model="form.contractType" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Place of Birth / Stay Duration" name="placeOfBirthStayDuration">
+            <UInput v-model="form.placeOfBirthStayDuration" :disabled="loading" />
+          </UFormField>
+          <UFormField label="National ID" name="nationalId">
+            <UInput v-model="form.nationalId" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Car License Plate" name="carLicensePlate">
+            <UInput v-model="form.carLicensePlate" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Occupation / Visa Number" name="occupationVisaNumber">
+            <UInput v-model="form.occupationVisaNumber" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Extra Person" name="extraPerson">
+            <UInput v-model.number="form.extraPerson" type="number" min="0" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Duration of Stay" name="durationOfStay">
+            <UInput v-model="form.durationOfStay" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Entry Date" name="entryDate">
+            <UInput v-model="form.entryDate" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Departure Date" name="departureDate">
+            <UInput v-model="form.departureDate" :disabled="loading" />
           </UFormField>
 
-          <!-- Phone -->
-          <UFormField :label="t('forms.phone')" name="phone">
-            <UInput v-model="form.phone" :placeholder="t('guests.phonePlaceholder')" :disabled="loading" />
-          </UFormField>
-
-          <!-- ID Type -->
-          <UFormField :label="t('guests.idType')" name="idType">
-            <USelect
-              v-model="form.idType"
-              :items="idTypeOptions"
-              :placeholder="t('guests.selectIdType')"
-              :disabled="loading"
-            />
-          </UFormField>
-
-          <!-- ID Number -->
-          <UFormField :label="t('guests.idNumber')" name="idNumber">
-            <UInput v-model="form.idNumber" :placeholder="t('guests.idNumberPlaceholder')" :disabled="loading" />
-          </UFormField>
-
-          <!-- Address -->
           <UFormField :label="t('forms.address')" name="address" class="md:col-span-2">
-            <UInput v-model="form.address" :placeholder="t('forms.addressPlaceholder')" :disabled="loading" />
+            <UInput v-model="form.address" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Postal Code" name="postalCode">
+            <UInput v-model="form.postalCode" :disabled="loading" />
+          </UFormField>
+          <UFormField :label="t('forms.phone')" name="phone">
+            <UInput v-model="form.phone" :disabled="loading" />
+          </UFormField>
+          <UFormField label="User - Check-in" name="userCheckIn">
+            <UInput v-model="form.userCheckIn" :disabled="loading" />
+          </UFormField>
+          <UFormField label="User - Check-out" name="userCheckOut">
+            <UInput v-model="form.userCheckOut" :disabled="loading" />
           </UFormField>
 
-          <!-- City -->
-          <UFormField :label="t('forms.city')" name="city">
-            <UInput v-model="form.city" :placeholder="t('forms.cityPlaceholder')" :disabled="loading" />
+          <UFormField label="Full Board" name="fullBoard">
+            <UCheckbox v-model="form.fullBoard" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Guide" name="guide">
+            <UCheckbox v-model="form.guide" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Breakfast" name="breakfast">
+            <UCheckbox v-model="form.breakfast" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Cash" name="cash">
+            <UCheckbox v-model="form.cash" :disabled="loading" />
+          </UFormField>
+          <UFormField label="Agency" name="agency">
+            <UCheckbox v-model="form.agency" :disabled="loading" />
           </UFormField>
 
-          <!-- Country -->
-          <UFormField :label="t('forms.country')" name="country">
-            <UInput v-model="form.country" :placeholder="t('forms.countryPlaceholder')" :disabled="loading" />
-          </UFormField>
-
-          <!-- Notes -->
           <UFormField :label="t('forms.notes')" name="notes" class="md:col-span-2">
-            <UTextarea
-              v-model="form.notes"
-              :placeholder="t('forms.notesPlaceholder')"
-              :rows="3"
-              :disabled="loading"
-            />
+            <UTextarea v-model="form.notes" :rows="3" :disabled="loading" />
           </UFormField>
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton variant="outline" to="/guests" :disabled="loading"> {{ t("actions.cancel") }} </UButton>
-          <UButton type="submit" color="primary" :loading="loading"> {{ t("guests.createGuest") }} </UButton>
+          <UButton variant="outline" to="/guests" :disabled="loading">{{ t("actions.cancel") }}</UButton>
+          <UButton type="submit" color="primary" :loading="loading">{{ t("guests.createGuest") }}</UButton>
         </div>
       </form>
     </UCard>
@@ -90,49 +145,57 @@
 definePageMeta({
   requiresRole: ["admin", "manager", "receptionist"],
 });
-const { t } = useI18n();
 
+const { t } = useI18n();
 const loading = ref(false);
 
 const form = reactive({
+  roomNumber: "",
+  referrer: "",
+  roomType: "",
+  registerCard: "",
+  nationality: "",
+  roomPrice: 0,
   firstName: "",
   lastName: "",
-  email: "",
-  phone: "",
-  idType: undefined as string | undefined,
+  origin: "",
+  fullBoard: false,
+  destination: "",
+  reservationCode: "",
+  fatherName: "",
+  purposeOfTravel: "",
+  guide: false,
   idNumber: "",
+  genderVisaValidity: "",
+  breakfast: false,
+  cash: false,
+  agency: false,
+  dateOfBirth: "",
+  numberOfPeople: 1,
+  guestType: "",
+  contractType: "",
+  placeOfBirthStayDuration: "",
+  nationalId: "",
+  carLicensePlate: "",
+  occupationVisaNumber: "",
+  extraPerson: 0,
+  durationOfStay: "",
+  entryDate: "",
+  departureDate: "",
   address: "",
-  city: "",
-  country: "",
+  postalCode: "",
+  phone: "",
+  userCheckIn: "",
+  userCheckOut: "",
   notes: "",
 });
-
-const submitBody = computed(() => ({
-  firstName: form.firstName,
-  lastName: form.lastName,
-  email: form.email || undefined,
-  phone: form.phone || undefined,
-  idType: form.idType || undefined,
-  idNumber: form.idNumber || undefined,
-  address: form.address || undefined,
-  city: form.city || undefined,
-  country: form.country || undefined,
-  notes: form.notes || undefined,
-}));
-
-const idTypeOptions = computed(() => [
-  { value: "passport", label: t("idTypes.passport") },
-  { value: "national_id", label: t("idTypes.nationalId") },
-  { value: "driver_license", label: t("idTypes.driverLicense") },
-  { value: "other", label: t("idTypes.other") },
-]);
 
 const handleSubmit = async () => {
   loading.value = true;
   try {
     await $fetch("/api/guests", {
       method: "POST",
-      body: submitBody.value,
+      body: form,
     });
 
     await navigateTo("/guests");

@@ -1,4 +1,3 @@
-hotel/app/pages/guests/index.vue ``` ```vue
 <template>
   <div>
     <div class="mb-6 flex items-center justify-between">
@@ -18,13 +17,6 @@ hotel/app/pages/guests/index.vue ``` ```vue
           icon="i-lucide-search"
           class="w-full sm:w-64"
           @input="debouncedSearch"
-        />
-        <USelect
-          v-model="filters.idType"
-          :items="idTypeOptions"
-          :placeholder="t('guests.allIdTypes')"
-          class="w-full sm:w-40"
-          @change="fetchGuests"
         />
         <UButton variant="outline" @click="clearFilters"> {{ t("actions.clear") }} </UButton>
       </div>
@@ -52,34 +44,21 @@ hotel/app/pages/guests/index.vue ``` ```vue
         <template #name-cell="{ row }">
           <div>
             <p class="font-medium">{{ row.original.firstName }} {{ row.original.lastName }}</p>
-            <p v-if="row.original.email" class="text-sm text-gray-500">
-              {{ row.original.email }}
-            </p>
           </div>
+        </template>
+
+        <template #room-cell="{ row }">
+          {{ row.original.roomNumber || "-" }}
         </template>
 
         <template #phone-cell="{ row }">
           {{ row.original.phone || "-" }}
         </template>
 
-        <template #idInfo-cell="{ row }">
-          <div v-if="row.original.idType">
-            <UBadge variant="soft" size="sm">
-              {{ formatIdType(row.original.idType) }}
-            </UBadge>
-            <p v-if="row.original.idNumber" class="text-sm text-gray-500">
-              {{ row.original.idNumber }}
-            </p>
-          </div>
-          <span v-else class="text-gray-400">-</span>
-        </template>
-
-        <template #location-cell="{ row }">
-          <div v-if="row.original.city || row.original.country">
-            <p>
-              {{ row.original.city }}{{ row.original.city && row.original.country ? ", " : ""
-              }}{{ row.original.country }}
-            </p>
+        <template #reservation-cell="{ row }">
+          <div v-if="row.original.reservationCode || row.original.roomType">
+            <p>{{ row.original.reservationCode || "-" }}</p>
+            <p class="text-sm text-gray-500">{{ row.original.roomType || "-" }}</p>
           </div>
           <span v-else class="text-gray-400">-</span>
         </template>
@@ -122,32 +101,22 @@ definePageMeta({
 
 interface GuestRow {
   id: number;
+  roomNumber: string | null;
+  roomType: string | null;
+  reservationCode: string | null;
   firstName: string;
   lastName: string;
-  email: string | null;
   phone: string | null;
-  idType: string | null;
-  idNumber: string | null;
-  city: string | null;
-  country: string | null;
 }
 
 const { t } = useI18n();
 const columns = computed<TableColumn<GuestRow>[]>(() => [
   { accessorKey: "id", header: t("guests.columns.id") },
   { accessorKey: "name", header: t("guests.columns.name") },
+  { accessorKey: "room", header: "Room" },
   { accessorKey: "phone", header: t("guests.columns.phone") },
-  { accessorKey: "idInfo", header: t("guests.columns.idInfo") },
-  { accessorKey: "location", header: t("guests.columns.location") },
+  { accessorKey: "reservation", header: "Reservation" },
   { accessorKey: "actions", header: t("guests.columns.actions") },
-]);
-
-const idTypeOptions = computed(() => [
-  { value: "all", label: t("guests.allIdTypes") },
-  { value: "passport", label: t("idTypes.passport") },
-  { value: "national_id", label: t("idTypes.nationalId") },
-  { value: "driver_license", label: t("idTypes.driverLicense") },
-  { value: "other", label: t("idTypes.other") },
 ]);
 
 const guests = ref<GuestRow[]>([]);
@@ -156,7 +125,6 @@ const page = ref(1);
 
 const filters = reactive({
   search: "",
-  idType: "",
 });
 
 const pagination = reactive({
@@ -184,8 +152,6 @@ const fetchGuests = async () => {
     params.append("limit", pagination.limit.toString());
 
     if (filters.search) params.append("search", filters.search);
-    if (filters.idType && filters.idType !== "all") params.append("idType", filters.idType);
-
     const response = await $fetch(`/api/guests?${params.toString()}`);
     guests.value = response.data;
     pagination.total = response.pagination.total;
@@ -199,20 +165,8 @@ const fetchGuests = async () => {
 
 const clearFilters = () => {
   filters.search = "";
-  filters.idType = "";
   pagination.page = 1;
   fetchGuests();
-};
-
-const formatIdType = (idType: string | null): string => {
-  if (!idType) return "";
-  const types: Record<string, string> = {
-    passport: t("idTypes.passport"),
-    national_id: t("idTypes.nationalId"),
-    driver_license: t("idTypes.driverLicense"),
-    other: t("idTypes.other"),
-  };
-  return types[idType] || idType;
 };
 
 onMounted(fetchGuests);
