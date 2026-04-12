@@ -2,7 +2,10 @@
   <div>
     <div class="mb-6">
       <UButton variant="ghost" to="/reservations" class="mb-4">
-        <UIcon name="i-lucide-arrow-left" class="mr-2" />{{ t('reservations.back_to_reservations') }}</UButton>
+        <UIcon name="i-lucide-arrow-left" class="mr-2" />{{
+          t("reservations.back_to_reservations")
+        }}</UButton
+      >
       <div class="flex items-center justify-between">
         <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
           Reservation #{{ reservation?.id }}
@@ -30,7 +33,7 @@
         <!-- Guest & Room Info -->
         <UCard>
           <template #header>
-            <h3 class="text-lg font-semibold">{{ t('reservations.reservation_details') }}</h3>
+            <h3 class="text-lg font-semibold">{{ t("reservations.reservation_details") }}</h3>
           </template>
           <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
             <!-- Guest Info -->

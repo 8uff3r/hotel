@@ -2,8 +2,13 @@
   <div>
     <div class="mb-6">
       <UButton variant="ghost" to="/accounting/expenses" class="mb-4">
-        <UIcon name="i-lucide-arrow-left" class="mr-2" />{{ t('accounting.back_to_expenses') }}</UButton>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('accounting.record_expense') }}</h1>
+        <UIcon name="i-lucide-arrow-left" class="mr-2" />{{
+          t("accounting.back_to_expenses")
+        }}</UButton
+      >
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+        {{ t("accounting.record_expense") }}
+      </h1>
     </div>
 
     <UCard>
@@ -40,7 +45,12 @@
           </UFormField>
 
           <!-- Description -->
-          <UFormField :label="t('common.description')" name="description" required class="md:col-span-2">
+          <UFormField
+            :label="t('common.description')"
+            name="description"
+            required
+            class="md:col-span-2"
+          >
             <UInput
               v-model="form.description"
               :placeholder="t('accounting.expense_description')"
@@ -50,7 +60,11 @@
 
           <!-- Vendor -->
           <UFormField :label="t('accounting.vendor')" name="vendor">
-            <UInput v-model="form.vendor" :placeholder="t('accounting.vendor_supplier_name')" :disabled="loading" />
+            <UInput
+              v-model="form.vendor"
+              :placeholder="t('accounting.vendor_supplier_name')"
+              :disabled="loading"
+            />
           </UFormField>
 
           <!-- Reference -->
@@ -73,7 +87,11 @@
 
           <!-- Receipt Number -->
           <UFormField :label="t('accounting.receipt_number')" name="receiptNumber">
-            <UInput v-model="form.receiptNumber" :placeholder="t('accounting.receipt_number_2')" :disabled="loading" />
+            <UInput
+              v-model="form.receiptNumber"
+              :placeholder="t('accounting.receipt_number_2')"
+              :disabled="loading"
+            />
           </UFormField>
 
           <!-- Notes -->
@@ -88,8 +106,12 @@
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton variant="outline" to="/accounting/expenses" :disabled="loading">{{ t('common.cancel') }}</UButton>
-          <UButton type="submit" color="error" :loading="loading">{{ t('accounting.record_expense') }}</UButton>
+          <UButton variant="outline" to="/accounting/expenses" :disabled="loading">{{
+            t("common.cancel")
+          }}</UButton>
+          <UButton type="submit" color="error" :loading="loading">{{
+            t("accounting.record_expense")
+          }}</UButton>
         </div>
       </form>
     </UCard>

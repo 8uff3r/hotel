@@ -34,9 +34,9 @@
       <UCard>
         <template #header>
           <div class="flex items-center justify-between">
-            <span class="text-sm font-medium text-gray-500 dark:text-gray-400"
-              >{{ t("dashboard.todaysRevenue") }}</span
-            >
+            <span class="text-sm font-medium text-gray-500 dark:text-gray-400">{{
+              t("dashboard.todaysRevenue")
+            }}</span>
             <UIcon name="i-lucide-dollar-sign" class="h-5 w-5 text-gray-400" />
           </div>
         </template>
@@ -47,9 +47,9 @@
       <UCard>
         <template #header>
           <div class="flex items-center justify-between">
-            <span class="text-sm font-medium text-gray-500 dark:text-gray-400"
-              >{{ t("dashboard.checkInsToday") }}</span
-            >
+            <span class="text-sm font-medium text-gray-500 dark:text-gray-400">{{
+              t("dashboard.checkInsToday")
+            }}</span>
             <UIcon name="i-lucide-log-in" class="h-5 w-5 text-gray-400" />
           </div>
         </template>
@@ -63,7 +63,9 @@
         <template #header>
           <div class="flex items-center justify-between">
             <h2 class="text-lg font-semibold">{{ t("dashboard.recentReservations") }}</h2>
-            <UButton variant="ghost" size="sm" to="/reservations">{{ t("actions.viewAll") }}</UButton>
+            <UButton variant="ghost" size="sm" to="/reservations">{{
+              t("actions.viewAll")
+            }}</UButton>
           </div>
         </template>
         <div class="space-y-4">
@@ -74,7 +76,9 @@
           >
             <div>
               <p class="font-medium">{{ t("dashboard.sampleGuest") }}</p>
-              <p class="text-sm text-gray-500">{{ t("dashboard.roomLabel", { number: 100 + i }) }}</p>
+              <p class="text-sm text-gray-500">
+                {{ t("dashboard.roomLabel", { number: 100 + i }) }}
+              </p>
             </div>
             <div class="text-right">
               <UBadge color="success" variant="soft">{{ t("statuses.confirmed") }}</UBadge>

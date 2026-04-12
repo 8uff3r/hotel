@@ -3,11 +3,17 @@
     <div class="mb-6 flex items-center justify-between">
       <div>
         <UButton to="/parking" variant="ghost" size="sm" class="mb-2">
-          <UIcon name="i-lucide-arrow-left" class="mr-1" />{{ t('parking.back_to_parking') }}</UButton>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('parking.vehicles') }}</h1>
+          <UIcon name="i-lucide-arrow-left" class="mr-1" />{{
+            t("parking.back_to_parking")
+          }}</UButton
+        >
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+          {{ t("parking.vehicles") }}
+        </h1>
       </div>
       <UButton to="/parking/vehicles/create" color="primary">
-        <UIcon name="i-lucide-plus" class="mr-2" />{{ t('parking.add_vehicle') }}</UButton>
+        <UIcon name="i-lucide-plus" class="mr-2" />{{ t("parking.add_vehicle") }}</UButton
+      >
     </div>
 
     <UCard class="mb-4">
@@ -26,14 +32,14 @@
           class="w-full sm:w-40"
           @change="fetchVehicles"
         />
-        <UButton variant="outline" @click="clearFilters">{{ t('common.clear') }}</UButton>
+        <UButton variant="outline" @click="clearFilters">{{ t("common.clear") }}</UButton>
       </div>
     </UCard>
 
     <UCard>
       <template #header>
         <div class="flex items-center justify-between">
-          <span class="text-lg font-semibold">{{ t('parking.registered_vehicles') }}</span>
+          <span class="text-lg font-semibold">{{ t("parking.registered_vehicles") }}</span>
           <span class="text-sm text-gray-500">{{ pagination.total }} vehicles</span>
         </div>
       </template>

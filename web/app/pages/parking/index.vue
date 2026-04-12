@@ -1,14 +1,18 @@
 <template>
   <div>
     <div class="mb-6">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('parking.parking_management') }}</h1>
-      <p class="mt-1 text-gray-500 dark:text-gray-400">{{ t('parking.manage_parking_lots_spots_and_transactions') }}</p>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+        {{ t("parking.parking_management") }}
+      </h1>
+      <p class="mt-1 text-gray-500 dark:text-gray-400">
+        {{ t("parking.manage_parking_lots_spots_and_transactions") }}
+      </p>
     </div>
 
     <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-4">
       <UCard>
         <template #header>
-          <span class="text-sm text-gray-500">{{ t('parking.total_lots') }}</span>
+          <span class="text-sm text-gray-500">{{ t("parking.total_lots") }}</span>
         </template>
         <div class="text-3xl font-bold">{{ stats?.lots }}</div>
       </UCard>
@@ -115,7 +119,7 @@ const lots = ref<any[]>([]);
 const recentTransactions = ref<any[]>([]);
 
 const { data: stats } = useAsyncData(async () => {
-  const res = await $fetch<ParkingStats>("/api/parking/stats");
+  const res = await $api<ParkingStats>("/api/parking/stats");
   return res;
 });
 

@@ -41,7 +41,9 @@
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-lg font-semibold">{{ t("users.list") }}</span>
-          <span class="text-sm text-gray-500">{{ t("users.count", { count: pagination.total }) }}</span>
+          <span class="text-sm text-gray-500">{{
+            t("users.count", { count: pagination.total })
+          }}</span>
         </div>
       </template>
 
@@ -99,7 +101,9 @@
       <template #footer>
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-500">
-            {{ t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages }) }}
+            {{
+              t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages })
+            }}
           </span>
           <UPagination
             v-model="page"

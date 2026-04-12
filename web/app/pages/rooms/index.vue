@@ -41,7 +41,9 @@
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-lg font-semibold">{{ t("rooms.list") }}</span>
-          <span class="text-sm text-gray-500">{{ t("rooms.count", { count: pagination.total }) }}</span>
+          <span class="text-sm text-gray-500">{{
+            t("rooms.count", { count: pagination.total })
+          }}</span>
         </div>
       </template>
 
@@ -73,7 +75,9 @@
           {{ row.original.floor ?? "-" }}
         </template>
 
-        <template #capacity-cell="{ row }"> {{ t("rooms.capacityValue", { count: row.original.capacity }) }} </template>
+        <template #capacity-cell="{ row }">
+          {{ t("rooms.capacityValue", { count: row.original.capacity }) }}
+        </template>
 
         <template #actions-cell="{ row }">
           <div class="flex items-center gap-2">
@@ -90,7 +94,9 @@
       <template #footer>
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-500">
-            {{ t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages }) }}
+            {{
+              t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages })
+            }}
           </span>
           <UPagination
             v-model="page"
@@ -112,8 +118,12 @@
       </template>
       <template #footer>
         <div class="flex justify-end gap-3">
-          <UButton variant="outline" @click="deleteModalOpen = false">{{ t("actions.cancel") }}</UButton>
-          <UButton color="error" :loading="deleting" @click="deleteRoom">{{ t("actions.delete") }}</UButton>
+          <UButton variant="outline" @click="deleteModalOpen = false">{{
+            t("actions.cancel")
+          }}</UButton>
+          <UButton color="error" :loading="deleting" @click="deleteRoom">{{
+            t("actions.delete")
+          }}</UButton>
         </div>
       </template>
     </UModal>

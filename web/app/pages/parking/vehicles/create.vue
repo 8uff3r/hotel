@@ -2,8 +2,13 @@
   <div>
     <div class="mb-6">
       <UButton to="/parking/vehicles" variant="ghost" size="sm" class="mb-2">
-        <UIcon name="i-lucide-arrow-left" class="mr-1" />{{ t('parking.back_to_vehicles') }}</UButton>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('parking.register_vehicle') }}</h1>
+        <UIcon name="i-lucide-arrow-left" class="mr-1" />{{
+          t("parking.back_to_vehicles")
+        }}</UButton
+      >
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+        {{ t("parking.register_vehicle") }}
+      </h1>
     </div>
 
     <UCard>
@@ -15,7 +20,7 @@
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">{{ t('common.guest') }}</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("common.guest") }}</label>
             <USelect
               v-model="form.guestId"
               :items="guestOptions"
@@ -26,39 +31,47 @@
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">{{ t('parking.vehicle_type') }}</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.vehicle_type") }}</label>
             <USelect v-model="form.vehicleType" :items="typeOptions" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">{{ t('parking.make') }}</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.make") }}</label>
             <UInput v-model="form.make" :placeholder="t('parking.toyota')" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">{{ t('parking.model') }}</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.model") }}</label>
             <UInput v-model="form.model" :placeholder="t('parking.camry')" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">{{ t('parking.color') }}</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.color") }}</label>
             <UInput v-model="form.color" :placeholder="t('parking.silver')" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">{{ t('parking.is_registered') }}</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.is_registered") }}</label>
             <UCheckbox v-model="form.isRegistered" :label="t('parking.registered_vehicle')" />
           </div>
 
           <div class="md:col-span-2">
-            <label class="mb-1 block text-sm font-medium">{{ t('common.notes') }}</label>
-            <UTextarea v-model="form.notes" :placeholder="t('parking.additional_details')" :rows="3" />
+            <label class="mb-1 block text-sm font-medium">{{ t("common.notes") }}</label>
+            <UTextarea
+              v-model="form.notes"
+              :placeholder="t('parking.additional_details')"
+              :rows="3"
+            />
           </div>
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton type="button" variant="outline" to="/parking/vehicles">{{ t('common.cancel') }}</UButton>
-          <UButton type="submit" color="primary" :loading="loading">{{ t('parking.register') }}</UButton>
+          <UButton type="button" variant="outline" to="/parking/vehicles">{{
+            t("common.cancel")
+          }}</UButton>
+          <UButton type="submit" color="primary" :loading="loading">{{
+            t("parking.register")
+          }}</UButton>
         </div>
       </form>
     </UCard>

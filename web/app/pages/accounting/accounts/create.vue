@@ -2,8 +2,13 @@
   <div>
     <div class="mb-6">
       <UButton variant="ghost" to="/accounting/accounts" class="mb-4">
-        <UIcon name="i-lucide-arrow-left" class="mr-2" />{{ t('accounting.back_to_accounts') }}</UButton>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('accounting.add_new_account') }}</h1>
+        <UIcon name="i-lucide-arrow-left" class="mr-2" />{{
+          t("accounting.back_to_accounts")
+        }}</UButton
+      >
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+        {{ t("accounting.add_new_account") }}
+      </h1>
     </div>
 
     <UCard>
@@ -55,14 +60,18 @@
           <UFormField :label="t('common.status')" name="isActive">
             <div class="flex items-center gap-2">
               <UCheckbox v-model="form.isActive" :disabled="loading" />
-              <span class="text-sm text-gray-600">{{ t('accounting.active_account') }}</span>
+              <span class="text-sm text-gray-600">{{ t("accounting.active_account") }}</span>
             </div>
           </UFormField>
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton variant="outline" to="/accounting/accounts" :disabled="loading">{{ t('common.cancel') }}</UButton>
-          <UButton type="submit" color="primary" :loading="loading">{{ t('accounting.create_account') }}</UButton>
+          <UButton variant="outline" to="/accounting/accounts" :disabled="loading">{{
+            t("common.cancel")
+          }}</UButton>
+          <UButton type="submit" color="primary" :loading="loading">{{
+            t("accounting.create_account")
+          }}</UButton>
         </div>
       </form>
     </UCard>

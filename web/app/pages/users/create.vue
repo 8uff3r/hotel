@@ -6,7 +6,9 @@
           <UIcon name="i-lucide-arrow-left" class="mr-1" />
           {{ t("actions.backToUsers") }}
         </UButton>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t("users.createTitle") }}</h1>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+          {{ t("users.createTitle") }}
+        </h1>
       </div>
     </div>
 
@@ -15,7 +17,12 @@
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <label class="mb-1 block text-sm font-medium">{{ t("forms.emailRequired") }}</label>
-            <UInput v-model="form.email" type="email" :placeholder="t('users.create.emailPlaceholder')" required />
+            <UInput
+              v-model="form.email"
+              type="email"
+              :placeholder="t('users.create.emailPlaceholder')"
+              required
+            />
           </div>
 
           <div>
@@ -30,12 +37,20 @@
 
           <div>
             <label class="mb-1 block text-sm font-medium">{{ t("forms.firstNameRequired") }}</label>
-            <UInput v-model="form.firstName" :placeholder="t('forms.firstNamePlaceholder')" required />
+            <UInput
+              v-model="form.firstName"
+              :placeholder="t('forms.firstNamePlaceholder')"
+              required
+            />
           </div>
 
           <div>
             <label class="mb-1 block text-sm font-medium">{{ t("forms.lastNameRequired") }}</label>
-            <UInput v-model="form.lastName" :placeholder="t('forms.lastNamePlaceholder')" required />
+            <UInput
+              v-model="form.lastName"
+              :placeholder="t('forms.lastNamePlaceholder')"
+              required
+            />
           </div>
 
           <div class="md:col-span-2">

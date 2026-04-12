@@ -2,8 +2,13 @@
   <div>
     <div class="mb-6">
       <UButton to="/parking/lots" variant="ghost" size="sm" class="mb-2">
-        <UIcon name="i-lucide-arrow-left" class="mr-1" />{{ t('parking.back_to_parking_lots') }}</UButton>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('parking.parking_lot_details') }}</h1>
+        <UIcon name="i-lucide-arrow-left" class="mr-1" />{{
+          t("parking.back_to_parking_lots")
+        }}</UButton
+      >
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+        {{ t("parking.parking_lot_details") }}
+      </h1>
     </div>
 
     <div v-if="loading" class="flex justify-center py-12">
@@ -14,7 +19,7 @@
       <div class="grid-colsgrid-cols-3 gap-6-1 md: mb-6 grid">
         <UCard>
           <template #header>
-            <span class="text-sm text-gray-500">{{ t('parking.total_spots') }}</span>
+            <span class="text-sm text-gray-500">{{ t("parking.total_spots") }}</span>
           </template>
           <div class="text-3xl font-bold">{{ parkingLot.totalSpots }}</div>
         </UCard>

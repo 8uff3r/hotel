@@ -2,7 +2,8 @@
   <div>
     <div class="mb-6">
       <UButton variant="ghost" to="/rooms" class="mb-4">
-        <UIcon name="i-lucide-arrow-left" class="mr-2" />{{ t('rooms.back_to_rooms') }}</UButton>
+        <UIcon name="i-lucide-arrow-left" class="mr-2" />{{ t("rooms.back_to_rooms") }}</UButton
+      >
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Room {{ room?.roomNumber }}</h1>
     </div>
 
@@ -17,7 +18,7 @@
           <UCard>
             <template #header>
               <div class="flex items-center justify-between">
-                <span class="text-lg font-semibold">{{ t('common.room_details') }}</span>
+                <span class="text-lg font-semibold">{{ t("common.room_details") }}</span>
                 <UBadge :color="getStatusColor(room.status)" variant="soft">
                   {{ room.status }}
                 </UBadge>
@@ -72,7 +73,11 @@
                 </UFormField>
 
                 <!-- Description -->
-                <UFormField :label="t('common.description')" name="description" class="md:col-span-2">
+                <UFormField
+                  :label="t('common.description')"
+                  name="description"
+                  class="md:col-span-2"
+                >
                   <UTextarea
                     v-model="form.description"
                     :placeholder="t('rooms.room_description')"

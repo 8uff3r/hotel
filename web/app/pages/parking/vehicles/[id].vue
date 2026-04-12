@@ -2,8 +2,13 @@
   <div>
     <div class="mb-6">
       <UButton to="/parking/vehicles" variant="ghost" size="sm" class="mb-2">
-        <UIcon name="i-lucide-arrow-left" class="mr-1" />{{ t('parking.back_to_vehicles') }}</UButton>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('parking.vehicle_details') }}</h1>
+        <UIcon name="i-lucide-arrow-left" class="mr-1" />{{
+          t("parking.back_to_vehicles")
+        }}</UButton
+      >
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+        {{ t("parking.vehicle_details") }}
+      </h1>
     </div>
 
     <div v-if="loading" class="flex justify-center py-12">
@@ -13,7 +18,7 @@
     <UCard v-else-if="vehicle">
       <template #header>
         <div class="flex items-center justify-between">
-          <span class="font-semibold">{{ t('parking.edit_vehicle') }}</span>
+          <span class="font-semibold">{{ t("parking.edit_vehicle") }}</span>
           <UBadge :color="vehicle.isRegistered ? 'success' : 'warning'" variant="soft">
             {{ vehicle.isRegistered ? "Registered" : "Guest" }}
           </UBadge>

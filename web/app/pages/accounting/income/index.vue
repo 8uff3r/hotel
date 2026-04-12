@@ -2,9 +2,10 @@ hotel/app/pages/accounting/income/index.vue ``` ```vue
 <template>
   <div>
     <div class="mb-6 flex items-center justify-between">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('accounting.income') }}</h1>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t("accounting.income") }}</h1>
       <UButton to="/accounting/income/create" color="success">
-        <UIcon name="i-lucide-plus" class="mr-2" />{{ t('accounting.record_income') }}</UButton>
+        <UIcon name="i-lucide-plus" class="mr-2" />{{ t("accounting.record_income") }}</UButton
+      >
     </div>
 
     <!-- Filters -->
@@ -47,7 +48,7 @@ hotel/app/pages/accounting/income/index.vue ``` ```vue
             @change="fetchIncome"
           />
         </div>
-        <UButton variant="outline" @click="clearFilters">{{ t('common.clear') }}</UButton>
+        <UButton variant="outline" @click="clearFilters">{{ t("common.clear") }}</UButton>
       </div>
     </UCard>
 
@@ -55,7 +56,7 @@ hotel/app/pages/accounting/income/index.vue ``` ```vue
     <UCard>
       <template #header>
         <div class="flex items-center justify-between">
-          <span class="text-lg font-semibold">{{ t('accounting.income_records') }}</span>
+          <span class="text-lg font-semibold">{{ t("accounting.income_records") }}</span>
           <span class="text-sm text-gray-500">{{ pagination.total }} records</span>
         </div>
       </template>

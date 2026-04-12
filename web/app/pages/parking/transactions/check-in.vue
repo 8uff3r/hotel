@@ -2,14 +2,19 @@
   <div>
     <div class="mb-6">
       <UButton to="/parking/transactions" variant="ghost" size="sm" class="mb-2">
-        <UIcon name="i-lucide-arrow-left" class="mr-1" />{{ t('parking.back_to_transactions') }}</UButton>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t('parking.check_in_vehicle') }}</h1>
+        <UIcon name="i-lucide-arrow-left" class="mr-1" />{{
+          t("parking.back_to_transactions")
+        }}</UButton
+      >
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+        {{ t("parking.check_in_vehicle") }}
+      </h1>
     </div>
 
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
       <UCard>
         <template #header>
-          <span class="font-semibold">{{ t('parking.vehicle_check_in') }}</span>
+          <span class="font-semibold">{{ t("parking.vehicle_check_in") }}</span>
         </template>
 
         <form @submit.prevent="checkIn">

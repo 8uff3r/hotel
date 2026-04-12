@@ -14,7 +14,11 @@ hotel/app/pages/rooms/create.vue#L1-120
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
           <!-- Room Number -->
           <UFormField :label="t('rooms.roomNumber')" name="roomNumber" required>
-            <UInput v-model="form.roomNumber" :placeholder="t('rooms.roomNumberPlaceholder')" :disabled="loading" />
+            <UInput
+              v-model="form.roomNumber"
+              :placeholder="t('rooms.roomNumberPlaceholder')"
+              :disabled="loading"
+            />
           </UFormField>
 
           <!-- Room Type -->
@@ -81,8 +85,12 @@ hotel/app/pages/rooms/create.vue#L1-120
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton variant="outline" to="/rooms" :disabled="loading"> {{ t("actions.cancel") }} </UButton>
-          <UButton type="submit" color="primary" :loading="loading"> {{ t("rooms.createRoom") }} </UButton>
+          <UButton variant="outline" to="/rooms" :disabled="loading">
+            {{ t("actions.cancel") }}
+          </UButton>
+          <UButton type="submit" color="primary" :loading="loading">
+            {{ t("rooms.createRoom") }}
+          </UButton>
         </div>
       </form>
     </UCard>

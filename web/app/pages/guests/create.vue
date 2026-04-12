@@ -10,7 +10,7 @@
 
     <UCard>
       <form @submit.prevent="handleSubmit">
-        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           <UFormField label="Room Number" name="roomNumber">
             <UInput v-model="form.roomNumber" :disabled="loading" />
           </UFormField>
@@ -62,7 +62,12 @@
             <UInput v-model="form.dateOfBirth" :disabled="loading" />
           </UFormField>
           <UFormField label="Number of People" name="numberOfPeople">
-            <UInput v-model.number="form.numberOfPeople" type="number" min="1" :disabled="loading" />
+            <UInput
+              v-model.number="form.numberOfPeople"
+              type="number"
+              min="1"
+              :disabled="loading"
+            />
           </UFormField>
           <UFormField label="Guest Type" name="guestType">
             <UInput v-model="form.guestType" :disabled="loading" />
@@ -133,8 +138,12 @@
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton variant="outline" to="/guests" :disabled="loading">{{ t("actions.cancel") }}</UButton>
-          <UButton type="submit" color="primary" :loading="loading">{{ t("guests.createGuest") }}</UButton>
+          <UButton variant="outline" to="/guests" :disabled="loading">{{
+            t("actions.cancel")
+          }}</UButton>
+          <UButton type="submit" color="primary" :loading="loading">{{
+            t("guests.createGuest")
+          }}</UButton>
         </div>
       </form>
     </UCard>

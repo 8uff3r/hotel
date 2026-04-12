@@ -30,7 +30,8 @@
           <UInput
             v-model="form.password"
             type="password"
-            :placeholder="t('login.passwordPlaceholder')"
+            dir="ltr"
+            placeholder="******"
             icon="i-lucide-lock"
             size="lg"
             class="w-full"
@@ -49,10 +50,11 @@
         </UButton>
       </form>
 
-      <template v-if="authError" #footer>
-        <UAlert color="error" variant="soft">
+      <template #footer>
+        <UAlert v-if="authError" color="error" variant="soft">
           {{ authError }}
         </UAlert>
+        <HLangSwitcher class="w-full" />
       </template>
     </UCard>
   </div>
