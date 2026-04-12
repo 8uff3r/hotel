@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: "2025-07-15",
+  compatibilityDate: "2026-04-12",
   devtools: { enabled: true },
 
   modules: [
@@ -10,20 +10,20 @@ export default defineNuxtConfig({
     "@nuxt/fonts",
     "@pinia/nuxt",
     "@nuxtjs/i18n",
-    // "@nuxthub/core",
+    "@vueuse/nuxt",
     "pinia-plugin-persistedstate/nuxt",
   ],
 
   i18n: {
     baseUrl: "",
-    detectBrowserLanguage: false,
     defaultLocale: "fa",
     defaultDirection: "rtl",
+    detectBrowserLanguage: false,
     strategy: "no_prefix",
     langDir: "locales",
     locales: [
-      { code: "fa", dir: "rtl", file: "fa.json" },
-      { code: "en", dir: "ltr", file: "en.json" },
+      { code: "fa", dir: "rtl", file: "fa.json", name: "فارسی" },
+      { code: "en", dir: "ltr", file: "en.json", name: "English" },
       // { code: "ar", dir: "rtl", file: "ar.json" },
     ],
   },
@@ -52,21 +52,6 @@ export default defineNuxtConfig({
     fallbackToApi: false,
     size: "16px",
   },
-
-  // hub: {
-  //   // Database configuration - PostgreSQL with PGlite for local development
-  //   db: {
-  //     applyMigrationsDuringBuild: false,
-  //     dialect: "postgresql",
-  //     casing: "snake_case",
-  //   },
-  //   // Enable blob storage for file uploads
-  //   blob: true,
-  //   // Enable KV storage for caching
-  //   kv: true,
-  //   // Enable cache
-  //   cache: true,
-  // },
 
   vite: {
     server: {
@@ -99,7 +84,7 @@ export default defineNuxtConfig({
 
     // Public runtime config
     public: {
-      hotelName: process.env.NUXT_PUBLIC_HOTEL_NAME || "Hotel Management System",
+      hotelName: process.env.NUXT_PUBLIC_HOTEL_NAME || "HMS",
       backendUrl: process.env.BACKEND_URL || "http://127.0.0.1:8080",
     },
   },
