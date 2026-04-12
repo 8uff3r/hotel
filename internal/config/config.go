@@ -26,7 +26,7 @@ type Config struct {
 func Load() (Config, error) {
 	cfg := Config{
 		Addr:            getEnv("APP_ADDR", ":8080"),
-		DBPath:          getEnv("DB_PATH", "./data/hotel.db"),
+		DBPath:          getEnv("DB_PATH", "postgres://hotel_user:hotel_password@localhost:5432/hotel_db?sslmode=disable"),
 		SessionCookie:   getEnv("SESSION_COOKIE", "auth_session"),
 		SessionTTL:      getDuration("SESSION_TTL_HOURS", 24*time.Hour),
 		RequestTimeout:  getDuration("REQUEST_TIMEOUT_SECONDS", 15*time.Second),
