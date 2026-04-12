@@ -52,46 +52,46 @@ func seed[T any](db *gorm.DB, defaultValues []T) error {
 }
 
 func seedAmenities(db *gorm.DB) {
-	amenityTranslations := Translations["Amenity"]
+	t := Translations["Amenity"]
 
 	amenities := []models.Amenity{
-		{Name: "WiFi", Translation: amenityTranslations["WiFi"]},
-		{Name: "TV", Translation: amenityTranslations["TV"]},
-		{Name: "Air Conditioning", Translation: amenityTranslations["Air Conditioning"]},
-		{Name: "Mini Bar", Translation: amenityTranslations["Mini Bar"]},
-		{Name: "Safe", Translation: amenityTranslations["Safe"]},
-		{Name: "Ocean View", Translation: amenityTranslations["Ocean View"]},
-		{Name: "City View", Translation: amenityTranslations["City View"]},
-		{Name: "Balcony", Translation: amenityTranslations["Balcony"]},
-		{Name: "Jacuzzi", Translation: amenityTranslations["Jacuzzi"]},
-		{Name: "Room Service", Translation: amenityTranslations["Room Service"]},
+		{Name: "WiFi", Translation: t["WiFi"]},
+		{Name: "TV", Translation: t["TV"]},
+		{Name: "Air Conditioning", Translation: t["Air Conditioning"]},
+		{Name: "Mini Bar", Translation: t["Mini Bar"]},
+		{Name: "Safe", Translation: t["Safe"]},
+		{Name: "Ocean View", Translation: t["Ocean View"]},
+		{Name: "City View", Translation: t["City View"]},
+		{Name: "Balcony", Translation: t["Balcony"]},
+		{Name: "Jacuzzi", Translation: t["Jacuzzi"]},
+		{Name: "Room Service", Translation: t["Room Service"]},
 	}
 
 	seed(db, amenities)
 }
 
 func seedParkingSpotTypes(db *gorm.DB) {
-	parkingTypeTranslations := Translations["ParkingSpotType"]
+	t := Translations["ParkingSpotType"]
 
 	types := []models.ParkingSpotType{
-		{Name: "Standard", Translation: parkingTypeTranslations["Standard"]},
-		{Name: "Handicap", Translation: parkingTypeTranslations["Handicap"]},
-		{Name: "Electric", Translation: parkingTypeTranslations["Electric"]},
-		{Name: "Compact", Translation: parkingTypeTranslations["Compact"]},
-		{Name: "Large", Translation: parkingTypeTranslations["Large"]},
+		{Name: "Standard", Translation: t["Standard"]},
+		{Name: "Handicap", Translation: t["Handicap"]},
+		{Name: "Electric", Translation: t["Electric"]},
+		{Name: "Compact", Translation: t["Compact"]},
+		{Name: "Large", Translation: t["Large"]},
 	}
 
 	seed(db, types)
 }
 
 func seedParkingSpotStatuses(db *gorm.DB) {
-	statusTranslations := Translations["ParkingSpotStatus"]
+	t := Translations["ParkingSpotStatus"]
 
 	statuses := []models.ParkingSpotStatus{
-		{Name: "Available", Translation: statusTranslations["Available"]},
-		{Name: "Occupied", Translation: statusTranslations["Occupied"]},
-		{Name: "Reserved", Translation: statusTranslations["Reserved"]},
-		{Name: "Maintenance", Translation: statusTranslations["Maintenance"]},
+		{Name: "Available", Translation: t["Available"]},
+		{Name: "Occupied", Translation: t["Occupied"]},
+		{Name: "Reserved", Translation: t["Reserved"]},
+		{Name: "Maintenance", Translation: t["Maintenance"]},
 	}
 
 	seed(db, statuses)

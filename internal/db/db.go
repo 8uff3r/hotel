@@ -12,10 +12,6 @@ import (
 )
 
 func Open(path string) (*gorm.DB, error) {
-	// if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
-	// 	return nil, fmt.Errorf("create db dir: %w", err)
-	// }
-
 	db, err := gorm.Open(postgres.Open(path), &gorm.Config{
 		PrepareStmt: true,
 		Logger:      logger.Default.LogMode(logger.Warn),
