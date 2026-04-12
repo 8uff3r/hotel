@@ -1,44 +1,35 @@
 package db
 
 import (
+	"encoding/json"
 	"fmt"
 	"hotel/backend/internal/models"
+	"log"
+
+	_ "embed"
 
 	"gorm.io/gorm"
 )
 
-func Seed(db *gorm.DB) {
+//go:embed translations.json
+var translationsFile []byte
 
+var Translations map[string]map[string]models.Translation
+
+func init() {
+	println(len(translationsFile))
+	err := json.Unmarshal(translationsFile, &Translations)
+	if err != nil {
+		log.Fatalf("failed to load translations: %v", err)
+	}
+}
+func Seed(db *gorm.DB) {
 	if err := db.AutoMigrate(models.AllPtr()...); err != nil {
 		panic(fmt.Sprintf("auto migrate: %s", err))
 	}
-	seed(db, []models.Amenity{
-		{Name: "WiFi", NameFa: "وای‌فای"},
-		{Name: "TV", NameFa: "تلویزیون"},
-		{Name: "Air Conditioning", NameFa: "تهویه مطبوع"},
-		{Name: "Mini Bar", NameFa: "مینی‌بار"},
-		{Name: "Safe", NameFa: "صندوق امانات"},
-		{Name: "Ocean View", NameFa: "نمای دریا"},
-		{Name: "City View", NameFa: "نمای شهر"},
-		{Name: "Balcony", NameFa: "بالکن"},
-		{Name: "Jacuzzi", NameFa: "جکوزی"},
-		{Name: "Room Service", NameFa: "سرویس اتاق"},
-	})
-
-	seed(db, []models.ParkingSpotType{
-		{Name: "Standard", NameFa: "استاندارد"},
-		{Name: "Handicap", NameFa: "مخصوص معلولین"},
-		{Name: "Electric", NameFa: "شارژ خودرو برقی"},
-		{Name: "Compact", NameFa: "خودرو کوچک"},
-		{Name: "Large", NameFa: "خودرو بزرگ"},
-	})
-
-	seed(db, []models.ParkingSpotStatus{
-		{Name: "Available", NameFa: "در دسترس"},
-		{Name: "Occupied", NameFa: "اشغال شده"},
-		{Name: "Reserved", NameFa: "رزرو شده"},
-		{Name: "Maintenance", NameFa: "در حال تعمیر"},
-	})
+	seedAmenities(db)
+	seedParkingSpotStatuses(db)
+	seedParkingSpotTypes(db)
 }
 
 func seed[T any](db *gorm.DB, defaultValues []T) error {
@@ -58,4 +49,50 @@ func seed[T any](db *gorm.DB, defaultValues []T) error {
 	db.CreateInBatches(defaultValues, 100)
 
 	return nil
+}
+
+func seedAmenities(db *gorm.DB) {
+	amenityTranslations := Translations["Amenity"]
+
+	amenities := []models.Amenity{
+		{Name: "WiFi", Translation: amenityTranslations["WiFi"]},
+		{Name: "TV", Translation: amenityTranslations["TV"]},
+		{Name: "Air Conditioning", Translation: amenityTranslations["Air Conditioning"]},
+		{Name: "Mini Bar", Translation: amenityTranslations["Mini Bar"]},
+		{Name: "Safe", Translation: amenityTranslations["Safe"]},
+		{Name: "Ocean View", Translation: amenityTranslations["Ocean View"]},
+		{Name: "City View", Translation: amenityTranslations["City View"]},
+		{Name: "Balcony", Translation: amenityTranslations["Balcony"]},
+		{Name: "Jacuzzi", Translation: amenityTranslations["Jacuzzi"]},
+		{Name: "Room Service", Translation: amenityTranslations["Room Service"]},
+	}
+
+	seed(db, amenities)
+}
+
+func seedParkingSpotTypes(db *gorm.DB) {
+	parkingTypeTranslations := Translations["ParkingSpotType"]
+
+	types := []models.ParkingSpotType{
+		{Name: "Standard", Translation: parkingTypeTranslations["Standard"]},
+		{Name: "Handicap", Translation: parkingTypeTranslations["Handicap"]},
+		{Name: "Electric", Translation: parkingTypeTranslations["Electric"]},
+		{Name: "Compact", Translation: parkingTypeTranslations["Compact"]},
+		{Name: "Large", Translation: parkingTypeTranslations["Large"]},
+	}
+
+	seed(db, types)
+}
+
+func seedParkingSpotStatuses(db *gorm.DB) {
+	statusTranslations := Translations["ParkingSpotStatus"]
+
+	statuses := []models.ParkingSpotStatus{
+		{Name: "Available", Translation: statusTranslations["Available"]},
+		{Name: "Occupied", Translation: statusTranslations["Occupied"]},
+		{Name: "Reserved", Translation: statusTranslations["Reserved"]},
+		{Name: "Maintenance", Translation: statusTranslations["Maintenance"]},
+	}
+
+	seed(db, statuses)
 }

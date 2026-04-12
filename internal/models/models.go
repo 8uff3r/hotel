@@ -55,28 +55,33 @@ type Room struct {
 	Status      string    `gorm:"not null;default:available" json:"status"`
 	Amenities   []Amenity `gorm:"many2many:room_amenities;" json:"amenities"`
 	Description string    `json:"description"`
+
+	GuestID uint `gorm:"not null;index" json:"guestId"`
 }
+
+type Translation map[string]string
 
 type Amenity struct {
 	Base
-	Name   string `json:"name"`
-	NameFa string `json:"nameFa"`
+	Name        string      `json:"name"`
+	Translation Translation `gorm:"type:jsonb" json:"translation"`
 }
 
 type ParkingSpotType struct {
 	Base
-	Name   string `json:"name"`
-	NameFa string `json:"nameFa"`
+	Name        string      `json:"name"`
+	Translation Translation `gorm:"type:jsonb" json:"translation"`
 }
 
 type ParkingSpotStatus struct {
 	Base
-	Name   string `json:"name"`
-	NameFa string `json:"nameFa"`
+	Name        string      `json:"name"`
+	Translation Translation `gorm:"type:jsonb" json:"translation"`
 }
 
 type Guest struct {
 	ID           uint      `gorm:"primaryKey" json:"id"`
+	HotelID      *uint     `json:"hotelId"`
 	FirstName    string    `gorm:"not null" json:"firstName"`
 	LastName     string    `gorm:"not null" json:"lastName"`
 	FatherName   string    `json:"fatherName"`
@@ -91,7 +96,7 @@ type Guest struct {
 	PostalCode   string    `json:"postalCode"`
 	Occupation   string    `json:"occupation"`
 
-	Stays []Reservation `gorm:"foreignKey:GuestID" json:"stays,omitempty"`
+	Reservations []Reservation `gorm:"foreignKey:GuestID" json:"stays,omitempty"`
 }
 
 type Reservation struct {

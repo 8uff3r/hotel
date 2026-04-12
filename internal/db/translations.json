@@ -1,0 +1,29 @@
+{
+  "Amenity": {
+    "WiFi": { "fa": "وای‌فای" },
+    "TV": { "fa": "تلویزیون" },
+    "Air Conditioning": { "fa": "تهویه مطبوع" },
+    "Mini Bar": { "fa": "مینی‌بار" },
+    "Safe": { "fa": "گاوصندوق" },
+    "Ocean View": { "fa": "نمای اقیانوس" },
+    "City View": { "fa": "نمای شهر" },
+    "Balcony": { "fa": "بالکن" },
+    "Jacuzzi": { "fa": "جکوزی" },
+    "Room Service": { "fa": "سرویس اتاق" }
+  },
+
+  "ParkingSpotType": {
+    "Standard": { "fa": "استاندارد" },
+    "Handicap": { "fa": "مخصوص معلولین" },
+    "Electric": { "fa": "شارژ خودرو برقی" },
+    "Compact": { "fa": "خودرو کوچک" },
+    "Large": { "fa": "خودرو بزرگ" }
+  },
+
+  "ParkingSpotStatus": {
+    "Available": { "fa": "در دسترس" },
+    "Occupied": { "fa": "اشغال شده" },
+    "Reserved": { "fa": "رزرو شده" },
+    "Maintenance": { "fa": "در حال تعمیر" }
+  }
+}

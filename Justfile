@@ -1,5 +1,8 @@
 [parallel]
-dev: backend-dev frontend-dev
+dev: db-dev backend-dev frontend-dev
+
+db-dev:
+    docker compose up -d
 
 backend-dev:
 	air
@@ -20,4 +23,4 @@ gen:
     go run "internal/gen/typescript.go" && cd web && bun run fmt
 
 seed:
-    go run cmd/server seed
+    go run ./cmd/server seed
