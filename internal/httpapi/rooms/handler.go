@@ -1,9 +1,9 @@
 package rooms
 
 import (
-	h "hotel/backend/internal/httpapi"
-	"hotel/backend/internal/models"
-	"hotel/backend/internal/repository"
+	h "hotel/internal/httpapi"
+	"hotel/internal/models"
+	"hotel/internal/repository"
 
 	"github.com/go-chi/chi/v5"
 )

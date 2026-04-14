@@ -1,9 +1,9 @@
 package parking
 
 import (
-	h "hotel/backend/internal/httpapi"
-	"hotel/backend/internal/models"
-	"hotel/backend/internal/service"
+	h "hotel/internal/httpapi"
+	"hotel/internal/models"
+	"hotel/internal/service"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"

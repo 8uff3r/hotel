@@ -4,8 +4,8 @@ import (
 	"log/slog"
 	"net/http"
 
-	"hotel/backend/internal/repository"
-	"hotel/backend/internal/service"
+	"hotel/internal/repository"
+	"hotel/internal/service"
 )
 
 func (a *API) ListModel(model any, opts *repository.ListOptions) http.HandlerFunc {

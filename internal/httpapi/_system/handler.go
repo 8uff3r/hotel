@@ -1,7 +1,7 @@
 package system
 
 import (
-	h "hotel/backend/internal/httpapi"
+	h "hotel/internal/httpapi"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"

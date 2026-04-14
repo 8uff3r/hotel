@@ -1,7 +1,7 @@
 package auth
 
 import (
-	h "hotel/backend/internal/httpapi"
+	h "hotel/internal/httpapi"
 	"net/http"
 )
 

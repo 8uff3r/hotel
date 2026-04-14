@@ -3,7 +3,7 @@ package db
 import (
 	"encoding/json"
 	"fmt"
-	"hotel/backend/internal/models"
+	"hotel/internal/models"
 	"log"
 
 	_ "embed"
@@ -17,7 +17,6 @@ var translationsFile []byte
 var Translations map[string]map[string]models.Translation
 
 func init() {
-	println(len(translationsFile))
 	err := json.Unmarshal(translationsFile, &Translations)
 	if err != nil {
 		log.Fatalf("failed to load translations: %v", err)

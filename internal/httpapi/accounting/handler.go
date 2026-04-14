@@ -1,8 +1,8 @@
 package accounting
 
 import (
-	h "hotel/backend/internal/httpapi"
-	"hotel/backend/internal/models"
+	h "hotel/internal/httpapi"
+	"hotel/internal/models"
 
 	"github.com/go-chi/chi/v5"
 )

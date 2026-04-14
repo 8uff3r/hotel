@@ -1,7 +1,7 @@
 package main
 
 import (
-	"hotel/backend/internal/models"
+	"hotel/internal/models"
 	"log"
 	"os"
 	"strings"

@@ -4,9 +4,9 @@ import (
 	"log"
 	"log/slog"
 
-	app "hotel/backend"
-	"hotel/backend/internal/config"
-	"hotel/backend/internal/db"
+	app "hotel/app"
+	"hotel/internal/config"
+	"hotel/internal/db"
 
 	"github.com/spf13/cobra"
 )

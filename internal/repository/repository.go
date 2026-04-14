@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"hotel/backend/internal/models"
+	"hotel/internal/models"
 
 	"gorm.io/gorm"
 )

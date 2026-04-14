@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
-	"hotel/backend/internal/service"
+	"hotel/internal/service"
 )
 
 type API struct {

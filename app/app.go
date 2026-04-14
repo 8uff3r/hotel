@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	spa "hotel"
 	"log/slog"
 	"net/http"
 	"os"
@@ -11,12 +12,12 @@ import (
 	"syscall"
 	"time"
 
-	"hotel/backend/internal/config"
-	"hotel/backend/internal/db"
-	"hotel/backend/internal/httpapi"
-	"hotel/backend/internal/models"
-	"hotel/backend/internal/repository"
-	"hotel/backend/internal/service"
+	"hotel/internal/config"
+	"hotel/internal/db"
+	"hotel/internal/httpapi"
+	"hotel/internal/models"
+	"hotel/internal/repository"
+	"hotel/internal/service"
 
 	"github.com/go-chi/chi/v5"
 	"golang.org/x/crypto/bcrypt"
@@ -56,7 +57,7 @@ func New(cfg config.Config) (*App, error) {
 	}
 	handler := NewRouter(&api, r)
 
-	notFoundHandlerFunc := SPAHandler()
+	notFoundHandlerFunc := spa.SPAHandler()
 	r.NotFound(notFoundHandlerFunc.ServeHTTP)
 
 	server := &http.Server{

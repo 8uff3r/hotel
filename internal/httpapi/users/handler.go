@@ -1,8 +1,8 @@
 package users
 
 import (
-	h "hotel/backend/internal/httpapi"
-	"hotel/backend/internal/models"
+	h "hotel/internal/httpapi"
+	"hotel/internal/models"
 	"net/http"
 	"strings"
 

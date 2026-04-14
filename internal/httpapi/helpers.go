@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"hotel/backend/internal/models"
+	"hotel/internal/models"
 )
 
 func newPtr(model any) any {

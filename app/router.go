@@ -5,15 +5,15 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	h "hotel/backend/internal/httpapi"
-	system "hotel/backend/internal/httpapi/_system"
-	"hotel/backend/internal/httpapi/accounting"
-	"hotel/backend/internal/httpapi/auth"
-	"hotel/backend/internal/httpapi/guests"
-	"hotel/backend/internal/httpapi/parking"
-	"hotel/backend/internal/httpapi/reservation"
-	"hotel/backend/internal/httpapi/rooms"
-	"hotel/backend/internal/httpapi/users"
+	h "hotel/internal/httpapi"
+	system "hotel/internal/httpapi/_system"
+	"hotel/internal/httpapi/accounting"
+	"hotel/internal/httpapi/auth"
+	"hotel/internal/httpapi/guests"
+	"hotel/internal/httpapi/parking"
+	"hotel/internal/httpapi/reservation"
+	"hotel/internal/httpapi/rooms"
+	"hotel/internal/httpapi/users"
 )
 
 func NewRouter(a *h.API, r *chi.Mux) http.Handler {

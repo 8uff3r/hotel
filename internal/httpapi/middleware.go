@@ -3,7 +3,7 @@ package httpapi
 import (
 	"context"
 	"errors"
-	"hotel/backend/internal/models"
+	"hotel/internal/models"
 	"net/http"
 	"time"
 )

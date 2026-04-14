@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"hotel/backend/internal/models"
+	"hotel/internal/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

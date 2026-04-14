@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"hotel/backend/internal/models"
-	"hotel/backend/internal/repository"
+	"hotel/internal/models"
+	"hotel/internal/repository"
 
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
