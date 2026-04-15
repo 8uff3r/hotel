@@ -12,7 +12,7 @@
 import { useAuthStore } from "~/stores/auth";
 import { fa_ir, en } from "@nuxt/ui/locale";
 
-const { localeProperties, locale: localeCode } = useI18n();
+const { localeProperties, locale: localeCode, setLocale } = useI18n();
 
 const dir = computed(() => (localeProperties.value.dir as "ltr" | "rtl") ?? "ltr");
 const locale = computed(() => (localeCode.value === "en" ? en : fa_ir));
@@ -23,6 +23,8 @@ onMounted(() => {
   const localeInStorage = localStorage.getItem("language");
   if (!localeInStorage) {
     localStorage.setItem("language", localeCode.value);
+  } else if (localeInStorage === "fa" || localeInStorage === "en") {
+    setLocale(localeInStorage);
   }
 });
 </script>
