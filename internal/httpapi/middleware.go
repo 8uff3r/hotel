@@ -6,9 +6,10 @@ import (
 	"hotel/internal/models"
 	"net/http"
 	"time"
+
+	"gorm.io/gorm"
 )
 
-// Wraps the request in a timeout context
 func (a *API) TimeoutMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx, cancel := context.WithTimeout(r.Context(), a.RequestTimeout)
@@ -59,11 +60,15 @@ func (a *API) sessionUser(r *http.Request) (map[string]any, error) {
 	if err != nil || cookie.Value == "" {
 		return nil, errors.New("missing session")
 	}
-	user, err := a.Services.Auth.Me(r.Context(), cookie.Value)
-	if err != nil {
+
+	var s models.Session
+	if err := a.Db.WithContext(r.Context()).Preload("User").Where("id = ? AND expires_at > ?", cookie.Value, time.Now().UTC()).First(&s).Error; err != nil {
 		return nil, err
 	}
-	return SanitizeUser(user), nil
+	if !s.User.IsActive {
+		return nil, gorm.ErrRecordNotFound
+	}
+	return SanitizeUser(&s.User), nil
 }
 
 func SanitizeUser(u *models.User) map[string]any {

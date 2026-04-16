@@ -2,19 +2,22 @@ package httpapi
 
 import (
 	"encoding/json"
-	"log/slog"
+	"errors"
 	"net/http"
-
-	"hotel/internal/repository"
-	"hotel/internal/service"
+	"reflect"
 
 	"github.com/go-playground/validator/v10"
+	"gorm.io/gorm"
 )
 
-func (a *API) ListModel(model any, opts *repository.ListOptions) http.HandlerFunc {
+func (a *API) ListModel(model any, preload []string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		out := newSlicePtr(model)
-		if err := a.Services.Crud.List(r.Context(), model, out, opts); err != nil {
+		db := a.Db.WithContext(r.Context()).Model(model)
+		for _, v := range preload {
+			db = db.Preload(v)
+		}
+		if err := db.Order("id DESC").Find(out).Error; err != nil {
 			WriteErr(w, 500, "query_failed")
 			return
 		}
@@ -24,39 +27,33 @@ func (a *API) ListModel(model any, opts *repository.ListOptions) http.HandlerFun
 
 var validate = validator.New()
 
-func BindAndValidate[T any](model T, w http.ResponseWriter, r *http.Request) (T, error) {
-	// Decode JSON
-	if err := json.NewDecoder(r.Body).Decode(&model); err != nil {
+func BindAndValidate[T any](model *T, w http.ResponseWriter, r *http.Request) error {
+	if err := json.NewDecoder(r.Body).Decode(model); err != nil {
 		WriteErr(w, http.StatusBadRequest, err.Error())
-		return model, err
+		return err
 	}
-
-	// Run validation
 	if err := validate.Struct(model); err != nil {
 		WriteErr(w, http.StatusBadRequest, err.Error())
-		return model, err
+		return err
 	}
-
-	return model, nil
+	return nil
 }
 
 func (a *API) CreateModel(model any) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		v, err := BindAndValidate(model, w, r)
+		err := BindAndValidate(&model, w, r)
 		if err != nil {
-			slog.Error("", err)
 			return
 		}
-		if err := a.Services.Crud.Create(r.Context(), v); err != nil {
-			slog.Error("%s", err)
+		if err := a.Db.WithContext(r.Context()).Create(model).Error; err != nil {
 			WriteErr(w, 400, "create_failed")
 			return
 		}
-		WriteJSON(w, 201, v)
+		WriteJSON(w, 201, model)
 	}
 }
 
-func (a *API) GetModel(model any, opts *repository.GetOptions) http.HandlerFunc {
+func (a *API) GetModel(model any, preload []string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id, err := ParseID(r.PathValue("id"))
 		if err != nil {
@@ -64,8 +61,12 @@ func (a *API) GetModel(model any, opts *repository.GetOptions) http.HandlerFunc 
 			return
 		}
 		entity := newPtr(model)
-		if err := a.Services.Crud.GetByID(r.Context(), model, id, entity, opts); err != nil {
-			if service.IsNotFound(err) {
+		db := a.Db.WithContext(r.Context()).Model(model)
+		for _, v := range preload {
+			db = db.Preload(v)
+		}
+		if err := db.First(entity, id).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
 				WriteErr(w, 404, "not_found")
 				return
 			}
@@ -83,17 +84,20 @@ func (a *API) UpdateModel(model any) http.HandlerFunc {
 			WriteErr(w, 400, "invalid_id")
 			return
 		}
-		updates, err := BindAndValidate(model, w, r)
+		err = BindAndValidate(&model, w, r)
 		if err != nil {
 			return
 		}
-		delete(updates, "id")
-		if err := a.Services.Crud.UpdateByID(r.Context(), model, id, updates); err != nil {
-			if service.IsNotFound(err) {
-				WriteErr(w, 404, "not_found")
-				return
-			}
+		modelValue := reflect.ValueOf(model).Elem()
+		modelValue.FieldByName("ID").SetUint(uint64(id))
+
+		res := a.Db.WithContext(r.Context()).Model(model).Where("id = ?", id).Updates(model)
+		if res.Error != nil {
 			WriteErr(w, 400, "update_failed")
+			return
+		}
+		if res.RowsAffected == 0 {
+			WriteErr(w, 404, "not_found")
 			return
 		}
 		WriteJSON(w, 200, map[string]bool{"ok": true})
@@ -107,12 +111,13 @@ func (a *API) DeleteModel(model any) http.HandlerFunc {
 			WriteErr(w, 400, "invalid_id")
 			return
 		}
-		if err := a.Services.Crud.DeleteByID(r.Context(), model, id); err != nil {
-			if service.IsNotFound(err) {
-				WriteErr(w, 404, "not_found")
-				return
-			}
+		res := a.Db.WithContext(r.Context()).Delete(model, id)
+		if res.Error != nil {
 			WriteErr(w, 500, "delete_failed")
+			return
+		}
+		if res.RowsAffected == 0 {
+			WriteErr(w, 404, "not_found")
 			return
 		}
 		WriteJSON(w, 200, map[string]bool{"ok": true})

@@ -100,63 +100,63 @@
                 class="mt-2 grid grid-cols-1 gap-6 rounded-md p-4 ring ring-accented/40 ring-inset md:grid-cols-3"
               >
                 <UFormField :label="t('guest.roomId')">
-                  <UInput v-model.number="reservation.roomId" type="number" min="1" />
+                  <UInput v-model.number="reservation?.roomId" type="number" min="1" />
                 </UFormField>
 
                 <UFormField :label="t('guest.reservationCode')">
-                  <UInput v-model="reservation.reservationCode" />
+                  <UInput v-model="reservation?.reservationCode" />
                 </UFormField>
 
                 <UFormField :label="t('guest.entryDate')" required>
-                  <UInput type="date" v-model="reservation.entryDate" />
+                  <UInput type="date" v-model="reservation?.entryDate" />
                 </UFormField>
 
                 <UFormField :label="t('guest.departureDate')">
-                  <UInput type="date" v-model="reservation.departureDate" />
+                  <UInput type="date" v-model="reservation?.departureDate" />
                 </UFormField>
 
                 <UFormField :label="t('guest.numberOfPeople')">
-                  <UInput type="number" min="1" v-model.number="reservation.numberOfPeople" />
+                  <UInput type="number" min="1" v-model.number="reservation?.numberOfPeople" />
                 </UFormField>
 
                 <UFormField :label="t('guest.durationOfStay')">
-                  <UInput type="number" min="1" v-model.number="reservation.durationOfStay" />
+                  <UInput type="number" min="1" v-model.number="reservation?.durationOfStay" />
                 </UFormField>
 
                 <UFormField :label="t('guest.origin')">
-                  <UInput v-model="reservation.origin" />
+                  <UInput v-model="reservation?.origin" />
                 </UFormField>
 
                 <UFormField :label="t('guest.destination')">
-                  <UInput v-model="reservation.destination" />
+                  <UInput v-model="reservation?.destination" />
                 </UFormField>
 
                 <UFormField :label="t('guest.purposeOfTravel')">
-                  <UInput v-model="reservation.purposeOfTravel" />
+                  <UInput v-model="reservation?.purposeOfTravel" />
                 </UFormField>
 
                 <UFormField :label="t('guest.roomPrice')">
-                  <UInput type="number" min="0" v-model.number="reservation.roomPrice" />
+                  <UInput type="number" min="0" v-model.number="reservation?.roomPrice" />
                 </UFormField>
 
                 <UFormField :label="t('guest.breakfast')">
-                  <UCheckbox v-model="reservation.breakfast" />
+                  <UCheckbox v-model="reservation?.breakfast" />
                 </UFormField>
 
                 <UFormField :label="t('guest.guide')">
-                  <UCheckbox v-model="reservation.guide" />
+                  <UCheckbox v-model="reservation?.guide" />
                 </UFormField>
 
                 <UFormField :label="t('guest.checkInUser')">
-                  <UInput v-model="reservation.userCheckIn" />
+                  <UInput v-model="reservation?.userCheckIn" />
                 </UFormField>
 
                 <UFormField :label="t('guest.checkOutUser')">
-                  <UInput v-model="reservation.userCheckOut" />
+                  <UInput v-model="reservation?.userCheckOut" />
                 </UFormField>
 
                 <UFormField :label="t('guest.notes')" class="md:col-span-3">
-                  <UTextarea v-model="reservation.notes" :rows="3" class="w-full" />
+                  <UTextarea v-model="reservation?.notes" :rows="3" class="w-full" />
                 </UFormField>
               </div>
             </template>
@@ -179,19 +179,19 @@
                 class="mt-2 grid grid-cols-1 gap-6 rounded-md p-4 ring ring-accented/40 ring-inset md:grid-cols-2"
               >
                 <UFormField :label="t('guest.cash')">
-                  <UCheckbox v-model="payment.isCash" />
+                  <UCheckbox v-model="payment?.isCash" />
                 </UFormField>
 
                 <UFormField :label="t('guest.agency')">
-                  <UCheckbox v-model="payment.agency" />
+                  <UCheckbox v-model="payment?.agency" />
                 </UFormField>
 
                 <UFormField :label="t('guest.referrer')">
-                  <UInput v-model="payment.referrer" />
+                  <UInput v-model="payment?.referrer" />
                 </UFormField>
 
                 <UFormField :label="t('guest.contractType')">
-                  <UInput v-model="payment.contractType" />
+                  <UInput v-model="payment?.contractType" />
                 </UFormField>
               </div>
             </template>
@@ -218,23 +218,23 @@
             {{ guest.lastName }}
           </div>
           <div>
-            <strong>{{ t("guest.summaryDates") }}:</strong> {{ reservation.entryDate }} →
-            {{ reservation.departureDate }}
+            <strong>{{ t("guest.summaryDates") }}:</strong> {{ reservation?.entryDate }} →
+            {{ reservation?.departureDate }}
           </div>
           <div>
-            <strong>{{ t("guest.roomId") }}:</strong> {{ reservation.roomId }}
+            <strong>{{ t("guest.roomId") }}:</strong> {{ reservation?.roomId }}
           </div>
           <div>
-            <strong>{{ t("guest.summaryPeople") }}:</strong> {{ reservation.numberOfPeople }}
+            <strong>{{ t("guest.summaryPeople") }}:</strong> {{ reservation?.numberOfPeople }}
           </div>
           <div>
-            <strong>{{ t("guest.summaryPrice") }}:</strong> {{ reservation.roomPrice }}
+            <strong>{{ t("guest.summaryPrice") }}:</strong> {{ reservation?.roomPrice }}
             {{ t("guest.perNight") }}
           </div>
           <div>
             <strong>{{ t("guest.payment") }}:</strong>
-            <span v-if="payment.isCash">{{ t("guest.cash") }}</span>
-            <span v-else-if="payment.agency">{{ t("guest.agency") }}</span>
+            <span v-if="payment?.isCash">{{ t("guest.cash") }}</span>
+            <span v-else-if="payment?.agency">{{ t("guest.agency") }}</span>
             <span v-else>{{ t("guest.unspecified") }}</span>
           </div>
         </div>
@@ -245,9 +245,28 @@
 
 <script setup lang="ts">
 const { t } = useI18n();
+import { z } from "zod/v4";
 const loading = ref(false);
 
-const guest = reactive({
+const guestSchema = z.object({
+  firstName: z.string(),
+  lastName: z.string(),
+  fatherName: z.string(),
+  nationalId: z.string(),
+  idNumber: z.string(),
+  nationality: z.string(),
+  gender: z.string(),
+  dateOfBirth: z.string(),
+  placeOfBirth: z.string(),
+  phone: z.string(),
+  address: z.string(),
+  postalCode: z.string(),
+  occupation: z.string(),
+});
+
+type Guest = z.output<typeof guestSchema>;
+
+const guest = reactive<Guest>({
   firstName: "",
   lastName: "",
   fatherName: "",
@@ -263,8 +282,30 @@ const guest = reactive({
   occupation: "",
 });
 
-const reservation = reactive({
-  roomId: null,
+const reservationSchema = z
+  .object({
+    roomId: z.number().optional(),
+    reservationCode: z.string(),
+    entryDate: z.string(),
+    departureDate: z.string(),
+    durationOfStay: z.number(),
+    numberOfPeople: z.number(),
+    origin: z.string(),
+    destination: z.string(),
+    purposeOfTravel: z.string(),
+    breakfast: z.boolean(),
+    guide: z.boolean,
+    roomPrice: z.number(),
+    userCheckIn: z.string(),
+    userCheckOut: z.string(),
+    notes: z.string(),
+  })
+  .optional();
+
+type Reservation = z.output<typeof reservationSchema>;
+
+const reservation = ref<Reservation>({
+  roomId: undefined,
   reservationCode: "",
   entryDate: "",
   departureDate: "",
@@ -281,7 +322,18 @@ const reservation = reactive({
   notes: "",
 });
 
-const payment = reactive({
+const paymentSchema = z
+  .object({
+    isCash: z.boolean(),
+    agency: z.boolean(),
+    referrer: z.string(),
+    contractType: z.string(),
+  })
+  .optional();
+
+type Payment = z.output<typeof paymentSchema>;
+
+const payment = ref<Payment>({
   isCash: false,
   agency: false,
   referrer: "",

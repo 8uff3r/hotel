@@ -23,7 +23,7 @@ func (m UsersModule) RegisterRoutes(api *h.API, r chi.Router) {
 
 func (u *UsersModule) usersList(w http.ResponseWriter, r *http.Request) {
 	var rows []models.User
-	if err := u.Services.Crud.List(r.Context(), &models.User{}, &rows, nil); err != nil {
+	if err := u.Db.WithContext(r.Context()).Model(&models.User{}).Order("id DESC").Find(&rows).Error; err != nil {
 		h.WriteErr(w, 500, "query_failed")
 		return
 	}
@@ -67,7 +67,7 @@ func (u *UsersModule) usersCreate(w http.ResponseWriter, r *http.Request) {
 	if v, ok := in["isActive"].(bool); ok {
 		user.IsActive = v
 	}
-	if err := u.Services.Crud.Create(r.Context(), user); err != nil {
+	if err := u.Db.WithContext(r.Context()).Create(user).Error; err != nil {
 		h.WriteErr(w, 400, "create_failed")
 		return
 	}

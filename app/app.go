@@ -16,8 +16,6 @@ import (
 	"hotel/internal/db"
 	"hotel/internal/httpapi"
 	"hotel/internal/models"
-	"hotel/internal/repository"
-	"hotel/internal/service"
 
 	"github.com/go-chi/chi/v5"
 	"golang.org/x/crypto/bcrypt"
@@ -43,16 +41,12 @@ func New(cfg config.Config) (*App, error) {
 		return nil, err
 	}
 
-	repos := repository.New(database)
-	svcs := service.New(repos, cfg.SessionTTL)
-
 	r := chi.NewRouter()
 	api := httpapi.API{
 		Logger:         logger,
 		SessionCookie:  cfg.SessionCookie,
 		RequestTimeout: cfg.RequestTimeout,
 		Db:             database,
-		Services:       svcs,
 		SessionTTL:     cfg.SessionTTL,
 	}
 	handler := NewRouter(&api, r)
@@ -69,7 +63,7 @@ func New(cfg config.Config) (*App, error) {
 	}
 
 	jobsCtx, cancel := context.WithCancel(context.Background())
-	go cleanupExpiredSessions(jobsCtx, repos.Auth, logger)
+	go cleanupExpiredSessions(jobsCtx, database, logger)
 
 	return &App{cfg: cfg, db: database, server: server, logger: logger, stopJobs: cancel}, nil
 }
@@ -136,7 +130,7 @@ func ensureAdmin(db *gorm.DB, cfg config.Config) error {
 	return err
 }
 
-func cleanupExpiredSessions(ctx context.Context, authRepo repository.AuthRepository, logger *slog.Logger) {
+func cleanupExpiredSessions(ctx context.Context, db *gorm.DB, logger *slog.Logger) {
 	ticker := time.NewTicker(10 * time.Minute)
 	defer ticker.Stop()
 	for {
@@ -144,7 +138,7 @@ func cleanupExpiredSessions(ctx context.Context, authRepo repository.AuthReposit
 		case <-ctx.Done():
 			return
 		case <-ticker.C:
-			if err := authRepo.CleanupExpired(ctx); err != nil {
+			if err := db.WithContext(ctx).Delete(&models.Session{}, "expires_at <= ?", time.Now().UTC()).Error; err != nil {
 				logger.Warn("cleanup sessions failed", "err", err.Error())
 			}
 		}

@@ -9,8 +9,6 @@ import (
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-
-	"hotel/internal/service"
 )
 
 type API struct {
@@ -18,7 +16,6 @@ type API struct {
 	Db             *gorm.DB
 	SessionCookie  string
 	RequestTimeout time.Duration
-	Services       service.Services
 	SessionTTL     time.Duration
 }
 
