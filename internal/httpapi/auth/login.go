@@ -15,7 +15,7 @@ import (
 
 func (a *AuthModule) loginHandler(w http.ResponseWriter, r *http.Request) {
 	var req struct{ Email, Password string }
-	if err := h.Decode(r, &req, w); err != nil {
+	if err := h.Decode(&req, r, w); err != nil {
 		return
 	}
 	user, sid, expires, err := a.login(r.Context(), req.Email, req.Password)

@@ -66,19 +66,6 @@ func newSlicePtr(model any) any {
 	}
 }
 
-func normalizeUpdates(in map[string]any) {
-	for k, v := range in {
-		nk := k
-		if !strings.ContainsRune(k, '_') {
-			nk = camelToSnake(k)
-		}
-		if nk != k {
-			delete(in, k)
-			in[nk] = v
-		}
-	}
-}
-
 func camelToSnake(s string) string {
 	var b strings.Builder
 	for i, r := range s {
@@ -98,7 +85,7 @@ func ParseID(raw string) (uint, error) {
 	return uint(id), nil
 }
 
-func Decode[T any](r *http.Request, dst T, w http.ResponseWriter) error {
+func Decode[T any](dst T, r *http.Request, w http.ResponseWriter) error {
 	defer r.Body.Close()
 	dec := json.NewDecoder(r.Body)
 	// dec.DisallowUnknownFields()

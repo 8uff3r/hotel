@@ -36,7 +36,7 @@ func (u *UsersModule) usersList(w http.ResponseWriter, r *http.Request) {
 
 func (u *UsersModule) usersCreate(w http.ResponseWriter, r *http.Request) {
 	var in map[string]any
-	if err := h.Decode(r, &in, w); err != nil {
+	if err := h.Decode(&in, r, w); err != nil {
 		return
 	}
 	email, _ := in["email"].(string)

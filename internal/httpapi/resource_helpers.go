@@ -1,11 +1,14 @@
 package httpapi
 
 import (
+	"encoding/json"
 	"log/slog"
 	"net/http"
 
 	"hotel/internal/repository"
 	"hotel/internal/service"
+
+	"github.com/go-playground/validator/v10"
 )
 
 func (a *API) ListModel(model any, opts *repository.ListOptions) http.HandlerFunc {
@@ -19,19 +22,37 @@ func (a *API) ListModel(model any, opts *repository.ListOptions) http.HandlerFun
 	}
 }
 
+var validate = validator.New()
+
+func BindAndValidate[T any](model T, w http.ResponseWriter, r *http.Request) (T, error) {
+	// Decode JSON
+	if err := json.NewDecoder(r.Body).Decode(&model); err != nil {
+		WriteErr(w, http.StatusBadRequest, err.Error())
+		return model, err
+	}
+
+	// Run validation
+	if err := validate.Struct(model); err != nil {
+		WriteErr(w, http.StatusBadRequest, err.Error())
+		return model, err
+	}
+
+	return model, nil
+}
+
 func (a *API) CreateModel(model any) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		entity := newPtr(model)
-		if err := Decode(r, entity, w); err != nil {
+		v, err := BindAndValidate(model, w, r)
+		if err != nil {
 			slog.Error("", err)
 			return
 		}
-		if err := a.Services.Crud.Create(r.Context(), entity); err != nil {
+		if err := a.Services.Crud.Create(r.Context(), v); err != nil {
 			slog.Error("%s", err)
 			WriteErr(w, 400, "create_failed")
 			return
 		}
-		WriteJSON(w, 201, entity)
+		WriteJSON(w, 201, v)
 	}
 }
 
@@ -62,12 +83,11 @@ func (a *API) UpdateModel(model any) http.HandlerFunc {
 			WriteErr(w, 400, "invalid_id")
 			return
 		}
-		updates := map[string]any{}
-		if err := Decode(r, &updates, w); err != nil {
+		updates, err := BindAndValidate(model, w, r)
+		if err != nil {
 			return
 		}
 		delete(updates, "id")
-		normalizeUpdates(updates)
 		if err := a.Services.Crud.UpdateByID(r.Context(), model, id, updates); err != nil {
 			if service.IsNotFound(err) {
 				WriteErr(w, 404, "not_found")

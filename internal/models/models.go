@@ -82,7 +82,7 @@ type ParkingSpotStatus struct {
 type Guest struct {
 	ID           uint      `gorm:"primaryKey" json:"id"`
 	HotelID      *uint     `json:"hotelId"`
-	FirstName    string    `gorm:"not null" json:"firstName"`
+	FirstName    string    `gorm:"not null" json:"firstName" validate:"required,min=2,max=50"`
 	LastName     string    `gorm:"not null" json:"lastName"`
 	FatherName   string    `json:"fatherName"`
 	NationalID   string    `gorm:"index" json:"nationalId"`

@@ -213,13 +213,24 @@
         <h2 class="mb-4 text-xl font-semibold">{{ t("guest.reservationSummary") }}</h2>
 
         <div class="space-y-2 text-sm">
-          <div><strong>{{ t("guest.summaryGuest") }}:</strong> {{ guest.firstName }} {{ guest.lastName }}</div>
           <div>
-            <strong>{{ t("guest.summaryDates") }}:</strong> {{ reservation.entryDate }} → {{ reservation.departureDate }}
+            <strong>{{ t("guest.summaryGuest") }}:</strong> {{ guest.firstName }}
+            {{ guest.lastName }}
           </div>
-          <div><strong>{{ t("guest.roomId") }}:</strong> {{ reservation.roomId }}</div>
-          <div><strong>{{ t("guest.summaryPeople") }}:</strong> {{ reservation.numberOfPeople }}</div>
-          <div><strong>{{ t("guest.summaryPrice") }}:</strong> {{ reservation.roomPrice }} {{ t("guest.perNight") }}</div>
+          <div>
+            <strong>{{ t("guest.summaryDates") }}:</strong> {{ reservation.entryDate }} →
+            {{ reservation.departureDate }}
+          </div>
+          <div>
+            <strong>{{ t("guest.roomId") }}:</strong> {{ reservation.roomId }}
+          </div>
+          <div>
+            <strong>{{ t("guest.summaryPeople") }}:</strong> {{ reservation.numberOfPeople }}
+          </div>
+          <div>
+            <strong>{{ t("guest.summaryPrice") }}:</strong> {{ reservation.roomPrice }}
+            {{ t("guest.perNight") }}
+          </div>
           <div>
             <strong>{{ t("guest.payment") }}:</strong>
             <span v-if="payment.isCash">{{ t("guest.cash") }}</span>
@@ -281,7 +292,8 @@ const handleSubmit = async () => {
   loading.value = true;
   try {
     const body = {
-      guest,
+      ...guest,
+      dateOfBirth: new Date(guest.dateOfBirth).toISOString(),
       reservation,
       payment,
     };
