@@ -11,8 +11,17 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxtjs/i18n",
     "@vueuse/nuxt",
+    "nuxt-open-fetch",
     "pinia-plugin-persistedstate/nuxt",
   ],
+
+  openFetch: {
+    clients: {
+      api: {
+        schema: "http://localhost:8080/swagger/openapi.json",
+      },
+    },
+  },
 
   i18n: {
     baseUrl: "",

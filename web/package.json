@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
+    "nuxt-open-fetch": "^0.13.9",
     "oxfmt": "^0.35.0",
     "typescript": "^5.9.3",
     "vue-tsc": "^3.2.5"

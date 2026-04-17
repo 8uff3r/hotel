@@ -100,63 +100,63 @@
                 class="mt-2 grid grid-cols-1 gap-6 rounded-md p-4 ring ring-accented/40 ring-inset md:grid-cols-3"
               >
                 <UFormField :label="t('guest.roomId')">
-                  <UInput v-model.number="reservation?.roomId" type="number" min="1" />
+                  <UInput v-model.number="reservation.roomId" type="number" min="1" />
                 </UFormField>
 
                 <UFormField :label="t('guest.reservationCode')">
-                  <UInput v-model="reservation?.reservationCode" />
+                  <UInput v-model="reservation.reservationCode" />
                 </UFormField>
 
                 <UFormField :label="t('guest.entryDate')" required>
-                  <UInput type="date" v-model="reservation?.entryDate" />
+                  <UInput type="date" v-model="reservation.entryDate" />
                 </UFormField>
 
                 <UFormField :label="t('guest.departureDate')">
-                  <UInput type="date" v-model="reservation?.departureDate" />
+                  <UInput type="date" v-model="reservation.departureDate" />
                 </UFormField>
 
                 <UFormField :label="t('guest.numberOfPeople')">
-                  <UInput type="number" min="1" v-model.number="reservation?.numberOfPeople" />
+                  <UInput type="number" min="1" v-model.number="reservation.numberOfPeople" />
                 </UFormField>
 
                 <UFormField :label="t('guest.durationOfStay')">
-                  <UInput type="number" min="1" v-model.number="reservation?.durationOfStay" />
+                  <UInput type="number" min="1" v-model.number="reservation.durationOfStay" />
                 </UFormField>
 
                 <UFormField :label="t('guest.origin')">
-                  <UInput v-model="reservation?.origin" />
+                  <UInput v-model="reservation.origin" />
                 </UFormField>
 
                 <UFormField :label="t('guest.destination')">
-                  <UInput v-model="reservation?.destination" />
+                  <UInput v-model="reservation.destination" />
                 </UFormField>
 
                 <UFormField :label="t('guest.purposeOfTravel')">
-                  <UInput v-model="reservation?.purposeOfTravel" />
+                  <UInput v-model="reservation.purposeOfTravel" />
                 </UFormField>
 
                 <UFormField :label="t('guest.roomPrice')">
-                  <UInput type="number" min="0" v-model.number="reservation?.roomPrice" />
+                  <UInput type="number" min="0" v-model.number="reservation.roomPrice" />
                 </UFormField>
 
                 <UFormField :label="t('guest.breakfast')">
-                  <UCheckbox v-model="reservation?.breakfast" />
+                  <UCheckbox v-model="reservation.breakfast" />
                 </UFormField>
 
                 <UFormField :label="t('guest.guide')">
-                  <UCheckbox v-model="reservation?.guide" />
+                  <UCheckbox v-model="reservation.guide" />
                 </UFormField>
 
                 <UFormField :label="t('guest.checkInUser')">
-                  <UInput v-model="reservation?.userCheckIn" />
+                  <UInput v-model="reservation.userCheckIn" />
                 </UFormField>
 
                 <UFormField :label="t('guest.checkOutUser')">
-                  <UInput v-model="reservation?.userCheckOut" />
+                  <UInput v-model="reservation.userCheckOut" />
                 </UFormField>
 
                 <UFormField :label="t('guest.notes')" class="md:col-span-3">
-                  <UTextarea v-model="reservation?.notes" :rows="3" class="w-full" />
+                  <UTextarea v-model="reservation.notes" :rows="3" class="w-full" />
                 </UFormField>
               </div>
             </template>
@@ -179,19 +179,19 @@
                 class="mt-2 grid grid-cols-1 gap-6 rounded-md p-4 ring ring-accented/40 ring-inset md:grid-cols-2"
               >
                 <UFormField :label="t('guest.cash')">
-                  <UCheckbox v-model="payment?.isCash" />
+                  <UCheckbox v-model="payment.isCash" />
                 </UFormField>
 
                 <UFormField :label="t('guest.agency')">
-                  <UCheckbox v-model="payment?.agency" />
+                  <UCheckbox v-model="payment.agency" />
                 </UFormField>
 
                 <UFormField :label="t('guest.referrer')">
-                  <UInput v-model="payment?.referrer" />
+                  <UInput v-model="payment.referrer" />
                 </UFormField>
 
                 <UFormField :label="t('guest.contractType')">
-                  <UInput v-model="payment?.contractType" />
+                  <UInput v-model="payment.contractType" />
                 </UFormField>
               </div>
             </template>
@@ -300,27 +300,12 @@ const reservationSchema = z
     userCheckOut: z.string(),
     notes: z.string(),
   })
-  .optional();
+  .or(z.object({}))
+  .default({});
 
 type Reservation = z.output<typeof reservationSchema>;
 
-const reservation = ref<Reservation>({
-  roomId: undefined,
-  reservationCode: "",
-  entryDate: "",
-  departureDate: "",
-  durationOfStay: 1,
-  numberOfPeople: 1,
-  origin: "",
-  destination: "",
-  purposeOfTravel: "",
-  breakfast: false,
-  guide: false,
-  roomPrice: 0,
-  userCheckIn: "",
-  userCheckOut: "",
-  notes: "",
-});
+const reservation = ref<Reservation>({});
 
 const paymentSchema = z
   .object({
@@ -329,16 +314,12 @@ const paymentSchema = z
     referrer: z.string(),
     contractType: z.string(),
   })
-  .optional();
+  .or(z.object({}))
+  .default({});
 
 type Payment = z.output<typeof paymentSchema>;
 
-const payment = ref<Payment>({
-  isCash: false,
-  agency: false,
-  referrer: "",
-  contractType: "",
-});
+const payment = ref<Payment>({});
 
 const handleSubmit = async () => {
   loading.value = true;
@@ -350,7 +331,7 @@ const handleSubmit = async () => {
       payment,
     };
 
-    await $fetch("/api/guests", {
+    await $api("/api/guests/", {
       method: "POST",
       body,
     });

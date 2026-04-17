@@ -156,7 +156,12 @@ const fetchGuests = async () => {
     params.append("limit", pagination.limit.toString());
 
     if (filters.search) params.append("search", filters.search);
-    const response = await $fetch(`/api/guests?${params.toString()}`);
+    const response = await $api("/api/guests/", {
+      query: {
+        page: pagination.page,
+        limit: pagination.limit,
+      },
+    });
     guests.value = response.data;
     pagination.total = response.pagination.total;
     pagination.totalPages = response.pagination.totalPages;
