@@ -15,20 +15,52 @@ type FuegoAnyHandler[T any] = func(fuego.Context[any, any]) (T, error)
 type FuegoHandler[T any, B any, P any] = func(fuego.Context[B, P]) (T, error)
 type Params struct {
 	Limit int `query:"limit"`
-	page  int `query:"page"`
+	Page  int `query:"page"`
 }
 
-func ListModel[T any](db *gorm.DB, model T, preload []string) FuegoHandler[[]T, any, Params] {
-	return func(c fuego.ContextWithParams[Params]) ([]T, error) {
+type PaginatedResponse[T any] struct {
+	Data       []T   `json:"data"`
+	Page       int   `json:"page"`
+	Limit      int   `json:"limit"`
+	Total      int64 `json:"total"`
+	TotalPages int   `json:"totalPages"`
+}
+
+func ListModel[T any](db *gorm.DB, model T, preload []string) FuegoHandler[PaginatedResponse[T], any, Params] {
+	return func(c fuego.ContextWithParams[Params]) (PaginatedResponse[T], error) {
+		page := c.QueryParamInt("page")
+		if page < 1 {
+			page = 1
+		}
+		limit := c.QueryParamInt("limit")
+		if limit < 1 || limit > 100 {
+			limit = 20
+		}
+		offset := (page - 1) * limit
+
 		out := []T{}
-		db = db.WithContext(c).Model(model)
+		q := db.WithContext(c).Model(model)
 		for _, v := range preload {
-			db = db.Preload(v)
+			q = q.Preload(v)
 		}
-		if err := db.Order("id DESC").Find(out).Error; err != nil {
-			return nil, err
+
+		var total int64
+		if err := q.Count(&total).Error; err != nil {
+			return PaginatedResponse[T]{}, err
 		}
-		return out, nil
+
+		if err := q.Order("id DESC").Limit(limit).Offset(offset).Find(&out).Error; err != nil {
+			return PaginatedResponse[T]{}, err
+		}
+
+		totalPages := int((total + int64(limit) - 1) / int64(limit))
+		return PaginatedResponse[T]{
+			Data:       out,
+			Page:       page,
+			Limit:      limit,
+			Total:      total,
+			TotalPages: totalPages,
+		}, nil
 	}
 }
 
