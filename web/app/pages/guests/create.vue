@@ -246,25 +246,10 @@
 <script setup lang="ts">
 const { t } = useI18n();
 import { z } from "zod/v4";
+import { zGuest, zReservation } from "~/utils/client/zod.gen";
 const loading = ref(false);
 
-const guestSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
-  fatherName: z.string(),
-  nationalId: z.string(),
-  idNumber: z.string(),
-  nationality: z.string(),
-  gender: z.string(),
-  dateOfBirth: z.string(),
-  placeOfBirth: z.string(),
-  phone: z.string(),
-  address: z.string(),
-  postalCode: z.string(),
-  occupation: z.string(),
-});
-
-type Guest = z.output<typeof guestSchema>;
+type Guest = z.output<typeof zGuest>;
 
 const guest = reactive<Guest>({
   firstName: "",
@@ -282,30 +267,9 @@ const guest = reactive<Guest>({
   occupation: "",
 });
 
-const reservationSchema = z
-  .object({
-    roomId: z.number().optional(),
-    reservationCode: z.string(),
-    entryDate: z.string(),
-    departureDate: z.string(),
-    durationOfStay: z.number(),
-    numberOfPeople: z.number(),
-    origin: z.string(),
-    destination: z.string(),
-    purposeOfTravel: z.string(),
-    breakfast: z.boolean(),
-    guide: z.boolean,
-    roomPrice: z.number(),
-    userCheckIn: z.string(),
-    userCheckOut: z.string(),
-    notes: z.string(),
-  })
-  .or(z.object({}))
-  .default({});
+type Reservation = z.output<typeof zReservation>;
 
-type Reservation = z.output<typeof reservationSchema>;
-
-const reservation = ref<Reservation>({});
+const reservation = ref<Reservation>({} as any);
 
 const paymentSchema = z
   .object({
@@ -326,13 +290,12 @@ const handleSubmit = async () => {
   try {
     const body = {
       ...guest,
-      dateOfBirth: new Date(guest.dateOfBirth).toISOString(),
-      reservation,
-      payment,
+      dateOfBirth: new Date(guest.dateOfBirth ?? "").toISOString(),
+      reservation: [reservation.value],
+      payment: payment.value,
     };
 
-    await $api("/api/guests/", {
-      method: "POST",
+    await postApiGuests({
       body,
     });
 

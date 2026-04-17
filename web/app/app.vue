@@ -11,6 +11,18 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth";
 import { fa_ir, en } from "@nuxt/ui/locale";
+import { client } from "./utils/client/client.gen";
+
+client.setConfig({
+  onRequest: (ctx) => {
+    ctx.options.headers.set("Accept-Language", localStorage.getItem("language") ?? "fa");
+  },
+  onRequestError: async (ctx) => {
+    if (ctx.response?.status === 401) {
+      await navigateTo("/login");
+    }
+  },
+});
 
 const { localeProperties, locale: localeCode, setLocale } = useI18n();
 

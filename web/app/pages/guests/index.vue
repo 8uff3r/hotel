@@ -50,7 +50,7 @@
         </template>
 
         <template #room-cell="{ row }">
-          {{ row.original.roomNumber || "-" }}
+          {{ row.original.reservation?.roomNumber || "-" }}
         </template>
 
         <template #phone-cell="{ row }">
@@ -97,24 +97,16 @@
 </template>
 
 <script setup lang="ts">
+import type { GetApiGuestsData } from "#imports";
 import type { TableColumn } from "@nuxt/ui";
+import type { Guest } from "~/utils/client";
 
 definePageMeta({
   requiresRole: ["admin", "manager", "receptionist"],
 });
 
-interface GuestRow {
-  id: number;
-  roomNumber: string | null;
-  roomType: string | null;
-  reservationCode: string | null;
-  firstName: string;
-  lastName: string;
-  phone: string | null;
-}
-
 const { t } = useI18n();
-const columns = computed<TableColumn<GuestRow>[]>(() => [
+const columns = computed<TableColumn<Guest>[]>(() => [
   { accessorKey: "id", header: t("guests.columns.id") },
   { accessorKey: "name", header: t("guests.columns.name") },
   { accessorKey: "room", header: "Room" },
@@ -123,7 +115,7 @@ const columns = computed<TableColumn<GuestRow>[]>(() => [
   { accessorKey: "actions", header: t("guests.columns.actions") },
 ]);
 
-const guests = ref<GuestRow[]>([]);
+const guests = ref<Guest[]>([]);
 const loading = ref(false);
 const page = ref(1);
 
@@ -151,20 +143,16 @@ const debouncedSearch = () => {
 const fetchGuests = async () => {
   loading.value = true;
   try {
-    const params = new URLSearchParams();
-    params.append("page", pagination.page.toString());
-    params.append("limit", pagination.limit.toString());
-
-    if (filters.search) params.append("search", filters.search);
-    const response = await $api("/api/guests/", {
+    const response = await getApiGuests({
       query: {
-        page: pagination.page,
         limit: pagination.limit,
+        page: pagination.page,
+        // search: filters.search, // not implemented yet
       },
     });
-    guests.value = response.data;
-    pagination.total = response.pagination.total;
-    pagination.totalPages = response.pagination.totalPages;
+    guests.value = response.data ?? [];
+    pagination.total = response.total ?? 0;
+    pagination.totalPages = response.totalPages ?? 1;
   } catch (error) {
     console.error("Failed to fetch guests:", error);
   } finally {

@@ -11,17 +11,34 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxtjs/i18n",
     "@vueuse/nuxt",
-    "nuxt-open-fetch",
     "pinia-plugin-persistedstate/nuxt",
+    "@hey-api/nuxt",
   ],
 
-  openFetch: {
-    clients: {
-      api: {
-        schema: "http://localhost:8080/swagger/openapi.json",
+  heyApi: {
+    config: {
+      input: {
+        path: "../doc/openapi.json",
       },
+      output: "app/utils/client",
+      plugins: [
+        "zod",
+        "@hey-api/client-nuxt",
+        {
+          name: "@hey-api/sdk",
+          validator: true,
+        },
+      ],
     },
   },
+
+  // openFetch: {
+  //   clients: {
+  //     api: {
+  //       schema: "http://localhost:8080/swagger/openapi.json",
+  //     },
+  //   },
+  // },
 
   i18n: {
     baseUrl: "",
