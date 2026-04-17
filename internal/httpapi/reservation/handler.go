@@ -3,61 +3,57 @@ package reservation
 import (
 	h "hotel/internal/httpapi"
 	"hotel/internal/models"
-	"net/http"
 	"time"
 
-	"github.com/go-chi/chi/v5"
+	"github.com/go-fuego/fuego"
 )
 
 type ReservationModule struct {
 	*h.API
 }
 
-func (m ReservationModule) RegisterRoutes(api *h.API, r chi.Router) {
+func (m ReservationModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	re := ReservationModule{api}
 
-	r.Get("/", api.ListModel(models.Reservation{}, nil))
-	r.Post("/", api.CreateModel(models.Reservation{}))
-	r.Get("/{id}", api.GetModel(models.Reservation{}, nil))
-	r.Put("/{id}", api.UpdateModel(models.Reservation{}))
+	fuego.Get(s, "/", h.ListModel(api.Db, models.Reservation{}, nil))
+	fuego.Post(s, "/", h.CreateModel(api.Db, models.Reservation{}))
+	fuego.Get(s, "/{id}", h.GetModel(api.Db, models.Reservation{}, nil))
+	fuego.Put(s, "/{id}", h.UpdateModel(api.Db, models.Reservation{}))
 
-	r.Post("/{id}/check-in", re.reservationsCheckIn)
-	r.Post("/{id}/check-out", re.reservationsCheckOut)
-
+	fuego.Post(s, "/{id}/check-in", re.reservationsCheckIn)
+	fuego.Post(s, "/{id}/check-out", re.reservationsCheckOut)
 }
 
-func (re *ReservationModule) reservationsCheckIn(w http.ResponseWriter, r *http.Request) {
-	id, err := h.ParseID(r.PathValue("id"))
+type okResponse struct{ ok bool }
+
+func (re *ReservationModule) reservationsCheckIn(c fuego.ContextNoBody) (okResponse, error) {
+	var zero okResponse
+	id, err := h.ParseID(c.PathParam("id"))
 	if err != nil {
-		h.WriteErr(w, 400, "invalid_id")
-		return
+		return zero, fuego.BadRequestError{Title: "invalid_id"}
 	}
-	res := re.Db.WithContext(r.Context()).Model(&models.Reservation{}).Where("id = ?", id).Updates(map[string]any{"status": "checked_in", "actual_check_in": time.Now().UTC()})
+	res := re.Db.WithContext(c).Model(&models.Reservation{}).Where("id = ?", id).Updates(map[string]any{"status": "checked_in", "actual_check_in": time.Now().UTC()})
 	if res.Error != nil {
-		h.WriteErr(w, 500, "update_failed")
-		return
+		return zero, fuego.InternalServerError{Title: "update_failed"}
 	}
 	if res.RowsAffected == 0 {
-		h.WriteErr(w, 404, "not_found")
-		return
+		return zero, fuego.NotFoundError{}
 	}
-	h.WriteJSON(w, 200, map[string]bool{"ok": true})
+	return okResponse{ok: true}, nil
 }
 
-func (re *ReservationModule) reservationsCheckOut(w http.ResponseWriter, r *http.Request) {
-	id, err := h.ParseID(r.PathValue("id"))
+func (re *ReservationModule) reservationsCheckOut(c fuego.ContextNoBody) (okResponse, error) {
+	var zero okResponse
+	id, err := h.ParseID(c.PathParam("id"))
 	if err != nil {
-		h.WriteErr(w, 400, "invalid_id")
-		return
+		return zero, fuego.BadRequestError{Title: "invalid_id"}
 	}
-	res := re.Db.WithContext(r.Context()).Model(&models.Reservation{}).Where("id = ?", id).Updates(map[string]any{"status": "checked_out", "actual_check_out": time.Now().UTC()})
+	res := re.Db.WithContext(c).Model(&models.Reservation{}).Where("id = ?", id).Updates(map[string]any{"status": "checked_out", "actual_check_out": time.Now().UTC()})
 	if res.Error != nil {
-		h.WriteErr(w, 500, "update_failed")
-		return
+		return zero, fuego.InternalServerError{Title: "update_failed"}
 	}
 	if res.RowsAffected == 0 {
-		h.WriteErr(w, 404, "not_found")
-		return
+		return zero, fuego.NotFoundError{}
 	}
-	h.WriteJSON(w, 200, map[string]bool{"ok": true})
+	return okResponse{ok: true}, nil
 }

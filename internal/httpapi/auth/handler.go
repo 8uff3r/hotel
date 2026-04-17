@@ -2,28 +2,25 @@ package auth
 
 import (
 	h "hotel/internal/httpapi"
-	"net/http"
 
-	"github.com/go-chi/chi/v5"
+	"github.com/go-fuego/fuego"
 )
 
 type AuthModule struct {
 	*h.API
 }
 
-func (m AuthModule) RegisterRoutes(api *h.API, r chi.Router) {
+func RegisterRoutes(api *h.API, s *fuego.Server) {
 	au := AuthModule{API: api}
 
-	r.Post("/login", au.loginHandler)
-
-	r.Group(func(r chi.Router) {
-		r.Use(au.Auth)
-		r.Post("/logout", au.logout)
-		r.Get("/me", me)
-	})
+	fuego.Post(s, "/login", au.loginHandler)
+	authRequired := fuego.Group(s, "/")
+	fuego.Use(authRequired, api.Auth)
+	fuego.Post(authRequired, "/logout", au.logout)
+	fuego.Get(authRequired, "/me", me)
 }
 
-func me(w http.ResponseWriter, r *http.Request) {
-	user := r.Context().Value(h.UserKey{})
-	h.WriteJSON(w, 200, map[string]any{"user": user})
+func me(c fuego.ContextNoBody) (map[string]any, error) {
+	user := c.Value(h.UserKey{})
+	return map[string]any{"user": user}, nil
 }

@@ -3,94 +3,87 @@ package parking
 import (
 	h "hotel/internal/httpapi"
 	"hotel/internal/models"
-	"net/http"
 	"time"
 
-	"github.com/go-chi/chi/v5"
+	"github.com/go-fuego/fuego"
 )
 
 type ParkingModule struct {
 	*h.API
 }
 
-func (m ParkingModule) RegisterRoutes(api *h.API, r chi.Router) {
+func (m ParkingModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	p := ParkingModule{api}
 
-	r.Get("/stats", p.parkingStats)
+	fuego.Get(s, "/stats", p.parkingStats)
 
-	r.Route("/lots", func(r chi.Router) {
-		r.Get("/", api.ListModel(models.ParkingLot{}, nil))
-		r.Post("/", api.CreateModel(models.ParkingLot{}))
-		r.Get("/{id}", api.GetModel(models.ParkingLot{}, nil))
-		r.Put("/{id}", api.UpdateModel(models.ParkingLot{}))
-		r.Delete("/{id}", api.DeleteModel(models.ParkingLot{}))
-	})
+	lotsGroup := fuego.Group(s, "/lots")
+	fuego.Get(lotsGroup, "/", h.ListModel(api.Db, models.ParkingLot{}, nil))
+	fuego.Post(lotsGroup, "/", h.CreateModel(api.Db, models.ParkingLot{}))
+	fuego.Get(lotsGroup, "/{id}", h.GetModel(api.Db, models.ParkingLot{}, nil))
+	fuego.Put(lotsGroup, "/{id}", h.UpdateModel(api.Db, models.ParkingLot{}))
+	fuego.Delete(lotsGroup, "/{id}", h.DeleteModel(api.Db, models.ParkingLot{}))
 
-	r.Route("/spots", func(r chi.Router) {
-		r.Get("/", api.ListModel(models.ParkingSpot{}, nil))
-		r.Post("/", api.CreateModel(models.ParkingSpot{}))
-		r.Get("/{id}", api.GetModel(models.ParkingSpot{}, nil))
-		r.Put("/{id}", api.UpdateModel(models.ParkingSpot{}))
-		r.Delete("/{id}", api.DeleteModel(models.ParkingSpot{}))
+	spotsGroup := fuego.Group(s, "/spots")
+	fuego.Get(spotsGroup, "/", h.ListModel(api.Db, models.ParkingSpot{}, nil))
+	fuego.Post(spotsGroup, "/", h.CreateModel(api.Db, models.ParkingSpot{}))
+	fuego.Get(spotsGroup, "/{id}", h.GetModel(api.Db, models.ParkingSpot{}, nil))
+	fuego.Put(spotsGroup, "/{id}", h.UpdateModel(api.Db, models.ParkingSpot{}))
+	fuego.Delete(spotsGroup, "/{id}", h.DeleteModel(api.Db, models.ParkingSpot{}))
+	fuego.Get(spotsGroup, "/statuses", h.ListModel(api.Db, models.ParkingSpotStatus{}, nil))
+	fuego.Get(spotsGroup, "/types", h.ListModel(api.Db, models.ParkingSpotType{}, nil))
 
-		r.Get("/statuses", api.ListModel(models.ParkingSpotStatus{}, nil))
-		r.Get("/types", api.ListModel(models.ParkingSpotType{}, nil))
-	})
+	vehiclesGroup := fuego.Group(s, "/vehicles")
+	fuego.Get(vehiclesGroup, "/", h.ListModel(api.Db, models.Vehicle{}, nil))
+	fuego.Post(vehiclesGroup, "/", h.CreateModel(api.Db, models.Vehicle{}))
+	fuego.Get(vehiclesGroup, "/{id}", h.GetModel(api.Db, models.Vehicle{}, nil))
+	fuego.Put(vehiclesGroup, "/{id}", h.UpdateModel(api.Db, models.Vehicle{}))
+	fuego.Delete(vehiclesGroup, "/{id}", h.DeleteModel(api.Db, models.Vehicle{}))
 
-	r.Route("/vehicles", func(r chi.Router) {
-		r.Get("/", api.ListModel(models.Vehicle{}, nil))
-		r.Post("/", api.CreateModel(models.Vehicle{}))
-		r.Get("/{id}", api.GetModel(models.Vehicle{}, nil))
-		r.Put("/{id}", api.UpdateModel(models.Vehicle{}))
-		r.Delete("/{id}", api.DeleteModel(models.Vehicle{}))
-	})
-
-	r.Route("/transactions", func(r chi.Router) {
-		r.Get("/", api.ListModel(models.ParkingTransaction{}, nil))
-		r.Post("/", api.CreateModel(models.ParkingTransaction{}))
-		r.Get("/{id}", api.GetModel(models.ParkingTransaction{}, nil))
-		r.Post("/{id}/check-out", p.transactionsCheckOut)
-	})
+	transactionsGroup := fuego.Group(s, "/transactions")
+	fuego.Get(transactionsGroup, "/", h.ListModel(api.Db, models.ParkingTransaction{}, nil))
+	fuego.Post(transactionsGroup, "/", h.CreateModel(api.Db, models.ParkingTransaction{}))
+	fuego.Get(transactionsGroup, "/{id}", h.GetModel(api.Db, models.ParkingTransaction{}, nil))
+	fuego.Post(transactionsGroup, "/{id}/check-out", p.transactionsCheckOut)
 }
 
-func (a *ParkingModule) transactionsCheckOut(w http.ResponseWriter, r *http.Request) {
-	id, err := h.ParseID(r.PathValue("id"))
+func (a *ParkingModule) transactionsCheckOut(c fuego.ContextNoBody) (map[string]bool, error) {
+	id, err := h.ParseID(c.PathParam("id"))
 	if err != nil {
-		h.WriteErr(w, 400, "invalid_id")
-		return
+		return nil, fuego.BadRequestError{Title: "invalid_id"}
 	}
 	now := time.Now().UTC()
-	res := a.Db.WithContext(r.Context()).Model(&models.ParkingTransaction{}).Where("id = ?", id).Updates(map[string]any{"status": "completed", "exit_time": now})
+	res := a.Db.WithContext(c).Model(&models.ParkingTransaction{}).Where("id = ?", id).Updates(map[string]any{"status": "completed", "exit_time": now})
 	if res.Error != nil {
-		h.WriteErr(w, 500, "update_failed")
-		return
+		return nil, fuego.InternalServerError{Title: "update_failed"}
 	}
 	if res.RowsAffected == 0 {
-		h.WriteErr(w, 404, "not_found")
-		return
+		return nil, fuego.NotFoundError{}
 	}
-	h.WriteJSON(w, 200, map[string]bool{"ok": true})
+	return map[string]bool{"ok": true}, nil
 }
 
-func (a *ParkingModule) parkingStats(w http.ResponseWriter, r *http.Request) {
-	db := a.Db.WithContext(r.Context())
+func (a *ParkingModule) parkingStats(c fuego.ContextNoBody) (models.ParkingStats, error) {
+	db := a.Db.WithContext(c)
 	var totalLots int64
+	var zero models.ParkingStats
 	if err := db.Model(&models.ParkingLot{}).Count(&totalLots).Error; err != nil {
-		h.WriteErr(w, 500, "failed")
-		return
+		return zero, fuego.InternalServerError{Title: "failed"}
 	}
 
 	var totalSpots int64
 	if err := db.Model(&models.ParkingSpot{}).Count(&totalSpots).Error; err != nil {
-		h.WriteErr(w, 500, "failed")
-		return
+		return zero, fuego.InternalServerError{Title: "failed"}
 	}
 
 	var availableSpots int64
 	if err := db.Model(&models.ParkingSpot{}).Where("status = ?", "available").Count(&availableSpots).Error; err != nil {
-		h.WriteErr(w, 500, "failed")
-		return
+		return zero, fuego.InternalServerError{Title: "failed"}
 	}
 
-	h.WriteJSON(w, 200, &models.ParkingStats{Lots: totalLots, Spots: totalSpots, AvailableSpots: availableSpots})
+	return models.ParkingStats{
+		Lots:           totalLots,
+		Spots:          totalSpots,
+		AvailableSpots: availableSpots,
+	}, nil
 }

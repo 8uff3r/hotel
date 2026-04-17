@@ -4,11 +4,13 @@ import (
 	h "hotel/internal/httpapi"
 	"hotel/internal/models"
 	"net/http"
+
+	"github.com/go-fuego/fuego"
 )
 
-func (a *AuthModule) logout(w http.ResponseWriter, r *http.Request) {
-	cookie, _ := r.Cookie(a.SessionCookie)
-	_ = a.Db.WithContext(r.Context()).Delete(&models.Session{}, "id = ?", h.CookieValue(cookie)).Error
-	http.SetCookie(w, &http.Cookie{Name: a.SessionCookie, Value: "", Path: "/", MaxAge: -1, HttpOnly: true})
-	h.WriteJSON(w, 200, map[string]bool{"ok": true})
+func (a *AuthModule) logout(c fuego.ContextNoBody) (map[string]bool, error) {
+	cookie, _ := c.Cookie(a.SessionCookie)
+	_ = a.Db.WithContext(c).Delete(&models.Session{}, "id = ?", h.CookieValue(cookie)).Error
+	c.SetCookie(http.Cookie{Name: a.SessionCookie, Value: "", Path: "/", MaxAge: -1, HttpOnly: true})
+	return map[string]bool{"ok": true}, nil
 }

@@ -4,24 +4,22 @@ import (
 	h "hotel/internal/httpapi"
 	"hotel/internal/models"
 
-	"github.com/go-chi/chi/v5"
+	"github.com/go-fuego/fuego"
 )
 
 type AccountingModule struct{}
 
-func (m AccountingModule) RegisterRoutes(api *h.API, r chi.Router) {
-	r.Route("/accounts", func(r chi.Router) {
-		r.Get("/", api.ListModel(models.Account{}, nil))
-		r.Post("/", api.CreateModel(models.Account{}))
-	})
+func (m AccountingModule) RegisterRoutes(api *h.API, s *fuego.Server) {
+	accountsGroup := fuego.Group(s, "/accounts")
 
-	r.Route("/expenses", func(r chi.Router) {
-		r.Get("/", api.ListModel(models.Expense{}, nil))
-		r.Post("/", api.CreateModel(models.Expense{}))
-	})
+	fuego.Get(accountsGroup, "/", h.ListModel(api.Db, models.Account{}, nil))
+	fuego.Post(accountsGroup, "/", h.CreateModel(api.Db, models.Account{}))
 
-	r.Route("/income", func(r chi.Router) {
-		r.Get("/", api.ListModel(models.Income{}, nil))
-		r.Post("/", api.CreateModel(models.Income{}))
-	})
+	expensesGroup := fuego.Group(s, "/expenses")
+	fuego.Get(expensesGroup, "/", h.ListModel(api.Db, models.Expense{}, nil))
+	fuego.Post(expensesGroup, "/", h.CreateModel(api.Db, models.Expense{}))
+
+	incomeGroup := fuego.Group(s, "/income")
+	fuego.Get(incomeGroup, "/", h.ListModel(api.Db, models.Income{}, nil))
+	fuego.Post(incomeGroup, "/", h.CreateModel(api.Db, models.Income{}))
 }

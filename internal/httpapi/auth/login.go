@@ -9,22 +9,28 @@ import (
 	"strings"
 	"time"
 
+	"github.com/go-fuego/fuego"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
-func (a *AuthModule) loginHandler(w http.ResponseWriter, r *http.Request) {
-	var req struct{ Email, Password string }
-	if err := h.Decode(&req, r, w); err != nil {
-		return
-	}
-	user, sid, expires, err := a.login(r.Context(), req.Email, req.Password)
+type loginDto struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+func (a *AuthModule) loginHandler(c fuego.ContextWithBody[loginDto]) (map[string]any, error) {
+	req, err := c.Body()
+	var zero map[string]any
 	if err != nil {
-		h.WriteErr(w, http.StatusUnauthorized, "invalid_credentials")
-		return
+		return zero, nil
 	}
-	http.SetCookie(w, &http.Cookie{Name: a.SessionCookie, Value: sid, Path: "/", HttpOnly: true, SameSite: http.SameSiteLaxMode, Expires: expires})
-	h.WriteJSON(w, 200, map[string]any{"user": h.SanitizeUser(user)})
+	user, sid, expires, err := a.login(c, req.Email, req.Password)
+	if err != nil {
+		return zero, fuego.UnauthorizedError{Title: "invalid_credentials"}
+	}
+	c.SetCookie(http.Cookie{Name: a.SessionCookie, Value: sid, Path: "/", HttpOnly: true, SameSite: http.SameSiteLaxMode, Expires: expires})
+	return map[string]any{"user": h.SanitizeUser(user)}, nil
 }
 
 func (a *AuthModule) login(ctx context.Context, email, password string) (*models.User, string, time.Time, error) {

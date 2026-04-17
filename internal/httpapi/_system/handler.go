@@ -4,20 +4,18 @@ import (
 	h "hotel/internal/httpapi"
 	"net/http"
 
-	"github.com/go-chi/chi/v5"
+	"github.com/go-fuego/fuego"
 )
 
-type SystemModule struct{}
-
-func (m SystemModule) RegisterRoutes(api *h.API, r chi.Router) {
-	r.Get("/healthz", health)
-	r.Get("/readyz", ready)
+func RegisterRoutes(api *h.API, s *fuego.Server) {
+	fuego.Get(s, "/healthz", health)
+	fuego.Get(s, "/readyz", ready)
 }
 
-func health(w http.ResponseWriter, _ *http.Request) {
-	h.WriteJSON(w, 200, map[string]string{"status": "ok"})
+func health(c fuego.ContextNoBody) (map[string]string, error) {
+	return map[string]string{"status": "ok"}
 }
 
-func ready(w http.ResponseWriter, _ *http.Request) {
-	h.WriteJSON(w, 200, map[string]string{"status": "ready"})
+func ready(w http.ResponseWriter, _ *http.Request) (map[string]string, error) {
+	return map[string]string{"status": "ready"}
 }

@@ -31,6 +31,10 @@ func (a *API) Auth(next http.Handler) http.Handler {
 	})
 }
 
+func (a *API) AuthMiddleware() func(http.Handler) http.Handler {
+	return a.Auth
+}
+
 func (a *API) RecoverAndLogMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()

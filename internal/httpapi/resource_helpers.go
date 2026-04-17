@@ -6,22 +6,113 @@ import (
 	"net/http"
 	"reflect"
 
+	"github.com/go-fuego/fuego"
 	"github.com/go-playground/validator/v10"
 	"gorm.io/gorm"
 )
 
-func (a *API) ListModel(model any, preload []string) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		out := newSlicePtr(model)
-		db := a.Db.WithContext(r.Context()).Model(model)
+type FuegoAnyHandler[T any] = func(fuego.Context[any, any]) (T, error)
+type FuegoHandler[T any, B any, P any] = func(fuego.Context[B, P]) (T, error)
+type Params struct {
+	Limit int `query:"limit"`
+	page  int `query:"page"`
+}
+
+func ListModel[T any](db *gorm.DB, model T, preload []string) FuegoHandler[[]T, any, Params] {
+	return func(c fuego.ContextWithParams[Params]) ([]T, error) {
+		out := []T{}
+		db = db.WithContext(c).Model(model)
 		for _, v := range preload {
 			db = db.Preload(v)
 		}
 		if err := db.Order("id DESC").Find(out).Error; err != nil {
-			WriteErr(w, 500, "query_failed")
-			return
+			return nil, err
 		}
-		WriteJSON(w, 200, map[string]any{"data": out})
+		return out, nil
+	}
+}
+
+func CreateModel[T any](db *gorm.DB, model T) FuegoHandler[T, T, any] {
+	return func(c fuego.ContextWithBody[T]) (T, error) {
+		var zero T
+		body, err := c.Body()
+		if err != nil {
+			return zero, err
+		}
+		if err := db.WithContext(c).Create(body).Error; err != nil {
+			return zero, fuego.BadRequestError{Title: "create_failed"}
+		}
+		return model, nil
+	}
+}
+
+func GetModel[T any](db *gorm.DB, model T, preload []string) FuegoAnyHandler[T] {
+	return func(c fuego.ContextNoBody) (T, error) {
+		var zero T
+		id, err := ParseID(c.PathParam("id"))
+		if err != nil {
+			return zero, err
+		}
+		var entity T
+		db := db.WithContext(c).Model(model)
+		for _, v := range preload {
+			db = db.Preload(v)
+		}
+		if err := db.First(entity, id).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return zero, fuego.NotFoundError{}
+			}
+			return zero, nil
+		}
+		return entity, nil
+	}
+}
+
+func UpdateModel[T any](db *gorm.DB, model T) FuegoHandler[T, T, any] {
+	return func(c fuego.ContextWithBody[T]) (T, error) {
+		var zero T
+		id, err := ParseID(c.PathParam("id"))
+		if err != nil {
+			return zero, fuego.BadRequestError{Title: "invalid_id"}
+		}
+
+		body, err := c.Body()
+		if err != nil {
+			return zero, err
+		}
+		modelValue := reflect.ValueOf(body).Elem()
+		modelValue.FieldByName("ID").SetUint(uint64(id))
+
+		res := db.WithContext(c).Model(model).Where("id = ?", id).Updates(model)
+		if res.Error != nil {
+			return zero, fuego.BadRequestError{Title: "update_failed"}
+		}
+		if res.RowsAffected == 0 {
+			return zero, fuego.NotFoundError{}
+		}
+		return body, nil
+	}
+}
+
+type okResponse struct{ ok bool }
+
+type deleteDto struct{ id string }
+
+func DeleteModel(db *gorm.DB, model any) FuegoHandler[okResponse, any, deleteDto] {
+	var zero okResponse
+	return func(c fuego.ContextWithParams[deleteDto]) (okResponse, error) {
+		id, err := ParseID(c.PathParam("id"))
+		if err != nil {
+			return zero, fuego.BadRequestError{Title: "invalid_id"}
+		}
+		res := db.WithContext(c).Delete(model, id)
+		if res.Error != nil {
+			return zero, fuego.InternalServerError{Title: "delete_failed"}
+		}
+		if res.RowsAffected == 0 {
+			return zero, fuego.NotFoundError{}
+		}
+		return okResponse{ok: true}, nil
 	}
 }
 
@@ -37,89 +128,4 @@ func BindAndValidate[T any](model *T, w http.ResponseWriter, r *http.Request) er
 		return err
 	}
 	return nil
-}
-
-func (a *API) CreateModel(model any) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		err := BindAndValidate(&model, w, r)
-		if err != nil {
-			return
-		}
-		if err := a.Db.WithContext(r.Context()).Create(model).Error; err != nil {
-			WriteErr(w, 400, "create_failed")
-			return
-		}
-		WriteJSON(w, 201, model)
-	}
-}
-
-func (a *API) GetModel(model any, preload []string) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		id, err := ParseID(r.PathValue("id"))
-		if err != nil {
-			WriteErr(w, 400, "invalid_id")
-			return
-		}
-		entity := newPtr(model)
-		db := a.Db.WithContext(r.Context()).Model(model)
-		for _, v := range preload {
-			db = db.Preload(v)
-		}
-		if err := db.First(entity, id).Error; err != nil {
-			if errors.Is(err, gorm.ErrRecordNotFound) {
-				WriteErr(w, 404, "not_found")
-				return
-			}
-			WriteErr(w, 500, "query_failed")
-			return
-		}
-		WriteJSON(w, 200, entity)
-	}
-}
-
-func (a *API) UpdateModel(model any) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		id, err := ParseID(r.PathValue("id"))
-		if err != nil {
-			WriteErr(w, 400, "invalid_id")
-			return
-		}
-		err = BindAndValidate(&model, w, r)
-		if err != nil {
-			return
-		}
-		modelValue := reflect.ValueOf(model).Elem()
-		modelValue.FieldByName("ID").SetUint(uint64(id))
-
-		res := a.Db.WithContext(r.Context()).Model(model).Where("id = ?", id).Updates(model)
-		if res.Error != nil {
-			WriteErr(w, 400, "update_failed")
-			return
-		}
-		if res.RowsAffected == 0 {
-			WriteErr(w, 404, "not_found")
-			return
-		}
-		WriteJSON(w, 200, map[string]bool{"ok": true})
-	}
-}
-
-func (a *API) DeleteModel(model any) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		id, err := ParseID(r.PathValue("id"))
-		if err != nil {
-			WriteErr(w, 400, "invalid_id")
-			return
-		}
-		res := a.Db.WithContext(r.Context()).Delete(model, id)
-		if res.Error != nil {
-			WriteErr(w, 500, "delete_failed")
-			return
-		}
-		if res.RowsAffected == 0 {
-			WriteErr(w, 404, "not_found")
-			return
-		}
-		WriteJSON(w, 200, map[string]bool{"ok": true})
-	}
 }

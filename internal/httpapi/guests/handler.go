@@ -4,14 +4,14 @@ import (
 	h "hotel/internal/httpapi"
 	"hotel/internal/models"
 
-	"github.com/go-chi/chi/v5"
+	"github.com/go-fuego/fuego"
 )
 
 type GuestsModule struct{}
 
-func (m GuestsModule) RegisterRoutes(api *h.API, r chi.Router) {
-	r.Get("/", api.ListModel(models.Guest{}, nil))
-	r.Post("/", api.CreateModel(models.Guest{}))
-	r.Get("/{id}", api.GetModel(models.Guest{}, nil))
-	r.Put("/{id}", api.UpdateModel(models.Guest{}))
+func (m GuestsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
+	fuego.Get(s, "/", h.ListModel(api.Db, models.Guest{}, nil))
+	fuego.Post(s, "/", h.CreateModel(api.Db, models.Guest{}))
+	fuego.Get(s, "/{id}", h.GetModel(api.Db, models.Guest{}, nil))
+	fuego.Put(s, "/{id}", h.UpdateModel(api.Db, models.Guest{}))
 }

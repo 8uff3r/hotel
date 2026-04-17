@@ -2,22 +2,31 @@ package app
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	spa "hotel"
 	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
 	"hotel/internal/config"
 	"hotel/internal/db"
 	"hotel/internal/httpapi"
+	system "hotel/internal/httpapi/_system"
+	"hotel/internal/httpapi/accounting"
+	"hotel/internal/httpapi/auth"
+	"hotel/internal/httpapi/guests"
+	"hotel/internal/httpapi/parking"
+	"hotel/internal/httpapi/reservation"
+	"hotel/internal/httpapi/rooms"
+	"hotel/internal/httpapi/users"
 	"hotel/internal/models"
 
-	"github.com/go-chi/chi/v5"
+	fuego "github.com/go-fuego/fuego"
+	"github.com/go-fuego/fuego/option"
+	httpSwagger "github.com/swaggo/http-swagger/v2"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
@@ -25,9 +34,17 @@ import (
 type App struct {
 	cfg      config.Config
 	db       *gorm.DB
-	server   *http.Server
+	server   *fuego.Server
 	logger   *slog.Logger
 	stopJobs context.CancelFunc
+}
+
+func openAPIHandler(specUrl string) http.Handler {
+	return httpSwagger.Handler(
+		httpSwagger.URL(specUrl),
+		httpSwagger.Layout(httpSwagger.BaseLayout),
+		httpSwagger.PersistAuthorization(true),
+	)
 }
 
 func New(cfg config.Config) (*App, error) {
@@ -41,51 +58,83 @@ func New(cfg config.Config) (*App, error) {
 		return nil, err
 	}
 
-	r := chi.NewRouter()
+	srv := fuego.NewServer(
+		fuego.WithAddr(cfg.Addr),
+		fuego.WithoutAutoGroupTags(),
+		fuego.WithEngineOptions(
+			fuego.WithOpenAPIConfig(fuego.OpenAPIConfig{
+				JSONFilePath:     "doc/openapi.json",
+				SpecURL:          "/swagger/openapi.json",
+				SwaggerURL:       "/swagger",
+				DisableSwaggerUI: false,
+				UIHandler:        openAPIHandler,
+			}),
+		),
+	)
+
 	api := httpapi.API{
 		Logger:         logger,
+		Db:             database,
 		SessionCookie:  cfg.SessionCookie,
 		RequestTimeout: cfg.RequestTimeout,
-		Db:             database,
 		SessionTTL:     cfg.SessionTTL,
 	}
-	handler := NewRouter(&api, r)
 
-	notFoundHandlerFunc := spa.SPAHandler()
-	r.NotFound(notFoundHandlerFunc.ServeHTTP)
+	// middleware := func(next http.Handler) http.Handler {
+	// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	// 		start := time.Now()
 
-	server := &http.Server{
-		Addr:         cfg.Addr,
-		Handler:      handler,
-		ReadTimeout:  cfg.ReadTimeout,
-		WriteTimeout: cfg.WriteTimeout,
-		IdleTimeout:  cfg.IdleTimeout,
-	}
+	// 		defer func() {
+	// 			if rec := recover(); rec != nil {
+	// 				logger.Error("panic", "path", r.URL.Path, "err", rec)
+	// 				http.Error(w, "internal_error", http.StatusInternalServerError)
+	// 			}
+
+	// 			logger.Info("request",
+	// 				"method", r.Method,
+	// 				"path", r.URL.Path,
+	// 				"duration_ms", time.Since(start).Milliseconds(),
+	// 			)
+	// 		}()
+
+	// 		w.Header().Set("Content-Type", "application/json")
+	// 		next.ServeHTTP(w, r)
+	// 	})
+	// }
+	// fuego.Use(srv, middleware)
+
+	system.RegisterRoutes(&api, srv)
+	apiGroup := fuego.Group(srv, "/api")
+	authGroup := fuego.Group(apiGroup, "/auth")
+	auth.RegisterRoutes(&api, authGroup)
+
+	fuego.Use(apiGroup, api.Auth)
+	SetupRouter(&api, apiGroup, PathModuleMap{
+		"/rooms":       rooms.RoomsModule{},
+		"/guests":      guests.GuestsModule{},
+		"/users":       users.UsersModule{},
+		"/accounting":  accounting.AccountingModule{},
+		"/parking":     parking.ParkingModule{},
+		"/reservation": reservation.ReservationModule{},
+	})
 
 	jobsCtx, cancel := context.WithCancel(context.Background())
 	go cleanupExpiredSessions(jobsCtx, database, logger)
 
-	return &App{cfg: cfg, db: database, server: server, logger: logger, stopJobs: cancel}, nil
+	return &App{cfg: cfg, db: database, server: srv, logger: logger, stopJobs: cancel}, nil
 }
 
 func (a *App) Run() error {
-	errCh := make(chan error, 1)
 	go func() {
 		a.logger.Info("server starting", "addr", a.cfg.Addr)
-		if err := a.server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			errCh <- err
-		}
+		a.server.Run()
 	}()
 
 	sigCtx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
-	select {
-	case <-sigCtx.Done():
-		a.logger.Info("shutdown signal received")
-	case err := <-errCh:
-		return fmt.Errorf("server failure: %w", err)
-	}
+	<-sigCtx.Done()
+	a.logger.Info("shutdown signal received")
 
 	a.stopJobs()
 	ctx, cancel := context.WithTimeout(context.Background(), a.cfg.ShutdownTimeout)
@@ -142,5 +191,18 @@ func cleanupExpiredSessions(ctx context.Context, db *gorm.DB, logger *slog.Logge
 				logger.Warn("cleanup sessions failed", "err", err.Error())
 			}
 		}
+	}
+}
+
+type ModuleRouter interface {
+	RegisterRoutes(*httpapi.API, *fuego.Server)
+}
+
+type PathModuleMap map[string]ModuleRouter
+
+func SetupRouter(api *httpapi.API, group *fuego.Server, modules PathModuleMap) {
+	for path, mod := range modules {
+		subGroup := fuego.Group(group, path, option.Tags(strings.ToUpper(path[1:])))
+		mod.RegisterRoutes(api, subGroup)
 	}
 }
