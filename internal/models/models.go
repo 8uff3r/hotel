@@ -96,14 +96,14 @@ type Guest struct {
 	PostalCode   string    `json:"postalCode"`
 	Occupation   string    `json:"occupation"`
 
-	Reservations []Reservation `gorm:"foreignKey:GuestID" json:"stays,omitempty"`
+	Reservations []Reservation `gorm:"foreignKey:GuestID" json:"reservation,omitempty"`
 }
 
 type Reservation struct {
 	Base
-	ID      uint `gorm:"primaryKey" json:"id"`
-	GuestID uint `gorm:"not null;index" json:"guestId"`
-	RoomID  uint `gorm:"not null;index" json:"roomId"`
+	ID      uint   `gorm:"primaryKey" json:"id"`
+	GuestID uint   `gorm:"not null;index" json:"guestId"`
+	Rooms   []Room `gorm:"many2many:reservation_rooms;"`
 
 	ReservationCode string `gorm:"index" json:"reservationCode"`
 
@@ -126,15 +126,12 @@ type Reservation struct {
 
 	Notes string `json:"notes"`
 
-	Guest Guest `gorm:"foreignKey:GuestID" json:"guest"`
-	Room  Room  `gorm:"foreignKey:RoomID" json:"room"`
-
 	Payment Payment `gorm:"foreignKey:ReservationID" json:"payment"`
 }
 
 type Payment struct {
 	ID            uint   `gorm:"primaryKey" json:"id"`
-	ReservationID uint   `gorm:"uniqueIndex;not null" json:"stayId"`
+	ReservationID uint   `gorm:"uniqueIndex;not null" json:"reservationId"`
 	IsCash        bool   `gorm:"not null;default:false" json:"isCash"`
 	Agency        bool   `gorm:"not null;default:false" json:"agency"`
 	Referrer      string `json:"referrer"`
