@@ -20,17 +20,21 @@ func (m UsersModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Post(s, "/", u.usersCreate)
 }
 
-func (u *UsersModule) usersList(c fuego.ContextNoBody) (map[string]any, error) {
+type userListResponse struct {
+	Data []h.SanitizedUser `json:"data"`
+}
+
+func (u *UsersModule) usersList(c fuego.ContextNoBody) (userListResponse, error) {
 	var rows []models.User
-	var zero map[string]any
+	var zero userListResponse
 	if err := u.Db.WithContext(c).Model(&models.User{}).Order("id DESC").Find(&rows).Error; err != nil {
 		return zero, fuego.InternalServerError{Title: "query_failed"}
 	}
-	out := make([]any, 0, len(rows))
+	out := make([]h.SanitizedUser, 0, len(rows))
 	for i := range rows {
 		out = append(out, h.SanitizeUser(&rows[i]))
 	}
-	return map[string]any{"data": out}, nil
+	return userListResponse{Data: out}, nil
 }
 
 type userCreateDto struct {

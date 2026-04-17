@@ -61,6 +61,7 @@ func New(cfg config.Config) (*App, error) {
 	srv := fuego.NewServer(
 		fuego.WithAddr(cfg.Addr),
 		fuego.WithoutAutoGroupTags(),
+		fuego.WithoutStartupMessages(),
 		fuego.WithEngineOptions(
 			fuego.WithOpenAPIConfig(fuego.OpenAPIConfig{
 				JSONFilePath:     "doc/openapi.json",
@@ -68,6 +69,7 @@ func New(cfg config.Config) (*App, error) {
 				SwaggerURL:       "/swagger",
 				DisableSwaggerUI: false,
 				UIHandler:        openAPIHandler,
+				PrettyFormatJSON: true,
 			}),
 		),
 	)
@@ -103,10 +105,11 @@ func New(cfg config.Config) (*App, error) {
 	// }
 	// fuego.Use(srv, middleware)
 
-	system.RegisterRoutes(&api, srv)
 	apiGroup := fuego.Group(srv, "/api")
-	authGroup := fuego.Group(apiGroup, "/auth")
-	auth.RegisterRoutes(&api, authGroup)
+	SetupRouter(&api, apiGroup, PathModuleMap{
+		"/":     system.SystemModule{},
+		"/auth": auth.AuthModule{},
+	})
 
 	fuego.Use(apiGroup, api.Auth)
 	SetupRouter(&api, apiGroup, PathModuleMap{
@@ -202,7 +205,8 @@ type PathModuleMap map[string]ModuleRouter
 
 func SetupRouter(api *httpapi.API, group *fuego.Server, modules PathModuleMap) {
 	for path, mod := range modules {
-		subGroup := fuego.Group(group, path, option.Tags(strings.ToUpper(path[1:])))
+		println(path)
+		subGroup := fuego.Group(group, path, option.Tags(strings.ToUpper(path)))
 		mod.RegisterRoutes(api, subGroup)
 	}
 }

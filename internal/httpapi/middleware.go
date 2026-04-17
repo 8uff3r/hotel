@@ -59,22 +59,31 @@ func (a *API) RecoverAndLogMiddleware(next http.Handler) http.Handler {
 
 type UserKey struct{}
 
-func (a *API) sessionUser(r *http.Request) (map[string]any, error) {
+func (a *API) sessionUser(r *http.Request) (SanitizedUser, error) {
+	var zero SanitizedUser
 	cookie, err := r.Cookie(a.SessionCookie)
 	if err != nil || cookie.Value == "" {
-		return nil, errors.New("missing session")
+		return zero, errors.New("missing session")
 	}
 
 	var s models.Session
 	if err := a.Db.WithContext(r.Context()).Preload("User").Where("id = ? AND expires_at > ?", cookie.Value, time.Now().UTC()).First(&s).Error; err != nil {
-		return nil, err
+		return zero, err
 	}
 	if !s.User.IsActive {
-		return nil, gorm.ErrRecordNotFound
+		return zero, gorm.ErrRecordNotFound
 	}
 	return SanitizeUser(&s.User), nil
 }
 
-func SanitizeUser(u *models.User) map[string]any {
-	return map[string]any{"id": u.ID, "email": u.Email, "firstName": u.FirstName, "lastName": u.LastName, "role": u.Role}
+type SanitizedUser struct {
+	ID        uint   `json:"id"`
+	Email     string `json:"email"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Role      string `json:"role"`
+}
+
+func SanitizeUser(u *models.User) SanitizedUser {
+	return SanitizedUser{ID: u.ID, Email: u.Email, FirstName: u.FirstName, LastName: u.LastName, Role: u.Role}
 }

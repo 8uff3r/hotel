@@ -19,9 +19,13 @@ type loginDto struct {
 	Password string `json:"password"`
 }
 
-func (a *AuthModule) loginHandler(c fuego.ContextWithBody[loginDto]) (map[string]any, error) {
+type loginResponse struct {
+	User h.SanitizedUser `json:"user"`
+}
+
+func (a *AuthModule) loginHandler(c fuego.ContextWithBody[loginDto]) (loginResponse, error) {
 	req, err := c.Body()
-	var zero map[string]any
+	var zero loginResponse
 	if err != nil {
 		return zero, nil
 	}
@@ -30,7 +34,7 @@ func (a *AuthModule) loginHandler(c fuego.ContextWithBody[loginDto]) (map[string
 		return zero, fuego.UnauthorizedError{Title: "invalid_credentials"}
 	}
 	c.SetCookie(http.Cookie{Name: a.SessionCookie, Value: sid, Path: "/", HttpOnly: true, SameSite: http.SameSiteLaxMode, Expires: expires})
-	return map[string]any{"user": h.SanitizeUser(user)}, nil
+	return loginResponse{User: h.SanitizeUser(user)}, nil
 }
 
 func (a *AuthModule) login(ctx context.Context, email, password string) (*models.User, string, time.Time, error) {

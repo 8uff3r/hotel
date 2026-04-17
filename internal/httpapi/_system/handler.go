@@ -2,20 +2,21 @@ package system
 
 import (
 	h "hotel/internal/httpapi"
-	"net/http"
 
 	"github.com/go-fuego/fuego"
 )
 
-func RegisterRoutes(api *h.API, s *fuego.Server) {
+type SystemModule struct{}
+
+func (m SystemModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Get(s, "/healthz", health)
 	fuego.Get(s, "/readyz", ready)
 }
 
 func health(c fuego.ContextNoBody) (map[string]string, error) {
-	return map[string]string{"status": "ok"}
+	return map[string]string{"status": "ok"}, nil
 }
 
-func ready(w http.ResponseWriter, _ *http.Request) (map[string]string, error) {
-	return map[string]string{"status": "ready"}
+func ready(c fuego.ContextNoBody) (map[string]string, error) {
+	return map[string]string{"status": "ready"}, nil
 }

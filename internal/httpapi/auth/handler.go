@@ -10,17 +10,20 @@ type AuthModule struct {
 	*h.API
 }
 
-func RegisterRoutes(api *h.API, s *fuego.Server) {
+func (m AuthModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	au := AuthModule{API: api}
 
 	fuego.Post(s, "/login", au.loginHandler)
-	authRequired := fuego.Group(s, "/")
-	fuego.Use(authRequired, api.Auth)
-	fuego.Post(authRequired, "/logout", au.logout)
-	fuego.Get(authRequired, "/me", me)
+	fuego.Use(s, api.Auth)
+	fuego.Post(s, "/logout", au.logout)
+	fuego.Get(s, "/me", me)
 }
 
-func me(c fuego.ContextNoBody) (map[string]any, error) {
+type response struct {
+	User any `json:"user"`
+}
+
+func me(c fuego.ContextNoBody) (response, error) {
 	user := c.Value(h.UserKey{})
-	return map[string]any{"user": user}, nil
+	return response{User: user}, nil
 }
