@@ -59,8 +59,8 @@ func (a *API) RecoverAndLogMiddleware(next http.Handler) http.Handler {
 
 type UserKey struct{}
 
-func (a *API) sessionUser(r *http.Request) (SanitizedUser, error) {
-	var zero SanitizedUser
+func (a *API) sessionUser(r *http.Request) (models.SanitizedUser, error) {
+	var zero models.SanitizedUser
 	cookie, err := r.Cookie(a.SessionCookie)
 	if err != nil || cookie.Value == "" {
 		return zero, errors.New("missing session")
@@ -76,14 +76,6 @@ func (a *API) sessionUser(r *http.Request) (SanitizedUser, error) {
 	return SanitizeUser(&s.User), nil
 }
 
-type SanitizedUser struct {
-	ID        uint   `json:"id"`
-	Email     string `json:"email"`
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
-	Role      string `json:"role"`
-}
-
-func SanitizeUser(u *models.User) SanitizedUser {
-	return SanitizedUser{ID: u.ID, Email: u.Email, FirstName: u.FirstName, LastName: u.LastName, Role: u.Role}
+func SanitizeUser(u *models.User) models.SanitizedUser {
+	return models.SanitizedUser{ID: u.ID, Email: u.Email, FirstName: u.FirstName, LastName: u.LastName, Roles: u.Roles}
 }

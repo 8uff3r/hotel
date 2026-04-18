@@ -25,5 +25,12 @@
     "Occupied": { "fa": "اشغال شده" },
     "Reserved": { "fa": "رزرو شده" },
     "Maintenance": { "fa": "در حال تعمیر" }
+  },
+
+  "Role": {
+    "admin": { "fa": "ادمین" },
+    "staff": { "fa": "کارمند" },
+    "receptionist": { "fa": "پذیرش" },
+    "housekeeper": { "fa": "خانه‌دار" }
   }
 }

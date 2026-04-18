@@ -1,6 +1,9 @@
 package models
 
 import (
+	"database/sql/driver"
+	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -24,8 +27,14 @@ type User struct {
 	PasswordHash string `gorm:"not null" json:"-"`
 	FirstName    string `gorm:"not null" json:"firstName"`
 	LastName     string `gorm:"not null" json:"lastName"`
-	Role         string `gorm:"not null;default:staff" json:"role"`
+	Roles        []Role `gorm:"many2many:user_roles" json:"roles"`
 	IsActive     bool   `gorm:"not null;default:true" json:"isActive"`
+}
+
+type Role struct {
+	Base
+	Name        string      `json:"name"`
+	Translation Translation `gorm:"type:jsonb" json:"translation"`
 }
 
 type Session struct {
@@ -47,6 +56,7 @@ type Hotel struct {
 type Room struct {
 	Base
 	HotelID     *uint     `json:"hotelId"`
+	Name        string    `json:"name"`
 	RoomNumber  string    `gorm:"not null" json:"roomNumber"`
 	RoomType    string    `gorm:"not null;default:single" json:"roomType"`
 	Floor       *int      `json:"floor"`
@@ -60,6 +70,18 @@ type Room struct {
 }
 
 type Translation map[string]string
+
+func (t *Translation) Scan(value any) error {
+	bytes, ok := value.([]byte)
+	if !ok {
+		return fmt.Errorf("failed to unmarshal Translation: %v", value)
+	}
+	return json.Unmarshal(bytes, t)
+}
+
+func (t Translation) Value() (driver.Value, error) {
+	return json.Marshal(t)
+}
 
 type Amenity struct {
 	Base
@@ -101,9 +123,8 @@ type Guest struct {
 
 type Reservation struct {
 	Base
-	ID      uint   `gorm:"primaryKey" json:"id"`
 	GuestID uint   `gorm:"not null;index" json:"guestId"`
-	Rooms   []Room `gorm:"many2many:reservation_rooms;"`
+	Rooms   []Room `gorm:"many2many:reservation_rooms;" json:"rooms"`
 
 	ReservationCode string `gorm:"index" json:"reservationCode"`
 
@@ -245,7 +266,7 @@ type ParkingStats struct {
 	AvailableSpots int64 `json:"availableSpots"`
 }
 
-func AllPtr() []any {
+func AllForDb() []any {
 	return []any{
 		&User{}, &Session{}, &Hotel{}, &Room{}, &Guest{}, &Reservation{}, &Account{},
 		&Expense{}, &Income{}, &ParkingLot{}, &ParkingSpot{}, &Vehicle{}, &ParkingTransaction{}, &Amenity{},
@@ -253,9 +274,17 @@ func AllPtr() []any {
 	}
 }
 
-func All() []any {
+type SanitizedUser struct {
+	ID        uint   `json:"id"`
+	Email     string `json:"email"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Roles     []Role `json:"roles"`
+}
+
+func AllForTypeGen() []any {
 	return []any{
 		User{}, Session{}, Hotel{}, Room{}, Guest{}, Reservation{}, Account{},
-		Expense{}, Income{}, ParkingLot{}, ParkingSpot{}, Vehicle{}, ParkingTransaction{}, Amenity{}, ParkingSpotType{}, ParkingSpotStatus{}, ParkingStats{},
+		Expense{}, Income{}, ParkingLot{}, ParkingSpot{}, Vehicle{}, ParkingTransaction{}, Amenity{}, ParkingSpotType{}, ParkingSpotStatus{}, ParkingStats{}, SanitizedUser{},
 	}
 }

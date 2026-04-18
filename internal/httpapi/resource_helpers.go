@@ -71,10 +71,10 @@ func CreateModel[T any](db *gorm.DB, model T) FuegoHandler[T, T, any] {
 		if err != nil {
 			return zero, err
 		}
-		if err := db.WithContext(c).Create(body).Error; err != nil {
+		if err := db.WithContext(c.Context()).Create(&body).Error; err != nil {
 			return zero, fuego.BadRequestError{Title: "create_failed"}
 		}
-		return model, nil
+		return body, nil
 	}
 }
 

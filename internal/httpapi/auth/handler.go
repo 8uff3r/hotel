@@ -2,6 +2,7 @@ package auth
 
 import (
 	h "hotel/internal/httpapi"
+	"hotel/internal/models"
 
 	"github.com/go-fuego/fuego"
 )
@@ -19,11 +20,11 @@ func (m AuthModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Get(s, "/me", me)
 }
 
-type response struct {
-	User any `json:"user"`
+type MeResponse struct {
+	User models.SanitizedUser `json:"user"`
 }
 
-func me(c fuego.ContextNoBody) (response, error) {
+func me(c fuego.ContextNoBody) (MeResponse, error) {
 	user := c.Value(h.UserKey{})
-	return response{User: user}, nil
+	return MeResponse{User: user.(models.SanitizedUser)}, nil
 }

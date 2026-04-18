@@ -17,7 +17,7 @@ func main() {
 	converter.CreateInterface = true
 	converter.BackupDir = ""
 
-	for _, v := range models.All() {
+	for _, v := range models.AllForTypeGen() {
 		converter.Add(v)
 	}
 

@@ -21,7 +21,7 @@ func (m UsersModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 }
 
 type userListResponse struct {
-	Data []h.SanitizedUser `json:"data"`
+	Data []models.SanitizedUser `json:"data"`
 }
 
 func (u *UsersModule) usersList(c fuego.ContextNoBody) (userListResponse, error) {
@@ -30,7 +30,7 @@ func (u *UsersModule) usersList(c fuego.ContextNoBody) (userListResponse, error)
 	if err := u.Db.WithContext(c).Model(&models.User{}).Order("id DESC").Find(&rows).Error; err != nil {
 		return zero, fuego.InternalServerError{Title: "query_failed"}
 	}
-	out := make([]h.SanitizedUser, 0, len(rows))
+	out := make([]models.SanitizedUser, 0, len(rows))
 	for i := range rows {
 		out = append(out, h.SanitizeUser(&rows[i]))
 	}
@@ -38,11 +38,11 @@ func (u *UsersModule) usersList(c fuego.ContextNoBody) (userListResponse, error)
 }
 
 type userCreateDto struct {
-	Email     string   `json:"email"`
-	Password  string   `json:"password"`
-	FirstName string   `json:"firstName"`
-	LastName  string   `json:"lastName"`
-	Roles     []string `json:"roles"`
+	Email     string        `json:"email"`
+	Password  string        `json:"password"`
+	FirstName string        `json:"firstName"`
+	LastName  string        `json:"lastName"`
+	Roles     []models.Role `json:"roles"`
 }
 type userCreateResponse struct {
 	id uint
@@ -63,7 +63,7 @@ func (u *UsersModule) usersCreate(c fuego.ContextWithBody[userCreateDto]) (userC
 		PasswordHash: string(hash),
 		FirstName:    strings.TrimSpace(body.FirstName),
 		LastName:     strings.TrimSpace(body.LastName),
-		Role:         h.DefaultStr(body.Roles[0], "staff"),
+		Roles:        body.Roles,
 		IsActive:     true,
 	}
 	if err := u.Db.WithContext(c).Create(user).Error; err != nil {

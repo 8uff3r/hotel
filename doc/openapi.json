@@ -229,6 +229,74 @@
 									"format": "double",
 									"type": "number"
 								},
+								"rooms": {
+									"items": {
+										"properties": {
+											"amenities": {
+												"items": {
+													"properties": {
+														"id": {
+															"minimum": 0,
+															"type": "integer"
+														},
+														"name": {
+															"type": "string"
+														},
+														"translation": {
+															"additionalProperties": {
+																"type": "string"
+															},
+															"type": "object"
+														}
+													},
+													"type": "object"
+												},
+												"type": "array"
+											},
+											"basePrice": {
+												"format": "double",
+												"type": "number"
+											},
+											"capacity": {
+												"type": "integer"
+											},
+											"description": {
+												"type": "string"
+											},
+											"floor": {
+												"nullable": true,
+												"type": "integer"
+											},
+											"guestId": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"hotelId": {
+												"minimum": 0,
+												"nullable": true,
+												"type": "integer"
+											},
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"name": {
+												"type": "string"
+											},
+											"roomNumber": {
+												"type": "string"
+											},
+											"roomType": {
+												"type": "string"
+											},
+											"status": {
+												"type": "string"
+											}
+										},
+										"type": "object"
+									},
+									"type": "array"
+								},
 								"userCheckIn": {
 									"type": "string"
 								},
@@ -360,6 +428,51 @@
 					},
 					"source": {
 						"type": "string"
+					}
+				},
+				"type": "object"
+			},
+			"MeResponse": {
+				"description": "MeResponse schema",
+				"properties": {
+					"user": {
+						"properties": {
+							"email": {
+								"type": "string"
+							},
+							"firstName": {
+								"type": "string"
+							},
+							"id": {
+								"minimum": 0,
+								"type": "integer"
+							},
+							"lastName": {
+								"type": "string"
+							},
+							"roles": {
+								"items": {
+									"properties": {
+										"id": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"name": {
+											"type": "string"
+										},
+										"translation": {
+											"additionalProperties": {
+												"type": "string"
+											},
+											"type": "object"
+										}
+									},
+									"type": "object"
+								},
+								"type": "array"
+							}
+						},
+						"type": "object"
 					}
 				},
 				"type": "object"
@@ -676,6 +789,74 @@
 											"roomPrice": {
 												"format": "double",
 												"type": "number"
+											},
+											"rooms": {
+												"items": {
+													"properties": {
+														"amenities": {
+															"items": {
+																"properties": {
+																	"id": {
+																		"minimum": 0,
+																		"type": "integer"
+																	},
+																	"name": {
+																		"type": "string"
+																	},
+																	"translation": {
+																		"additionalProperties": {
+																			"type": "string"
+																		},
+																		"type": "object"
+																	}
+																},
+																"type": "object"
+															},
+															"type": "array"
+														},
+														"basePrice": {
+															"format": "double",
+															"type": "number"
+														},
+														"capacity": {
+															"type": "integer"
+														},
+														"description": {
+															"type": "string"
+														},
+														"floor": {
+															"nullable": true,
+															"type": "integer"
+														},
+														"guestId": {
+															"minimum": 0,
+															"type": "integer"
+														},
+														"hotelId": {
+															"minimum": 0,
+															"nullable": true,
+															"type": "integer"
+														},
+														"id": {
+															"minimum": 0,
+															"type": "integer"
+														},
+														"name": {
+															"type": "string"
+														},
+														"roomNumber": {
+															"type": "string"
+														},
+														"roomType": {
+															"type": "string"
+														},
+														"status": {
+															"type": "string"
+														}
+													},
+													"type": "object"
+												},
+												"type": "array"
 											},
 											"userCheckIn": {
 												"type": "string"
@@ -1157,6 +1338,74 @@
 									"format": "double",
 									"type": "number"
 								},
+								"rooms": {
+									"items": {
+										"properties": {
+											"amenities": {
+												"items": {
+													"properties": {
+														"id": {
+															"minimum": 0,
+															"type": "integer"
+														},
+														"name": {
+															"type": "string"
+														},
+														"translation": {
+															"additionalProperties": {
+																"type": "string"
+															},
+															"type": "object"
+														}
+													},
+													"type": "object"
+												},
+												"type": "array"
+											},
+											"basePrice": {
+												"format": "double",
+												"type": "number"
+											},
+											"capacity": {
+												"type": "integer"
+											},
+											"description": {
+												"type": "string"
+											},
+											"floor": {
+												"nullable": true,
+												"type": "integer"
+											},
+											"guestId": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"hotelId": {
+												"minimum": 0,
+												"nullable": true,
+												"type": "integer"
+											},
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"name": {
+												"type": "string"
+											},
+											"roomNumber": {
+												"type": "string"
+											},
+											"roomType": {
+												"type": "string"
+											},
+											"status": {
+												"type": "string"
+											}
+										},
+										"type": "object"
+									},
+									"type": "array"
+								},
 								"userCheckIn": {
 									"type": "string"
 								},
@@ -1237,6 +1486,9 @@
 								"id": {
 									"minimum": 0,
 									"type": "integer"
+								},
+								"name": {
+									"type": "string"
 								},
 								"roomNumber": {
 									"type": "string"
@@ -1561,6 +1813,74 @@
 						"format": "double",
 						"type": "number"
 					},
+					"rooms": {
+						"items": {
+							"properties": {
+								"amenities": {
+									"items": {
+										"properties": {
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"name": {
+												"type": "string"
+											},
+											"translation": {
+												"additionalProperties": {
+													"type": "string"
+												},
+												"type": "object"
+											}
+										},
+										"type": "object"
+									},
+									"type": "array"
+								},
+								"basePrice": {
+									"format": "double",
+									"type": "number"
+								},
+								"capacity": {
+									"type": "integer"
+								},
+								"description": {
+									"type": "string"
+								},
+								"floor": {
+									"nullable": true,
+									"type": "integer"
+								},
+								"guestId": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"hotelId": {
+									"minimum": 0,
+									"nullable": true,
+									"type": "integer"
+								},
+								"id": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"name": {
+									"type": "string"
+								},
+								"roomNumber": {
+									"type": "string"
+								},
+								"roomType": {
+									"type": "string"
+								},
+								"status": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					},
 					"userCheckIn": {
 						"type": "string"
 					},
@@ -1620,6 +1940,9 @@
 					"id": {
 						"minimum": 0,
 						"type": "integer"
+					},
+					"name": {
+						"type": "string"
 					},
 					"roomNumber": {
 						"type": "string"
@@ -1703,8 +2026,26 @@
 							"lastName": {
 								"type": "string"
 							},
-							"role": {
-								"type": "string"
+							"roles": {
+								"items": {
+									"properties": {
+										"id": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"name": {
+											"type": "string"
+										},
+										"translation": {
+											"additionalProperties": {
+												"type": "string"
+											},
+											"type": "object"
+										}
+									},
+									"type": "object"
+								},
+								"type": "array"
 							}
 						},
 						"type": "object"
@@ -1714,13 +2055,6 @@
 			},
 			"okResponse": {
 				"description": "okResponse schema"
-			},
-			"response": {
-				"description": "response schema",
-				"properties": {
-					"user": {}
-				},
-				"type": "object"
 			},
 			"string": {
 				"description": "string schema",
@@ -1746,7 +2080,22 @@
 					},
 					"roles": {
 						"items": {
-							"type": "string"
+							"properties": {
+								"id": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"name": {
+									"type": "string"
+								},
+								"translation": {
+									"additionalProperties": {
+										"type": "string"
+									},
+									"type": "object"
+								}
+							},
+							"type": "object"
 						},
 						"type": "array"
 					}
@@ -1775,8 +2124,26 @@
 								"lastName": {
 									"type": "string"
 								},
-								"role": {
-									"type": "string"
+								"roles": {
+									"items": {
+										"properties": {
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"name": {
+												"type": "string"
+											},
+											"translation": {
+												"additionalProperties": {
+													"type": "string"
+												},
+												"type": "object"
+											}
+										},
+										"type": "object"
+									},
+									"type": "array"
 								}
 							},
 							"type": "object"
@@ -2445,12 +2812,12 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/response"
+									"$ref": "#/components/schemas/MeResponse"
 								}
 							},
 							"application/xml": {
 								"schema": {
-									"$ref": "#/components/schemas/response"
+									"$ref": "#/components/schemas/MeResponse"
 								}
 							}
 						},

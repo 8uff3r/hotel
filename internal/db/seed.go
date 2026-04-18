@@ -23,12 +23,13 @@ func init() {
 	}
 }
 func Seed(db *gorm.DB) {
-	if err := db.AutoMigrate(models.AllPtr()...); err != nil {
+	if err := db.AutoMigrate(models.AllForDb()...); err != nil {
 		panic(fmt.Sprintf("auto migrate: %s", err))
 	}
 	seedAmenities(db)
 	seedParkingSpotStatuses(db)
 	seedParkingSpotTypes(db)
+	seedRoles(db)
 }
 
 func seed[T any](db *gorm.DB, defaultValues []T) error {
@@ -64,6 +65,19 @@ func seedAmenities(db *gorm.DB) {
 		{Name: "Balcony", Translation: t["Balcony"]},
 		{Name: "Jacuzzi", Translation: t["Jacuzzi"]},
 		{Name: "Room Service", Translation: t["Room Service"]},
+	}
+
+	seed(db, amenities)
+}
+
+func seedRoles(db *gorm.DB) {
+	t := Translations["Role"]
+
+	amenities := []models.Role{
+		{Name: "admin", Translation: t["admin"]},
+		{Name: "staff", Translation: t["staff"]},
+		{Name: "receptionist", Translation: t["receptionist"]},
+		{Name: "housekeeper", Translation: t["housekeeper"]},
 	}
 
 	seed(db, amenities)
