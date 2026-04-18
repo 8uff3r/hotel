@@ -1,136 +1,111 @@
-import type { User } from "~~/server/db/schema";
 import { defineStore } from "pinia";
 
-interface AuthUser extends User {
-  roles: string[];
-}
+export const useAuthStore = defineStore(
+  "auth",
+  () => {
+    // state
+    const user = ref<SanitizedUser | null>(null);
+    const isAuthenticated = ref(false);
+    const loading = ref(true);
+    const currentRole = ref<Role>();
 
-interface AuthState {
-  user: AuthUser | null;
-  isAuthenticated: boolean;
-  loading: boolean;
-  currentRole: string;
-}
+    // getters
+    const hasRole = (...roles: string[]) => {
+      if (!user.value) return false;
+      const userRoles = user.value.roles;
+      return roles.some((role) => userRoles?.find((v) => v.name === role));
+    };
 
-export const useAuthStore = defineStore("auth", {
-  state: (): AuthState => ({
-    user: null,
-    isAuthenticated: false,
-    loading: true,
-    currentRole: "staff",
-  }),
+    const isAdmin = computed(() => hasRole("admin"));
 
-  getters: {
-    hasRole:
-      (state) =>
-      (...roles: string[]) => {
-        if (!state.user) return false;
-        const userRoles = state.user.roles || [state.user.role];
-        return roles.some((role) => userRoles.includes(role));
-      },
+    const isManager = computed(() => hasRole("admin"));
 
-    isAdmin: (state) => {
-      const userRoles = state.user?.roles || [state.user?.role].filter(Boolean);
-      return userRoles.includes("admin");
-    },
+    const isReceptionist = computed(
+      () => hasRole("admin") || hasRole("manager") || hasRole("receptionist"),
+    );
 
-    isManager: (state) => {
-      const userRoles = state.user?.roles || [state.user?.role].filter(Boolean);
-      return userRoles.includes("admin") || userRoles.includes("manager");
-    },
+    const availableRoles = computed(() => {
+      return user.value?.roles ?? [];
+    });
 
-    isReceptionist: (state) => {
-      const userRoles = state.user?.roles || [state.user?.role].filter(Boolean);
-      return (
-        userRoles.includes("admin") ||
-        userRoles.includes("manager") ||
-        userRoles.includes("receptionist")
-      );
-    },
-
-    availableRoles: (state): string[] => {
-      const roles = state.user?.roles;
-      if (roles && roles.length > 0) {
-        return roles;
-      }
-      const fallbackRole = state.user?.role;
-      return fallbackRole ? [fallbackRole] : [];
-    },
-  },
-
-  actions: {
-    async login(email: string, password: string) {
+    // actions
+    async function login(email: string, password: string) {
       try {
-        const response = await $fetch<{ user: AuthUser }>("/api/auth/login", {
-          method: "POST",
-          body: { email, password },
-        });
+        const response = await postApiAuthLogin({ body: { email, password } });
 
-        const roles = response.user.roles || [response.user.role as string] || ["staff"];
-        const primaryRole = roles[0] || "staff";
+        const roles = response.user!.roles! as Required<Role>[];
 
-        this.user = response.user as AuthUser;
-        this.currentRole = primaryRole;
-        this.isAuthenticated = true;
+        user.value = response.user as SanitizedUser;
+        currentRole.value = roles[0]!;
+        isAuthenticated.value = true;
 
         return { success: true };
       } catch (error: any) {
-        return {
-          success: false,
-          error: error.data?.message || "Login failed",
-        };
+        console.error(error);
+        return { success: false, error: error.data?.message || "Login failed" };
       }
-    },
+    }
 
-    async logout() {
+    async function logout() {
       try {
-        await $fetch("/api/auth/logout", {
-          method: "POST",
-        });
+        await $fetch("/api/auth/logout", { method: "POST" });
 
-        this.user = null;
-        this.isAuthenticated = false;
-        this.currentRole = "staff";
+        user.value = null;
+        isAuthenticated.value = false;
+        currentRole.value = undefined;
 
         return { success: true };
       } catch {
-        return {
-          success: false,
-          error: "Logout failed",
-        };
+        return { success: false, error: "Logout failed" };
       }
-    },
+    }
 
-    async fetchUser() {
+    async function fetchUser() {
       try {
-        this.loading = true;
-        const response = await $fetch<{ user: AuthUser }>("/api/auth/me");
+        loading.value = true;
+        const response = await getApiAuthMe({});
 
-        const roles = response.user.roles || [response.user.role as string] || ["staff"];
-        const primaryRole = roles[0] || "staff";
+        const roles = response.user?.roles as Required<Role>[];
 
-        this.user = response.user as AuthUser;
-        this.currentRole = primaryRole;
-        this.isAuthenticated = true;
+        user.value = response.user as SanitizedUser;
+        currentRole.value = roles[0]!;
+        isAuthenticated.value = true;
       } catch {
-        this.user = null;
-        this.currentRole = "staff";
-        this.isAuthenticated = false;
+        user.value = null;
+        currentRole.value = undefined;
+        isAuthenticated.value = false;
       } finally {
-        this.loading = false;
+        loading.value = false;
       }
-    },
+    }
 
-    switchRole(role: string) {
-      const userRoles = (this.user?.roles || [this.user?.role].filter(Boolean)) as string[];
-      if (userRoles.includes(role)) {
-        this.currentRole = role;
+    function switchRole(roleId: number) {
+      const role = availableRoles.value.find((v) => v.id === roleId);
+      if (role) {
+        currentRole.value = role;
       }
+    }
+
+    return {
+      user,
+      isAuthenticated,
+      loading,
+      currentRole,
+      hasRole,
+      isAdmin,
+      isManager,
+      isReceptionist,
+      availableRoles,
+      login,
+      logout,
+      fetchUser,
+      switchRole,
+    };
+  },
+  {
+    persist: {
+      pick: ["user", "isAuthenticated", "currentRole"],
+      storage: localStorage,
     },
   },
-
-  persist: {
-    key: "auth",
-    pick: ["user", "isAuthenticated", "currentRole"],
-  },
-});
+);

@@ -82,6 +82,26 @@ export type Guest = {
         purposeOfTravel?: string;
         reservationCode?: string;
         roomPrice?: number;
+        rooms?: Array<{
+            amenities?: Array<{
+                id?: number;
+                name?: string;
+                translation?: {
+                    [key: string]: string;
+                };
+            }>;
+            basePrice?: number;
+            capacity?: number;
+            description?: string;
+            floor?: number;
+            guestId?: number;
+            hotelId?: number;
+            id?: number;
+            name?: string;
+            roomNumber?: string;
+            roomType?: string;
+            status?: string;
+        }>;
         userCheckIn?: string;
         userCheckOut?: string;
     }>;
@@ -144,6 +164,25 @@ export type Income = {
     reference?: string;
     reservationId?: number;
     source?: string;
+};
+
+/**
+ * MeResponse schema
+ */
+export type MeResponse = {
+    user?: {
+        email?: string;
+        firstName?: string;
+        id?: number;
+        lastName?: string;
+        roles?: Array<{
+            id?: number;
+            name?: string;
+            translation?: {
+                [key: string]: string;
+            };
+        }>;
+    };
 };
 
 /**
@@ -254,6 +293,26 @@ export type PaginatedResponseModelsGuest = {
             purposeOfTravel?: string;
             reservationCode?: string;
             roomPrice?: number;
+            rooms?: Array<{
+                amenities?: Array<{
+                    id?: number;
+                    name?: string;
+                    translation?: {
+                        [key: string]: string;
+                    };
+                }>;
+                basePrice?: number;
+                capacity?: number;
+                description?: string;
+                floor?: number;
+                guestId?: number;
+                hotelId?: number;
+                id?: number;
+                name?: string;
+                roomNumber?: string;
+                roomType?: string;
+                status?: string;
+            }>;
             userCheckIn?: string;
             userCheckOut?: string;
         }>;
@@ -420,6 +479,26 @@ export type PaginatedResponseModelsReservation = {
         purposeOfTravel?: string;
         reservationCode?: string;
         roomPrice?: number;
+        rooms?: Array<{
+            amenities?: Array<{
+                id?: number;
+                name?: string;
+                translation?: {
+                    [key: string]: string;
+                };
+            }>;
+            basePrice?: number;
+            capacity?: number;
+            description?: string;
+            floor?: number;
+            guestId?: number;
+            hotelId?: number;
+            id?: number;
+            name?: string;
+            roomNumber?: string;
+            roomType?: string;
+            status?: string;
+        }>;
         userCheckIn?: string;
         userCheckOut?: string;
     }>;
@@ -448,6 +527,7 @@ export type PaginatedResponseModelsRoom = {
         guestId?: number;
         hotelId?: number;
         id?: number;
+        name?: string;
         roomNumber?: string;
         roomType?: string;
         status?: string;
@@ -565,6 +645,26 @@ export type Reservation = {
     purposeOfTravel?: string;
     reservationCode?: string;
     roomPrice?: number;
+    rooms?: Array<{
+        amenities?: Array<{
+            id?: number;
+            name?: string;
+            translation?: {
+                [key: string]: string;
+            };
+        }>;
+        basePrice?: number;
+        capacity?: number;
+        description?: string;
+        floor?: number;
+        guestId?: number;
+        hotelId?: number;
+        id?: number;
+        name?: string;
+        roomNumber?: string;
+        roomType?: string;
+        status?: string;
+    }>;
     userCheckIn?: string;
     userCheckOut?: string;
 };
@@ -587,6 +687,7 @@ export type Room = {
     guestId?: number;
     hotelId?: number;
     id?: number;
+    name?: string;
     roomNumber?: string;
     roomType?: string;
     status?: string;
@@ -629,7 +730,13 @@ export type LoginResponse = {
         firstName?: string;
         id?: number;
         lastName?: string;
-        role?: string;
+        roles?: Array<{
+            id?: number;
+            name?: string;
+            translation?: {
+                [key: string]: string;
+            };
+        }>;
     };
 };
 
@@ -637,13 +744,6 @@ export type LoginResponse = {
  * okResponse schema
  */
 export type OkResponse = unknown;
-
-/**
- * response schema
- */
-export type Response = {
-    user?: unknown;
-};
 
 /**
  * string schema
@@ -663,7 +763,13 @@ export type UserCreateDto = {
     firstName?: string;
     lastName?: string;
     password?: string;
-    roles?: Array<string>;
+    roles?: Array<{
+        id?: number;
+        name?: string;
+        translation?: {
+            [key: string]: string;
+        };
+    }>;
 };
 
 /**
@@ -680,7 +786,13 @@ export type UserListResponse = {
         firstName?: string;
         id?: number;
         lastName?: string;
-        role?: string;
+        roles?: Array<{
+            id?: number;
+            name?: string;
+            translation?: {
+                [key: string]: string;
+            };
+        }>;
     }>;
 };
 
@@ -997,7 +1109,7 @@ export type GetApiAuthMeResponses = {
     /**
      * OK
      */
-    200: Response;
+    200: MeResponse;
 };
 
 export type GetApiAuthMeResponse = GetApiAuthMeResponses[keyof GetApiAuthMeResponses];

@@ -45,7 +45,14 @@
                 </UFormField>
 
                 <UFormField :label="t('guest.gender')">
-                  <UInput v-model="guest.gender" />
+                  <USelect
+                    v-model="guest.gender"
+                    class="w-full"
+                    :items="[
+                      { value: 'male', label: 'مرد' },
+                      { value: 'female', label: 'زن' },
+                    ]"
+                  />
                 </UFormField>
 
                 <UFormField :label="t('guest.dateOfBirth')">
@@ -100,7 +107,7 @@
                 class="mt-2 grid grid-cols-1 gap-6 rounded-md p-4 ring ring-accented/40 ring-inset md:grid-cols-3"
               >
                 <UFormField :label="t('guest.roomId')">
-                  <UInput v-model.number="reservation.roomId" type="number" min="1" />
+                  <HSelect v-model="room.id" :items="rooms ?? []" />
                 </UFormField>
 
                 <UFormField :label="t('guest.reservationCode')">
@@ -108,7 +115,7 @@
                 </UFormField>
 
                 <UFormField :label="t('guest.entryDate')" required>
-                  <UInput type="date" v-model="reservation.entryDate" />
+                  <HDate v-model="reservation.entryDate" />
                 </UFormField>
 
                 <UFormField :label="t('guest.departureDate')">
@@ -222,7 +229,7 @@
             {{ reservation?.departureDate }}
           </div>
           <div>
-            <strong>{{ t("guest.roomId") }}:</strong> {{ reservation?.roomId }}
+            <strong>{{ t("guest.roomId") }}:</strong> {{ room?.id }}
           </div>
           <div>
             <strong>{{ t("guest.summaryPeople") }}:</strong> {{ reservation?.numberOfPeople }}
@@ -246,30 +253,20 @@
 <script setup lang="ts">
 const { t } = useI18n();
 import { z } from "zod/v4";
-import { zGuest, zReservation } from "~/utils/client/zod.gen";
+import { zGuest, zReservation, zRoom } from "~/utils/client/zod.gen";
 const loading = ref(false);
 
 type Guest = z.output<typeof zGuest>;
 
-const guest = reactive<Guest>({
-  firstName: "",
-  lastName: "",
-  fatherName: "",
-  nationalId: "",
-  idNumber: "",
-  nationality: "",
-  gender: "",
-  dateOfBirth: "",
-  placeOfBirth: "",
-  phone: "",
-  address: "",
-  postalCode: "",
-  occupation: "",
-});
+const guest = reactive<Guest>({} as any);
 
 type Reservation = z.output<typeof zReservation>;
 
 const reservation = ref<Reservation>({} as any);
+
+type Room = z.output<typeof zRoom>;
+
+const room = ref<Room>({} as any);
 
 const paymentSchema = z
   .object({
@@ -285,14 +282,22 @@ type Payment = z.output<typeof paymentSchema>;
 
 const payment = ref<Payment>({});
 
+const { data: rooms } = useAsyncData(async () => {
+  const res = await getApiRooms({});
+  return res.data?.map((v) => ({
+    id: v.id,
+    name: `${v.name ?? v.roomNumber}`,
+  }));
+});
+
 const handleSubmit = async () => {
   loading.value = true;
   try {
     const body = {
       ...guest,
       dateOfBirth: new Date(guest.dateOfBirth ?? "").toISOString(),
-      reservation: [reservation.value],
-      payment: payment.value,
+      // reservation: [reservation.value],
+      // payment: payment.value,
     };
 
     await postApiGuests({

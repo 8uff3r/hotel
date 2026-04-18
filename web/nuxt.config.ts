@@ -24,6 +24,7 @@ export default defineNuxtConfig({
       plugins: [
         "zod",
         "@hey-api/client-nuxt",
+        "@hey-api/typescript",
         {
           name: "@hey-api/sdk",
           validator: true,
@@ -31,14 +32,6 @@ export default defineNuxtConfig({
       ],
     },
   },
-
-  // openFetch: {
-  //   clients: {
-  //     api: {
-  //       schema: "http://localhost:8080/swagger/openapi.json",
-  //     },
-  //   },
-  // },
 
   i18n: {
     baseUrl: "",

@@ -121,17 +121,17 @@ const sidebarOpen = ref(true);
 
 // Role switcher
 const roleOptions = computed(() =>
-  (authStore.availableRoles || []).map((role: string) => ({
-    value: role,
-    label: role.charAt(0).toUpperCase() + role.slice(1),
+  (authStore.availableRoles || []).map((role) => ({
+    id: role.id,
+    name: role.name.charAt(0).toUpperCase(),
   }))
 );
-const selectedRole = ref(authStore.currentRole);
+const selectedRole = ref(authStore.currentRole?.id);
 
 watch(
   () => authStore.currentRole,
   (newRole) => {
-    selectedRole.value = newRole;
+    selectedRole.value = newRole?.id;
   }
 );
 
@@ -174,7 +174,7 @@ const userName = computed(() =>
 );
 const currentRoleDisplay = computed(() =>
   authStore.currentRole
-    ? authStore.currentRole.charAt(0).toUpperCase() + authStore.currentRole.slice(1)
+    ? authStore.currentRole.name.charAt(0).toUpperCase() + authStore.currentRole.name.slice(1)
     : t("roles.staff")
 );
 

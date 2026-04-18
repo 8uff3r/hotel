@@ -82,6 +82,7 @@ const handleLogin = async () => {
   authError.value = null;
 
   const result = await authStore.login(form.email, form.password);
+  console.log(result);
 
   if (result.success) {
     await navigateTo("/");
