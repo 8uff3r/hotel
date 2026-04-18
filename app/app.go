@@ -111,7 +111,7 @@ func New(cfg config.Config) (*App, error) {
 		"/auth": auth.AuthModule{},
 	})
 
-	fuego.Use(apiGroup, api.Auth)
+	fuego.Use(apiGroup, api.AuthMiddleware)
 	SetupRouter(&api, apiGroup, PathModuleMap{
 		"/rooms":       rooms.RoomsModule{},
 		"/guests":      guests.GuestsModule{},

@@ -2164,7 +2164,7 @@
 	"paths": {
 		"/api/accounting/accounts/": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.ListModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.ListModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/accounting/accounts/",
 				"parameters": [
 					{
@@ -2245,7 +2245,7 @@
 				]
 			},
 			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.CreateModel[...].func2`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.CreateModel[...].func2`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/accounting/accounts/",
 				"parameters": [
 					{
@@ -2325,7 +2325,7 @@
 		},
 		"/api/accounting/expenses/": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.ListModel[...].func3`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.ListModel[...].func3`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/accounting/expenses/",
 				"parameters": [
 					{
@@ -2406,7 +2406,7 @@
 				]
 			},
 			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.CreateModel[...].func4`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.CreateModel[...].func4`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/accounting/expenses/",
 				"parameters": [
 					{
@@ -2486,7 +2486,7 @@
 		},
 		"/api/accounting/income/": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.ListModel[...].func5`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.ListModel[...].func5`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/accounting/income/",
 				"parameters": [
 					{
@@ -2567,7 +2567,7 @@
 				]
 			},
 			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.CreateModel[...].func6`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.CreateModel[...].func6`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/accounting/income/",
 				"parameters": [
 					{
@@ -2727,7 +2727,7 @@
 		},
 		"/api/auth/logout": {
 			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/auth.(*AuthModule).logout`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/auth.(*AuthModule).logout`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/auth/logout",
 				"parameters": [
 					{
@@ -2796,7 +2796,7 @@
 		},
 		"/api/auth/me": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/auth.me`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/auth.me`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/auth/me",
 				"parameters": [
 					{
@@ -2865,7 +2865,7 @@
 		},
 		"/api/guests/": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.ListModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.ListModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/guests/",
 				"parameters": [
 					{
@@ -2946,7 +2946,7 @@
 				]
 			},
 			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.CreateModel[...].func2`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.CreateModel[...].func2`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/guests/",
 				"parameters": [
 					{
@@ -3026,7 +3026,7 @@
 		},
 		"/api/guests/{id}": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.GetModel[...].func3`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.GetModel[...].func3`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/guests/:id",
 				"parameters": [
 					{
@@ -3101,7 +3101,7 @@
 				]
 			},
 			"put": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.UpdateModel[...].func4`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.UpdateModel[...].func4`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "PUT_/api/guests/:id",
 				"parameters": [
 					{
@@ -3258,7 +3258,7 @@
 		},
 		"/api/parking/lots/": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/parking/lots/",
 				"parameters": [
 					{
@@ -3339,7 +3339,7 @@
 				]
 			},
 			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func2`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func2`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/parking/lots/",
 				"parameters": [
 					{
@@ -3419,7 +3419,7 @@
 		},
 		"/api/parking/lots/{id}": {
 			"delete": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.DeleteModel.func5`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.DeleteModel.func5`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "DELETE_/api/parking/lots/:id",
 				"parameters": [
 					{
@@ -3494,7 +3494,7 @@
 				]
 			},
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.GetModel[...].func3`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.GetModel[...].func3`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/parking/lots/:id",
 				"parameters": [
 					{
@@ -3569,7 +3569,7 @@
 				]
 			},
 			"put": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.UpdateModel[...].func4`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.UpdateModel[...].func4`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "PUT_/api/parking/lots/:id",
 				"parameters": [
 					{
@@ -3657,7 +3657,7 @@
 		},
 		"/api/parking/spots/": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func6`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func6`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/parking/spots/",
 				"parameters": [
 					{
@@ -3738,7 +3738,7 @@
 				]
 			},
 			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func7`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func7`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/parking/spots/",
 				"parameters": [
 					{
@@ -3818,7 +3818,7 @@
 		},
 		"/api/parking/spots/statuses": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func11`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func11`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/parking/spots/statuses",
 				"parameters": [
 					{
@@ -3901,7 +3901,7 @@
 		},
 		"/api/parking/spots/types": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func12`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func12`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/parking/spots/types",
 				"parameters": [
 					{
@@ -3984,7 +3984,7 @@
 		},
 		"/api/parking/spots/{id}": {
 			"delete": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.DeleteModel.func10`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.DeleteModel.func10`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "DELETE_/api/parking/spots/:id",
 				"parameters": [
 					{
@@ -4059,7 +4059,7 @@
 				]
 			},
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.GetModel[...].func8`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.GetModel[...].func8`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/parking/spots/:id",
 				"parameters": [
 					{
@@ -4134,7 +4134,7 @@
 				]
 			},
 			"put": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.UpdateModel[...].func9`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.UpdateModel[...].func9`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "PUT_/api/parking/spots/:id",
 				"parameters": [
 					{
@@ -4222,7 +4222,7 @@
 		},
 		"/api/parking/stats": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.(*ParkingModule).parkingStats`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.(*ParkingModule).parkingStats`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/parking/stats",
 				"parameters": [
 					{
@@ -4291,7 +4291,7 @@
 		},
 		"/api/parking/transactions/": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func18`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func18`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/parking/transactions/",
 				"parameters": [
 					{
@@ -4372,7 +4372,7 @@
 				]
 			},
 			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func19`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func19`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/parking/transactions/",
 				"parameters": [
 					{
@@ -4452,7 +4452,7 @@
 		},
 		"/api/parking/transactions/{id}": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.GetModel[...].func20`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.GetModel[...].func20`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/parking/transactions/:id",
 				"parameters": [
 					{
@@ -4529,7 +4529,7 @@
 		},
 		"/api/parking/transactions/{id}/check-out": {
 			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.(*ParkingModule).transactionsCheckOut`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.(*ParkingModule).transactionsCheckOut`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/parking/transactions/:id/check-out",
 				"parameters": [
 					{
@@ -4606,7 +4606,7 @@
 		},
 		"/api/parking/vehicles/": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func13`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func13`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/parking/vehicles/",
 				"parameters": [
 					{
@@ -4687,7 +4687,7 @@
 				]
 			},
 			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func14`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func14`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/parking/vehicles/",
 				"parameters": [
 					{
@@ -4767,7 +4767,7 @@
 		},
 		"/api/parking/vehicles/{id}": {
 			"delete": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.DeleteModel.func17`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.DeleteModel.func17`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "DELETE_/api/parking/vehicles/:id",
 				"parameters": [
 					{
@@ -4842,7 +4842,7 @@
 				]
 			},
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.GetModel[...].func15`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.GetModel[...].func15`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/parking/vehicles/:id",
 				"parameters": [
 					{
@@ -4917,7 +4917,7 @@
 				]
 			},
 			"put": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.UpdateModel[...].func16`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.UpdateModel[...].func16`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "PUT_/api/parking/vehicles/:id",
 				"parameters": [
 					{
@@ -5074,7 +5074,7 @@
 		},
 		"/api/reservation/": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.ListModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.ListModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/reservation/",
 				"parameters": [
 					{
@@ -5155,7 +5155,7 @@
 				]
 			},
 			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.CreateModel[...].func2`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.CreateModel[...].func2`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/reservation/",
 				"parameters": [
 					{
@@ -5235,7 +5235,7 @@
 		},
 		"/api/reservation/{id}": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.GetModel[...].func3`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.GetModel[...].func3`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/reservation/:id",
 				"parameters": [
 					{
@@ -5310,7 +5310,7 @@
 				]
 			},
 			"put": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.UpdateModel[...].func4`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.UpdateModel[...].func4`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "PUT_/api/reservation/:id",
 				"parameters": [
 					{
@@ -5398,7 +5398,7 @@
 		},
 		"/api/reservation/{id}/check-in": {
 			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/reservation.(*ReservationModule).reservationsCheckIn`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/reservation.(*ReservationModule).reservationsCheckIn`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/reservation/:id/check-in",
 				"parameters": [
 					{
@@ -5475,7 +5475,7 @@
 		},
 		"/api/reservation/{id}/check-out": {
 			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/reservation.(*ReservationModule).reservationsCheckOut`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/reservation.(*ReservationModule).reservationsCheckOut`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/reservation/:id/check-out",
 				"parameters": [
 					{
@@ -5552,7 +5552,7 @@
 		},
 		"/api/rooms/": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.ListModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.ListModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/rooms/",
 				"parameters": [
 					{
@@ -5633,7 +5633,7 @@
 				]
 			},
 			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.CreateModel[...].func2`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.CreateModel[...].func2`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/rooms/",
 				"parameters": [
 					{
@@ -5713,7 +5713,7 @@
 		},
 		"/api/rooms/amenities": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.ListModel[...].func6`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.ListModel[...].func6`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/rooms/amenities",
 				"parameters": [
 					{
@@ -5796,7 +5796,7 @@
 		},
 		"/api/rooms/{id}": {
 			"delete": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.DeleteModel.func5`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.DeleteModel.func5`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "DELETE_/api/rooms/:id",
 				"parameters": [
 					{
@@ -5871,7 +5871,7 @@
 				]
 			},
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.GetModel[...].func3`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.GetModel[...].func3`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/rooms/:id",
 				"parameters": [
 					{
@@ -5946,7 +5946,7 @@
 				]
 			},
 			"put": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.UpdateModel[...].func4`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.UpdateModel[...].func4`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "PUT_/api/rooms/:id",
 				"parameters": [
 					{
@@ -6034,7 +6034,7 @@
 		},
 		"/api/users/": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/users.(*UsersModule).usersList`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/users.(*UsersModule).usersList`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/users/",
 				"parameters": [
 					{
@@ -6101,7 +6101,7 @@
 				]
 			},
 			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/users.(*UsersModule).usersCreate`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).Auth`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/users.(*UsersModule).usersCreate`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/users/",
 				"parameters": [
 					{

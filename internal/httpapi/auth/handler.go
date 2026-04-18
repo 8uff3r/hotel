@@ -15,7 +15,7 @@ func (m AuthModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	au := AuthModule{API: api}
 
 	fuego.Post(s, "/login", au.loginHandler)
-	fuego.Use(s, api.Auth)
+	fuego.Use(s, api.AuthMiddleware)
 	fuego.Post(s, "/logout", au.logout)
 	fuego.Get(s, "/me", me)
 }

@@ -31,7 +31,7 @@ export type Options<TComposable extends Composable = '$fetch', TData extends TDa
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -59,7 +59,7 @@ export const getApiAccountingAccounts = <TComposable extends Composable = '$fetc
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -91,7 +91,7 @@ export const postApiAccountingAccounts = <TComposable extends Composable = '$fet
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -119,7 +119,7 @@ export const getApiAccountingExpenses = <TComposable extends Composable = '$fetc
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -151,7 +151,7 @@ export const postApiAccountingExpenses = <TComposable extends Composable = '$fet
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -179,7 +179,7 @@ export const getApiAccountingIncome = <TComposable extends Composable = '$fetch'
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -242,7 +242,7 @@ export const postApiAuthLogin = <TComposable extends Composable = '$fetch', Defa
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -270,7 +270,7 @@ export const postApiAuthLogout = <TComposable extends Composable = '$fetch', Def
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -298,7 +298,7 @@ export const getApiAuthMe = <TComposable extends Composable = '$fetch', DefaultT
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -326,7 +326,7 @@ export const getApiGuests = <TComposable extends Composable = '$fetch', DefaultT
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -358,7 +358,7 @@ export const postApiGuests = <TComposable extends Composable = '$fetch', Default
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -386,7 +386,7 @@ export const getApiGuestsId = <TComposable extends Composable = '$fetch', Defaul
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -445,7 +445,7 @@ export const getApiHealthz = <TComposable extends Composable = '$fetch', Default
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -473,7 +473,7 @@ export const getApiParkingLots = <TComposable extends Composable = '$fetch', Def
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -505,7 +505,7 @@ export const postApiParkingLots = <TComposable extends Composable = '$fetch', De
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -533,7 +533,7 @@ export const deleteApiParkingLotsId = <TComposable extends Composable = '$fetch'
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -561,7 +561,7 @@ export const getApiParkingLotsId = <TComposable extends Composable = '$fetch', D
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -593,7 +593,7 @@ export const putApiParkingLotsId = <TComposable extends Composable = '$fetch', D
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -621,7 +621,7 @@ export const getApiParkingSpots = <TComposable extends Composable = '$fetch', De
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -653,7 +653,7 @@ export const postApiParkingSpots = <TComposable extends Composable = '$fetch', D
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -681,7 +681,7 @@ export const getApiParkingSpotsStatuses = <TComposable extends Composable = '$fe
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -709,7 +709,7 @@ export const getApiParkingSpotsTypes = <TComposable extends Composable = '$fetch
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -737,7 +737,7 @@ export const deleteApiParkingSpotsId = <TComposable extends Composable = '$fetch
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -765,7 +765,7 @@ export const getApiParkingSpotsId = <TComposable extends Composable = '$fetch', 
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -797,7 +797,7 @@ export const putApiParkingSpotsId = <TComposable extends Composable = '$fetch', 
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -825,7 +825,7 @@ export const getApiParkingStats = <TComposable extends Composable = '$fetch', De
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -853,7 +853,7 @@ export const getApiParkingTransactions = <TComposable extends Composable = '$fet
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -885,7 +885,7 @@ export const postApiParkingTransactions = <TComposable extends Composable = '$fe
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -913,7 +913,7 @@ export const getApiParkingTransactionsId = <TComposable extends Composable = '$f
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -941,7 +941,7 @@ export const postApiParkingTransactionsIdCheckOut = <TComposable extends Composa
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -969,7 +969,7 @@ export const getApiParkingVehicles = <TComposable extends Composable = '$fetch',
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -1001,7 +1001,7 @@ export const postApiParkingVehicles = <TComposable extends Composable = '$fetch'
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -1029,7 +1029,7 @@ export const deleteApiParkingVehiclesId = <TComposable extends Composable = '$fe
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -1057,7 +1057,7 @@ export const getApiParkingVehiclesId = <TComposable extends Composable = '$fetch
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -1116,7 +1116,7 @@ export const getApiReadyz = <TComposable extends Composable = '$fetch', DefaultT
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -1144,7 +1144,7 @@ export const getApiReservation = <TComposable extends Composable = '$fetch', Def
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -1176,7 +1176,7 @@ export const postApiReservation = <TComposable extends Composable = '$fetch', De
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -1204,7 +1204,7 @@ export const getApiReservationId = <TComposable extends Composable = '$fetch', D
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -1236,7 +1236,7 @@ export const putApiReservationId = <TComposable extends Composable = '$fetch', D
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -1264,7 +1264,7 @@ export const postApiReservationIdCheckIn = <TComposable extends Composable = '$f
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -1292,7 +1292,7 @@ export const postApiReservationIdCheckOut = <TComposable extends Composable = '$
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -1320,7 +1320,7 @@ export const getApiRooms = <TComposable extends Composable = '$fetch', DefaultT 
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -1352,7 +1352,7 @@ export const postApiRooms = <TComposable extends Composable = '$fetch', DefaultT
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -1380,7 +1380,7 @@ export const getApiRoomsAmenities = <TComposable extends Composable = '$fetch', 
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -1408,7 +1408,7 @@ export const deleteApiRoomsId = <TComposable extends Composable = '$fetch', Defa
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -1436,7 +1436,7 @@ export const getApiRoomsId = <TComposable extends Composable = '$fetch', Default
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -1468,7 +1468,7 @@ export const putApiRoomsId = <TComposable extends Composable = '$fetch', Default
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *
@@ -1496,7 +1496,7 @@ export const getApiUsers = <TComposable extends Composable = '$fetch', DefaultT 
  * #### Middlewares:
  *
  * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).Auth`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
  *
  * ---
  *

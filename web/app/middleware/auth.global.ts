@@ -27,10 +27,6 @@ export default defineNuxtRouteMiddleware((to) => {
 
   if (meta.requiresRole) {
     const hasRequiredRole = authStore.hasRole(...meta.requiresRole);
-    console.log("required:", meta.requiresRole);
-    console.log("available:", authStore.availableRoles);
-    console.log("has:", hasRequiredRole);
-
     if (!hasRequiredRole) {
       throw createError({
         statusCode: 403,

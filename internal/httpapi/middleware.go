@@ -3,6 +3,7 @@ package httpapi
 import (
 	"context"
 	"errors"
+	"fmt"
 	"hotel/internal/models"
 	"net/http"
 	"time"
@@ -19,9 +20,10 @@ func (a *API) TimeoutMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func (a *API) Auth(next http.Handler) http.Handler {
+func (a *API) AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		user, err := a.sessionUser(r)
+		fmt.Printf("%s", user)
 		if err != nil {
 			WriteErr(w, http.StatusUnauthorized, "unauthorized")
 			return
@@ -29,10 +31,6 @@ func (a *API) Auth(next http.Handler) http.Handler {
 		ctx := context.WithValue(r.Context(), UserKey{}, user)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
-}
-
-func (a *API) AuthMiddleware() func(http.Handler) http.Handler {
-	return a.Auth
 }
 
 func (a *API) RecoverAndLogMiddleware(next http.Handler) http.Handler {
@@ -67,7 +65,7 @@ func (a *API) sessionUser(r *http.Request) (models.SanitizedUser, error) {
 	}
 
 	var s models.Session
-	if err := a.Db.WithContext(r.Context()).Preload("User").Where("id = ? AND expires_at > ?", cookie.Value, time.Now().UTC()).First(&s).Error; err != nil {
+	if err := a.Db.WithContext(r.Context()).Preload("User.Roles").Where("id = ? AND expires_at > ?", cookie.Value, time.Now().UTC()).First(&s).Error; err != nil {
 		return zero, err
 	}
 	if !s.User.IsActive {

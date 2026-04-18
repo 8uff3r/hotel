@@ -104,7 +104,6 @@ export const useAuthStore = defineStore(
   },
   {
     persist: {
-      pick: ["user", "isAuthenticated", "currentRole"],
       storage: localStorage,
     },
   },
