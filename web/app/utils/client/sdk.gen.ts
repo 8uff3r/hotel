@@ -1615,11 +1615,11 @@ export const getApiParkingTransactions = <
   });
 
 /**
- * func10
+ * func12
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func10`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func12`
  *
  * #### Middlewares:
  *
@@ -1804,11 +1804,11 @@ export const getApiParkingVehicles = <
   });
 
 /**
- * func7
+ * func9
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func7`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func9`
  *
  * #### Middlewares:
  *
@@ -1855,11 +1855,11 @@ export const postApiParkingVehicles = <
   });
 
 /**
- * func9
+ * func11
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.DeleteModel.func9`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.DeleteModel.func11`
  *
  * #### Middlewares:
  *
@@ -1949,11 +1949,11 @@ export const getApiParkingVehiclesId = <
   });
 
 /**
- * func8
+ * func10
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.UpdateModel[...].func8`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.UpdateModel[...].func10`
  *
  * #### Middlewares:
  *
@@ -2353,11 +2353,11 @@ export const getApiRooms = <
   });
 
 /**
- * func2
+ * func3
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.CreateModel[...].func2`
+ * `hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.CreateModel[...].func3`
  *
  * #### Middlewares:
  *
@@ -2525,11 +2525,11 @@ export const getApiRoomsTypes = <
   });
 
 /**
- * func5
+ * func7
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.DeleteModel.func5`
+ * `hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.DeleteModel.func7`
  *
  * #### Middlewares:
  *
@@ -2609,11 +2609,11 @@ export const getApiRoomsId = <
   });
 
 /**
- * func4
+ * func6
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.UpdateModel[...].func4`
+ * `hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.UpdateModel[...].func6`
  *
  * #### Middlewares:
  *

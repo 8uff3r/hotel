@@ -98,8 +98,9 @@ export type Guest = {
       hotelId?: number;
       id?: number;
       name?: string;
-      roomNumber?: string;
+      roomNumber: string;
       roomType?: {
+        colorHex?: string;
         id?: number;
         name?: string;
         translation?: {
@@ -108,6 +109,7 @@ export type Guest = {
       };
       roomTypeId?: number;
       status?: {
+        colorHex?: string;
         id?: number;
         name?: string;
         translation?: {
@@ -323,8 +325,9 @@ export type PaginatedResponseModelsGuest = {
         hotelId?: number;
         id?: number;
         name?: string;
-        roomNumber?: string;
+        roomNumber: string;
         roomType?: {
+          colorHex?: string;
           id?: number;
           name?: string;
           translation?: {
@@ -333,6 +336,7 @@ export type PaginatedResponseModelsGuest = {
         };
         roomTypeId?: number;
         status?: {
+          colorHex?: string;
           id?: number;
           name?: string;
           translation?: {
@@ -523,8 +527,9 @@ export type PaginatedResponseModelsReservation = {
       hotelId?: number;
       id?: number;
       name?: string;
-      roomNumber?: string;
+      roomNumber: string;
       roomType?: {
+        colorHex?: string;
         id?: number;
         name?: string;
         translation?: {
@@ -533,6 +538,7 @@ export type PaginatedResponseModelsReservation = {
       };
       roomTypeId?: number;
       status?: {
+        colorHex?: string;
         id?: number;
         name?: string;
         translation?: {
@@ -570,8 +576,9 @@ export type PaginatedResponseModelsRoom = {
     hotelId?: number;
     id?: number;
     name?: string;
-    roomNumber?: string;
+    roomNumber: string;
     roomType?: {
+      colorHex?: string;
       id?: number;
       name?: string;
       translation?: {
@@ -580,6 +587,7 @@ export type PaginatedResponseModelsRoom = {
     };
     roomTypeId?: number;
     status?: {
+      colorHex?: string;
       id?: number;
       name?: string;
       translation?: {
@@ -599,6 +607,7 @@ export type PaginatedResponseModelsRoom = {
  */
 export type PaginatedResponseModelsRoomStatus = {
   data?: Array<{
+    colorHex?: string;
     id?: number;
     name?: string;
     translation?: {
@@ -616,6 +625,7 @@ export type PaginatedResponseModelsRoomStatus = {
  */
 export type PaginatedResponseModelsRoomType = {
   data?: Array<{
+    colorHex?: string;
     id?: number;
     name?: string;
     translation?: {
@@ -751,8 +761,9 @@ export type Reservation = {
     hotelId?: number;
     id?: number;
     name?: string;
-    roomNumber?: string;
+    roomNumber: string;
     roomType?: {
+      colorHex?: string;
       id?: number;
       name?: string;
       translation?: {
@@ -761,6 +772,7 @@ export type Reservation = {
     };
     roomTypeId?: number;
     status?: {
+      colorHex?: string;
       id?: number;
       name?: string;
       translation?: {
@@ -792,8 +804,9 @@ export type Room = {
   hotelId?: number;
   id?: number;
   name?: string;
-  roomNumber?: string;
+  roomNumber: string;
   roomType?: {
+    colorHex?: string;
     id?: number;
     name?: string;
     translation?: {
@@ -802,6 +815,7 @@ export type Room = {
   };
   roomTypeId?: number;
   status?: {
+    colorHex?: string;
     id?: number;
     name?: string;
     translation?: {

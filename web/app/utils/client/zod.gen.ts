@@ -104,9 +104,10 @@ export const zGuest = z.object({
               hotelId: z.int().gte(0).optional(),
               id: z.int().gte(0).optional(),
               name: z.string().optional(),
-              roomNumber: z.string().optional(),
+              roomNumber: z.string().min(1),
               roomType: z
                 .object({
+                  colorHex: z.string().optional(),
                   id: z.int().gte(0).optional(),
                   name: z.string().optional(),
                   translation: z.record(z.string(), z.string()).optional(),
@@ -115,6 +116,7 @@ export const zGuest = z.object({
               roomTypeId: z.int().gte(0).optional(),
               status: z
                 .object({
+                  colorHex: z.string().optional(),
                   id: z.int().gte(0).optional(),
                   name: z.string().optional(),
                   translation: z.record(z.string(), z.string()).optional(),
@@ -362,9 +364,10 @@ export const zPaginatedResponseModelsGuest = z.object({
                     hotelId: z.int().gte(0).optional(),
                     id: z.int().gte(0).optional(),
                     name: z.string().optional(),
-                    roomNumber: z.string().optional(),
+                    roomNumber: z.string().min(1),
                     roomType: z
                       .object({
+                        colorHex: z.string().optional(),
                         id: z.int().gte(0).optional(),
                         name: z.string().optional(),
                         translation: z.record(z.string(), z.string()).optional(),
@@ -373,6 +376,7 @@ export const zPaginatedResponseModelsGuest = z.object({
                     roomTypeId: z.int().gte(0).optional(),
                     status: z
                       .object({
+                        colorHex: z.string().optional(),
                         id: z.int().gte(0).optional(),
                         name: z.string().optional(),
                         translation: z.record(z.string(), z.string()).optional(),
@@ -652,9 +656,10 @@ export const zPaginatedResponseModelsReservation = z.object({
               hotelId: z.int().gte(0).optional(),
               id: z.int().gte(0).optional(),
               name: z.string().optional(),
-              roomNumber: z.string().optional(),
+              roomNumber: z.string().min(1),
               roomType: z
                 .object({
+                  colorHex: z.string().optional(),
                   id: z.int().gte(0).optional(),
                   name: z.string().optional(),
                   translation: z.record(z.string(), z.string()).optional(),
@@ -663,6 +668,7 @@ export const zPaginatedResponseModelsReservation = z.object({
               roomTypeId: z.int().gte(0).optional(),
               status: z
                 .object({
+                  colorHex: z.string().optional(),
                   id: z.int().gte(0).optional(),
                   name: z.string().optional(),
                   translation: z.record(z.string(), z.string()).optional(),
@@ -715,9 +721,10 @@ export const zPaginatedResponseModelsRoom = z.object({
         hotelId: z.int().gte(0).optional(),
         id: z.int().gte(0).optional(),
         name: z.string().optional(),
-        roomNumber: z.string().optional(),
+        roomNumber: z.string().min(1),
         roomType: z
           .object({
+            colorHex: z.string().optional(),
             id: z.int().gte(0).optional(),
             name: z.string().optional(),
             translation: z.record(z.string(), z.string()).optional(),
@@ -726,6 +733,7 @@ export const zPaginatedResponseModelsRoom = z.object({
         roomTypeId: z.int().gte(0).optional(),
         status: z
           .object({
+            colorHex: z.string().optional(),
             id: z.int().gte(0).optional(),
             name: z.string().optional(),
             translation: z.record(z.string(), z.string()).optional(),
@@ -756,6 +764,7 @@ export const zPaginatedResponseModelsRoomStatus = z.object({
   data: z
     .array(
       z.object({
+        colorHex: z.string().optional(),
         id: z.int().gte(0).optional(),
         name: z.string().optional(),
         translation: z.record(z.string(), z.string()).optional(),
@@ -783,6 +792,7 @@ export const zPaginatedResponseModelsRoomType = z.object({
   data: z
     .array(
       z.object({
+        colorHex: z.string().optional(),
         id: z.int().gte(0).optional(),
         name: z.string().optional(),
         translation: z.record(z.string(), z.string()).optional(),
@@ -968,9 +978,10 @@ export const zReservation = z.object({
         hotelId: z.int().gte(0).optional(),
         id: z.int().gte(0).optional(),
         name: z.string().optional(),
-        roomNumber: z.string().optional(),
+        roomNumber: z.string().min(1),
         roomType: z
           .object({
+            colorHex: z.string().optional(),
             id: z.int().gte(0).optional(),
             name: z.string().optional(),
             translation: z.record(z.string(), z.string()).optional(),
@@ -979,6 +990,7 @@ export const zReservation = z.object({
         roomTypeId: z.int().gte(0).optional(),
         status: z
           .object({
+            colorHex: z.string().optional(),
             id: z.int().gte(0).optional(),
             name: z.string().optional(),
             translation: z.record(z.string(), z.string()).optional(),
@@ -1013,9 +1025,10 @@ export const zRoom = z.object({
   hotelId: z.int().gte(0).optional(),
   id: z.int().gte(0).optional(),
   name: z.string().optional(),
-  roomNumber: z.string().optional(),
+  roomNumber: z.string().min(1),
   roomType: z
     .object({
+      colorHex: z.string().optional(),
       id: z.int().gte(0).optional(),
       name: z.string().optional(),
       translation: z.record(z.string(), z.string()).optional(),
@@ -1024,6 +1037,7 @@ export const zRoom = z.object({
   roomTypeId: z.int().gte(0).optional(),
   status: z
     .object({
+      colorHex: z.string().optional(),
       id: z.int().gte(0).optional(),
       name: z.string().optional(),
       translation: z.record(z.string(), z.string()).optional(),

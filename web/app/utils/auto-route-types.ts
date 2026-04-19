@@ -31,11 +31,13 @@ export interface RoomStatus {
   id?: number;
   name: string;
   translation?: { [key: string]: string };
+  colorHex?: string;
 }
 export interface RoomType {
   id?: number;
   name: string;
   translation?: { [key: string]: string };
+  colorHex?: string;
 }
 export interface Amenity {
   id?: number;
@@ -47,7 +49,7 @@ export interface Room {
   hotelId?: number;
   name: string;
   roomNumber: string;
-  floor?: number;
+  floor: number;
   capacity: number;
   basePrice: number;
   amenities: Amenity[];
