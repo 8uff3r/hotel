@@ -32,7 +32,7 @@ const emit = defineEmits<{
   "update:modelValue": [string | undefined];
 }>();
 watch(value, (nv) => {
-  emit("update:modelValue", nv?.toString());
+  emit("update:modelValue", nv?.toDate("UTC").toISOString());
 });
 </script>
 
@@ -44,7 +44,7 @@ watch(value, (nv) => {
       icon="i-lucide-calendar"
       class="flex w-full items-center justify-center"
     >
-      {{ value ? df.format(value.toDate()) : "Select a date" }}
+      {{ value ? df.format(value.toDate("UTC")) : "Select a date" }}
     </UButton>
 
     <template #content>

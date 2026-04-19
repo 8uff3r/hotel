@@ -104,7 +104,7 @@ export interface Guest {
   address: string;
   postalCode: string;
   occupation: string;
-  reservation?: Reservation[];
+  reservations?: Reservation[];
 }
 
 export interface Account {

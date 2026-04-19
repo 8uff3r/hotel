@@ -10,12 +10,12 @@
       </h1>
     </div>
 
-    <div v-if="loading" class="flex justify-center py-12">
+    <div v-if="pending" class="flex justify-center py-12">
       <ULoader size="lg" />
     </div>
 
     <UCard v-else-if="guest">
-      <form @submit.prevent="handleSubmit">
+      <UForm @submit="handleSubmit" :state="form" :schema>
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
           <UFormField label="Room Number" name="roomNumber"
             ><UInput v-model="form.roomNumber" :disabled="loading || !editing"
@@ -150,19 +150,12 @@
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton v-if="!editing" variant="outline" @click="editing = true">{{
-            t("actions.editGuest")
+          <UButton variant="outline" :disabled="loading">{{ t("actions.editGuest") }}</UButton>
+          <UButton type="submit" color="primary" :loading="loading">{{
+            t("actions.saveChanges")
           }}</UButton>
-          <template v-else>
-            <UButton variant="outline" :disabled="loading" @click="cancelEdit">{{
-              t("actions.cancel")
-            }}</UButton>
-            <UButton type="submit" color="primary" :loading="loading">{{
-              t("actions.saveChanges")
-            }}</UButton>
-          </template>
         </div>
-      </form>
+      </UForm>
     </UCard>
 
     <UCard v-else>
@@ -174,179 +167,58 @@
 </template>
 
 <script setup lang="ts">
+import type { FormSubmitEvent } from "@nuxt/ui";
+import { z as zod } from "zod/v4";
+import { zGuest } from "~/utils/client/zod.gen";
+
 definePageMeta({
   requiresRole: ["admin", "manager", "receptionist"],
 });
 
 const { t } = useI18n();
 
-interface Guest {
-  id: number;
-  roomNumber: string | null;
-  referrer: string | null;
-  roomType: string | null;
-  registerCard: string | null;
-  nationality: string | null;
-  roomPrice: number | null;
-  firstName: string;
-  lastName: string;
-  origin: string | null;
-  fullBoard: boolean;
-  destination: string | null;
-  reservationCode: string | null;
-  fatherName: string | null;
-  purposeOfTravel: string | null;
-  guide: boolean;
-  idNumber: string | null;
-  genderVisaValidity: string | null;
-  breakfast: boolean;
-  cash: boolean;
-  agency: boolean;
-  dateOfBirth: string | null;
-  numberOfPeople: number | null;
-  guestType: string | null;
-  contractType: string | null;
-  placeOfBirthStayDuration: string | null;
-  nationalId: string | null;
-  carLicensePlate: string | null;
-  occupationVisaNumber: string | null;
-  extraPerson: number | null;
-  durationOfStay: string | null;
-  entryDate: string | null;
-  departureDate: string | null;
-  address: string | null;
-  postalCode: string | null;
-  phone: string | null;
-  userCheckIn: string | null;
-  userCheckOut: string | null;
-  notes: string | null;
-}
-
 const route = useRoute();
-const guestId = Number(route.params.id);
+const guestId = route.params.id as string;
 
 const loading = ref(false);
-const editing = ref(false);
-const guest = ref<Guest | null>(null);
 
-const form = reactive({
-  roomNumber: "",
-  referrer: "",
-  roomType: "",
-  registerCard: "",
-  nationality: "",
-  roomPrice: 0,
-  firstName: "",
-  lastName: "",
-  origin: "",
-  fullBoard: false,
-  destination: "",
-  reservationCode: "",
-  fatherName: "",
-  purposeOfTravel: "",
-  guide: false,
-  idNumber: "",
-  genderVisaValidity: "",
-  breakfast: false,
-  cash: false,
-  agency: false,
-  dateOfBirth: "",
-  numberOfPeople: 1,
-  guestType: "",
-  contractType: "",
-  placeOfBirthStayDuration: "",
-  nationalId: "",
-  carLicensePlate: "",
-  occupationVisaNumber: "",
-  extraPerson: 0,
-  durationOfStay: "",
-  entryDate: "",
-  departureDate: "",
-  address: "",
-  postalCode: "",
-  phone: "",
-  userCheckIn: "",
-  userCheckOut: "",
-  notes: "",
+const schema = zGuest;
+type Schema = zod.output<typeof schema>;
+
+const form = ref<Schema>({} as any);
+
+const { data: guest, pending } = useAsyncData(async () => {
+  const response = await getApiGuestsId({
+    path: {
+      id: guestId,
+    },
+  });
+
+  form.value = response;
+  return response;
 });
 
-const fetchGuest = async () => {
-  loading.value = true;
-  try {
-    const response = await $fetch<{ data: Guest }>(`/api/guests/${guestId}`);
-    guest.value = response.data;
-    resetForm();
-  } catch (error) {
-    console.error("Failed to fetch guest:", error);
-    guest.value = null;
-  } finally {
-    loading.value = false;
+const cancelEdit = () => {
+  if (guest.value) {
+    form.value = { ...guest.value };
   }
 };
 
-const resetForm = () => {
-  if (!guest.value) return;
-  form.roomNumber = guest.value.roomNumber || "";
-  form.referrer = guest.value.referrer || "";
-  form.roomType = guest.value.roomType || "";
-  form.registerCard = guest.value.registerCard || "";
-  form.nationality = guest.value.nationality || "";
-  form.roomPrice = guest.value.roomPrice || 0;
-  form.firstName = guest.value.firstName || "";
-  form.lastName = guest.value.lastName || "";
-  form.origin = guest.value.origin || "";
-  form.fullBoard = guest.value.fullBoard || false;
-  form.destination = guest.value.destination || "";
-  form.reservationCode = guest.value.reservationCode || "";
-  form.fatherName = guest.value.fatherName || "";
-  form.purposeOfTravel = guest.value.purposeOfTravel || "";
-  form.guide = guest.value.guide || false;
-  form.idNumber = guest.value.idNumber || "";
-  form.genderVisaValidity = guest.value.genderVisaValidity || "";
-  form.breakfast = guest.value.breakfast || false;
-  form.cash = guest.value.cash || false;
-  form.agency = guest.value.agency || false;
-  form.dateOfBirth = guest.value.dateOfBirth || "";
-  form.numberOfPeople = guest.value.numberOfPeople || 1;
-  form.guestType = guest.value.guestType || "";
-  form.contractType = guest.value.contractType || "";
-  form.placeOfBirthStayDuration = guest.value.placeOfBirthStayDuration || "";
-  form.nationalId = guest.value.nationalId || "";
-  form.carLicensePlate = guest.value.carLicensePlate || "";
-  form.occupationVisaNumber = guest.value.occupationVisaNumber || "";
-  form.extraPerson = guest.value.extraPerson || 0;
-  form.durationOfStay = guest.value.durationOfStay || "";
-  form.entryDate = guest.value.entryDate || "";
-  form.departureDate = guest.value.departureDate || "";
-  form.address = guest.value.address || "";
-  form.postalCode = guest.value.postalCode || "";
-  form.phone = guest.value.phone || "";
-  form.userCheckIn = guest.value.userCheckIn || "";
-  form.userCheckOut = guest.value.userCheckOut || "";
-  form.notes = guest.value.notes || "";
-};
-
-const cancelEdit = () => {
-  editing.value = false;
-  resetForm();
-};
-
-const handleSubmit = async () => {
+const handleSubmit = async (event: FormSubmitEvent<Schema>) => {
   loading.value = true;
   try {
-    await $fetch(`/api/guests/${guestId}`, {
-      method: "put",
-      body: form,
+    await putApiGuestsId({
+      path: {
+        id: guestId,
+      },
+      body: event.data,
     });
 
-    editing.value = false;
-    await fetchGuest();
+    navigateTo("/guests");
   } catch (error) {
     console.error("Failed to update guest:", error);
   } finally {
     loading.value = false;
   }
 };
-
-onMounted(fetchGuest);
 </script>

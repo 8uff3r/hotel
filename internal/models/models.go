@@ -115,7 +115,7 @@ type Guest struct {
 	PostalCode   string    `json:"postalCode"`
 	Occupation   string    `json:"occupation"`
 
-	Reservations []Reservation `gorm:"foreignKey:GuestID" json:"reservation,omitempty"`
+	Reservations []Reservation `gorm:"foreignKey:GuestID" json:"reservations,omitempty"`
 }
 
 type Reservation struct {
@@ -265,7 +265,7 @@ type ParkingStats struct {
 
 func AllForDb() []any {
 	return []any{
-		&User{}, &Session{}, &Hotel{}, &Room{}, &Guest{}, &Reservation{}, &Account{},
+		&User{}, &Session{}, &Hotel{}, &Room{}, &Guest{}, &Reservation{}, &Payment{}, &Account{},
 		&Expense{}, &Income{}, &ParkingLot{}, &ParkingSpot{}, &Vehicle{}, &ParkingTransaction{}, &Amenity{},
 		&ParkingSpotType{}, &ParkingSpotStatus{},
 	}

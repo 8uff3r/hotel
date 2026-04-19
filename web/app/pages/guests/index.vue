@@ -33,7 +33,7 @@
         </div>
       </template>
 
-      <UTable :data="guests" :columns="columns" :loading="loading" striped>
+      <UTable :data="guests" :columns="columns" :loading="pending" striped>
         <template #id-cell="{ row }">
           <NuxtLink
             :to="`/guests/${row.original.id}`"
@@ -73,6 +73,9 @@
             <UButton variant="ghost" size="sm" :to="`/guests/${row.original.id}/edit`">
               <UIcon name="i-lucide-pencil" class="h-4 w-4" />
             </UButton>
+            <UButton variant="ghost" size="sm" color="error" @click="confirmDelete(row.original)">
+              <UIcon name="i-lucide-trash-2" class="h-4 w-4" />
+            </UButton>
           </div>
         </template>
       </UTable>
@@ -84,20 +87,34 @@
               t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages })
             }}
           </span>
-          <UPagination
-            v-model="page"
-            :page-count="pagination.limit"
-            :total="pagination.total"
-            @change="fetchGuests"
-          />
+          <UPagination v-model="page" :page-count="pagination.limit" :total="pagination.total" />
         </div>
       </template>
     </UCard>
+
+    <!-- Delete Confirmation Modal -->
+    <UModal v-model="deleteModalOpen">
+      <template #header>
+        <h2 class="text-lg font-semibold">{{ t("actions.confirmDelete") }}</h2>
+      </template>
+      <template #body>
+        <p>{{ t("guests.confirmDelete", { name: selectedGuest?.firstName }) }}</p>
+      </template>
+      <template #footer>
+        <div class="flex justify-end gap-3">
+          <UButton variant="outline" @click="deleteModalOpen = false">{{
+            t("actions.cancel")
+          }}</UButton>
+          <UButton color="error" :loading="deleting" @click="deleteGuest">{{
+            t("actions.delete")
+          }}</UButton>
+        </div>
+      </template>
+    </UModal>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { GetApiGuestsData } from "#imports";
 import type { TableColumn } from "@nuxt/ui";
 import type { Guest } from "~/utils/client";
 
@@ -115,8 +132,9 @@ const columns = computed<TableColumn<Guest>[]>(() => [
   { accessorKey: "actions", header: t("guests.columns.actions") },
 ]);
 
-const guests = ref<Guest[]>([]);
-const loading = ref(false);
+const deleting = ref(false);
+const deleteModalOpen = ref(false);
+const selectedGuest = ref<Guest | null>(null);
 const page = ref(1);
 
 const filters = reactive({
@@ -136,35 +154,41 @@ const debouncedSearch = () => {
   if (searchTimeout) clearTimeout(searchTimeout);
   searchTimeout = setTimeout(() => {
     pagination.page = 1;
-    fetchGuests();
+    // fetchGuests();
   }, 300);
 };
 
-const fetchGuests = async () => {
-  loading.value = true;
-  try {
-    const response = await getApiGuests({
-      query: {
-        limit: pagination.limit,
-        page: pagination.page,
-        // search: filters.search, // not implemented yet
-      },
-    });
-    guests.value = response.data ?? [];
-    pagination.total = response.total ?? 0;
-    pagination.totalPages = response.totalPages ?? 1;
-  } catch (error) {
-    console.error("Failed to fetch guests:", error);
-  } finally {
-    loading.value = false;
-  }
-};
+const { data: guests, pending } = useAsyncData(async () => {
+  const response = await getApiGuests({
+    query: computed(() => pagination),
+  });
+  pagination.total = response.total ?? 0;
+  pagination.totalPages = response.totalPages ?? 0;
+  return response.data;
+});
 
 const clearFilters = () => {
   filters.search = "";
   pagination.page = 1;
-  fetchGuests();
+  // fetchGuests();
 };
 
-onMounted(fetchGuests);
+const confirmDelete = (guest: Guest) => {
+  selectedGuest.value = guest;
+  deleteModalOpen.value = true;
+};
+
+const deleteGuest = async () => {
+  if (!selectedGuest.value) return;
+
+  deleting.value = true;
+  try {
+    await $fetch(`/api/guests/${selectedGuest.value.id}`, { method: "DELETE" });
+    deleteModalOpen.value = false;
+  } catch (error) {
+    console.error("Failed to delete guest:", error);
+  } finally {
+    deleting.value = false;
+  }
+};
 </script>

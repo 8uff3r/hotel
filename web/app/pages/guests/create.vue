@@ -11,7 +11,7 @@
       </div>
 
       <UCard>
-        <form @submit.prevent="handleSubmit" class="space-y-8">
+        <UForm @submit="handleSubmit" :state="form" :schema>
           <!-- SECTION: Guest Information -->
           <UCollapsible default-open>
             <template #default="{ open }">
@@ -28,63 +28,64 @@
               <div
                 class="mt-2 grid grid-cols-1 gap-6 rounded-md p-4 ring ring-accented/40 ring-inset md:grid-cols-3"
               >
-                <UFormField :label="t('forms.firstName')" required>
-                  <UInput v-model="guest.firstName" />
+                <UFormField :label="t('forms.firstName')" name="guest.firstName" required>
+                  <UInput v-model="form.guest.firstName" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('forms.lastName')" required>
-                  <UInput v-model="guest.lastName" />
+                <UFormField :label="t('forms.lastName')" name="guest.lastName" required>
+                  <UInput v-model="form.guest.lastName" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.fatherName')">
-                  <UInput v-model="guest.fatherName" />
+                <UFormField :label="t('guest.fatherName')" name="guest.fatherName">
+                  <UInput v-model="form.guest.fatherName" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.nationality')">
-                  <UInput v-model="guest.nationality" />
+                <UFormField :label="t('guest.nationality')" name="guest.nationality">
+                  <UInput v-model="form.guest.nationality" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.gender')">
+                <UFormField :label="t('guest.gender')" name="guest.gender">
                   <USelect
-                    v-model="guest.gender"
+                    v-model="form.guest.gender"
                     class="w-full"
                     :items="[
                       { value: 'male', label: 'مرد' },
                       { value: 'female', label: 'زن' },
                     ]"
+                    :disabled="loading"
                   />
                 </UFormField>
 
-                <UFormField :label="t('guest.dateOfBirth')">
-                  <HDate v-model="guest.dateOfBirth" />
+                <UFormField :label="t('guest.dateOfBirth')" name="guest.dateOfBirth">
+                  <HDate v-model="form.guest.dateOfBirth" />
                 </UFormField>
 
-                <UFormField :label="t('guest.placeOfBirth')">
-                  <UInput v-model="guest.placeOfBirth" />
+                <UFormField :label="t('guest.placeOfBirth')" name="guest.placeOfBirth">
+                  <UInput v-model="form.guest.placeOfBirth" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.nationalId')">
-                  <UInput v-model="guest.nationalId" />
+                <UFormField :label="t('guest.nationalId')" name="guest.nationalId">
+                  <UInput v-model="form.guest.nationalId" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.idPassportNumber')">
-                  <UInput v-model="guest.idNumber" />
+                <UFormField :label="t('guest.idPassportNumber')" name="guest.idNumber">
+                  <UInput v-model="form.guest.idNumber" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.occupation')">
-                  <UInput v-model="guest.occupation" />
+                <UFormField :label="t('guest.occupation')" name="guest.occupation">
+                  <UInput v-model="form.guest.occupation" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.phone')">
-                  <UInput v-model="guest.phone" />
+                <UFormField :label="t('guest.phone')" name="guest.phone">
+                  <UInput v-model="form.guest.phone" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.postalCode')">
-                  <UInput v-model="guest.postalCode" />
+                <UFormField :label="t('guest.postalCode')" name="guest.postalCode">
+                  <UInput v-model="form.guest.postalCode" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('forms.address')" class="md:col-span-3">
-                  <UInput class="w-full" v-model="guest.address" />
+                <UFormField :label="t('forms.address')" name="guest.address" class="md:col-span-3">
+                  <UInput class="w-full" v-model="form.guest.address" :disabled="loading" />
                 </UFormField>
               </div>
             </template>
@@ -106,64 +107,76 @@
               <div
                 class="mt-2 grid grid-cols-1 gap-6 rounded-md p-4 ring ring-accented/40 ring-inset md:grid-cols-3"
               >
-                <UFormField :label="t('guest.roomId')">
-                  <HSelect v-model="room.id" :items="rooms ?? []" />
+                <UFormField :label="t('guest.reservationCode')" name="reservation.reservationCode">
+                  <UInput v-model="form.reservation.reservationCode" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.reservationCode')">
-                  <UInput v-model="reservation.reservationCode" />
+                <UFormField :label="t('guest.entryDate')" name="reservation.entryDate" required>
+                  <HDate v-model="form.reservation.entryDate" />
                 </UFormField>
 
-                <UFormField :label="t('guest.entryDate')" required>
-                  <HDate v-model="reservation.entryDate" />
+                <UFormField :label="t('guest.departureDate')" name="reservation.departureDate">
+                  <HDate v-model="form.reservation.departureDate" />
                 </UFormField>
 
-                <UFormField :label="t('guest.departureDate')">
-                  <HDate v-model="reservation.departureDate" />
+                <UFormField :label="t('guest.numberOfPeople')" name="reservation.numberOfPeople">
+                  <UInput
+                    type="number"
+                    min="1"
+                    v-model.number="form.reservation.numberOfPeople"
+                    :disabled="loading"
+                  />
                 </UFormField>
 
-                <UFormField :label="t('guest.numberOfPeople')">
-                  <UInput type="number" min="1" v-model.number="reservation.numberOfPeople" />
+                <UFormField :label="t('guest.durationOfStay')" name="reservation.durationOfStay">
+                  <UInput
+                    type="number"
+                    min="1"
+                    v-model.number="form.reservation.durationOfStay"
+                    :disabled="loading"
+                  />
                 </UFormField>
 
-                <UFormField :label="t('guest.durationOfStay')">
-                  <UInput type="number" min="1" v-model.number="reservation.durationOfStay" />
+                <UFormField :label="t('guest.origin')" name="reservation.origin">
+                  <UInput v-model="form.reservation.origin" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.origin')">
-                  <UInput v-model="reservation.origin" />
+                <UFormField :label="t('guest.destination')" name="reservation.destination">
+                  <UInput v-model="form.reservation.destination" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.destination')">
-                  <UInput v-model="reservation.destination" />
+                <UFormField :label="t('guest.purposeOfTravel')" name="reservation.purposeOfTravel">
+                  <UInput v-model="form.reservation.purposeOfTravel" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.purposeOfTravel')">
-                  <UInput v-model="reservation.purposeOfTravel" />
+                <UFormField :label="t('guest.roomPrice')" name="reservation.roomPrice">
+                  <UInput
+                    type="number"
+                    min="0"
+                    v-model.number="form.reservation.roomPrice"
+                    :disabled="loading"
+                  />
                 </UFormField>
 
-                <UFormField :label="t('guest.roomPrice')">
-                  <UInput type="number" min="0" v-model.number="reservation.roomPrice" />
+                <UFormField :label="t('guest.breakfast')" name="reservation.breakfast">
+                  <UCheckbox v-model="form.reservation.breakfast" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.breakfast')">
-                  <UCheckbox v-model="reservation.breakfast" />
+                <UFormField :label="t('guest.guide')" name="reservation.guide">
+                  <UCheckbox v-model="form.reservation.guide" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.guide')">
-                  <UCheckbox v-model="reservation.guide" />
-                </UFormField>
-
-                <UFormField :label="t('guest.checkInUser')">
-                  <UInput v-model="reservation.userCheckIn" />
-                </UFormField>
-
-                <UFormField :label="t('guest.checkOutUser')">
-                  <UInput v-model="reservation.userCheckOut" />
-                </UFormField>
-
-                <UFormField :label="t('guest.notes')" class="md:col-span-3">
-                  <UTextarea v-model="reservation.notes" :rows="3" class="w-full" />
+                <UFormField
+                  :label="t('guest.notes')"
+                  name="reservation.notes"
+                  class="md:col-span-3"
+                >
+                  <UTextarea
+                    v-model="form.reservation.notes"
+                    :rows="3"
+                    class="w-full"
+                    :disabled="loading"
+                  />
                 </UFormField>
               </div>
             </template>
@@ -185,32 +198,34 @@
               <div
                 class="mt-2 grid grid-cols-1 gap-6 rounded-md p-4 ring ring-accented/40 ring-inset md:grid-cols-2"
               >
-                <UFormField :label="t('guest.cash')">
-                  <UCheckbox v-model="payment.isCash" />
+                <UFormField :label="t('guest.cash')" name="payment.isCash">
+                  <UCheckbox v-model="form.payment.isCash" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.agency')">
-                  <UCheckbox v-model="payment.agency" />
+                <UFormField :label="t('guest.agency')" name="payment.agency">
+                  <UCheckbox v-model="form.payment.agency" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.referrer')">
-                  <UInput v-model="payment.referrer" />
+                <UFormField :label="t('guest.referrer')" name="payment.referrer">
+                  <UInput v-model="form.payment.referrer" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.contractType')">
-                  <UInput v-model="payment.contractType" />
+                <UFormField :label="t('guest.contractType')" name="payment.contractType">
+                  <UInput v-model="form.payment.contractType" :disabled="loading" />
                 </UFormField>
               </div>
             </template>
           </UCollapsible>
 
           <div class="flex justify-end gap-3 pt-4">
-            <UButton variant="outline" to="/guests">{{ t("actions.cancel") }}</UButton>
+            <UButton variant="outline" to="/guests" :disabled="loading">{{
+              t("actions.cancel")
+            }}</UButton>
             <UButton type="submit" color="primary" :loading="loading">{{
               t("guests.createGuest")
             }}</UButton>
           </div>
-        </form>
+        </UForm>
       </UCard>
     </div>
 
@@ -221,27 +236,25 @@
 
         <div class="space-y-2 text-sm">
           <div>
-            <strong>{{ t("guest.summaryGuest") }}:</strong> {{ guest.firstName }}
-            {{ guest.lastName }}
+            <strong>{{ t("guest.summaryGuest") }}:</strong> {{ form.guest.firstName }}
+            {{ form.guest.lastName }}
           </div>
           <div>
-            <strong>{{ t("guest.summaryDates") }}:</strong> {{ reservation?.entryDate }} →
-            {{ reservation?.departureDate }}
+            <strong>{{ t("guest.summaryDates") }}:</strong>
+            {{ formatDate(form.reservation?.entryDate) }} →
+            {{ formatDate(form.reservation?.departureDate) }}
           </div>
           <div>
-            <strong>{{ t("guest.roomId") }}:</strong> {{ room?.id }}
+            <strong>{{ t("guest.summaryPeople") }}:</strong> {{ form.reservation?.numberOfPeople }}
           </div>
           <div>
-            <strong>{{ t("guest.summaryPeople") }}:</strong> {{ reservation?.numberOfPeople }}
-          </div>
-          <div>
-            <strong>{{ t("guest.summaryPrice") }}:</strong> {{ reservation?.roomPrice }}
+            <strong>{{ t("guest.summaryPrice") }}:</strong> {{ form.reservation?.roomPrice }}
             {{ t("guest.perNight") }}
           </div>
           <div>
             <strong>{{ t("guest.payment") }}:</strong>
-            <span v-if="payment?.isCash">{{ t("guest.cash") }}</span>
-            <span v-else-if="payment?.agency">{{ t("guest.agency") }}</span>
+            <span v-if="form.payment?.isCash">{{ t("guest.cash") }}</span>
+            <span v-else-if="form.payment?.agency">{{ t("guest.agency") }}</span>
             <span v-else>{{ t("guest.unspecified") }}</span>
           </div>
         </div>
@@ -251,65 +264,52 @@
 </template>
 
 <script setup lang="ts">
-const { t } = useI18n();
-import { z } from "zod/v4";
-import { zGuest, zReservation, zRoom } from "~/utils/client/zod.gen";
-const loading = ref(false);
+import type { FormSubmitEvent } from "@nuxt/ui";
+import type z from "zod";
+import { zGuestWithReservationRequest } from "~/utils/client/zod.gen";
 
-type Guest = z.output<typeof zGuest>;
-
-const guest = reactive<Guest>({} as any);
-
-type Reservation = z.output<typeof zReservation>;
-
-const reservation = ref<Reservation>({} as any);
-
-type Room = z.output<typeof zRoom>;
-
-const room = ref<Room>({} as any);
-
-const paymentSchema = z
-  .object({
-    isCash: z.boolean(),
-    agency: z.boolean(),
-    referrer: z.string(),
-    contractType: z.string(),
-  })
-  .or(z.object({}))
-  .default({});
-
-type Payment = z.output<typeof paymentSchema>;
-
-const payment = ref<Payment>({});
-
-const { data: rooms } = useAsyncData(async () => {
-  const res = await getApiRooms({});
-  return res.data?.map((v) => ({
-    id: v.id,
-    name: `${v.name ?? v.roomNumber}`,
-  }));
+definePageMeta({
+  requiresRole: ["admin", "manager"],
 });
 
-const handleSubmit = async () => {
+const { t } = useI18n();
+
+const loading = ref(false);
+
+const schema = zGuestWithReservationRequest;
+type Schema = z.output<typeof schema>;
+
+const form = ref<Required<Schema>>({ reservation: {}, guest: {} as any, payment: {} });
+
+const handleSubmit = async (event: FormSubmitEvent<Schema>) => {
   loading.value = true;
   try {
-    const body = {
-      ...guest,
-      dateOfBirth: new Date(guest.dateOfBirth ?? "").toISOString(),
-      // reservation: [reservation.value],
-      // payment: payment.value,
+    const body: Schema = {
+      guest: {
+        ...event.data.guest,
+        dateOfBirth: event.data.guest?.dateOfBirth
+          ? new Date(event.data.guest.dateOfBirth).toISOString()
+          : undefined,
+      } as Schema["guest"],
+      reservation: event.data.reservation,
+      payment: event.data.payment,
     };
 
-    await postApiGuests({
+    await postApiGuestsWithReservation({
       body,
     });
 
     navigateTo("/guests");
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error("Failed to create guest:", error);
   } finally {
     loading.value = false;
   }
+};
+
+const formatDate = (date: string | undefined) => {
+  if (!date) return "-";
+  return new Date(date).toLocaleDateString("fa-IR");
 };
 </script>
 <style scoped>

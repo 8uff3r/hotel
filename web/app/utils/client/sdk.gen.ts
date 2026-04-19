@@ -107,6 +107,9 @@ import {
   zPostApiGuestsBody,
   zPostApiGuestsHeaders,
   zPostApiGuestsResponse,
+  zPostApiGuestsWithReservationBody,
+  zPostApiGuestsWithReservationHeaders,
+  zPostApiGuestsWithReservationResponse,
   zPostApiParkingLotsBody,
   zPostApiParkingLotsHeaders,
   zPostApiParkingLotsResponse,
@@ -274,6 +277,9 @@ import type {
   PostApiGuestsData,
   PostApiGuestsError,
   PostApiGuestsResponse,
+  PostApiGuestsWithReservationData,
+  PostApiGuestsWithReservationError,
+  PostApiGuestsWithReservationResponse,
   PostApiParkingLotsData,
   PostApiParkingLotsError,
   PostApiParkingLotsResponse,
@@ -849,6 +855,57 @@ export const postApiGuests = <
         .parseAsync(data),
     responseValidator: async (data) => await zPostApiGuestsResponse.parseAsync(data),
     url: "/api/guests/",
+    ...options,
+    headers: {
+      "Content-Type": "*/*",
+      ...options.headers,
+    },
+  });
+
+/**
+ * create guest with reservation
+ *
+ * #### Controller:
+ *
+ * `hotel/internal/httpapi/guests.(*GuestsModule).createGuestWithReservation`
+ *
+ * #### Middlewares:
+ *
+ * - `github.com/go-fuego/fuego.defaultLogger.middleware`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
+ *
+ * ---
+ *
+ *
+ */
+export const postApiGuestsWithReservation = <
+  TComposable extends Composable = "$fetch",
+  DefaultT extends PostApiGuestsWithReservationResponse = PostApiGuestsWithReservationResponse,
+>(
+  options: Options<
+    TComposable,
+    PostApiGuestsWithReservationData,
+    PostApiGuestsWithReservationResponse,
+    DefaultT
+  >
+) =>
+  (options.client ?? client).post<
+    TComposable,
+    PostApiGuestsWithReservationResponse | DefaultT,
+    PostApiGuestsWithReservationError,
+    DefaultT
+  >({
+    requestValidator: async (data) =>
+      await z
+        .object({
+          body: zPostApiGuestsWithReservationBody,
+          headers: zPostApiGuestsWithReservationHeaders.optional(),
+          path: z.never().optional(),
+          query: z.never().optional(),
+        })
+        .parseAsync(data),
+    responseValidator: async (data) => await zPostApiGuestsWithReservationResponse.parseAsync(data),
+    url: "/api/guests/with-reservation",
     ...options,
     headers: {
       "Content-Type": "*/*",

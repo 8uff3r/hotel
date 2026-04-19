@@ -59,7 +59,7 @@ export type Guest = {
   phone?: string;
   placeOfBirth?: string;
   postalCode?: string;
-  reservation?: Array<{
+  reservations?: Array<{
     breakfast?: boolean;
     departureDate?: string;
     destination?: string;
@@ -121,6 +121,266 @@ export type Guest = {
     userCheckIn?: string;
     userCheckOut?: string;
   }>;
+};
+
+/**
+ * GuestWithReservationRequest schema
+ */
+export type GuestWithReservationRequest = {
+  guest?: {
+    address?: string;
+    dateOfBirth?: string;
+    fatherName?: string;
+    firstName: string;
+    gender?: string;
+    hotelId?: number;
+    id?: number;
+    idNumber?: string;
+    lastName?: string;
+    nationalId?: string;
+    nationality?: string;
+    occupation?: string;
+    phone?: string;
+    placeOfBirth?: string;
+    postalCode?: string;
+    reservations?: Array<{
+      breakfast?: boolean;
+      departureDate?: string;
+      destination?: string;
+      durationOfStay?: number;
+      entryDate?: string;
+      guestId?: number;
+      guide?: boolean;
+      id?: number;
+      notes?: string;
+      numberOfPeople?: number;
+      origin?: string;
+      payment?: {
+        agency?: boolean;
+        contractType?: string;
+        id?: number;
+        isCash?: boolean;
+        referrer?: string;
+        reservationId?: number;
+      };
+      purposeOfTravel?: string;
+      reservationCode?: string;
+      roomPrice?: number;
+      rooms?: Array<{
+        amenities?: Array<{
+          id?: number;
+          name?: string;
+          translation?: {
+            [key: string]: string;
+          };
+        }>;
+        basePrice?: number;
+        capacity?: number;
+        description?: string;
+        floor?: number;
+        guestId?: number;
+        hotelId?: number;
+        id?: number;
+        name?: string;
+        roomNumber: string;
+        roomType?: {
+          colorHex?: string;
+          id?: number;
+          name?: string;
+          translation?: {
+            [key: string]: string;
+          };
+        };
+        roomTypeId?: number;
+        status?: {
+          colorHex?: string;
+          id?: number;
+          name?: string;
+          translation?: {
+            [key: string]: string;
+          };
+        };
+        statusId?: number;
+      }>;
+      userCheckIn?: string;
+      userCheckOut?: string;
+    }>;
+  };
+  payment?: {
+    agency?: boolean;
+    contractType?: string;
+    isCash?: boolean;
+    referrer?: string;
+  };
+  reservation?: {
+    breakfast?: boolean;
+    departureDate?: string;
+    destination?: string;
+    durationOfStay?: number;
+    entryDate?: string;
+    guide?: boolean;
+    notes?: string;
+    numberOfPeople?: number;
+    origin?: string;
+    purposeOfTravel?: string;
+    reservationCode?: string;
+    roomPrice?: number;
+  };
+};
+
+/**
+ * GuestWithReservationResponse schema
+ */
+export type GuestWithReservationResponse = {
+  guest?: {
+    address?: string;
+    dateOfBirth?: string;
+    fatherName?: string;
+    firstName: string;
+    gender?: string;
+    hotelId?: number;
+    id?: number;
+    idNumber?: string;
+    lastName?: string;
+    nationalId?: string;
+    nationality?: string;
+    occupation?: string;
+    phone?: string;
+    placeOfBirth?: string;
+    postalCode?: string;
+    reservations?: Array<{
+      breakfast?: boolean;
+      departureDate?: string;
+      destination?: string;
+      durationOfStay?: number;
+      entryDate?: string;
+      guestId?: number;
+      guide?: boolean;
+      id?: number;
+      notes?: string;
+      numberOfPeople?: number;
+      origin?: string;
+      payment?: {
+        agency?: boolean;
+        contractType?: string;
+        id?: number;
+        isCash?: boolean;
+        referrer?: string;
+        reservationId?: number;
+      };
+      purposeOfTravel?: string;
+      reservationCode?: string;
+      roomPrice?: number;
+      rooms?: Array<{
+        amenities?: Array<{
+          id?: number;
+          name?: string;
+          translation?: {
+            [key: string]: string;
+          };
+        }>;
+        basePrice?: number;
+        capacity?: number;
+        description?: string;
+        floor?: number;
+        guestId?: number;
+        hotelId?: number;
+        id?: number;
+        name?: string;
+        roomNumber: string;
+        roomType?: {
+          colorHex?: string;
+          id?: number;
+          name?: string;
+          translation?: {
+            [key: string]: string;
+          };
+        };
+        roomTypeId?: number;
+        status?: {
+          colorHex?: string;
+          id?: number;
+          name?: string;
+          translation?: {
+            [key: string]: string;
+          };
+        };
+        statusId?: number;
+      }>;
+      userCheckIn?: string;
+      userCheckOut?: string;
+    }>;
+  };
+  payment?: {
+    agency?: boolean;
+    contractType?: string;
+    id?: number;
+    isCash?: boolean;
+    referrer?: string;
+    reservationId?: number;
+  };
+  reservation?: {
+    breakfast?: boolean;
+    departureDate?: string;
+    destination?: string;
+    durationOfStay?: number;
+    entryDate?: string;
+    guestId?: number;
+    guide?: boolean;
+    id?: number;
+    notes?: string;
+    numberOfPeople?: number;
+    origin?: string;
+    payment?: {
+      agency?: boolean;
+      contractType?: string;
+      id?: number;
+      isCash?: boolean;
+      referrer?: string;
+      reservationId?: number;
+    };
+    purposeOfTravel?: string;
+    reservationCode?: string;
+    roomPrice?: number;
+    rooms?: Array<{
+      amenities?: Array<{
+        id?: number;
+        name?: string;
+        translation?: {
+          [key: string]: string;
+        };
+      }>;
+      basePrice?: number;
+      capacity?: number;
+      description?: string;
+      floor?: number;
+      guestId?: number;
+      hotelId?: number;
+      id?: number;
+      name?: string;
+      roomNumber: string;
+      roomType?: {
+        colorHex?: string;
+        id?: number;
+        name?: string;
+        translation?: {
+          [key: string]: string;
+        };
+      };
+      roomTypeId?: number;
+      status?: {
+        colorHex?: string;
+        id?: number;
+        name?: string;
+        translation?: {
+          [key: string]: string;
+        };
+      };
+      statusId?: number;
+    }>;
+    userCheckIn?: string;
+    userCheckOut?: string;
+  };
 };
 
 /**
@@ -286,7 +546,7 @@ export type PaginatedResponseModelsGuest = {
     phone?: string;
     placeOfBirth?: string;
     postalCode?: string;
-    reservation?: Array<{
+    reservations?: Array<{
       breakfast?: boolean;
       departureDate?: string;
       destination?: string;
@@ -1330,6 +1590,44 @@ export type PostApiGuestsResponses = {
 };
 
 export type PostApiGuestsResponse = PostApiGuestsResponses[keyof PostApiGuestsResponses];
+
+export type PostApiGuestsWithReservationData = {
+  /**
+   * Request body for guests.GuestWithReservationRequest
+   */
+  body: GuestWithReservationRequest;
+  headers?: {
+    Accept?: string;
+  };
+  path?: never;
+  query?: never;
+  url: "/api/guests/with-reservation";
+};
+
+export type PostApiGuestsWithReservationErrors = {
+  /**
+   * Bad Request _(validation or deserialization error)_
+   */
+  400: HttpError;
+  /**
+   * Internal Server Error _(panics)_
+   */
+  500: HttpError;
+  default: unknown;
+};
+
+export type PostApiGuestsWithReservationError =
+  PostApiGuestsWithReservationErrors[keyof PostApiGuestsWithReservationErrors];
+
+export type PostApiGuestsWithReservationResponses = {
+  /**
+   * OK
+   */
+  200: GuestWithReservationResponse;
+};
+
+export type PostApiGuestsWithReservationResponse =
+  PostApiGuestsWithReservationResponses[keyof PostApiGuestsWithReservationResponses];
 
 export type GetApiGuestsIdData = {
   body?: never;

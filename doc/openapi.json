@@ -153,7 +153,7 @@
 					"postalCode": {
 						"type": "string"
 					},
-					"reservation": {
+					"reservations": {
 						"items": {
 							"nullable": true,
 							"properties": {
@@ -368,6 +368,850 @@
 				"required": [
 					"firstName"
 				],
+				"type": "object"
+			},
+			"GuestWithReservationRequest": {
+				"description": "GuestWithReservationRequest schema",
+				"properties": {
+					"guest": {
+						"properties": {
+							"address": {
+								"type": "string"
+							},
+							"dateOfBirth": {
+								"format": "date-time",
+								"type": "string"
+							},
+							"fatherName": {
+								"type": "string"
+							},
+							"firstName": {
+								"maxLength": 50,
+								"minLength": 2,
+								"type": "string"
+							},
+							"gender": {
+								"type": "string"
+							},
+							"hotelId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
+							},
+							"id": {
+								"minimum": 0,
+								"type": "integer"
+							},
+							"idNumber": {
+								"type": "string"
+							},
+							"lastName": {
+								"type": "string"
+							},
+							"nationalId": {
+								"type": "string"
+							},
+							"nationality": {
+								"type": "string"
+							},
+							"occupation": {
+								"type": "string"
+							},
+							"phone": {
+								"type": "string"
+							},
+							"placeOfBirth": {
+								"type": "string"
+							},
+							"postalCode": {
+								"type": "string"
+							},
+							"reservations": {
+								"items": {
+									"nullable": true,
+									"properties": {
+										"breakfast": {
+											"type": "boolean"
+										},
+										"departureDate": {
+											"format": "date-time",
+											"type": "string"
+										},
+										"destination": {
+											"type": "string"
+										},
+										"durationOfStay": {
+											"type": "integer"
+										},
+										"entryDate": {
+											"format": "date-time",
+											"type": "string"
+										},
+										"guestId": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"guide": {
+											"type": "boolean"
+										},
+										"id": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"notes": {
+											"type": "string"
+										},
+										"numberOfPeople": {
+											"type": "integer"
+										},
+										"origin": {
+											"type": "string"
+										},
+										"payment": {
+											"properties": {
+												"agency": {
+													"type": "boolean"
+												},
+												"contractType": {
+													"type": "string"
+												},
+												"id": {
+													"minimum": 0,
+													"type": "integer"
+												},
+												"isCash": {
+													"type": "boolean"
+												},
+												"referrer": {
+													"type": "string"
+												},
+												"reservationId": {
+													"minimum": 0,
+													"type": "integer"
+												}
+											},
+											"type": "object"
+										},
+										"purposeOfTravel": {
+											"type": "string"
+										},
+										"reservationCode": {
+											"type": "string"
+										},
+										"roomPrice": {
+											"format": "double",
+											"type": "number"
+										},
+										"rooms": {
+											"items": {
+												"properties": {
+													"amenities": {
+														"items": {
+															"properties": {
+																"id": {
+																	"minimum": 0,
+																	"type": "integer"
+																},
+																"name": {
+																	"type": "string"
+																},
+																"translation": {
+																	"additionalProperties": {
+																		"nullable": true,
+																		"type": "string"
+																	},
+																	"nullable": true,
+																	"type": "object"
+																}
+															},
+															"type": "object"
+														},
+														"type": "array"
+													},
+													"basePrice": {
+														"format": "double",
+														"type": "number"
+													},
+													"capacity": {
+														"type": "integer"
+													},
+													"description": {
+														"type": "string"
+													},
+													"floor": {
+														"type": "integer"
+													},
+													"guestId": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"hotelId": {
+														"minimum": 0,
+														"nullable": true,
+														"type": "integer"
+													},
+													"id": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"name": {
+														"type": "string"
+													},
+													"roomNumber": {
+														"minLength": 1,
+														"type": "string"
+													},
+													"roomType": {
+														"properties": {
+															"colorHex": {
+																"nullable": true,
+																"type": "string"
+															},
+															"id": {
+																"minimum": 0,
+																"type": "integer"
+															},
+															"name": {
+																"type": "string"
+															},
+															"translation": {
+																"additionalProperties": {
+																	"nullable": true,
+																	"type": "string"
+																},
+																"nullable": true,
+																"type": "object"
+															}
+														},
+														"type": "object"
+													},
+													"roomTypeId": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"status": {
+														"properties": {
+															"colorHex": {
+																"nullable": true,
+																"type": "string"
+															},
+															"id": {
+																"minimum": 0,
+																"type": "integer"
+															},
+															"name": {
+																"type": "string"
+															},
+															"translation": {
+																"additionalProperties": {
+																	"nullable": true,
+																	"type": "string"
+																},
+																"nullable": true,
+																"type": "object"
+															}
+														},
+														"type": "object"
+													},
+													"statusId": {
+														"minimum": 0,
+														"type": "integer"
+													}
+												},
+												"required": [
+													"roomNumber"
+												],
+												"type": "object"
+											},
+											"type": "array"
+										},
+										"userCheckIn": {
+											"type": "string"
+										},
+										"userCheckOut": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								},
+								"nullable": true,
+								"type": "array"
+							}
+						},
+						"required": [
+							"firstName"
+						],
+						"type": "object"
+					},
+					"payment": {
+						"properties": {
+							"agency": {
+								"type": "boolean"
+							},
+							"contractType": {
+								"type": "string"
+							},
+							"isCash": {
+								"type": "boolean"
+							},
+							"referrer": {
+								"type": "string"
+							}
+						},
+						"type": "object"
+					},
+					"reservation": {
+						"properties": {
+							"breakfast": {
+								"type": "boolean"
+							},
+							"departureDate": {
+								"format": "date-time",
+								"type": "string"
+							},
+							"destination": {
+								"type": "string"
+							},
+							"durationOfStay": {
+								"type": "integer"
+							},
+							"entryDate": {
+								"format": "date-time",
+								"type": "string"
+							},
+							"guide": {
+								"type": "boolean"
+							},
+							"notes": {
+								"type": "string"
+							},
+							"numberOfPeople": {
+								"type": "integer"
+							},
+							"origin": {
+								"type": "string"
+							},
+							"purposeOfTravel": {
+								"type": "string"
+							},
+							"reservationCode": {
+								"type": "string"
+							},
+							"roomPrice": {
+								"format": "double",
+								"type": "number"
+							}
+						},
+						"type": "object"
+					}
+				},
+				"type": "object"
+			},
+			"GuestWithReservationResponse": {
+				"description": "GuestWithReservationResponse schema",
+				"properties": {
+					"guest": {
+						"properties": {
+							"address": {
+								"type": "string"
+							},
+							"dateOfBirth": {
+								"format": "date-time",
+								"type": "string"
+							},
+							"fatherName": {
+								"type": "string"
+							},
+							"firstName": {
+								"maxLength": 50,
+								"minLength": 2,
+								"type": "string"
+							},
+							"gender": {
+								"type": "string"
+							},
+							"hotelId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
+							},
+							"id": {
+								"minimum": 0,
+								"type": "integer"
+							},
+							"idNumber": {
+								"type": "string"
+							},
+							"lastName": {
+								"type": "string"
+							},
+							"nationalId": {
+								"type": "string"
+							},
+							"nationality": {
+								"type": "string"
+							},
+							"occupation": {
+								"type": "string"
+							},
+							"phone": {
+								"type": "string"
+							},
+							"placeOfBirth": {
+								"type": "string"
+							},
+							"postalCode": {
+								"type": "string"
+							},
+							"reservations": {
+								"items": {
+									"nullable": true,
+									"properties": {
+										"breakfast": {
+											"type": "boolean"
+										},
+										"departureDate": {
+											"format": "date-time",
+											"type": "string"
+										},
+										"destination": {
+											"type": "string"
+										},
+										"durationOfStay": {
+											"type": "integer"
+										},
+										"entryDate": {
+											"format": "date-time",
+											"type": "string"
+										},
+										"guestId": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"guide": {
+											"type": "boolean"
+										},
+										"id": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"notes": {
+											"type": "string"
+										},
+										"numberOfPeople": {
+											"type": "integer"
+										},
+										"origin": {
+											"type": "string"
+										},
+										"payment": {
+											"properties": {
+												"agency": {
+													"type": "boolean"
+												},
+												"contractType": {
+													"type": "string"
+												},
+												"id": {
+													"minimum": 0,
+													"type": "integer"
+												},
+												"isCash": {
+													"type": "boolean"
+												},
+												"referrer": {
+													"type": "string"
+												},
+												"reservationId": {
+													"minimum": 0,
+													"type": "integer"
+												}
+											},
+											"type": "object"
+										},
+										"purposeOfTravel": {
+											"type": "string"
+										},
+										"reservationCode": {
+											"type": "string"
+										},
+										"roomPrice": {
+											"format": "double",
+											"type": "number"
+										},
+										"rooms": {
+											"items": {
+												"properties": {
+													"amenities": {
+														"items": {
+															"properties": {
+																"id": {
+																	"minimum": 0,
+																	"type": "integer"
+																},
+																"name": {
+																	"type": "string"
+																},
+																"translation": {
+																	"additionalProperties": {
+																		"nullable": true,
+																		"type": "string"
+																	},
+																	"nullable": true,
+																	"type": "object"
+																}
+															},
+															"type": "object"
+														},
+														"type": "array"
+													},
+													"basePrice": {
+														"format": "double",
+														"type": "number"
+													},
+													"capacity": {
+														"type": "integer"
+													},
+													"description": {
+														"type": "string"
+													},
+													"floor": {
+														"type": "integer"
+													},
+													"guestId": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"hotelId": {
+														"minimum": 0,
+														"nullable": true,
+														"type": "integer"
+													},
+													"id": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"name": {
+														"type": "string"
+													},
+													"roomNumber": {
+														"minLength": 1,
+														"type": "string"
+													},
+													"roomType": {
+														"properties": {
+															"colorHex": {
+																"nullable": true,
+																"type": "string"
+															},
+															"id": {
+																"minimum": 0,
+																"type": "integer"
+															},
+															"name": {
+																"type": "string"
+															},
+															"translation": {
+																"additionalProperties": {
+																	"nullable": true,
+																	"type": "string"
+																},
+																"nullable": true,
+																"type": "object"
+															}
+														},
+														"type": "object"
+													},
+													"roomTypeId": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"status": {
+														"properties": {
+															"colorHex": {
+																"nullable": true,
+																"type": "string"
+															},
+															"id": {
+																"minimum": 0,
+																"type": "integer"
+															},
+															"name": {
+																"type": "string"
+															},
+															"translation": {
+																"additionalProperties": {
+																	"nullable": true,
+																	"type": "string"
+																},
+																"nullable": true,
+																"type": "object"
+															}
+														},
+														"type": "object"
+													},
+													"statusId": {
+														"minimum": 0,
+														"type": "integer"
+													}
+												},
+												"required": [
+													"roomNumber"
+												],
+												"type": "object"
+											},
+											"type": "array"
+										},
+										"userCheckIn": {
+											"type": "string"
+										},
+										"userCheckOut": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								},
+								"nullable": true,
+								"type": "array"
+							}
+						},
+						"required": [
+							"firstName"
+						],
+						"type": "object"
+					},
+					"payment": {
+						"properties": {
+							"agency": {
+								"type": "boolean"
+							},
+							"contractType": {
+								"type": "string"
+							},
+							"id": {
+								"minimum": 0,
+								"type": "integer"
+							},
+							"isCash": {
+								"type": "boolean"
+							},
+							"referrer": {
+								"type": "string"
+							},
+							"reservationId": {
+								"minimum": 0,
+								"type": "integer"
+							}
+						},
+						"type": "object"
+					},
+					"reservation": {
+						"properties": {
+							"breakfast": {
+								"type": "boolean"
+							},
+							"departureDate": {
+								"format": "date-time",
+								"type": "string"
+							},
+							"destination": {
+								"type": "string"
+							},
+							"durationOfStay": {
+								"type": "integer"
+							},
+							"entryDate": {
+								"format": "date-time",
+								"type": "string"
+							},
+							"guestId": {
+								"minimum": 0,
+								"type": "integer"
+							},
+							"guide": {
+								"type": "boolean"
+							},
+							"id": {
+								"minimum": 0,
+								"type": "integer"
+							},
+							"notes": {
+								"type": "string"
+							},
+							"numberOfPeople": {
+								"type": "integer"
+							},
+							"origin": {
+								"type": "string"
+							},
+							"payment": {
+								"properties": {
+									"agency": {
+										"type": "boolean"
+									},
+									"contractType": {
+										"type": "string"
+									},
+									"id": {
+										"minimum": 0,
+										"type": "integer"
+									},
+									"isCash": {
+										"type": "boolean"
+									},
+									"referrer": {
+										"type": "string"
+									},
+									"reservationId": {
+										"minimum": 0,
+										"type": "integer"
+									}
+								},
+								"type": "object"
+							},
+							"purposeOfTravel": {
+								"type": "string"
+							},
+							"reservationCode": {
+								"type": "string"
+							},
+							"roomPrice": {
+								"format": "double",
+								"type": "number"
+							},
+							"rooms": {
+								"items": {
+									"properties": {
+										"amenities": {
+											"items": {
+												"properties": {
+													"id": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"name": {
+														"type": "string"
+													},
+													"translation": {
+														"additionalProperties": {
+															"nullable": true,
+															"type": "string"
+														},
+														"nullable": true,
+														"type": "object"
+													}
+												},
+												"type": "object"
+											},
+											"type": "array"
+										},
+										"basePrice": {
+											"format": "double",
+											"type": "number"
+										},
+										"capacity": {
+											"type": "integer"
+										},
+										"description": {
+											"type": "string"
+										},
+										"floor": {
+											"type": "integer"
+										},
+										"guestId": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"hotelId": {
+											"minimum": 0,
+											"nullable": true,
+											"type": "integer"
+										},
+										"id": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"name": {
+											"type": "string"
+										},
+										"roomNumber": {
+											"minLength": 1,
+											"type": "string"
+										},
+										"roomType": {
+											"properties": {
+												"colorHex": {
+													"nullable": true,
+													"type": "string"
+												},
+												"id": {
+													"minimum": 0,
+													"type": "integer"
+												},
+												"name": {
+													"type": "string"
+												},
+												"translation": {
+													"additionalProperties": {
+														"nullable": true,
+														"type": "string"
+													},
+													"nullable": true,
+													"type": "object"
+												}
+											},
+											"type": "object"
+										},
+										"roomTypeId": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"status": {
+											"properties": {
+												"colorHex": {
+													"nullable": true,
+													"type": "string"
+												},
+												"id": {
+													"minimum": 0,
+													"type": "integer"
+												},
+												"name": {
+													"type": "string"
+												},
+												"translation": {
+													"additionalProperties": {
+														"nullable": true,
+														"type": "string"
+													},
+													"nullable": true,
+													"type": "object"
+												}
+											},
+											"type": "object"
+										},
+										"statusId": {
+											"minimum": 0,
+											"type": "integer"
+										}
+									},
+									"required": [
+										"roomNumber"
+									],
+									"type": "object"
+								},
+								"type": "array"
+							},
+							"userCheckIn": {
+								"type": "string"
+							},
+							"userCheckOut": {
+								"type": "string"
+							}
+						},
+						"type": "object"
+					}
+				},
 				"type": "object"
 			},
 			"HTTPError": {
@@ -773,7 +1617,7 @@
 								"postalCode": {
 									"type": "string"
 								},
-								"reservation": {
+								"reservations": {
 									"items": {
 										"nullable": true,
 										"properties": {
@@ -3455,6 +4299,86 @@
 					}
 				},
 				"summary": "func1",
+				"tags": [
+					"/GUESTS"
+				]
+			}
+		},
+		"/api/guests/with-reservation": {
+			"post": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.(*GuestsModule).createGuestWithReservation`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "POST_/api/guests/with-reservation",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"*/*": {
+							"schema": {
+								"$ref": "#/components/schemas/GuestWithReservationRequest"
+							}
+						}
+					},
+					"description": "Request body for guests.GuestWithReservationRequest",
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GuestWithReservationResponse"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/GuestWithReservationResponse"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "create guest with reservation",
 				"tags": [
 					"/GUESTS"
 				]
