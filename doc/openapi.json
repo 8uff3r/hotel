@@ -266,7 +266,6 @@
 												"type": "string"
 											},
 											"floor": {
-												"nullable": true,
 												"type": "integer"
 											},
 											"guestId": {
@@ -286,10 +285,15 @@
 												"type": "string"
 											},
 											"roomNumber": {
+												"minLength": 1,
 												"type": "string"
 											},
 											"roomType": {
 												"properties": {
+													"colorHex": {
+														"nullable": true,
+														"type": "string"
+													},
 													"id": {
 														"minimum": 0,
 														"type": "integer"
@@ -314,6 +318,10 @@
 											},
 											"status": {
 												"properties": {
+													"colorHex": {
+														"nullable": true,
+														"type": "string"
+													},
 													"id": {
 														"minimum": 0,
 														"type": "integer"
@@ -337,6 +345,9 @@
 												"type": "integer"
 											}
 										},
+										"required": [
+											"roomNumber"
+										],
 										"type": "object"
 									},
 									"type": "array"
@@ -875,7 +886,6 @@
 															"type": "string"
 														},
 														"floor": {
-															"nullable": true,
 															"type": "integer"
 														},
 														"guestId": {
@@ -895,10 +905,15 @@
 															"type": "string"
 														},
 														"roomNumber": {
+															"minLength": 1,
 															"type": "string"
 														},
 														"roomType": {
 															"properties": {
+																"colorHex": {
+																	"nullable": true,
+																	"type": "string"
+																},
 																"id": {
 																	"minimum": 0,
 																	"type": "integer"
@@ -923,6 +938,10 @@
 														},
 														"status": {
 															"properties": {
+																"colorHex": {
+																	"nullable": true,
+																	"type": "string"
+																},
 																"id": {
 																	"minimum": 0,
 																	"type": "integer"
@@ -946,6 +965,9 @@
 															"type": "integer"
 														}
 													},
+													"required": [
+														"roomNumber"
+													],
 													"type": "object"
 												},
 												"type": "array"
@@ -1471,7 +1493,6 @@
 												"type": "string"
 											},
 											"floor": {
-												"nullable": true,
 												"type": "integer"
 											},
 											"guestId": {
@@ -1491,10 +1512,15 @@
 												"type": "string"
 											},
 											"roomNumber": {
+												"minLength": 1,
 												"type": "string"
 											},
 											"roomType": {
 												"properties": {
+													"colorHex": {
+														"nullable": true,
+														"type": "string"
+													},
 													"id": {
 														"minimum": 0,
 														"type": "integer"
@@ -1519,6 +1545,10 @@
 											},
 											"status": {
 												"properties": {
+													"colorHex": {
+														"nullable": true,
+														"type": "string"
+													},
 													"id": {
 														"minimum": 0,
 														"type": "integer"
@@ -1542,6 +1572,9 @@
 												"type": "integer"
 											}
 										},
+										"required": [
+											"roomNumber"
+										],
 										"type": "object"
 									},
 									"type": "array"
@@ -1613,7 +1646,6 @@
 									"type": "string"
 								},
 								"floor": {
-									"nullable": true,
 									"type": "integer"
 								},
 								"guestId": {
@@ -1633,10 +1665,15 @@
 									"type": "string"
 								},
 								"roomNumber": {
+									"minLength": 1,
 									"type": "string"
 								},
 								"roomType": {
 									"properties": {
+										"colorHex": {
+											"nullable": true,
+											"type": "string"
+										},
 										"id": {
 											"minimum": 0,
 											"type": "integer"
@@ -1661,6 +1698,10 @@
 								},
 								"status": {
 									"properties": {
+										"colorHex": {
+											"nullable": true,
+											"type": "string"
+										},
 										"id": {
 											"minimum": 0,
 											"type": "integer"
@@ -1684,6 +1725,9 @@
 									"type": "integer"
 								}
 							},
+							"required": [
+								"roomNumber"
+							],
 							"type": "object"
 						},
 						"type": "array"
@@ -1710,6 +1754,10 @@
 					"data": {
 						"items": {
 							"properties": {
+								"colorHex": {
+									"nullable": true,
+									"type": "string"
+								},
 								"id": {
 									"minimum": 0,
 									"type": "integer"
@@ -1752,6 +1800,10 @@
 					"data": {
 						"items": {
 							"properties": {
+								"colorHex": {
+									"nullable": true,
+									"type": "string"
+								},
 								"id": {
 									"minimum": 0,
 									"type": "integer"
@@ -2118,7 +2170,6 @@
 									"type": "string"
 								},
 								"floor": {
-									"nullable": true,
 									"type": "integer"
 								},
 								"guestId": {
@@ -2138,10 +2189,15 @@
 									"type": "string"
 								},
 								"roomNumber": {
+									"minLength": 1,
 									"type": "string"
 								},
 								"roomType": {
 									"properties": {
+										"colorHex": {
+											"nullable": true,
+											"type": "string"
+										},
 										"id": {
 											"minimum": 0,
 											"type": "integer"
@@ -2166,6 +2222,10 @@
 								},
 								"status": {
 									"properties": {
+										"colorHex": {
+											"nullable": true,
+											"type": "string"
+										},
 										"id": {
 											"minimum": 0,
 											"type": "integer"
@@ -2189,6 +2249,9 @@
 									"type": "integer"
 								}
 							},
+							"required": [
+								"roomNumber"
+							],
 							"type": "object"
 						},
 						"type": "array"
@@ -2239,7 +2302,6 @@
 						"type": "string"
 					},
 					"floor": {
-						"nullable": true,
 						"type": "integer"
 					},
 					"guestId": {
@@ -2259,10 +2321,15 @@
 						"type": "string"
 					},
 					"roomNumber": {
+						"minLength": 1,
 						"type": "string"
 					},
 					"roomType": {
 						"properties": {
+							"colorHex": {
+								"nullable": true,
+								"type": "string"
+							},
 							"id": {
 								"minimum": 0,
 								"type": "integer"
@@ -2287,6 +2354,10 @@
 					},
 					"status": {
 						"properties": {
+							"colorHex": {
+								"nullable": true,
+								"type": "string"
+							},
 							"id": {
 								"minimum": 0,
 								"type": "integer"
@@ -2310,6 +2381,9 @@
 						"type": "integer"
 					}
 				},
+				"required": [
+					"roomNumber"
+				],
 				"type": "object"
 			},
 			"Vehicle": {
