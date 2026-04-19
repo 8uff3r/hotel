@@ -10,8 +10,10 @@
 
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/auth";
+import { en as zEn, fa as zFa } from "zod/v4/locales";
 import { fa_ir, en } from "@nuxt/ui/locale";
 import { client } from "./utils/client/client.gen";
+import z from "zod";
 
 client.setConfig({
   onRequest: (ctx) => {
@@ -37,6 +39,11 @@ onMounted(() => {
     localStorage.setItem("language", localeCode.value);
   } else if (localeInStorage === "fa" || localeInStorage === "en") {
     setLocale(localeInStorage);
+  }
+  if (localeInStorage === "en") {
+    z.config(zEn());
+  } else if (localeInStorage === "fa") {
+    z.config(zFa());
   }
 });
 </script>
