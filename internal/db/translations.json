@@ -27,6 +27,20 @@
     "Maintenance": { "fa": "در حال تعمیر" }
   },
 
+  "RoomStatus": {
+    "Available": { "fa": "در دسترس" },
+    "Occupied": { "fa": "اشغال شده" },
+    "Reserved": { "fa": "رزرو شده" },
+    "Maintenance": { "fa": "در حال تعمیر" }
+  },
+
+  "RoomType": {
+    "Single": { "fa": "تکی" },
+    "Double": { "fa": "دو تخته" },
+    "Suite": { "fa": "سوئیت" },
+    "Deluxe": { "fa": "دلوکس" }
+  },
+
   "Role": {
     "admin": { "fa": "ادمین" },
     "staff": { "fa": "کارمند" },

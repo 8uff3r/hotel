@@ -3,6 +3,7 @@ package httpapi
 import (
 	"encoding/json"
 	"errors"
+	"hotel/internal/models"
 	"net/http"
 	"reflect"
 
@@ -26,7 +27,39 @@ type PaginatedResponse[T any] struct {
 	TotalPages int   `json:"totalPages"`
 }
 
-func ListModel[T any](db *gorm.DB, model T, preload []string) FuegoHandler[PaginatedResponse[T], any, Params] {
+type listConfig struct {
+	preload         []string
+	translate       bool
+	translateFields []string
+}
+type ListOption func(*listConfig)
+
+func WithPreload(preload ...string) ListOption {
+	return func(c *listConfig) {
+		c.preload = preload
+	}
+}
+
+func WithFieldTranslation(fields ...string) ListOption {
+	return func(lc *listConfig) {
+		lc.translateFields = append(lc.translateFields, fields...)
+	}
+}
+
+func WithTranslation() ListOption {
+	return func(lc *listConfig) {
+		lc.translate = true
+	}
+}
+
+func ListModel[T any](db *gorm.DB, model T, opts ...ListOption) FuegoHandler[PaginatedResponse[T], any, Params] {
+	lc := listConfig{}
+	for _, v := range opts {
+		v(&lc)
+	}
+	return listModel(db, model, lc.preload, lc.translate, lc.translateFields)
+}
+func listModel[T any](db *gorm.DB, model T, preload []string, translate bool, translateFields []string) FuegoHandler[PaginatedResponse[T], any, Params] {
 	return func(c fuego.ContextWithParams[Params]) (PaginatedResponse[T], error) {
 		page := c.QueryParamInt("page")
 		if page < 1 {
@@ -53,6 +86,15 @@ func ListModel[T any](db *gorm.DB, model T, preload []string) FuegoHandler[Pagin
 			return PaginatedResponse[T]{}, err
 		}
 
+		lang := c.Header("Accept-Language")
+		if lang == "" {
+			lang = "fa"
+		}
+		if translate {
+			applyTranslations(&out, lang)
+			applyFieldTranslations(&out, lang)
+		}
+
 		totalPages := int((total + int64(limit) - 1) / int64(limit))
 		return PaginatedResponse[T]{
 			Data:       out,
@@ -61,6 +103,14 @@ func ListModel[T any](db *gorm.DB, model T, preload []string) FuegoHandler[Pagin
 			Total:      total,
 			TotalPages: totalPages,
 		}, nil
+	}
+}
+func applyTranslationsReflection[T any](items *[]T, lang string) {
+	for i := range *items {
+		item := &(*items)[i]
+		if translatable, ok := any(item).(models.Translatable); ok {
+			applyTranslationOnTranslatable(translatable, lang)
+		}
 	}
 }
 
@@ -78,7 +128,15 @@ func CreateModel[T any](db *gorm.DB, model T) FuegoHandler[T, T, any] {
 	}
 }
 
-func GetModel[T any](db *gorm.DB, model T, preload []string) FuegoAnyHandler[T] {
+func GetModel[T any](db *gorm.DB, model T, opts ...ListOption) FuegoAnyHandler[T] {
+	lc := listConfig{}
+	for _, v := range opts {
+		v(&lc)
+	}
+	return getModel(db, model, lc.preload)
+}
+
+func getModel[T any](db *gorm.DB, model T, preload []string) FuegoAnyHandler[T] {
 	return func(c fuego.ContextNoBody) (T, error) {
 		var zero T
 		id, err := ParseID(c.PathParam("id"))
@@ -90,7 +148,7 @@ func GetModel[T any](db *gorm.DB, model T, preload []string) FuegoAnyHandler[T] 
 		for _, v := range preload {
 			db = db.Preload(v)
 		}
-		if err := db.First(entity, id).Error; err != nil {
+		if err := db.First(&entity, id).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return zero, fuego.NotFoundError{}
 			}
@@ -160,4 +218,36 @@ func BindAndValidate[T any](model *T, w http.ResponseWriter, r *http.Request) er
 		return err
 	}
 	return nil
+}
+func applyTranslationOnTranslatable(t models.Translatable, lang string) {
+	translations := t.GetTranslation()
+	if lang != "en" {
+		if translated, exists := translations[lang]; exists {
+			t.SetName(translated)
+		}
+	}
+	t.ClearTranslation()
+}
+
+func applyTranslations[T any](items *[]T, lang string) {
+	for i := range *items {
+		item := &(*items)[i]
+		if translatable, ok := any(item).(models.Translatable); ok {
+			applyTranslationOnTranslatable(translatable, lang)
+		}
+	}
+}
+
+func applyFieldTranslations[T any](items *[]T, lang string) {
+	for i := range *items {
+		item := &(*items)[i]
+
+		if container, ok := any(item).(models.HasTranslatables); ok {
+			translatables := container.GetTranslatables()
+
+			for _, tr := range translatables {
+				applyTranslationOnTranslatable(tr, lang)
+			}
+		}
+	}
 }

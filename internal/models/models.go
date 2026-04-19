@@ -1,9 +1,8 @@
 package models
 
+//go:generate go run ./generate.go && go fmt ./generate.go
+
 import (
-	"database/sql/driver"
-	"encoding/json"
-	"fmt"
 	"time"
 )
 
@@ -27,14 +26,13 @@ type User struct {
 	PasswordHash string `gorm:"not null" json:"-"`
 	FirstName    string `gorm:"not null" json:"firstName"`
 	LastName     string `gorm:"not null" json:"lastName"`
-	Roles        []Role `gorm:"many2many:user_roles" json:"roles"`
+	Roles        []Role `gorm:"many2many:user_roles" json:"roles" translate:"true"`
 	IsActive     bool   `gorm:"not null;default:true" json:"isActive"`
 }
 
 type Role struct {
 	Base
-	Name        string      `json:"name"`
-	Translation Translation `gorm:"type:jsonb" json:"translation"`
+	TranslateBase
 }
 
 type Session struct {
@@ -58,47 +56,44 @@ type Room struct {
 	HotelID     *uint     `json:"hotelId"`
 	Name        string    `json:"name"`
 	RoomNumber  string    `gorm:"not null" json:"roomNumber"`
-	RoomType    string    `gorm:"not null;default:single" json:"roomType"`
 	Floor       *int      `json:"floor"`
 	Capacity    int       `gorm:"not null;default:2" json:"capacity"`
 	BasePrice   float64   `gorm:"not null;default:0" json:"basePrice"`
-	Status      string    `gorm:"not null;default:available" json:"status"`
-	Amenities   []Amenity `gorm:"many2many:room_amenities;" json:"amenities"`
+	Amenities   []Amenity `gorm:"many2many:room_amenities;" json:"amenities" translate:"true"`
 	Description string    `json:"description"`
+
+	TypeID uint     `gorm:"not null" json:"roomTypeId"`
+	Type   RoomType `gorm:"foreignKey:TypeID" json:"roomType,omitzero" translate:"true"`
+
+	StatusID uint       `gorm:"not null" json:"statusId"`
+	Status   RoomStatus `gorm:"foreignKey:StatusID" json:"status,omitzero" translate:"true"`
 
 	GuestID uint `gorm:"not null;index" json:"guestId"`
 }
 
-type Translation map[string]string
-
-func (t *Translation) Scan(value any) error {
-	bytes, ok := value.([]byte)
-	if !ok {
-		return fmt.Errorf("failed to unmarshal Translation: %v", value)
-	}
-	return json.Unmarshal(bytes, t)
+type RoomType struct {
+	Base
+	TranslateBase
 }
 
-func (t Translation) Value() (driver.Value, error) {
-	return json.Marshal(t)
+type RoomStatus struct {
+	Base
+	TranslateBase
 }
 
 type Amenity struct {
 	Base
-	Name        string      `json:"name"`
-	Translation Translation `gorm:"type:jsonb" json:"translation"`
+	TranslateBase
 }
 
 type ParkingSpotType struct {
 	Base
-	Name        string      `json:"name"`
-	Translation Translation `gorm:"type:jsonb" json:"translation"`
+	TranslateBase
 }
 
 type ParkingSpotStatus struct {
 	Base
-	Name        string      `json:"name"`
-	Translation Translation `gorm:"type:jsonb" json:"translation"`
+	TranslateBase
 }
 
 type Guest struct {

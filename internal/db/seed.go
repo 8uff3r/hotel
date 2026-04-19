@@ -29,6 +29,8 @@ func Seed(db *gorm.DB) {
 	seedAmenities(db)
 	seedParkingSpotStatuses(db)
 	seedParkingSpotTypes(db)
+	seedRoomStatuses(db)
+	seedRoomTypes(db)
 	seedRoles(db)
 }
 
@@ -55,16 +57,16 @@ func seedAmenities(db *gorm.DB) {
 	t := Translations["Amenity"]
 
 	amenities := []models.Amenity{
-		{Name: "WiFi", Translation: t["WiFi"]},
-		{Name: "TV", Translation: t["TV"]},
-		{Name: "Air Conditioning", Translation: t["Air Conditioning"]},
-		{Name: "Mini Bar", Translation: t["Mini Bar"]},
-		{Name: "Safe", Translation: t["Safe"]},
-		{Name: "Ocean View", Translation: t["Ocean View"]},
-		{Name: "City View", Translation: t["City View"]},
-		{Name: "Balcony", Translation: t["Balcony"]},
-		{Name: "Jacuzzi", Translation: t["Jacuzzi"]},
-		{Name: "Room Service", Translation: t["Room Service"]},
+		{TranslateBase: models.TranslateBase{Name: "WiFi", Translation: t["WiFi"]}},
+		{TranslateBase: models.TranslateBase{Name: "TV", Translation: t["TV"]}},
+		{TranslateBase: models.TranslateBase{Name: "Air Conditioning", Translation: t["Air Conditioning"]}},
+		{TranslateBase: models.TranslateBase{Name: "Mini Bar", Translation: t["Mini Bar"]}},
+		{TranslateBase: models.TranslateBase{Name: "Safe", Translation: t["Safe"]}},
+		{TranslateBase: models.TranslateBase{Name: "Ocean View", Translation: t["Ocean View"]}},
+		{TranslateBase: models.TranslateBase{Name: "City View", Translation: t["City View"]}},
+		{TranslateBase: models.TranslateBase{Name: "Balcony", Translation: t["Balcony"]}},
+		{TranslateBase: models.TranslateBase{Name: "Jacuzzi", Translation: t["Jacuzzi"]}},
+		{TranslateBase: models.TranslateBase{Name: "Room Service", Translation: t["Room Service"]}},
 	}
 
 	seed(db, amenities)
@@ -74,10 +76,10 @@ func seedRoles(db *gorm.DB) {
 	t := Translations["Role"]
 
 	amenities := []models.Role{
-		{Name: "admin", Translation: t["admin"]},
-		{Name: "staff", Translation: t["staff"]},
-		{Name: "receptionist", Translation: t["receptionist"]},
-		{Name: "housekeeper", Translation: t["housekeeper"]},
+		{TranslateBase: models.TranslateBase{Name: "admin", Translation: t["admin"]}},
+		{TranslateBase: models.TranslateBase{Name: "staff", Translation: t["staff"]}},
+		{TranslateBase: models.TranslateBase{Name: "receptionist", Translation: t["receptionist"]}},
+		{TranslateBase: models.TranslateBase{Name: "housekeeper", Translation: t["housekeeper"]}},
 	}
 
 	seed(db, amenities)
@@ -87,11 +89,11 @@ func seedParkingSpotTypes(db *gorm.DB) {
 	t := Translations["ParkingSpotType"]
 
 	types := []models.ParkingSpotType{
-		{Name: "Standard", Translation: t["Standard"]},
-		{Name: "Handicap", Translation: t["Handicap"]},
-		{Name: "Electric", Translation: t["Electric"]},
-		{Name: "Compact", Translation: t["Compact"]},
-		{Name: "Large", Translation: t["Large"]},
+		{TranslateBase: models.TranslateBase{Name: "Standard", Translation: t["Standard"]}},
+		{TranslateBase: models.TranslateBase{Name: "Handicap", Translation: t["Handicap"]}},
+		{TranslateBase: models.TranslateBase{Name: "Electric", Translation: t["Electric"]}},
+		{TranslateBase: models.TranslateBase{Name: "Compact", Translation: t["Compact"]}},
+		{TranslateBase: models.TranslateBase{Name: "Large", Translation: t["Large"]}},
 	}
 
 	seed(db, types)
@@ -101,10 +103,37 @@ func seedParkingSpotStatuses(db *gorm.DB) {
 	t := Translations["ParkingSpotStatus"]
 
 	statuses := []models.ParkingSpotStatus{
-		{Name: "Available", Translation: t["Available"]},
-		{Name: "Occupied", Translation: t["Occupied"]},
-		{Name: "Reserved", Translation: t["Reserved"]},
-		{Name: "Maintenance", Translation: t["Maintenance"]},
+		{TranslateBase: models.TranslateBase{Name: "Available", Translation: t["Available"]}},
+		{TranslateBase: models.TranslateBase{Name: "Occupied", Translation: t["Occupied"]}},
+		{TranslateBase: models.TranslateBase{Name: "Reserved", Translation: t["Reserved"]}},
+		{TranslateBase: models.TranslateBase{Name: "Maintenance", Translation: t["Maintenance"]}},
+	}
+
+	seed(db, statuses)
+}
+
+func seedRoomStatuses(db *gorm.DB) {
+	t := Translations["RoomStatus"]
+
+	statuses := []models.RoomStatus{
+		{TranslateBase: models.TranslateBase{Name: "Available", Translation: t["Available"]}},
+		{TranslateBase: models.TranslateBase{Name: "Occupied", Translation: t["Occupied"]}},
+		{TranslateBase: models.TranslateBase{Name: "Reserved", Translation: t["Reserved"]}},
+		{TranslateBase: models.TranslateBase{Name: "Maintenance", Translation: t["Maintenance"]}},
+	}
+
+	seed(db, statuses)
+}
+
+func seedRoomTypes(db *gorm.DB) {
+	t := Translations["RoomType"]
+
+	statuses := []models.RoomType{
+		{TranslateBase: models.TranslateBase{}},
+		{TranslateBase: models.TranslateBase{Name: "Single", Translation: t["Single"]}},
+		{TranslateBase: models.TranslateBase{Name: "Double", Translation: t["Double"]}},
+		{TranslateBase: models.TranslateBase{Name: "Suite", Translation: t["Suite"]}},
+		{TranslateBase: models.TranslateBase{Name: "Deluxe", Translation: t["Deluxe"]}},
 	}
 
 	seed(db, statuses)

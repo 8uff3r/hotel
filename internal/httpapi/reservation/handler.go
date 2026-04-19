@@ -15,9 +15,9 @@ type ReservationModule struct {
 func (m ReservationModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	re := ReservationModule{api}
 
-	fuego.Get(s, "/", h.ListModel(api.Db, models.Reservation{}, nil))
+	fuego.Get(s, "/", h.ListModel(api.Db, models.Reservation{}))
 	fuego.Post(s, "/", h.CreateModel(api.Db, models.Reservation{}))
-	fuego.Get(s, "/{id}", h.GetModel(api.Db, models.Reservation{}, nil))
+	fuego.Get(s, "/{id}", h.GetModel(api.Db, models.Reservation{}))
 	fuego.Put(s, "/{id}", h.UpdateModel(api.Db, models.Reservation{}))
 
 	fuego.Post(s, "/{id}/check-in", re.reservationsCheckIn)
