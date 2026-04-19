@@ -23,14 +23,12 @@
           :items="statusOptions"
           :placeholder="t('rooms.allStatuses')"
           class="w-full sm:w-40"
-          @change="fetchRooms"
         />
         <USelect
           v-model="filters.roomType"
           :items="roomTypeOptions"
           :placeholder="t('rooms.allTypes')"
           class="w-full sm:w-40"
-          @change="fetchRooms"
         />
         <UButton variant="outline" @click="clearFilters"> {{ t("actions.clear") }} </UButton>
       </div>
@@ -47,7 +45,7 @@
         </div>
       </template>
 
-      <UTable :data="rooms" :columns="columns" :loading="loading" striped>
+      <UTable :data="rooms" :columns="columns" :loading="pending" striped>
         <template #roomNumber-cell="{ row }">
           <NuxtLink
             :to="`/rooms/${row.original.id}`"
@@ -58,13 +56,13 @@
         </template>
 
         <template #roomType-cell="{ row }">
-          <UBadge :color="getRoomTypeColor(row.original.roomType) as any" variant="soft">
+          <UBadge :color="getRoomTypeColor(row.original.roomTypeId) as any" variant="soft">
             {{ row.original.roomType }}
           </UBadge>
         </template>
 
         <template #status-cell="{ row }">
-          <UBadge :color="getStatusColor(row.original.status) as any" variant="soft">
+          <UBadge :color="getStatusColor(row.original.statusId) as any" variant="soft">
             {{ row.original.status }}
           </UBadge>
         </template>
@@ -98,12 +96,7 @@
               t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages })
             }}
           </span>
-          <UPagination
-            v-model="page"
-            :page-count="pagination.limit"
-            :total="pagination.total"
-            @change="fetchRooms"
-          />
+          <UPagination v-model="page" :page-count="pagination.limit" :total="pagination.total" />
         </div>
       </template>
     </UCard>
@@ -132,24 +125,13 @@
 
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
-import type { Room } from "~~/server/db/schema";
 
 definePageMeta({
   requiresRole: ["admin", "manager", "receptionist"],
 });
 
-interface RoomRow {
-  id: number;
-  roomNumber: string;
-  roomType: string;
-  floor: number | null;
-  capacity: number;
-  basePrice: number;
-  status: string;
-}
-
 const { t } = useI18n();
-const columns = computed<TableColumn<RoomRow>[]>(() => [
+const columns = computed<TableColumn<Room>[]>(() => [
   { accessorKey: "roomNumber", header: t("rooms.columns.roomNumber") },
   { accessorKey: "roomType", header: t("rooms.columns.type") },
   { accessorKey: "floor", header: t("rooms.columns.floor") },
@@ -175,11 +157,9 @@ const roomTypeOptions = computed(() => [
   { value: "deluxe", label: t("rooms.types.deluxe") },
 ]);
 
-const rooms = ref<RoomRow[]>([]);
-const loading = ref(false);
 const deleting = ref(false);
 const deleteModalOpen = ref(false);
-const selectedRoom = ref<RoomRow | null>(null);
+const selectedRoom = ref<Room | null>(null);
 const page = ref(1);
 
 const filters = reactive({
@@ -201,41 +181,28 @@ const debouncedSearch = () => {
   if (searchTimeout) clearTimeout(searchTimeout);
   searchTimeout = setTimeout(() => {
     pagination.page = 1;
-    fetchRooms();
+    // fetchRooms();
   }, 300);
 };
 
-const fetchRooms = async () => {
-  loading.value = true;
-  try {
-    const params = new URLSearchParams();
-    params.append("page", pagination.page.toString());
-    params.append("limit", pagination.limit.toString());
-
-    if (filters.search) params.append("search", filters.search);
-    if (filters.status) params.append("status", filters.status);
-    if (filters.roomType) params.append("roomType", filters.roomType);
-
-    const response = await $fetch(`/api/rooms?${params.toString()}`);
-    rooms.value = response.data;
-    pagination.total = response.pagination.total ?? 0;
-    pagination.totalPages = response.pagination.totalPages ?? 0;
-  } catch (error) {
-    console.error("Failed to fetch rooms:", error);
-  } finally {
-    loading.value = false;
-  }
-};
+const { data: rooms, pending } = useAsyncData(async () => {
+  const response = await getApiRooms({
+    query: computed(() => pagination),
+  });
+  pagination.total = response.total ?? 0;
+  pagination.totalPages = response.totalPages ?? 0;
+  return response.data;
+});
 
 const clearFilters = () => {
   filters.search = "";
   filters.status = "";
   filters.roomType = "";
   pagination.page = 1;
-  fetchRooms();
+  // fetchRooms();
 };
 
-const confirmDelete = (room: RoomRow) => {
+const confirmDelete = (room: Room) => {
   selectedRoom.value = room;
   deleteModalOpen.value = true;
 };
@@ -247,7 +214,7 @@ const deleteRoom = async () => {
   try {
     await $fetch(`/api/rooms/${selectedRoom.value.id}`, { method: "DELETE" });
     deleteModalOpen.value = false;
-    await fetchRooms();
+    // await fetchRooms();
   } catch (error) {
     console.error("Failed to delete room:", error);
   } finally {
@@ -274,6 +241,4 @@ const getRoomTypeColor = (type: string) => {
   };
   return colors[type] || "neutral";
 };
-
-onMounted(fetchRooms);
 </script>

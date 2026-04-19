@@ -6,6 +6,7 @@ import {
   fromDate,
   getLocalTimeZone,
   toCalendar,
+  toCalendarDate,
   today,
   toZoned,
   ZonedDateTime,
@@ -20,12 +21,11 @@ const df = new DateFormatter("fa-IR", {
 });
 
 const calendar = createCalendar("persian");
-const todayDate = toZoned(today("Asia/Tehran"), "Asia/Tehran");
-const value = shallowRef<ZonedDateTime | undefined>(
-  toCalendar(
-    props.modelValue ? fromDate(new Date(props.modelValue), "Asia/Tehran") : todayDate,
-    calendar
-  )
+const todayDate = toCalendar(today(getLocalTimeZone()), calendar);
+const value = shallowRef<CalendarDate | undefined>(
+  props.modelValue
+    ? toCalendarDate(fromDate(new Date(props.modelValue), getLocalTimeZone()))
+    : todayDate
 );
 
 const emit = defineEmits<{

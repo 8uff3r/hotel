@@ -184,6 +184,7 @@
     "roomNumber": "شماره اتاق",
     "roomNumberPlaceholder": "مثال: ۱۰۱، ۲۰۵A",
     "roomType": "نوع اتاق",
+    "name": "نام اتاق",
     "floor": "طبقه",
     "floorPlaceholder": "مثال: ۱، ۲",
     "capacityGuests": "ظرفیت (مهمان)",
@@ -196,6 +197,7 @@
     "columns": {
       "roomNumber": "شماره اتاق",
       "type": "نوع",
+      "name": "نام",
       "floor": "طبقه",
       "capacity": "ظرفیت",
       "price": "قیمت",

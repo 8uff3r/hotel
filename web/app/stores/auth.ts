@@ -21,7 +21,7 @@ export const useAuthStore = defineStore(
     const isManager = computed(() => hasRole("admin"));
 
     const isReceptionist = computed(
-      () => hasRole("admin") || hasRole("manager") || hasRole("receptionist"),
+      () => hasRole("admin") || hasRole("manager") || hasRole("receptionist")
     );
 
     const availableRoles = computed(() => {
@@ -104,7 +104,7 @@ export const useAuthStore = defineStore(
   },
   {
     persist: {
-      storage: localStorage,
+      pick: ["isAuthenticated", "user", "currentRole"],
     },
-  },
+  }
 );

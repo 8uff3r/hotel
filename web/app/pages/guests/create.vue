@@ -56,7 +56,7 @@
                 </UFormField>
 
                 <UFormField :label="t('guest.dateOfBirth')">
-                  <UInput type="date" v-model="guest.dateOfBirth" />
+                  <HDate v-model="guest.dateOfBirth" />
                 </UFormField>
 
                 <UFormField :label="t('guest.placeOfBirth')">
@@ -119,7 +119,7 @@
                 </UFormField>
 
                 <UFormField :label="t('guest.departureDate')">
-                  <UInput type="date" v-model="reservation.departureDate" />
+                  <HDate v-model="reservation.departureDate" />
                 </UFormField>
 
                 <UFormField :label="t('guest.numberOfPeople')">
