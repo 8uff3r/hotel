@@ -133,10 +133,10 @@ func GetModel[T any](db *gorm.DB, model T, opts ...ListOption) FuegoAnyHandler[T
 	for _, v := range opts {
 		v(&lc)
 	}
-	return getModel(db, model, lc.preload)
+	return getModel(db, model, lc.preload, lc.translate)
 }
 
-func getModel[T any](db *gorm.DB, model T, preload []string) FuegoAnyHandler[T] {
+func getModel[T any](db *gorm.DB, model T, preload []string, translate bool) FuegoAnyHandler[T] {
 	return func(c fuego.ContextNoBody) (T, error) {
 		var zero T
 		id, err := ParseID(c.PathParam("id"))
@@ -154,7 +154,16 @@ func getModel[T any](db *gorm.DB, model T, preload []string) FuegoAnyHandler[T] 
 			}
 			return zero, nil
 		}
-		return entity, nil
+		lang := c.Header("Accept-Language")
+		if lang == "" {
+			lang = "fa"
+		}
+		slice := []T{entity}
+		if translate {
+			applyTranslations(&slice, lang)
+			applyFieldTranslations(&slice, lang)
+		}
+		return slice[0], nil
 	}
 }
 
@@ -170,10 +179,19 @@ func UpdateModel[T any](db *gorm.DB, model T) FuegoHandler[T, T, any] {
 		if err != nil {
 			return zero, err
 		}
-		modelValue := reflect.ValueOf(body).Elem()
-		modelValue.FieldByName("ID").SetUint(uint64(id))
+		rv := reflect.ValueOf(body)
+		if rv.Kind() == reflect.Ptr {
+			rv = rv.Elem() // get the struct from the pointer
+		} else {
+			rv = reflect.ValueOf(&body).Elem() // addressable struct from value
+		}
+		idField := rv.FieldByName("ID")
+		if !idField.IsValid() {
+			return zero, fuego.BadRequestError{Title: "model has no ID field"}
+		}
+		idField.SetUint(uint64(id))
 
-		res := db.WithContext(c).Model(model).Where("id = ?", id).Updates(model)
+		res := db.WithContext(c).Model(model).Where("id = ?", id).Updates(body)
 		if res.Error != nil {
 			return zero, fuego.BadRequestError{Title: "update_failed"}
 		}
