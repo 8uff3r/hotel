@@ -16,7 +16,7 @@ func (m RoomsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Put(s, "/{id}", h.UpdateModel(api.Db, models.Room{}))
 	fuego.Delete(s, "/{id}", h.DeleteModel(api.Db, models.Room{}))
 
-	fuego.Get(s, "/amenities", h.ListModel(api.Db, models.Amenity{}))
+	fuego.Get(s, "/amenities", h.ListModel(api.Db, models.Amenity{}, h.WithTranslation()))
 	fuego.Get(s, "/types", h.ListModel(api.Db, models.RoomType{}, h.WithTranslation()))
 	fuego.Get(s, "/statuses", h.ListModel(api.Db, models.RoomStatus{}, h.WithTranslation()))
 }

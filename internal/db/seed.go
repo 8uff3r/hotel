@@ -116,10 +116,10 @@ func seedRoomStatuses(db *gorm.DB) {
 	t := Translations["RoomStatus"]
 
 	statuses := []models.RoomStatus{
-		{TranslateBase: models.TranslateBase{Name: "Available", Translation: t["Available"]}},
-		{TranslateBase: models.TranslateBase{Name: "Occupied", Translation: t["Occupied"]}},
-		{TranslateBase: models.TranslateBase{Name: "Reserved", Translation: t["Reserved"]}},
-		{TranslateBase: models.TranslateBase{Name: "Maintenance", Translation: t["Maintenance"]}},
+		{TranslateBase: models.TranslateBase{Name: "Available", Translation: t["Available"]}, ColorHex: "2ECC71"},     // green
+		{TranslateBase: models.TranslateBase{Name: "Occupied", Translation: t["Occupied"]}, ColorHex: "E74C3C"},       // red
+		{TranslateBase: models.TranslateBase{Name: "Reserved", Translation: t["Reserved"]}, ColorHex: "F39C12"},       // orange
+		{TranslateBase: models.TranslateBase{Name: "Maintenance", Translation: t["Maintenance"]}, ColorHex: "95A5A6"}, // gray
 	}
 
 	seed(db, statuses)
@@ -129,11 +129,10 @@ func seedRoomTypes(db *gorm.DB) {
 	t := Translations["RoomType"]
 
 	statuses := []models.RoomType{
-		{TranslateBase: models.TranslateBase{}},
-		{TranslateBase: models.TranslateBase{Name: "Single", Translation: t["Single"]}},
-		{TranslateBase: models.TranslateBase{Name: "Double", Translation: t["Double"]}},
-		{TranslateBase: models.TranslateBase{Name: "Suite", Translation: t["Suite"]}},
-		{TranslateBase: models.TranslateBase{Name: "Deluxe", Translation: t["Deluxe"]}},
+		{TranslateBase: models.TranslateBase{Name: "Single", Translation: t["Single"]}, ColorHex: "87CEEB"},
+		{TranslateBase: models.TranslateBase{Name: "Double", Translation: t["Double"]}, ColorHex: "98FB98"},
+		{TranslateBase: models.TranslateBase{Name: "Suite", Translation: t["Suite"]}, ColorHex: "DDA0DD"},
+		{TranslateBase: models.TranslateBase{Name: "Deluxe", Translation: t["Deluxe"]}, ColorHex: "FFB6C1"},
 	}
 
 	seed(db, statuses)
