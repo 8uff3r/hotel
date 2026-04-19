@@ -19,8 +19,14 @@
             <template #header>
               <div class="flex items-center justify-between">
                 <span class="text-lg font-semibold">{{ t("common.room_details") }}</span>
-                <UBadge :color="getStatusColor(room.status)" variant="soft">
-                  {{ room.status }}
+                <UBadge
+                  color="neutral"
+                  :style="{
+                    color: `#${room.status?.colorHex}`,
+                  }"
+                  variant="soft"
+                >
+                  {{ room.status?.name }}
                 </UBadge>
               </div>
             </template>
@@ -38,7 +44,7 @@
 
                 <!-- Room Type -->
                 <UFormField :label="t('rooms.room_type')" name="roomType" required>
-                  <USelect v-model="form.roomType" :items="roomTypes" :disabled="saving" />
+                  <HSelect v-model="form.roomTypeId" :items="types" :disabled="saving" />
                 </UFormField>
 
                 <!-- Floor -->
@@ -69,7 +75,7 @@
 
                 <!-- Status -->
                 <UFormField :label="t('common.status')" name="status" required>
-                  <USelect v-model="form.status" :items="statusOptions" :disabled="saving" />
+                  <HSelect v-model="form.statusId" :items="statuses" :disabled="saving" />
                 </UFormField>
 
                 <!-- Description -->
@@ -80,6 +86,7 @@
                 >
                   <UTextarea
                     v-model="form.description"
+                    class="w-full"
                     :placeholder="t('rooms.room_description')"
                     :rows="3"
                     :disabled="saving"
@@ -91,21 +98,29 @@
                   <div class="flex flex-wrap gap-2">
                     <UBadge
                       v-for="amenity in availableAmenities"
-                      :key="amenity"
-                      :variant="form.amenities.includes(amenity) ? 'solid' : 'outline'"
-                      :color="form.amenities.includes(amenity) ? 'primary' : 'neutral'"
+                      :key="amenity.id"
+                      :variant="
+                        form.amenities?.find((v) => v.id === amenity.id) ? 'solid' : 'outline'
+                      "
+                      :color="
+                        form.amenities?.find((v) => v.id === amenity.id) ? 'primary' : 'neutral'
+                      "
                       class="cursor-pointer"
-                      @click="toggleAmenity(amenity)"
+                      @click="toggleAmenity(amenity.id!)"
                     >
-                      {{ amenity }}
+                      {{ amenity.name }}
                     </UBadge>
                   </div>
                 </UFormField>
               </div>
 
               <div class="mt-6 flex justify-end gap-3">
-                <UButton variant="outline" to="/rooms" :disabled="saving"> Cancel </UButton>
-                <UButton type="submit" color="primary" :loading="saving"> Save Changes </UButton>
+                <UButton variant="outline" to="/rooms" :disabled="saving">
+                  {{ t("actions.cancel") }}
+                </UButton>
+                <UButton type="submit" color="primary" :loading="saving">
+                  {{ t("actions.saveChanges") }}
+                </UButton>
               </div>
             </form>
           </UCard>
@@ -116,56 +131,33 @@
           <!-- Room Type Badge -->
           <UCard>
             <template #header>
-              <span class="font-semibold">Room Type</span>
+              <span class="font-semibold">{{ t("rooms.room_type") }}</span>
             </template>
             <div class="flex items-center gap-3">
               <UIcon name="i-lucide-bed-double" class="h-6 w-6 text-primary" />
-              <span class="text-lg capitalize">{{ room.roomType }}</span>
+              <span class="text-lg capitalize">{{ room.roomType?.name }}</span>
             </div>
           </UCard>
 
           <!-- Capacity -->
           <UCard>
             <template #header>
-              <span class="font-semibold">Capacity</span>
+              <span class="font-semibold">{{ t("rooms.capacity_guests") }}</span>
             </template>
             <div class="flex items-center gap-3">
               <UIcon name="i-lucide-users" class="h-6 w-6 text-primary" />
-              <span class="text-lg">{{ room.capacity }} guests</span>
+              <span class="text-lg">{{ room.capacity }}</span>
             </div>
           </UCard>
 
           <!-- Price -->
           <UCard>
             <template #header>
-              <span class="font-semibold">Base Price</span>
+              <span class="font-semibold">{{ t("rooms.base_price") }}</span>
             </template>
             <div class="flex items-center gap-3">
               <UIcon name="i-lucide-dollar-sign" class="h-6 w-6 text-primary" />
-              <span class="text-lg">${{ room.basePrice.toFixed(2) }}</span>
-            </div>
-          </UCard>
-
-          <!-- Quick Actions -->
-          <UCard>
-            <template #header>
-              <span class="font-semibold">Quick Actions</span>
-            </template>
-            <div class="space-y-2">
-              <UButton
-                v-if="room.status === 'available'"
-                to="/reservations/create"
-                variant="outline"
-                block
-                color="success"
-              >
-                <UIcon name="i-lucide-plus" class="mr-2" />
-                New Reservation
-              </UButton>
-              <UButton v-if="room.status === 'occupied'" variant="outline" block color="warning">
-                <UIcon name="i-lucide-log-out" class="mr-2" />
-                Check-out Guest
-              </UButton>
+              <span class="text-lg">${{ room.basePrice?.toFixed(2) }}</span>
             </div>
           </UCard>
         </div>
@@ -182,6 +174,9 @@
 </template>
 
 <script setup lang="ts">
+import type z from "zod";
+import { zRoom } from "~/utils/client/zod.gen";
+
 definePageMeta({
   requiresRole: ["admin", "manager", "receptionist"],
 });
@@ -192,75 +187,55 @@ const roomId = route.params.id as string;
 
 const saving = ref(false);
 
-const form = reactive({
-  roomNumber: "",
-  roomType: "single" as "single" | "double" | "suite" | "deluxe",
-  floor: null as number | null,
-  capacity: 2,
-  basePrice: 0,
-  status: "available" as "available" | "occupied" | "maintenance" | "out_of_order",
-  description: "",
+const schema = zRoom;
+type Schema = z.output<typeof schema>;
+const form = ref<Schema>({
   amenities: [] as string[],
+} as any);
+
+const { data: availableAmenities } = useAsyncData("room-amenities", async () => {
+  const res = await getApiRoomsAmenities({});
+  return res.data;
+});
+const { data: statuses } = useAsyncData("room-statuses", async () => {
+  const res = await getApiRoomsStatuses({});
+  return res.data;
+});
+const { data: types } = useAsyncData("room-types", async () => {
+  const res = await getApiRoomsTypes({});
+  return res.data;
 });
 
-const roomTypes = [
-  { value: "single", label: "Single" },
-  { value: "double", label: "Double" },
-  { value: "suite", label: "Suite" },
-  { value: "deluxe", label: "Deluxe" },
-];
-
-const statusOptions = [
-  { value: "available", label: "Available" },
-  { value: "occupied", label: "Occupied" },
-  { value: "maintenance", label: "Maintenance" },
-  { value: "out_of_order", label: "Out of Order" },
-];
-
-const availableAmenities = [
-  "WiFi",
-  "TV",
-  "Air Conditioning",
-  "Mini Bar",
-  "Safe",
-  "Ocean View",
-  "City View",
-  "Balcony",
-  "Jacuzzi",
-  "Room Service",
-];
-
-const toggleAmenity = (amenity: string) => {
-  const index = form.amenities.indexOf(amenity);
-  if (index === -1) {
-    form.amenities.push(amenity);
+const toggleAmenity = (amenityId: number) => {
+  const index = form.value.amenities?.findIndex((a) => a.id === amenityId);
+  if (index !== undefined && index !== -1) {
+    form.value.amenities?.splice(index, 1);
   } else {
-    form.amenities.splice(index, 1);
+    const amenity = availableAmenities.value?.find((v) => v.id === amenityId);
+    console.log(amenity);
+    if (amenity) form.value.amenities?.push(amenity);
   }
 };
 
 const { data: room, pending } = useAsyncData(async () => {
-  const response = await $fetch<Room>(`/api/rooms/${roomId}`);
+  const response = await getApiRoomsId({
+    path: {
+      id: roomId,
+    },
+  });
 
-  if (response) {
-    form.roomNumber = response.roomNumber;
-    form.roomType = response.roomType;
-    form.floor = response.floor;
-    form.capacity = response.capacity;
-    form.basePrice = response.basePrice;
-    form.status = response.status;
-    form.description = response.description || "";
-    form.amenities = Array.isArray(response.amenities) ? response.amenities : [];
-  }
+  form.value = response;
   return response;
 });
 
 const handleSubmit = async () => {
   saving.value = true;
   try {
-    await $fetch(`/api/rooms/${roomId}`, {
-      method: "PUT",
-      body: form,
+    await putApiRoomsId({
+      path: {
+        id: roomId,
+      },
+      body: form.value,
     });
 
     await navigateTo("/rooms");

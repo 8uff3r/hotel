@@ -129,7 +129,7 @@ const loading = ref(false);
 const schema = zRoom;
 type Schema = z.output<typeof schema>;
 
-const form = ref<Schema>({ amenities: [] });
+const form = ref<Schema>({ amenities: [], hotelId: undefined } as any);
 
 const { data: availableAmenities } = useAsyncData("room-amenities", async () => {
   const res = await getApiRoomsAmenities({});
@@ -143,6 +143,7 @@ const { data: types } = useAsyncData("room-types", async () => {
   const res = await getApiRoomsTypes({});
   return res.data;
 });
+
 const toggleAmenity = (amenityId: number) => {
   const index = form.value.amenities?.findIndex((a) => a.id === amenityId);
   if (index !== undefined && index !== -1) {
@@ -157,7 +158,7 @@ const toggleAmenity = (amenityId: number) => {
 const handleSubmit = async (event: FormSubmitEvent<Schema>) => {
   loading.value = true;
   try {
-    postApiRooms({
+    await postApiRooms({
       body: event.data,
     });
 

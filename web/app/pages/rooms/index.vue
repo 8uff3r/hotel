@@ -56,14 +56,14 @@
         </template>
 
         <template #roomType-cell="{ row }">
-          <UBadge :color="getRoomTypeColor(row.original.roomTypeId) as any" variant="soft">
-            {{ row.original.roomType }}
+          <UBadge :color="getRoomTypeColor(row.original.status?.name) as any" variant="soft">
+            {{ row.original.roomType?.name }}
           </UBadge>
         </template>
 
         <template #status-cell="{ row }">
           <UBadge :color="getStatusColor(row.original.statusId) as any" variant="soft">
-            {{ row.original.status }}
+            {{ row.original.status?.name }}
           </UBadge>
         </template>
 
@@ -232,13 +232,13 @@ const getStatusColor = (status: string) => {
   return colors[status] || "neutral";
 };
 
-const getRoomTypeColor = (type: string) => {
+const getRoomTypeColor = (type: string | undefined) => {
   const colors: Record<string, string> = {
     single: "neutral",
     double: "info",
     suite: "primary",
     deluxe: "warning",
   };
-  return colors[type] || "neutral";
+  return type && colors[type] ? colors[type] : "neutral";
 };
 </script>
