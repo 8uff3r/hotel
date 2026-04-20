@@ -67,8 +67,6 @@ type Room struct {
 
 	StatusID uint       `gorm:"not null" json:"statusId"`
 	Status   RoomStatus `gorm:"foreignKey:StatusID" json:"status,omitzero" translate:"true"`
-
-	GuestID uint `gorm:"not null;index" json:"guestId"`
 }
 
 type RoomType struct {

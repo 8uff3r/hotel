@@ -158,6 +158,19 @@
                   />
                 </UFormField>
 
+                <UFormField
+                  :label="t('rooms.plural')"
+                  name="reservation.rooms"
+                  class="md:col-span-3"
+                >
+                  <USelect
+                    v-model="form.roomIds"
+                    :items="rooms ?? []"
+                    multiple
+                    :disabled="loading"
+                  />
+                </UFormField>
+
                 <UFormField :label="t('guest.breakfast')" name="reservation.breakfast">
                   <UCheckbox v-model="form.reservation.breakfast" :disabled="loading" />
                 </UFormField>
@@ -279,7 +292,22 @@ const loading = ref(false);
 const schema = zGuestWithReservationRequest;
 type Schema = z.output<typeof schema>;
 
-const form = ref<Required<Schema>>({ reservation: {}, guest: {} as any, payment: {} });
+const form = ref<Required<Schema> & { roomIds: number[] }>({
+  roomIds: [],
+  reservation: { rooms: [] },
+  guest: {} as any,
+  payment: {},
+});
+
+const { data: rooms } = useAsyncData(async () => {
+  const res = await getApiRooms({});
+  return res.data?.map((v) => ({
+    value: v.id,
+    label: `${v.name ?? v.roomNumber}`,
+  }));
+});
+
+const selectedRooms = ref<number>();
 
 const handleSubmit = async (event: FormSubmitEvent<Schema>) => {
   loading.value = true;

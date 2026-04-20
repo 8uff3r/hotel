@@ -100,7 +100,6 @@ export const zGuest = z.object({
               capacity: z.int().optional(),
               description: z.string().optional(),
               floor: z.int().optional(),
-              guestId: z.int().gte(0).optional(),
               hotelId: z.int().gte(0).optional(),
               id: z.int().gte(0).optional(),
               name: z.string().optional(),
@@ -197,7 +196,6 @@ export const zGuestWithReservationRequest = z.object({
                   capacity: z.int().optional(),
                   description: z.string().optional(),
                   floor: z.int().optional(),
-                  guestId: z.int().gte(0).optional(),
                   hotelId: z.int().gte(0).optional(),
                   id: z.int().gte(0).optional(),
                   name: z.string().optional(),
@@ -252,6 +250,47 @@ export const zGuestWithReservationRequest = z.object({
       purposeOfTravel: z.string().optional(),
       reservationCode: z.string().optional(),
       roomPrice: z.number().optional(),
+      rooms: z
+        .array(
+          z.object({
+            amenities: z
+              .array(
+                z.object({
+                  id: z.int().gte(0).optional(),
+                  name: z.string().optional(),
+                  translation: z.record(z.string(), z.string()).optional(),
+                })
+              )
+              .optional(),
+            basePrice: z.number().optional(),
+            capacity: z.int().optional(),
+            description: z.string().optional(),
+            floor: z.int().optional(),
+            hotelId: z.int().gte(0).optional(),
+            id: z.int().gte(0).optional(),
+            name: z.string().optional(),
+            roomNumber: z.string().min(1),
+            roomType: z
+              .object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                name: z.string().optional(),
+                translation: z.record(z.string(), z.string()).optional(),
+              })
+              .optional(),
+            roomTypeId: z.int().gte(0).optional(),
+            status: z
+              .object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                name: z.string().optional(),
+                translation: z.record(z.string(), z.string()).optional(),
+              })
+              .optional(),
+            statusId: z.int().gte(0).optional(),
+          })
+        )
+        .optional(),
     })
     .optional(),
 });
@@ -320,7 +359,6 @@ export const zGuestWithReservationResponse = z.object({
                   capacity: z.int().optional(),
                   description: z.string().optional(),
                   floor: z.int().optional(),
-                  guestId: z.int().gte(0).optional(),
                   hotelId: z.int().gte(0).optional(),
                   id: z.int().gte(0).optional(),
                   name: z.string().optional(),
@@ -405,7 +443,6 @@ export const zGuestWithReservationResponse = z.object({
             capacity: z.int().optional(),
             description: z.string().optional(),
             floor: z.int().optional(),
-            guestId: z.int().gte(0).optional(),
             hotelId: z.int().gte(0).optional(),
             id: z.int().gte(0).optional(),
             name: z.string().optional(),
@@ -664,7 +701,6 @@ export const zPaginatedResponseModelsGuest = z.object({
                     capacity: z.int().optional(),
                     description: z.string().optional(),
                     floor: z.int().optional(),
-                    guestId: z.int().gte(0).optional(),
                     hotelId: z.int().gte(0).optional(),
                     id: z.int().gte(0).optional(),
                     name: z.string().optional(),
@@ -956,7 +992,6 @@ export const zPaginatedResponseModelsReservation = z.object({
               capacity: z.int().optional(),
               description: z.string().optional(),
               floor: z.int().optional(),
-              guestId: z.int().gte(0).optional(),
               hotelId: z.int().gte(0).optional(),
               id: z.int().gte(0).optional(),
               name: z.string().optional(),
@@ -1021,7 +1056,6 @@ export const zPaginatedResponseModelsRoom = z.object({
         capacity: z.int().optional(),
         description: z.string().optional(),
         floor: z.int().optional(),
-        guestId: z.int().gte(0).optional(),
         hotelId: z.int().gte(0).optional(),
         id: z.int().gte(0).optional(),
         name: z.string().optional(),
@@ -1278,7 +1312,6 @@ export const zReservation = z.object({
         capacity: z.int().optional(),
         description: z.string().optional(),
         floor: z.int().optional(),
-        guestId: z.int().gte(0).optional(),
         hotelId: z.int().gte(0).optional(),
         id: z.int().gte(0).optional(),
         name: z.string().optional(),
@@ -1325,7 +1358,6 @@ export const zRoom = z.object({
   capacity: z.int().optional(),
   description: z.string().optional(),
   floor: z.int().optional(),
-  guestId: z.int().gte(0).optional(),
   hotelId: z.int().gte(0).optional(),
   id: z.int().gte(0).optional(),
   name: z.string().optional(),

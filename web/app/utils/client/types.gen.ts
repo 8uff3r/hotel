@@ -94,7 +94,6 @@ export type Guest = {
       capacity?: number;
       description?: string;
       floor?: number;
-      guestId?: number;
       hotelId?: number;
       id?: number;
       name?: string;
@@ -178,7 +177,6 @@ export type GuestWithReservationRequest = {
         capacity?: number;
         description?: string;
         floor?: number;
-        guestId?: number;
         hotelId?: number;
         id?: number;
         name?: string;
@@ -225,6 +223,41 @@ export type GuestWithReservationRequest = {
     purposeOfTravel?: string;
     reservationCode?: string;
     roomPrice?: number;
+    rooms?: Array<{
+      amenities?: Array<{
+        id?: number;
+        name?: string;
+        translation?: {
+          [key: string]: string;
+        };
+      }>;
+      basePrice?: number;
+      capacity?: number;
+      description?: string;
+      floor?: number;
+      hotelId?: number;
+      id?: number;
+      name?: string;
+      roomNumber: string;
+      roomType?: {
+        colorHex?: string;
+        id?: number;
+        name?: string;
+        translation?: {
+          [key: string]: string;
+        };
+      };
+      roomTypeId?: number;
+      status?: {
+        colorHex?: string;
+        id?: number;
+        name?: string;
+        translation?: {
+          [key: string]: string;
+        };
+      };
+      statusId?: number;
+    }>;
   };
 };
 
@@ -283,7 +316,6 @@ export type GuestWithReservationResponse = {
         capacity?: number;
         description?: string;
         floor?: number;
-        guestId?: number;
         hotelId?: number;
         id?: number;
         name?: string;
@@ -354,7 +386,6 @@ export type GuestWithReservationResponse = {
       capacity?: number;
       description?: string;
       floor?: number;
-      guestId?: number;
       hotelId?: number;
       id?: number;
       name?: string;
@@ -581,7 +612,6 @@ export type PaginatedResponseModelsGuest = {
         capacity?: number;
         description?: string;
         floor?: number;
-        guestId?: number;
         hotelId?: number;
         id?: number;
         name?: string;
@@ -783,7 +813,6 @@ export type PaginatedResponseModelsReservation = {
       capacity?: number;
       description?: string;
       floor?: number;
-      guestId?: number;
       hotelId?: number;
       id?: number;
       name?: string;
@@ -832,7 +861,6 @@ export type PaginatedResponseModelsRoom = {
     capacity?: number;
     description?: string;
     floor?: number;
-    guestId?: number;
     hotelId?: number;
     id?: number;
     name?: string;
@@ -1017,7 +1045,6 @@ export type Reservation = {
     capacity?: number;
     description?: string;
     floor?: number;
-    guestId?: number;
     hotelId?: number;
     id?: number;
     name?: string;
@@ -1060,7 +1087,6 @@ export type Room = {
   capacity?: number;
   description?: string;
   floor?: number;
-  guestId?: number;
   hotelId?: number;
   id?: number;
   name?: string;

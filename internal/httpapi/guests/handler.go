@@ -20,18 +20,19 @@ type GuestWithReservationRequest struct {
 }
 
 type ReservationRequest struct {
-	ReservationCode string    `json:"reservationCode"`
-	EntryDate       time.Time `json:"entryDate"`
-	DepartureDate   time.Time `json:"departureDate"`
-	DurationOfStay  int       `json:"durationOfStay"`
-	NumberOfPeople  int       `json:"numberOfPeople"`
-	Origin          string    `json:"origin"`
-	Destination     string    `json:"destination"`
-	PurposeOfTravel string    `json:"purposeOfTravel"`
-	Breakfast       bool      `json:"breakfast"`
-	Guide           bool      `json:"guide"`
-	RoomPrice       float64   `json:"roomPrice"`
-	Notes           string    `json:"notes"`
+	ReservationCode string        `json:"reservationCode"`
+	EntryDate       time.Time     `json:"entryDate"`
+	DepartureDate   time.Time     `json:"departureDate"`
+	DurationOfStay  int           `json:"durationOfStay"`
+	NumberOfPeople  int           `json:"numberOfPeople"`
+	Origin          string        `json:"origin"`
+	Destination     string        `json:"destination"`
+	PurposeOfTravel string        `json:"purposeOfTravel"`
+	Breakfast       bool          `json:"breakfast"`
+	Guide           bool          `json:"guide"`
+	RoomPrice       float64       `json:"roomPrice"`
+	Notes           string        `json:"notes"`
+	Rooms           []models.Room `json:"rooms"`
 }
 
 type PaymentRequest struct {
@@ -85,6 +86,7 @@ func (gm *GuestsModule) createGuestWithReservation(c fuego.ContextWithBody[Guest
 			Guide:           body.Reservation.Guide,
 			RoomPrice:       body.Reservation.RoomPrice,
 			Notes:           body.Reservation.Notes,
+			Rooms:           body.Reservation.Rooms,
 		}
 		if err := tx.Create(&reservation).Error; err != nil {
 			return err

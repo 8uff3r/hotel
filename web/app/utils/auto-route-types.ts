@@ -58,7 +58,6 @@ export interface Room {
   roomType: RoomType;
   statusId: number;
   status: RoomStatus;
-  guestId: number;
 }
 export interface Payment {
   id?: number;
