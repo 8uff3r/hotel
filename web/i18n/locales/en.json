@@ -47,6 +47,7 @@
       "dashboard": "Dashboard",
       "reservations": "Reservations",
       "rooms": "Rooms",
+      "roomRack": "Room Rack",
       "guests": "Guests",
       "parking": "Parking",
       "attendance": "Attendance"
@@ -221,7 +222,29 @@
     "e_g_1_2": "e.g., 1, 2",
     "capacity_guests": "Capacity (guests)",
     "base_price": "Base Price ($)",
-    "room_description": "Room description..."
+    "room_description": "Room description...",
+    "roomRack": {
+      "title": "Room Rack",
+      "legend": "Status",
+      "displayMode": "View",
+      "floorsPerPage": "Floors",
+      "sortBy": "Sort by",
+      "currentFloor": "Floor {floor}",
+      "floorNumber": "Floor {floor}",
+      "noRoomsOnFloor": "No rooms on this floor",
+      "noRooms": "No rooms available",
+      "rooms": "rooms",
+      "modes": {
+        "paginated": "Per Floor",
+        "compact": "Compact",
+        "grid": "Grid View"
+      },
+      "sortOptions": {
+        "roomNumber": "Room Number",
+        "status": "Status",
+        "type": "Room Type"
+      }
+    }
   },
   "parking": {
     "parking_management": "Parking Management",

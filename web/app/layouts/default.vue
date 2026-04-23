@@ -145,6 +145,7 @@ const navMenuItems = (state: "collapsed" | "expanded"): NavigationMenuItem[] =>
     { label: t("layout.nav.dashboard"), icon: "i-lucide-layout-dashboard", to: "/" },
     { label: t("layout.nav.reservations"), icon: "i-lucide-calendar-days", to: "/reservations" },
     { label: t("layout.nav.rooms"), icon: "i-lucide-bed", to: "/rooms" },
+    { label: t("layout.nav.roomRack"), icon: "i-lucide-layout-grid", to: "/rooms/rack" },
     { label: t("layout.nav.guests"), icon: "i-lucide-users", to: "/guests" },
     { label: t("layout.nav.parking"), icon: "i-lucide-car", to: "/parking" },
     { label: t("layout.nav.attendance"), icon: "i-lucide-clock", to: "/attendance" },

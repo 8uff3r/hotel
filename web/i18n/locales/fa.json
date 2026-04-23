@@ -47,6 +47,7 @@
       "dashboard": "داشبورد",
       "reservations": "رزروها",
       "rooms": "اتاق‌ها",
+      "roomRack": "پلن اتاق‌ها",
       "guests": "مهمان‌ها",
       "parking": "پارکینگ",
       "attendance": "حضور و غیاب"
@@ -223,7 +224,29 @@
     "e_g_1_2": "مثال: ۱، ۲",
     "capacity_guests": "ظرفیت (مهمان)",
     "base_price": "قیمت پایه ($)",
-    "room_description": "توضیحات اتاق..."
+    "room_description": "توضیحات اتاق...",
+    "roomRack": {
+      "title": "پلن اتاق‌ها",
+      "legend": "وضعیت",
+      "displayMode": "نمایش",
+      "floorsPerPage": "طبقه",
+      "sortBy": "مرتب‌سازی",
+      "currentFloor": "طبقه {floor}",
+      "floorNumber": "طبقه {floor}",
+      "noRoomsOnFloor": "اتاقی در این طبقه نیست",
+      "noRooms": "اتاقی موجود نیست",
+      "rooms": "اتاق",
+      "modes": {
+        "paginated": "طبقه به طبقه",
+        "compact": "فشرده",
+        "grid": "شبکه‌ای"
+      },
+      "sortOptions": {
+        "roomNumber": "شماره اتاق",
+        "status": "وضعیت",
+        "type": "نوع اتاق"
+      }
+    }
   },
   "parking": {
     "parking_management": "مدیریت پارکینگ",

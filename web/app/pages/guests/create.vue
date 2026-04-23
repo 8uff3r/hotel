@@ -11,7 +11,7 @@
       </div>
 
       <UCard>
-        <UForm @submit="handleSubmit" :state="form" :schema>
+        <UForm @submit="handleSubmit" :state="form" :schema class="flex flex-col gap-2">
           <!-- SECTION: Guest Information -->
           <UCollapsible default-open>
             <template #default="{ open }">
