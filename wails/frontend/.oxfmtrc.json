@@ -14,5 +14,5 @@
     "order": "desc",
     "groups": [[]]
   },
-  "ignorePatterns": []
+  "ignorePatterns": ["app/utils/client/**/*"]
 }
