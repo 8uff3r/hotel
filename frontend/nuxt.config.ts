@@ -92,6 +92,9 @@ export default defineNuxtConfig({
   },
   nitro: {
     preset: "static",
+    prerender: {
+      routes: ["/"],
+    },
   },
 
   // Runtime config for environment variables
