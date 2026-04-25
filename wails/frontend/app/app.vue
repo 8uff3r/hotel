@@ -23,6 +23,7 @@ client.setConfig({
     if (ctx.response?.status === 401) {
       await navigateTo("/login");
     }
+    throw ctx.error;
   },
 });
 
