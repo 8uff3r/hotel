@@ -1,16 +1,18 @@
 # AGENTS.md
 
 This repository is a **hotel management system** with:
+
 - **Go backend** at the repository root (`cmd/server/`)
 - **Nuxt/Vue frontend** embedded in Wails desktop wrapper (`wails/frontend/`)
 - **Wails desktop app** (`wails/`)
-- **SQLite** as persistence (auto-migrated by GORM)
+- **PostgreSQL** as persistence (auto-migrated by GORM)
 
 Use this guide when making changes so backend/frontend behavior stays consistent.
 
 ## What the project does
 
 The app manages core hotel operations:
+
 - Authentication and session management
 - Rooms, guests, reservations
 - Accounting (accounts, expenses, income)
@@ -23,11 +25,13 @@ The frontend is a SPA (Nuxt with `ssr: false`) that talks to the Go API under `/
 ### Backend (Go)
 
 Entry points and app lifecycle:
+
 - `cmd/server/main.go`: starts server, exposes `seed` command
 - `app.go`: wires config, DB, repositories, services, router, graceful shutdown
 - `router.go`: registers health and API modules; applies middleware
 
 Layers:
+
 - `internal/models`: GORM models and schema types
 - `internal/db`: DB open/migrate/seed logic
 - `internal/repository`: DB access interfaces + implementations
@@ -35,6 +39,7 @@ Layers:
 - `internal/httpapi`: middleware, helpers, and domain modules
 
 Route modules:
+
 - `_system` (`/healthz`, `/readyz`)
 - `auth` (`/api/auth/*`)
 - `rooms`, `guests`, `reservation`, `users`, `accounting`, `parking`
@@ -42,6 +47,7 @@ Route modules:
 ### Frontend (Nuxt/Vue)
 
 Primary structure in `wails/frontend/app/`:
+
 - `pages/`: route screens by domain
 - `layouts/default.vue`: shell/sidebar/topbar
 - `middleware/auth.global.ts`: global auth and role checks
@@ -50,6 +56,7 @@ Primary structure in `wails/frontend/app/`:
 - `utils/auto-route-types.ts`: generated TS interfaces from Go structs
 
 Nuxt config:
+
 - `wails/frontend/nuxt.config.ts`
   - `ssr: false`
   - dev proxy for `/api`, `/healthz`, `/readyz` to `http://127.0.0.1:8080`
@@ -88,12 +95,14 @@ Nuxt config:
 ## Local development commands
 
 From repo root:
+
 - `just dev` — run backend (`air`) + frontend dev server in parallel
 - `just build` — build backend and frontend
 - `just seed` — seed reference data
 - `just gen` — regenerate TS types and format frontend generated output
 
 Direct commands:
+
 - Backend: `go run ./cmd/server`
 - Wails dev: `cd wails && wails dev`
 - Build Wails app: `cd wails && wails build`
@@ -101,6 +110,7 @@ Direct commands:
 ## Environment variables
 
 Backend (`internal/config/config.go`):
+
 - `APP_ADDR` (default `:8080`)
 - `DB_PATH` (default `./data/hotel.db`)
 - `SESSION_COOKIE`
@@ -111,6 +121,7 @@ Backend (`internal/config/config.go`):
 - `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`, `SEED_ADMIN_FIRST_NAME`, `SEED_ADMIN_LAST_NAME`
 
 Frontend (`wails/frontend/nuxt.config.ts` runtime config):
+
 - `BACKEND_URL`
 - `NUXT_PUBLIC_HOTEL_NAME`
 - optional auth/admin config values used by Nuxt runtime config
@@ -146,6 +157,7 @@ Frontend (`wails/frontend/nuxt.config.ts` runtime config):
 ## Change checklist (recommended)
 
 When shipping a feature touching both stacks:
+
 1. Implement backend model/repository/service/http handlers.
 2. Register routes and verify auth/role requirements.
 3. Regenerate TS types with `just gen` if model contracts changed.
