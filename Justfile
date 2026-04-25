@@ -8,7 +8,7 @@ backend-dev:
 	air
 
 frontend-dev:
-	cd web && bun run dev
+	cd wails/frontend && bun run dev
 
 
 build: frontend-build backend-build
@@ -17,10 +17,16 @@ backend-build:
     go build ./cmd/server
 
 frontend-build:
-    cd web && bun run build
+    cd wails/frontend && bun run build
 
 gen:
-    go run "internal/gen/typescript.go" && cd web && bun run fmt
+    go run "internal/gen/typescript.go" && cd wails/frontend && bun run fmt
 
 seed:
     go run ./cmd/server seed
+
+app-build:
+    cd wails && wails build
+
+app-dev:
+    cd wails && wails dev
