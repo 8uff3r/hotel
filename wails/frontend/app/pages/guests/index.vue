@@ -49,20 +49,8 @@
           </div>
         </template>
 
-        <template #room-cell="{ row }">
-          {{ row.original.reservation?.roomNumber || "-" }}
-        </template>
-
         <template #phone-cell="{ row }">
           {{ row.original.phone || "-" }}
-        </template>
-
-        <template #reservation-cell="{ row }">
-          <div v-if="row.original.reservationCode || row.original.roomType">
-            <p>{{ row.original.reservationCode || "-" }}</p>
-            <p class="text-sm text-gray-500">{{ row.original.roomType || "-" }}</p>
-          </div>
-          <span v-else class="text-gray-400">-</span>
         </template>
 
         <template #actions-cell="{ row }">
@@ -126,9 +114,7 @@ const { t } = useI18n();
 const columns = computed<TableColumn<Guest>[]>(() => [
   { accessorKey: "id", header: t("guests.columns.id") },
   { accessorKey: "name", header: t("guests.columns.name") },
-  { accessorKey: "room", header: "Room" },
   { accessorKey: "phone", header: t("guests.columns.phone") },
-  { accessorKey: "reservation", header: "Reservation" },
   { accessorKey: "actions", header: t("guests.columns.actions") },
 ]);
 
@@ -154,14 +140,16 @@ const debouncedSearch = () => {
   if (searchTimeout) clearTimeout(searchTimeout);
   searchTimeout = setTimeout(() => {
     pagination.page = 1;
-    // fetchGuests();
+    refresh();
   }, 300);
 };
 
-const { data: guests, pending } = useAsyncData(async () => {
-  const response = await getApiGuests({
-    query: computed(() => pagination),
-  });
+const {
+  data: guests,
+  pending,
+  refresh,
+} = useAsyncData("guests-list", async () => {
+  const response = await getApiGuests({});
   pagination.total = response.total ?? 0;
   pagination.totalPages = response.totalPages ?? 0;
   return response.data;
@@ -170,7 +158,7 @@ const { data: guests, pending } = useAsyncData(async () => {
 const clearFilters = () => {
   filters.search = "";
   pagination.page = 1;
-  // fetchGuests();
+  refresh();
 };
 
 const confirmDelete = (guest: Guest) => {
