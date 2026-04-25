@@ -22,7 +22,12 @@ export default defineNuxtConfig({
       },
       output: "app/utils/client",
       plugins: [
-        "zod",
+        {
+          name: "zod",
+          dates: {
+            offset: true,
+          },
+        },
         "@hey-api/client-nuxt",
         "@hey-api/typescript",
         {
