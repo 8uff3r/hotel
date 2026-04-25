@@ -1,8 +1,9 @@
 # AGENTS.md
 
 This repository is a **hotel management system** with:
-- **Go backend** at the repository root
-- **Nuxt/Vue frontend** under `web/`
+- **Go backend** at the repository root (`cmd/server/`)
+- **Nuxt/Vue frontend** embedded in Wails desktop wrapper (`wails/frontend/`)
+- **Wails desktop app** (`wails/`)
 - **SQLite** as persistence (auto-migrated by GORM)
 
 Use this guide when making changes so backend/frontend behavior stays consistent.
@@ -25,7 +26,6 @@ Entry points and app lifecycle:
 - `cmd/server/main.go`: starts server, exposes `seed` command
 - `app.go`: wires config, DB, repositories, services, router, graceful shutdown
 - `router.go`: registers health and API modules; applies middleware
-- `spa.go`: serves embedded Nuxt static output (`web/.output/public`) for non-API routes
 
 Layers:
 - `internal/models`: GORM models and schema types
@@ -41,7 +41,7 @@ Route modules:
 
 ### Frontend (Nuxt/Vue)
 
-Primary structure in `web/app/`:
+Primary structure in `wails/frontend/app/`:
 - `pages/`: route screens by domain
 - `layouts/default.vue`: shell/sidebar/topbar
 - `middleware/auth.global.ts`: global auth and role checks
@@ -50,7 +50,7 @@ Primary structure in `web/app/`:
 - `utils/auto-route-types.ts`: generated TS interfaces from Go structs
 
 Nuxt config:
-- `web/nuxt.config.ts`
+- `wails/frontend/nuxt.config.ts`
   - `ssr: false`
   - dev proxy for `/api`, `/healthz`, `/readyz` to `http://127.0.0.1:8080`
 
@@ -70,7 +70,7 @@ Nuxt config:
   - `POST /api/auth/login`
   - `POST /api/auth/logout` (requires auth middleware in module)
   - `GET /api/auth/me` (requires auth)
-- Frontend route access is enforced in `web/app/middleware/auth.global.ts`.
+- Frontend route access is enforced in `wails/frontend/app/middleware/auth.global.ts`.
 - Page-level role checks are declared via `definePageMeta({ requiresRole: [...] })`.
 
 ## Schema and type generation
@@ -79,7 +79,7 @@ Nuxt config:
 - TypeScript types are generated from Go structs by:
   - `go run internal/gen/typescript.go`
 - Output file:
-  - `web/app/utils/auto-route-types.ts`
+  - `wails/frontend/app/utils/auto-route-types.ts`
 - Preferred workflow after model changes:
   1. update Go models
   2. run `just gen`
@@ -95,7 +95,8 @@ From repo root:
 
 Direct commands:
 - Backend: `go run ./cmd/server`
-- Frontend: `cd web && bun run dev`
+- Wails dev: `cd wails && wails dev`
+- Build Wails app: `cd wails && wails build`
 
 ## Environment variables
 
@@ -109,7 +110,7 @@ Backend (`internal/config/config.go`):
 - `READ_TIMEOUT_SECONDS`, `WRITE_TIMEOUT_SECONDS`, `IDLE_TIMEOUT_SECONDS`
 - `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`, `SEED_ADMIN_FIRST_NAME`, `SEED_ADMIN_LAST_NAME`
 
-Frontend (`web/nuxt.config.ts` runtime config):
+Frontend (`wails/frontend/nuxt.config.ts` runtime config):
 - `BACKEND_URL`
 - `NUXT_PUBLIC_HOTEL_NAME`
 - optional auth/admin config values used by Nuxt runtime config
@@ -130,17 +131,17 @@ Frontend (`web/nuxt.config.ts` runtime config):
 
 ### Frontend conventions
 
-- Domain pages live in `web/app/pages/<domain>/...`.
+- Domain pages live in `wails/frontend/app/pages/<domain>/...`.
 - Use `definePageMeta` for role requirements.
 - Use Pinia auth store (`useAuthStore`) for session state and role checks.
 - Consume backend via `$fetch('/api/...')`.
-- Prefer generated types from `web/app/utils/auto-route-types.ts` over ad-hoc interfaces.
+- Prefer generated types from `wails/frontend/app/utils/auto-route-types.ts` over ad-hoc interfaces.
 
 ## Notes and gotchas
 
-- `spa.go` embeds `web/.output/public`; production builds must generate frontend output before embedding/serving.
+- Wails app embeds `wails/frontend/.output`; production builds must generate frontend output before embedding.
+- Wails has its own `go.mod` (`wails/go.mod`) to isolate it from the server which uses `go-fuego`.
 - No dedicated test suite is currently present; validate changes by running the app and exercising affected API/UI flows.
-- `legacy_nuxt_server/` exists for older code paths; prefer current Go API + `web/` frontend paths for new work.
 
 ## Change checklist (recommended)
 

@@ -1,6 +1,9 @@
 [parallel]
 dev: db-dev backend-dev frontend-dev
 
+[parallel]
+dev-app: db-dev backend-dev app-dev
+
 db-dev:
     docker compose up -d
 
