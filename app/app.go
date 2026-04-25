@@ -18,6 +18,7 @@ import (
 	"hotel/internal/httpapi/accounting"
 	"hotel/internal/httpapi/auth"
 	"hotel/internal/httpapi/guests"
+	"hotel/internal/httpapi/hotels"
 	"hotel/internal/httpapi/parking"
 	"hotel/internal/httpapi/reservation"
 	"hotel/internal/httpapi/rooms"
@@ -78,6 +79,7 @@ func New(cfg config.Config) (*App, error) {
 		Logger:         logger,
 		Db:             database,
 		SessionCookie:  cfg.SessionCookie,
+		HotelCookie:    cfg.HotelCookie,
 		RequestTimeout: cfg.RequestTimeout,
 		SessionTTL:     cfg.SessionTTL,
 	}
@@ -119,6 +121,7 @@ func New(cfg config.Config) (*App, error) {
 		"/accounting":  accounting.AccountingModule{},
 		"/parking":     parking.ParkingModule{},
 		"/reservation": reservation.ReservationModule{},
+		"/hotels":      hotels.HotelsModule{},
 	})
 
 	jobsCtx, cancel := context.WithCancel(context.Background())
@@ -158,16 +161,31 @@ func (a *App) Run() error {
 }
 
 func ensureAdmin(db *gorm.DB, cfg config.Config) error {
-	var count int64
-	if err := db.Model(&models.User{}).Where("email = ?", cfg.SeedAdminEmail).Count(&count).Error; err != nil {
+	var hotelCount int64
+	if err := db.Model(&models.Hotel{}).Count(&hotelCount).Error; err != nil {
+		return fmt.Errorf("check hotel: %w", err)
+	}
+	if hotelCount == 0 {
+		if err := db.Create(&models.Hotel{
+			ID:      cfg.SeedHotelCodeName,
+			Name:    cfg.SeedHotelName,
+			Address: cfg.SeedHotelAddress,
+			Phone:   cfg.SeedHotelPhone,
+			Email:   cfg.SeedHotelEmail,
+		}).Error; err != nil {
+			return fmt.Errorf("create default hotel: %w", err)
+		}
+	}
+
+	var userCount int64
+	if err := db.Model(&models.User{}).Where("email = ?", cfg.SeedAdminEmail).Count(&userCount).Error; err != nil {
 		return fmt.Errorf("check admin user: %w", err)
 	}
-	if count > 0 {
+	if userCount > 0 {
 		return nil
 	}
 
 	var adminRole models.Role
-
 	if err := db.Model(&models.Role{}).Where("name = ?", "admin").First(&adminRole).Error; err != nil {
 		return err
 	}
@@ -176,16 +194,28 @@ func ensureAdmin(db *gorm.DB, cfg config.Config) error {
 	if err != nil {
 		return fmt.Errorf("hash admin password: %w", err)
 	}
-	err = db.Create(&models.User{
+
+	user := &models.User{
 		Email:        cfg.SeedAdminEmail,
 		PasswordHash: string(hash),
 		FirstName:    cfg.SeedAdminFName,
 		LastName:     cfg.SeedAdminLName,
 		Roles:        []models.Role{adminRole},
 		IsActive:     true,
-	}).Error
+	}
+	if err := db.Create(user).Error; err != nil {
+		return fmt.Errorf("create admin user: %w", err)
+	}
 
-	return err
+	if err := db.Create(&models.UserHotel{
+		UserID:  user.ID,
+		HotelID: cfg.SeedHotelCodeName,
+		RoleID:  adminRole.ID,
+	}).Error; err != nil {
+		return fmt.Errorf("create user-hotel link: %w", err)
+	}
+
+	return nil
 }
 
 func cleanupExpiredSessions(ctx context.Context, db *gorm.DB, logger *slog.Logger) {

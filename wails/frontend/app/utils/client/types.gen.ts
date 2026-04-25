@@ -67,6 +67,7 @@ export type Guest = {
         entryDate?: string;
         guestId?: number;
         guide?: boolean;
+        hotelId?: string;
         id?: number;
         notes?: string;
         numberOfPeople?: number;
@@ -84,6 +85,7 @@ export type Guest = {
         roomPrice?: number;
         rooms?: Array<{
             amenities?: Array<{
+                hotelId?: string;
                 id?: number;
                 name?: string;
                 translation?: {
@@ -100,6 +102,7 @@ export type Guest = {
             roomNumber: string;
             roomType?: {
                 colorHex?: string;
+                hotelId?: number;
                 id?: number;
                 name?: string;
                 translation?: {
@@ -109,6 +112,7 @@ export type Guest = {
             roomTypeId?: number;
             status?: {
                 colorHex?: string;
+                hotelId?: number;
                 id?: number;
                 name?: string;
                 translation?: {
@@ -181,6 +185,7 @@ export type GuestWithReservationRequest = {
             entryDate?: string;
             guestId?: number;
             guide?: boolean;
+            hotelId?: string;
             id?: number;
             notes?: string;
             numberOfPeople?: number;
@@ -198,6 +203,7 @@ export type GuestWithReservationRequest = {
             roomPrice?: number;
             rooms?: Array<{
                 amenities?: Array<{
+                    hotelId?: string;
                     id?: number;
                     name?: string;
                     translation?: {
@@ -214,6 +220,7 @@ export type GuestWithReservationRequest = {
                 roomNumber: string;
                 roomType?: {
                     colorHex?: string;
+                    hotelId?: number;
                     id?: number;
                     name?: string;
                     translation?: {
@@ -223,6 +230,7 @@ export type GuestWithReservationRequest = {
                 roomTypeId?: number;
                 status?: {
                     colorHex?: string;
+                    hotelId?: number;
                     id?: number;
                     name?: string;
                     translation?: {
@@ -256,6 +264,7 @@ export type GuestWithReservationRequest = {
         roomPrice?: number;
         rooms?: Array<{
             amenities?: Array<{
+                hotelId?: string;
                 id?: number;
                 name?: string;
                 translation?: {
@@ -272,6 +281,7 @@ export type GuestWithReservationRequest = {
             roomNumber: string;
             roomType?: {
                 colorHex?: string;
+                hotelId?: number;
                 id?: number;
                 name?: string;
                 translation?: {
@@ -281,6 +291,7 @@ export type GuestWithReservationRequest = {
             roomTypeId?: number;
             status?: {
                 colorHex?: string;
+                hotelId?: number;
                 id?: number;
                 name?: string;
                 translation?: {
@@ -320,6 +331,7 @@ export type GuestWithReservationResponse = {
             entryDate?: string;
             guestId?: number;
             guide?: boolean;
+            hotelId?: string;
             id?: number;
             notes?: string;
             numberOfPeople?: number;
@@ -337,6 +349,7 @@ export type GuestWithReservationResponse = {
             roomPrice?: number;
             rooms?: Array<{
                 amenities?: Array<{
+                    hotelId?: string;
                     id?: number;
                     name?: string;
                     translation?: {
@@ -353,6 +366,7 @@ export type GuestWithReservationResponse = {
                 roomNumber: string;
                 roomType?: {
                     colorHex?: string;
+                    hotelId?: number;
                     id?: number;
                     name?: string;
                     translation?: {
@@ -362,6 +376,7 @@ export type GuestWithReservationResponse = {
                 roomTypeId?: number;
                 status?: {
                     colorHex?: string;
+                    hotelId?: number;
                     id?: number;
                     name?: string;
                     translation?: {
@@ -390,6 +405,7 @@ export type GuestWithReservationResponse = {
         entryDate?: string;
         guestId?: number;
         guide?: boolean;
+        hotelId?: string;
         id?: number;
         notes?: string;
         numberOfPeople?: number;
@@ -407,6 +423,7 @@ export type GuestWithReservationResponse = {
         roomPrice?: number;
         rooms?: Array<{
             amenities?: Array<{
+                hotelId?: string;
                 id?: number;
                 name?: string;
                 translation?: {
@@ -423,6 +440,7 @@ export type GuestWithReservationResponse = {
             roomNumber: string;
             roomType?: {
                 colorHex?: string;
+                hotelId?: number;
                 id?: number;
                 name?: string;
                 translation?: {
@@ -432,6 +450,7 @@ export type GuestWithReservationResponse = {
             roomTypeId?: number;
             status?: {
                 colorHex?: string;
+                hotelId?: number;
                 id?: number;
                 name?: string;
                 translation?: {
@@ -485,6 +504,17 @@ export type HttpError = {
 };
 
 /**
+ * Hotel schema
+ */
+export type Hotel = {
+    address?: string;
+    email?: string;
+    id?: string;
+    name?: string;
+    phone?: string;
+};
+
+/**
  * Income schema
  */
 export type Income = {
@@ -508,19 +538,59 @@ export type Income = {
  * MeResponse schema
  */
 export type MeResponse = {
+    hotelId?: string;
     user?: {
         email?: string;
         firstName?: string;
         id?: number;
         lastName?: string;
         roles?: Array<{
+            hotelId?: string;
             id?: number;
             name?: string;
             translation?: {
                 [key: string]: string;
             };
         }>;
+        userHotels?: Array<{
+            hotel?: {
+                address?: string;
+                email?: string;
+                id?: string;
+                name?: string;
+                phone?: string;
+            };
+            hotelId?: string;
+            role?: {
+                hotelId?: string;
+                id?: number;
+                name?: string;
+                translation?: {
+                    [key: string]: string;
+                };
+            };
+            roleId?: number;
+        }>;
     };
+    userHotels?: Array<{
+        hotel?: {
+            address?: string;
+            email?: string;
+            id?: string;
+            name?: string;
+            phone?: string;
+        };
+        hotelId?: string;
+        role?: {
+            hotelId?: string;
+            id?: number;
+            name?: string;
+            translation?: {
+                [key: string]: string;
+            };
+        };
+        roleId?: number;
+    }>;
 };
 
 /**
@@ -551,6 +621,7 @@ export type PaginatedResponseModelsAccount = {
  */
 export type PaginatedResponseModelsAmenity = {
     data?: Array<{
+        hotelId?: string;
         id?: number;
         name?: string;
         translation?: {
@@ -616,6 +687,7 @@ export type PaginatedResponseModelsGuest = {
             entryDate?: string;
             guestId?: number;
             guide?: boolean;
+            hotelId?: string;
             id?: number;
             notes?: string;
             numberOfPeople?: number;
@@ -633,6 +705,7 @@ export type PaginatedResponseModelsGuest = {
             roomPrice?: number;
             rooms?: Array<{
                 amenities?: Array<{
+                    hotelId?: string;
                     id?: number;
                     name?: string;
                     translation?: {
@@ -649,6 +722,7 @@ export type PaginatedResponseModelsGuest = {
                 roomNumber: string;
                 roomType?: {
                     colorHex?: string;
+                    hotelId?: number;
                     id?: number;
                     name?: string;
                     translation?: {
@@ -658,6 +732,7 @@ export type PaginatedResponseModelsGuest = {
                 roomTypeId?: number;
                 status?: {
                     colorHex?: string;
+                    hotelId?: number;
                     id?: number;
                     name?: string;
                     translation?: {
@@ -669,6 +744,23 @@ export type PaginatedResponseModelsGuest = {
             userCheckIn?: string;
             userCheckOut?: string;
         }>;
+    }>;
+    limit?: number;
+    page?: number;
+    total?: number;
+    totalPages?: number;
+};
+
+/**
+ * PaginatedResponse_models.Hotel schema
+ */
+export type PaginatedResponseModelsHotel = {
+    data?: Array<{
+        address?: string;
+        email?: string;
+        id?: string;
+        name?: string;
+        phone?: string;
     }>;
     limit?: number;
     page?: number;
@@ -748,6 +840,7 @@ export type PaginatedResponseModelsParkingSpot = {
  */
 export type PaginatedResponseModelsParkingSpotStatus = {
     data?: Array<{
+        hotelId?: string;
         id?: number;
         name?: string;
         translation?: {
@@ -765,6 +858,7 @@ export type PaginatedResponseModelsParkingSpotStatus = {
  */
 export type PaginatedResponseModelsParkingSpotType = {
     data?: Array<{
+        hotelId?: string;
         id?: number;
         name?: string;
         translation?: {
@@ -817,6 +911,7 @@ export type PaginatedResponseModelsReservation = {
         entryDate?: string;
         guestId?: number;
         guide?: boolean;
+        hotelId?: string;
         id?: number;
         notes?: string;
         numberOfPeople?: number;
@@ -834,6 +929,7 @@ export type PaginatedResponseModelsReservation = {
         roomPrice?: number;
         rooms?: Array<{
             amenities?: Array<{
+                hotelId?: string;
                 id?: number;
                 name?: string;
                 translation?: {
@@ -850,6 +946,7 @@ export type PaginatedResponseModelsReservation = {
             roomNumber: string;
             roomType?: {
                 colorHex?: string;
+                hotelId?: number;
                 id?: number;
                 name?: string;
                 translation?: {
@@ -859,6 +956,7 @@ export type PaginatedResponseModelsReservation = {
             roomTypeId?: number;
             status?: {
                 colorHex?: string;
+                hotelId?: number;
                 id?: number;
                 name?: string;
                 translation?: {
@@ -882,6 +980,7 @@ export type PaginatedResponseModelsReservation = {
 export type PaginatedResponseModelsRoom = {
     data?: Array<{
         amenities?: Array<{
+            hotelId?: string;
             id?: number;
             name?: string;
             translation?: {
@@ -898,6 +997,7 @@ export type PaginatedResponseModelsRoom = {
         roomNumber: string;
         roomType?: {
             colorHex?: string;
+            hotelId?: number;
             id?: number;
             name?: string;
             translation?: {
@@ -907,6 +1007,7 @@ export type PaginatedResponseModelsRoom = {
         roomTypeId?: number;
         status?: {
             colorHex?: string;
+            hotelId?: number;
             id?: number;
             name?: string;
             translation?: {
@@ -927,6 +1028,7 @@ export type PaginatedResponseModelsRoom = {
 export type PaginatedResponseModelsRoomStatus = {
     data?: Array<{
         colorHex?: string;
+        hotelId?: number;
         id?: number;
         name?: string;
         translation?: {
@@ -945,6 +1047,7 @@ export type PaginatedResponseModelsRoomStatus = {
 export type PaginatedResponseModelsRoomType = {
     data?: Array<{
         colorHex?: string;
+        hotelId?: number;
         id?: number;
         name?: string;
         translation?: {
@@ -1049,6 +1152,7 @@ export type Reservation = {
     entryDate?: string;
     guestId?: number;
     guide?: boolean;
+    hotelId?: string;
     id?: number;
     notes?: string;
     numberOfPeople?: number;
@@ -1066,6 +1170,7 @@ export type Reservation = {
     roomPrice?: number;
     rooms?: Array<{
         amenities?: Array<{
+            hotelId?: string;
             id?: number;
             name?: string;
             translation?: {
@@ -1082,6 +1187,7 @@ export type Reservation = {
         roomNumber: string;
         roomType?: {
             colorHex?: string;
+            hotelId?: number;
             id?: number;
             name?: string;
             translation?: {
@@ -1091,6 +1197,7 @@ export type Reservation = {
         roomTypeId?: number;
         status?: {
             colorHex?: string;
+            hotelId?: number;
             id?: number;
             name?: string;
             translation?: {
@@ -1108,6 +1215,7 @@ export type Reservation = {
  */
 export type Room = {
     amenities?: Array<{
+        hotelId?: string;
         id?: number;
         name?: string;
         translation?: {
@@ -1124,6 +1232,7 @@ export type Room = {
     roomNumber: string;
     roomType?: {
         colorHex?: string;
+        hotelId?: number;
         id?: number;
         name?: string;
         translation?: {
@@ -1133,6 +1242,7 @@ export type Room = {
     roomTypeId?: number;
     status?: {
         colorHex?: string;
+        hotelId?: number;
         id?: number;
         name?: string;
         translation?: {
@@ -1152,6 +1262,32 @@ export type SettleGuestRequest = {
     paymentMethod?: string;
     reference?: string;
     reservationIds?: Array<number>;
+};
+
+/**
+ * UserHotelResponse schema
+ */
+export type UserHotelResponse = {
+    hotelId?: string;
+    userHotels?: Array<{
+        hotel?: {
+            address?: string;
+            email?: string;
+            id?: string;
+            name?: string;
+            phone?: string;
+        };
+        hotelId?: string;
+        role?: {
+            hotelId?: string;
+            id?: number;
+            name?: string;
+            translation?: {
+                [key: string]: string;
+            };
+        };
+        roleId?: number;
+    }>;
 };
 
 /**
@@ -1186,17 +1322,38 @@ export type LoginDto = {
  * loginResponse schema
  */
 export type LoginResponse = {
+    hotelId?: string;
     user?: {
         email?: string;
         firstName?: string;
         id?: number;
         lastName?: string;
         roles?: Array<{
+            hotelId?: string;
             id?: number;
             name?: string;
             translation?: {
                 [key: string]: string;
             };
+        }>;
+        userHotels?: Array<{
+            hotel?: {
+                address?: string;
+                email?: string;
+                id?: string;
+                name?: string;
+                phone?: string;
+            };
+            hotelId?: string;
+            role?: {
+                hotelId?: string;
+                id?: number;
+                name?: string;
+                translation?: {
+                    [key: string]: string;
+                };
+            };
+            roleId?: number;
         }>;
     };
 };
@@ -1225,6 +1382,7 @@ export type UserCreateDto = {
     lastName?: string;
     password?: string;
     roles?: Array<{
+        hotelId?: string;
         id?: number;
         name?: string;
         translation?: {
@@ -1248,11 +1406,31 @@ export type UserListResponse = {
         id?: number;
         lastName?: string;
         roles?: Array<{
+            hotelId?: string;
             id?: number;
             name?: string;
             translation?: {
                 [key: string]: string;
             };
+        }>;
+        userHotels?: Array<{
+            hotel?: {
+                address?: string;
+                email?: string;
+                id?: string;
+                name?: string;
+                phone?: string;
+            };
+            hotelId?: string;
+            role?: {
+                hotelId?: string;
+                id?: number;
+                name?: string;
+                translation?: {
+                    [key: string]: string;
+                };
+            };
+            roleId?: number;
         }>;
     }>;
 };
@@ -1861,6 +2039,219 @@ export type GetApiHealthzResponses = {
 };
 
 export type GetApiHealthzResponse = GetApiHealthzResponses[keyof GetApiHealthzResponses];
+
+export type GetApiHotelsData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: {
+        limit?: number;
+        page?: number;
+    };
+    url: '/api/hotels/';
+};
+
+export type GetApiHotelsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiHotelsError = GetApiHotelsErrors[keyof GetApiHotelsErrors];
+
+export type GetApiHotelsResponses = {
+    /**
+     * OK
+     */
+    200: PaginatedResponseModelsHotel;
+};
+
+export type GetApiHotelsResponse = GetApiHotelsResponses[keyof GetApiHotelsResponses];
+
+export type PostApiHotelsData = {
+    /**
+     * Request body for models.Hotel
+     */
+    body: Hotel;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/hotels/';
+};
+
+export type PostApiHotelsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PostApiHotelsError = PostApiHotelsErrors[keyof PostApiHotelsErrors];
+
+export type PostApiHotelsResponses = {
+    /**
+     * OK
+     */
+    200: Hotel;
+};
+
+export type PostApiHotelsResponse = PostApiHotelsResponses[keyof PostApiHotelsResponses];
+
+export type GetApiHotelsMyData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/hotels/my';
+};
+
+export type GetApiHotelsMyErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiHotelsMyError = GetApiHotelsMyErrors[keyof GetApiHotelsMyErrors];
+
+export type GetApiHotelsMyResponses = {
+    /**
+     * OK
+     */
+    200: UserHotelResponse;
+};
+
+export type GetApiHotelsMyResponse = GetApiHotelsMyResponses[keyof GetApiHotelsMyResponses];
+
+export type DeleteApiHotelsIdData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/hotels/{id}';
+};
+
+export type DeleteApiHotelsIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type DeleteApiHotelsIdError = DeleteApiHotelsIdErrors[keyof DeleteApiHotelsIdErrors];
+
+export type DeleteApiHotelsIdResponses = {
+    /**
+     * OK
+     */
+    200: OkResponse;
+};
+
+export type DeleteApiHotelsIdResponse = DeleteApiHotelsIdResponses[keyof DeleteApiHotelsIdResponses];
+
+export type GetApiHotelsIdData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/hotels/{id}';
+};
+
+export type GetApiHotelsIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiHotelsIdError = GetApiHotelsIdErrors[keyof GetApiHotelsIdErrors];
+
+export type GetApiHotelsIdResponses = {
+    /**
+     * OK
+     */
+    200: Hotel;
+};
+
+export type GetApiHotelsIdResponse = GetApiHotelsIdResponses[keyof GetApiHotelsIdResponses];
+
+export type PutApiHotelsIdData = {
+    /**
+     * Request body for models.Hotel
+     */
+    body: Hotel;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/hotels/{id}';
+};
+
+export type PutApiHotelsIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PutApiHotelsIdError = PutApiHotelsIdErrors[keyof PutApiHotelsIdErrors];
+
+export type PutApiHotelsIdResponses = {
+    /**
+     * OK
+     */
+    200: Hotel;
+};
+
+export type PutApiHotelsIdResponse = PutApiHotelsIdResponses[keyof PutApiHotelsIdResponses];
 
 export type GetApiParkingLotsData = {
     body?: never;

@@ -1,6 +1,7 @@
 package httpapi
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"hotel/internal/models"
@@ -31,12 +32,13 @@ type listConfig struct {
 	preload         []string
 	translate       bool
 	translateFields []string
+	hotelIDFunc     func(ctx context.Context) uint
 }
 type ListOption func(*listConfig)
 
 func WithPreload(preload ...string) ListOption {
 	return func(c *listConfig) {
-		c.preload = preload
+		c.preload = append(c.preload, preload...)
 	}
 }
 
@@ -52,14 +54,20 @@ func WithTranslation() ListOption {
 	}
 }
 
+func WithHotelFilter(hotelIDFunc func(ctx context.Context) uint) ListOption {
+	return func(c *listConfig) {
+		c.hotelIDFunc = hotelIDFunc
+	}
+}
+
 func ListModel[T any](db *gorm.DB, model T, opts ...ListOption) FuegoHandler[PaginatedResponse[T], any, Params] {
 	lc := listConfig{}
 	for _, v := range opts {
 		v(&lc)
 	}
-	return listModel(db, model, lc.preload, lc.translate, lc.translateFields)
+	return listModel(db, model, lc.preload, lc.translate, lc.translateFields, lc.hotelIDFunc)
 }
-func listModel[T any](db *gorm.DB, model T, preload []string, translate bool, translateFields []string) FuegoHandler[PaginatedResponse[T], any, Params] {
+func listModel[T any](db *gorm.DB, model T, preload []string, translate bool, translateFields []string, hotelIDFunc func(ctx context.Context) uint) FuegoHandler[PaginatedResponse[T], any, Params] {
 	return func(c fuego.ContextWithParams[Params]) (PaginatedResponse[T], error) {
 		page := c.QueryParamInt("page")
 		if page < 1 {
@@ -75,6 +83,13 @@ func listModel[T any](db *gorm.DB, model T, preload []string, translate bool, tr
 		q := db.WithContext(c).Model(model)
 		for _, v := range preload {
 			q = q.Preload(v)
+		}
+
+		if hotelIDFunc != nil {
+			hotelID := hotelIDFunc(c.Context())
+			if hotelID > 0 {
+				q = q.Where("hotel_id = ?", hotelID)
+			}
 		}
 
 		var total int64

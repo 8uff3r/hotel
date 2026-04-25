@@ -22,17 +22,29 @@ type Base struct {
 
 type User struct {
 	Base
-	Email        string `gorm:"uniqueIndex;not null" json:"email"`
-	PasswordHash string `gorm:"not null" json:"-"`
-	FirstName    string `gorm:"not null" json:"firstName"`
-	LastName     string `gorm:"not null" json:"lastName"`
-	Roles        []Role `gorm:"many2many:user_roles" json:"roles" translate:"true"`
-	IsActive     bool   `gorm:"not null;default:true" json:"isActive"`
+	Email        string      `gorm:"uniqueIndex;not null" json:"email"`
+	PasswordHash string      `gorm:"not null" json:"-"`
+	FirstName    string      `gorm:"not null" json:"firstName"`
+	LastName     string      `gorm:"not null" json:"lastName"`
+	Roles        []Role      `gorm:"many2many:user_roles" json:"roles" translate:"true"`
+	UserHotels   []UserHotel `gorm:"foreignKey:UserID" json:"userHotels"`
+	IsActive     bool        `gorm:"not null;default:true" json:"isActive"`
+}
+
+type UserHotel struct {
+	Base
+	UserID  uint   `gorm:"not null;index" json:"userId"`
+	User    User   `gorm:"foreignKey:UserID" json:"-"`
+	HotelID string `gorm:"not null;index" json:"hotelId"`
+	Hotel   Hotel  `gorm:"foreignKey:HotelID" json:"hotel"`
+	RoleID  uint   `gorm:"not null" json:"roleId"`
+	Role    Role   `gorm:"foreignKey:RoleID" json:"role"`
 }
 
 type Role struct {
 	Base
 	TranslateBase
+	HotelID *string `json:"hotelId"`
 }
 
 type Session struct {
@@ -44,7 +56,7 @@ type Session struct {
 }
 
 type Hotel struct {
-	Base
+	ID      string `gorm:"primaryKey" json:"id"`
 	Name    string `gorm:"not null" json:"name"`
 	Address string `gorm:"not null" json:"address"`
 	Phone   string `json:"phone"`
@@ -72,28 +84,33 @@ type Room struct {
 type RoomType struct {
 	Base
 	TranslateBase
+	HotelID  *uint  `json:"hotelId"`
 	ColorHex string `gorm:"type:char(6);default:null" json:"colorHex,omitempty"`
 }
 
 type RoomStatus struct {
 	Base
 	TranslateBase
+	HotelID  *uint  `json:"hotelId"`
 	ColorHex string `gorm:"type:char(6);default:null" json:"colorHex,omitempty"`
 }
 
 type Amenity struct {
 	Base
 	TranslateBase
+	HotelID *string `json:"hotelId"`
 }
 
 type ParkingSpotType struct {
 	Base
 	TranslateBase
+	HotelID *string `json:"hotelId"`
 }
 
 type ParkingSpotStatus struct {
 	Base
 	TranslateBase
+	HotelID *string `json:"hotelId"`
 }
 
 type Guest struct {
@@ -118,8 +135,9 @@ type Guest struct {
 
 type Reservation struct {
 	Base
-	GuestID uint   `gorm:"not null;index" json:"guestId"`
-	Rooms   []Room `gorm:"many2many:reservation_rooms;" json:"rooms"`
+	HotelID *string `json:"hotelId"`
+	GuestID uint    `gorm:"not null;index" json:"guestId"`
+	Rooms   []Room  `gorm:"many2many:reservation_rooms;" json:"rooms"`
 
 	ReservationCode string `gorm:"index" json:"reservationCode"`
 
@@ -265,21 +283,29 @@ func AllForDb() []any {
 	return []any{
 		&User{}, &Session{}, &Hotel{}, &Room{}, &Guest{}, &Reservation{}, &Payment{}, &Account{},
 		&Expense{}, &Income{}, &ParkingLot{}, &ParkingSpot{}, &Vehicle{}, &ParkingTransaction{}, &Amenity{},
-		&ParkingSpotType{}, &ParkingSpotStatus{},
+		&ParkingSpotType{}, &ParkingSpotStatus{}, &UserHotel{},
 	}
 }
 
 type SanitizedUser struct {
-	ID        uint   `json:"id"`
-	Email     string `json:"email"`
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
-	Roles     []Role `json:"roles"`
+	ID         uint            `json:"id"`
+	Email      string          `json:"email"`
+	FirstName  string          `json:"firstName"`
+	LastName   string          `json:"lastName"`
+	Roles      []Role          `json:"roles"`
+	UserHotels []UserHotelInfo `json:"userHotels"`
+}
+
+type UserHotelInfo struct {
+	HotelID string `json:"hotelId"`
+	Hotel   Hotel  `json:"hotel"`
+	RoleID  uint   `json:"roleId"`
+	Role    Role   `json:"role"`
 }
 
 func AllForTypeGen() []any {
 	return []any{
 		User{}, Session{}, Hotel{}, Room{}, Guest{}, Reservation{}, Account{},
-		Expense{}, Income{}, ParkingLot{}, ParkingSpot{}, Vehicle{}, ParkingTransaction{}, Amenity{}, ParkingSpotType{}, ParkingSpotStatus{}, ParkingStats{}, SanitizedUser{},
+		Expense{}, Income{}, ParkingLot{}, ParkingSpot{}, Vehicle{}, ParkingTransaction{}, Amenity{}, ParkingSpotType{}, ParkingSpotStatus{}, ParkingStats{}, SanitizedUser{}, UserHotelInfo{},
 	}
 }

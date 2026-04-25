@@ -20,7 +20,8 @@ type loginDto struct {
 }
 
 type loginResponse struct {
-	User models.SanitizedUser `json:"user"`
+	User    models.SanitizedUser `json:"user"`
+	HotelID string               `json:"hotelId"`
 }
 
 func (a *AuthModule) loginHandler(c fuego.ContextWithBody[loginDto]) (loginResponse, error) {
@@ -34,7 +35,35 @@ func (a *AuthModule) loginHandler(c fuego.ContextWithBody[loginDto]) (loginRespo
 		return zero, fuego.UnauthorizedError{Title: "invalid_credentials"}
 	}
 	c.SetCookie(http.Cookie{Name: a.SessionCookie, Value: sid, Path: "/", HttpOnly: true, SameSite: http.SameSiteLaxMode, Expires: expires})
-	return loginResponse{User: h.SanitizeUser(user)}, nil
+
+	userHotels, hotelID := a.getUserHotels(user.ID)
+
+	userResponse := h.SanitizeUser(user)
+	userResponse.UserHotels = userHotels
+
+	return loginResponse{User: userResponse, HotelID: hotelID}, nil
+}
+
+func (a *AuthModule) getUserHotels(userID uint) ([]models.UserHotelInfo, string) {
+	var userHotels []models.UserHotel
+	if err := a.Db.Preload("Hotel").Preload("Role").Where("user_id = ?", userID).Find(&userHotels).Error; err != nil {
+		return nil, ""
+	}
+
+	result := make([]models.UserHotelInfo, len(userHotels))
+	var defaultHotelID string
+	for i, uh := range userHotels {
+		result[i] = models.UserHotelInfo{
+			HotelID: uh.HotelID,
+			Hotel:   uh.Hotel,
+			RoleID:  uh.RoleID,
+			Role:    uh.Role,
+		}
+		if i == 0 {
+			defaultHotelID = uh.HotelID
+		}
+	}
+	return result, defaultHotelID
 }
 
 func (a *AuthModule) login(ctx context.Context, email, password string) (*models.User, string, time.Time, error) {

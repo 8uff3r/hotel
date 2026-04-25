@@ -15,6 +15,7 @@ type API struct {
 	Logger         *slog.Logger
 	Db             *gorm.DB
 	SessionCookie  string
+	HotelCookie    string
 	RequestTimeout time.Duration
 	SessionTTL     time.Duration
 }

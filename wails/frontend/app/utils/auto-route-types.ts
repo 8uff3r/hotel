@@ -1,9 +1,25 @@
 /* Do not change, this code is generated from Golang structs */
 
+export interface Hotel {
+  id: string;
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+}
+export interface UserHotel {
+  id?: number;
+  userId: number;
+  hotelId: string;
+  hotel: Hotel;
+  roleId: number;
+  role: Role;
+}
 export interface Role {
   id?: number;
   name: string;
   translation?: { [key: string]: string };
+  hotelId?: string;
 }
 export interface User {
   id?: number;
@@ -11,6 +27,7 @@ export interface User {
   firstName: string;
   lastName: string;
   roles: Role[];
+  userHotels: UserHotel[];
   isActive: boolean;
 }
 export interface Time {}
@@ -20,29 +37,26 @@ export interface Session {
   expiresAt: Time;
   createdAt: Time;
 }
-export interface Hotel {
-  id?: number;
-  name: string;
-  address: string;
-  phone: string;
-  email: string;
-}
+
 export interface RoomStatus {
   id?: number;
   name: string;
   translation?: { [key: string]: string };
+  hotelId?: number;
   colorHex?: string;
 }
 export interface RoomType {
   id?: number;
   name: string;
   translation?: { [key: string]: string };
+  hotelId?: number;
   colorHex?: string;
 }
 export interface Amenity {
   id?: number;
   name: string;
   translation?: { [key: string]: string };
+  hotelId?: string;
 }
 export interface Room {
   id?: number;
@@ -69,6 +83,7 @@ export interface Payment {
 }
 export interface Reservation {
   id?: number;
+  hotelId?: string;
   guestId: number;
   rooms: Room[];
   reservationCode: string;
@@ -205,11 +220,13 @@ export interface ParkingSpotType {
   id?: number;
   name: string;
   translation?: { [key: string]: string };
+  hotelId?: string;
 }
 export interface ParkingSpotStatus {
   id?: number;
   name: string;
   translation?: { [key: string]: string };
+  hotelId?: string;
 }
 export interface ParkingStats {
   lots: number;
@@ -222,4 +239,11 @@ export interface SanitizedUser {
   firstName: string;
   lastName: string;
   roles: Role[];
+  userHotels: UserHotel[];
+}
+export interface UserHotelInfo {
+  hotelId: string;
+  hotel: Hotel;
+  roleId: number;
+  role: Role;
 }

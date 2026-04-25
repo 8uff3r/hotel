@@ -14,9 +14,11 @@
     >
       <!-- Header: Hotel Name / Logo -->
       <template #header>
-        <h1 class="truncate text-xl font-bold text-white">
-          {{ config.public.hotelName }}
-        </h1>
+        <div class="flex flex-col gap-1">
+          <h1 class="truncate text-xl font-bold text-white">
+            {{ config.public.hotelName }}
+          </h1>
+        </div>
       </template>
 
       <!-- Navigation -->
@@ -42,9 +44,22 @@
         </div>
       </template>
 
-      <!-- Footer: Role Switcher + User Menu -->
+      <!-- Footer: Hotel Switcher + Role Switcher + User Menu -->
       <template #footer>
         <div class="flex w-full flex-col gap-2">
+          <!-- Hotel Selector -->
+          <USelect
+            v-if="authStore.availableHotels.length > 1"
+            v-model="selectedHotel"
+            :items="hotelOptions"
+            size="xs"
+            class="w-full"
+            @change="handleHotelSwitch"
+          />
+          <div v-else-if="authStore.currentHotelName" class="truncate px-1 text-xs text-gray-400">
+            {{ authStore.currentHotelName }}
+          </div>
+
           <!-- Role Switcher -->
           <USelect
             v-if="authStore.availableRoles.length > 1"
@@ -118,6 +133,26 @@ const router = useRouter();
 const { t, localeProperties } = useI18n();
 
 const sidebarOpen = ref(true);
+
+// Hotel switcher
+const hotelOptions = computed(() =>
+  (authStore.availableHotels || []).map((hotel: any) => ({
+    id: hotel.hotelId,
+    label: hotel.hotel?.name || `Hotel ${hotel.hotelId}`,
+  }))
+);
+const selectedHotel = ref(authStore.currentHotelId);
+
+watch(
+  () => authStore.currentHotelId,
+  (newHotelId) => {
+    selectedHotel.value = newHotelId;
+  }
+);
+
+const handleHotelSwitch = () => {
+  if (selectedHotel.value) authStore.switchHotel(selectedHotel.value);
+};
 
 // Role switcher
 const roleOptions = computed(() =>

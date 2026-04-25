@@ -28,9 +28,50 @@ func (a *API) AuthMiddleware(next http.Handler) http.Handler {
 			WriteErr(w, http.StatusUnauthorized, "unauthorized")
 			return
 		}
-		ctx := context.WithValue(r.Context(), UserKey{}, user)
+
+		userHotels := a.getUserHotelsFromDB(user.ID)
+		hotelID := a.resolveHotelID(r, userHotels)
+
+		ctx := r.Context()
+		ctx = context.WithValue(ctx, UserKey{}, user)
+		ctx = context.WithValue(ctx, UserHotelsKey{}, userHotels)
+		ctx = context.WithValue(ctx, HotelIDKey{}, hotelID)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
+}
+
+func (a *API) getUserHotelsFromDB(userID uint) []models.UserHotelInfo {
+	var userHotels []models.UserHotel
+	if err := a.Db.Preload("Hotel").Preload("Role").Where("user_id = ?", userID).Find(&userHotels).Error; err != nil {
+		return nil
+	}
+
+	result := make([]models.UserHotelInfo, 0, len(userHotels))
+	for _, uh := range userHotels {
+		result = append(result, models.UserHotelInfo{
+			HotelID: uh.HotelID,
+			Hotel:   uh.Hotel,
+			RoleID:  uh.RoleID,
+			Role:    uh.Role,
+		})
+	}
+	return result
+}
+
+func (a *API) resolveHotelID(r *http.Request, userHotels []models.UserHotelInfo) string {
+	cookie, err := r.Cookie(a.HotelCookie)
+	if err == nil && cookie.Value != "" {
+		for _, uh := range userHotels {
+			if uh.HotelID == cookie.Value {
+				return cookie.Value
+			}
+		}
+	}
+
+	if len(userHotels) > 0 {
+		return userHotels[0].HotelID
+	}
+	return ""
 }
 
 func (a *API) RecoverAndLogMiddleware(next http.Handler) http.Handler {
@@ -56,6 +97,31 @@ func (a *API) RecoverAndLogMiddleware(next http.Handler) http.Handler {
 }
 
 type UserKey struct{}
+type HotelIDKey struct{}
+type UserHotelsKey struct{}
+
+func GetHotelIDFromContext(ctx context.Context) string {
+	if hotelID, ok := ctx.Value(HotelIDKey{}).(string); ok {
+		return hotelID
+	}
+	return ""
+}
+
+func (a *API) GetHotelIDFromCookie(r *http.Request) (string, error) {
+	cookie, err := r.Cookie(a.HotelCookie)
+	if err != nil || cookie.Value == "" {
+		return "", errors.New("hotel not selected")
+	}
+	return cookie.Value, nil
+}
+
+func (a *API) MustGetHotelIDFromCookie(r *http.Request) string {
+	hotelID, err := a.GetHotelIDFromCookie(r)
+	if err != nil {
+		return ""
+	}
+	return hotelID
+}
 
 func (a *API) sessionUser(r *http.Request) (models.SanitizedUser, error) {
 	var zero models.SanitizedUser
@@ -75,5 +141,5 @@ func (a *API) sessionUser(r *http.Request) (models.SanitizedUser, error) {
 }
 
 func SanitizeUser(u *models.User) models.SanitizedUser {
-	return models.SanitizedUser{ID: u.ID, Email: u.Email, FirstName: u.FirstName, LastName: u.LastName, Roles: u.Roles}
+	return models.SanitizedUser{ID: u.ID, Email: u.Email, FirstName: u.FirstName, LastName: u.LastName, Roles: u.Roles, UserHotels: nil}
 }
