@@ -177,6 +177,16 @@
               <UIcon name="i-lucide-user-check" class="mr-2" />
               Mark as Arrived
             </UButton>
+            <UButton
+              v-if="reservation.guestId"
+              color="success"
+              variant="soft"
+              block
+              :to="`/guests/${reservation.guestId}/settle`"
+            >
+              <UIcon name="i-lucide-credit-card" class="mr-2" />
+              Settle Account
+            </UButton>
           </div>
         </UCard>
 

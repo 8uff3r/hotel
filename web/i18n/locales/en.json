@@ -2,6 +2,7 @@
   "actions": {
     "backToUsers": "Back to Users",
     "backToGuests": "Back to Guests",
+    "backToGuest": "Back to Guest",
     "backToRooms": "Back to Rooms",
     "clear": "Clear",
     "viewAll": "View All",
@@ -395,7 +396,24 @@
     "source": "Source",
     "e_g_guest_name_company": "e.g., Guest Name, Company",
     "reservation_id_optional": "Reservation ID (Optional)",
-    "link_to_reservation": "Link to reservation"
+    "link_to_reservation": "Link to reservation",
+    "settle": "Settle",
+    "settleAccount": "Settle Guest Account",
+    "roomCharges": "Room Charges",
+    "parkingCharges": "Parking Charges",
+    "noRoomCharges": "No room reservations found",
+    "noParkingCharges": "No parking transactions found",
+    "recordPayment": "Record Payment",
+    "summary": "Summary",
+    "roomTotal": "Room Total",
+    "parkingTotal": "Parking Total",
+    "totalDue": "Total Due",
+    "totalPaid": "Total Paid",
+    "balance": "Balance",
+    "paid": "Paid",
+    "processPayment": "Process Payment",
+    "receiptNumber": "Receipt number",
+    "settlementAmount": "Amount to Pay"
   },
   "guest": {
     "personalInfo": "Guest Personal Info",

@@ -2,6 +2,7 @@
   "actions": {
     "backToUsers": "بازگشت به کاربران",
     "backToGuests": "بازگشت به مهمان‌ها",
+    "backToGuest": "بازگشت به مهمان",
     "backToRooms": "بازگشت به اتاق‌ها",
     "clear": "پاک کردن",
     "viewAll": "مشاهده همه",
@@ -397,7 +398,24 @@
     "source": "منبع",
     "e_g_guest_name_company": "مثال: نام مهمان، شرکت",
     "reservation_id_optional": "شناسه رزرو (اختیاری)",
-    "link_to_reservation": "پیوند به رزرو"
+    "link_to_reservation": "پیوند به رزرو",
+    "settle": "تسویه",
+    "settleAccount": "تسویه حساب مهمان",
+    "roomCharges": "هزینه اتاق",
+    "parkingCharges": "هزینه پارکینگ",
+    "noRoomCharges": "هیچ رزروی یافت نشد",
+    "noParkingCharges": "هیچ تراکنش پارکینگی یافت نشد",
+    "recordPayment": "ثبت پرداخت",
+    "summary": "خلاصه",
+    "roomTotal": "جمع اتاق",
+    "parkingTotal": "جمع پارکینگ",
+    "totalDue": "مجموع بدهی",
+    "totalPaid": "مجموع پرداختی",
+    "balance": "موجودی",
+    "paid": "پرداخت شده",
+    "processPayment": "پرداخت و تسویه",
+    "receiptNumber": "شماره رسید",
+    "settlementAmount": "مبلغ قابل پرداخت"
   },
   "guest": {
     "personalInfo": "اطلاعات شخصی مهمان",

@@ -150,10 +150,19 @@
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton variant="outline" :disabled="loading">{{ t("actions.editGuest") }}</UButton>
-          <UButton type="submit" color="primary" :loading="loading">{{
-            t("actions.saveChanges")
-          }}</UButton>
+          <UButton variant="outline" to="/accounting" class="mr-auto">
+            {{ t("actions.backToGuests") }}
+          </UButton>
+          <UButton variant="outline" :disabled="loading">
+            {{ t("actions.editGuest") }}
+          </UButton>
+          <UButton type="submit" color="primary" :loading="loading">
+            {{ t("actions.saveChanges") }}
+          </UButton>
+          <UButton color="success" :to="`/guests/${guestId}/settle`">
+            <UIcon name="i-lucide-credit-card" class="mr-2" />
+            {{ t("accounting.settle") }}
+          </UButton>
         </div>
       </UForm>
     </UCard>
