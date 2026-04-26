@@ -489,12 +489,6 @@ export const zMeResponse = z.object({
         firstName: z.string().optional(),
         id: z.int().gte(0).optional(),
         lastName: z.string().optional(),
-        roles: z.array(z.object({
-            hotelId: z.string().optional(),
-            id: z.int().gte(0).optional(),
-            name: z.string().optional(),
-            translation: z.record(z.string(), z.string()).optional()
-        })).optional(),
         userHotels: z.array(z.object({
             hotel: z.object({
                 address: z.string().optional(),
@@ -512,24 +506,7 @@ export const zMeResponse = z.object({
             }).optional(),
             roleId: z.int().gte(0).optional()
         })).optional()
-    }).optional(),
-    userHotels: z.array(z.object({
-        hotel: z.object({
-            address: z.string().optional(),
-            email: z.string().optional(),
-            id: z.string().optional(),
-            name: z.string().optional(),
-            phone: z.string().optional()
-        }).optional(),
-        hotelId: z.string().optional(),
-        role: z.object({
-            hotelId: z.string().optional(),
-            id: z.int().gte(0).optional(),
-            name: z.string().optional(),
-            translation: z.record(z.string(), z.string()).optional()
-        }).optional(),
-        roleId: z.int().gte(0).optional()
-    })).optional()
+    }).optional()
 });
 
 /**
@@ -1164,30 +1141,6 @@ export const zSettleGuestRequest = z.object({
 });
 
 /**
- * UserHotelResponse schema
- */
-export const zUserHotelResponse = z.object({
-    hotelId: z.string().optional(),
-    userHotels: z.array(z.object({
-        hotel: z.object({
-            address: z.string().optional(),
-            email: z.string().optional(),
-            id: z.string().optional(),
-            name: z.string().optional(),
-            phone: z.string().optional()
-        }).optional(),
-        hotelId: z.string().optional(),
-        role: z.object({
-            hotelId: z.string().optional(),
-            id: z.int().gte(0).optional(),
-            name: z.string().optional(),
-            translation: z.record(z.string(), z.string()).optional()
-        }).optional(),
-        roleId: z.int().gte(0).optional()
-    })).optional()
-});
-
-/**
  * Vehicle schema
  */
 export const zVehicle = z.object({
@@ -1225,12 +1178,6 @@ export const zLoginResponse = z.object({
         firstName: z.string().optional(),
         id: z.int().gte(0).optional(),
         lastName: z.string().optional(),
-        roles: z.array(z.object({
-            hotelId: z.string().optional(),
-            id: z.int().gte(0).optional(),
-            name: z.string().optional(),
-            translation: z.record(z.string(), z.string()).optional()
-        })).optional(),
         userHotels: z.array(z.object({
             hotel: z.object({
                 address: z.string().optional(),
@@ -1273,13 +1220,7 @@ export const zUserCreateDto = z.object({
     email: z.string().optional(),
     firstName: z.string().optional(),
     lastName: z.string().optional(),
-    password: z.string().optional(),
-    roles: z.array(z.object({
-        hotelId: z.string().optional(),
-        id: z.int().gte(0).optional(),
-        name: z.string().optional(),
-        translation: z.record(z.string(), z.string()).optional()
-    })).optional()
+    password: z.string().optional()
 });
 
 /**
@@ -1296,12 +1237,6 @@ export const zUserListResponse = z.object({
         firstName: z.string().optional(),
         id: z.int().gte(0).optional(),
         lastName: z.string().optional(),
-        roles: z.array(z.object({
-            hotelId: z.string().optional(),
-            id: z.int().gte(0).optional(),
-            name: z.string().optional(),
-            translation: z.record(z.string(), z.string()).optional()
-        })).optional(),
         userHotels: z.array(z.object({
             hotel: z.object({
                 address: z.string().optional(),
@@ -1578,15 +1513,6 @@ export const zPostApiHotelsHeaders = z.object({
  * OK
  */
 export const zPostApiHotelsResponse = zHotel;
-
-export const zGetApiHotelsMyHeaders = z.object({
-    Accept: z.string().optional()
-});
-
-/**
- * OK
- */
-export const zGetApiHotelsMyResponse = zUserHotelResponse;
 
 export const zDeleteApiHotelsIdHeaders = z.object({
     Accept: z.string().optional()

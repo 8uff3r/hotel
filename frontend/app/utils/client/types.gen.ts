@@ -544,14 +544,6 @@ export type MeResponse = {
         firstName?: string;
         id?: number;
         lastName?: string;
-        roles?: Array<{
-            hotelId?: string;
-            id?: number;
-            name?: string;
-            translation?: {
-                [key: string]: string;
-            };
-        }>;
         userHotels?: Array<{
             hotel?: {
                 address?: string;
@@ -572,25 +564,6 @@ export type MeResponse = {
             roleId?: number;
         }>;
     };
-    userHotels?: Array<{
-        hotel?: {
-            address?: string;
-            email?: string;
-            id?: string;
-            name?: string;
-            phone?: string;
-        };
-        hotelId?: string;
-        role?: {
-            hotelId?: string;
-            id?: number;
-            name?: string;
-            translation?: {
-                [key: string]: string;
-            };
-        };
-        roleId?: number;
-    }>;
 };
 
 /**
@@ -1265,32 +1238,6 @@ export type SettleGuestRequest = {
 };
 
 /**
- * UserHotelResponse schema
- */
-export type UserHotelResponse = {
-    hotelId?: string;
-    userHotels?: Array<{
-        hotel?: {
-            address?: string;
-            email?: string;
-            id?: string;
-            name?: string;
-            phone?: string;
-        };
-        hotelId?: string;
-        role?: {
-            hotelId?: string;
-            id?: number;
-            name?: string;
-            translation?: {
-                [key: string]: string;
-            };
-        };
-        roleId?: number;
-    }>;
-};
-
-/**
  * Vehicle schema
  */
 export type Vehicle = {
@@ -1328,14 +1275,6 @@ export type LoginResponse = {
         firstName?: string;
         id?: number;
         lastName?: string;
-        roles?: Array<{
-            hotelId?: string;
-            id?: number;
-            name?: string;
-            translation?: {
-                [key: string]: string;
-            };
-        }>;
         userHotels?: Array<{
             hotel?: {
                 address?: string;
@@ -1381,14 +1320,6 @@ export type UserCreateDto = {
     firstName?: string;
     lastName?: string;
     password?: string;
-    roles?: Array<{
-        hotelId?: string;
-        id?: number;
-        name?: string;
-        translation?: {
-            [key: string]: string;
-        };
-    }>;
 };
 
 /**
@@ -1405,14 +1336,6 @@ export type UserListResponse = {
         firstName?: string;
         id?: number;
         lastName?: string;
-        roles?: Array<{
-            hotelId?: string;
-            id?: number;
-            name?: string;
-            translation?: {
-                [key: string]: string;
-            };
-        }>;
         userHotels?: Array<{
             hotel?: {
                 address?: string;
@@ -2111,39 +2034,6 @@ export type PostApiHotelsResponses = {
 };
 
 export type PostApiHotelsResponse = PostApiHotelsResponses[keyof PostApiHotelsResponses];
-
-export type GetApiHotelsMyData = {
-    body?: never;
-    headers?: {
-        Accept?: string;
-    };
-    path?: never;
-    query?: never;
-    url: '/api/hotels/my';
-};
-
-export type GetApiHotelsMyErrors = {
-    /**
-     * Bad Request _(validation or deserialization error)_
-     */
-    400: HttpError;
-    /**
-     * Internal Server Error _(panics)_
-     */
-    500: HttpError;
-    default: unknown;
-};
-
-export type GetApiHotelsMyError = GetApiHotelsMyErrors[keyof GetApiHotelsMyErrors];
-
-export type GetApiHotelsMyResponses = {
-    /**
-     * OK
-     */
-    200: UserHotelResponse;
-};
-
-export type GetApiHotelsMyResponse = GetApiHotelsMyResponses[keyof GetApiHotelsMyResponses];
 
 export type DeleteApiHotelsIdData = {
     body?: never;

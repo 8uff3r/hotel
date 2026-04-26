@@ -18,7 +18,7 @@ export default defineNuxtConfig({
   heyApi: {
     config: {
       input: {
-        path: "../../doc/openapi.json",
+        path: "../doc/openapi.json",
       },
       output: "app/utils/client",
       plugins: [
