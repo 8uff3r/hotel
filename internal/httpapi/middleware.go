@@ -141,5 +141,5 @@ func (a *API) sessionUser(r *http.Request) (models.SanitizedUser, error) {
 }
 
 func SanitizeUser(u *models.User) models.SanitizedUser {
-	return models.SanitizedUser{ID: u.ID, Email: u.Email, FirstName: u.FirstName, LastName: u.LastName, Roles: u.Roles, UserHotels: nil}
+	return models.SanitizedUser{ID: u.ID, Email: u.Email, FirstName: u.FirstName, LastName: u.LastName, UserHotels: nil}
 }

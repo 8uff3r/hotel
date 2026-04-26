@@ -84,7 +84,7 @@ func (a *AuthModule) login(ctx context.Context, email, password string) (*models
 
 func (a *AuthModule) GetUserByEmail(ctx context.Context, email string) (*models.User, error) {
 	var user models.User
-	if err := a.Db.WithContext(ctx).Where("email = ? AND is_active = ?", email, true).Preload("Roles").First(&user).Error; err != nil {
+	if err := a.Db.WithContext(ctx).Where("email = ? AND is_active = ?", email, true).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil

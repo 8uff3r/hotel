@@ -1,5 +1,11 @@
 /* Do not change, this code is generated from Golang structs */
 
+export interface Role {
+  id?: number;
+  name: string;
+  translation?: { [key: string]: string };
+  hotelId?: string;
+}
 export interface Hotel {
   id: string;
   name: string;
@@ -15,18 +21,11 @@ export interface UserHotel {
   roleId: number;
   role: Role;
 }
-export interface Role {
-  id?: number;
-  name: string;
-  translation?: { [key: string]: string };
-  hotelId?: string;
-}
 export interface User {
   id?: number;
   email: string;
   firstName: string;
   lastName: string;
-  roles: Role[];
   userHotels: UserHotel[];
   isActive: boolean;
 }
@@ -233,17 +232,16 @@ export interface ParkingStats {
   spots: number;
   availableSpots: number;
 }
-export interface SanitizedUser {
-  id?: number;
-  email: string;
-  firstName: string;
-  lastName: string;
-  roles: Role[];
-  userHotels: UserHotel[];
-}
 export interface UserHotelInfo {
   hotelId: string;
   hotel: Hotel;
   roleId: number;
   role: Role;
+}
+export interface SanitizedUser {
+  id?: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  userHotels: UserHotelInfo[];
 }

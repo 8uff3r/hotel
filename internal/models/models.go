@@ -26,7 +26,6 @@ type User struct {
 	PasswordHash string      `gorm:"not null" json:"-"`
 	FirstName    string      `gorm:"not null" json:"firstName"`
 	LastName     string      `gorm:"not null" json:"lastName"`
-	Roles        []Role      `gorm:"many2many:user_roles" json:"roles" translate:"true"`
 	UserHotels   []UserHotel `gorm:"foreignKey:UserID" json:"userHotels"`
 	IsActive     bool        `gorm:"not null;default:true" json:"isActive"`
 }
@@ -292,7 +291,6 @@ type SanitizedUser struct {
 	Email      string          `json:"email"`
 	FirstName  string          `json:"firstName"`
 	LastName   string          `json:"lastName"`
-	Roles      []Role          `json:"roles"`
 	UserHotels []UserHotelInfo `json:"userHotels"`
 }
 

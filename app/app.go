@@ -200,7 +200,6 @@ func ensureAdmin(db *gorm.DB, cfg config.Config) error {
 		PasswordHash: string(hash),
 		FirstName:    cfg.SeedAdminFName,
 		LastName:     cfg.SeedAdminLName,
-		Roles:        []models.Role{adminRole},
 		IsActive:     true,
 	}
 	if err := db.Create(user).Error; err != nil {

@@ -15,9 +15,22 @@ export default defineNuxtRouteMiddleware((to) => {
     return;
   }
 
+  // If auth is still loading from persistence, wait
+  if (authStore.loading) {
+    return;
+  }
+
   // Check if authenticated via store
   if (!authStore.isAuthenticated) {
     return navigateTo("/login");
+  }
+
+  // Must have access to at least one hotel
+  if (!authStore.currentHotelId && authStore.availableHotels.length > 0) {
+    const firstHotel = authStore.availableHotels[0];
+    if (firstHotel?.hotelId) {
+      authStore.switchHotel(firstHotel.hotelId);
+    }
   }
 
   // Check role-based access

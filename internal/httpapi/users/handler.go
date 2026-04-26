@@ -38,11 +38,10 @@ func (u *UsersModule) usersList(c fuego.ContextNoBody) (userListResponse, error)
 }
 
 type userCreateDto struct {
-	Email     string        `json:"email"`
-	Password  string        `json:"password"`
-	FirstName string        `json:"firstName"`
-	LastName  string        `json:"lastName"`
-	Roles     []models.Role `json:"roles"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
 }
 type userCreateResponse struct {
 	id uint
@@ -63,7 +62,6 @@ func (u *UsersModule) usersCreate(c fuego.ContextWithBody[userCreateDto]) (userC
 		PasswordHash: string(hash),
 		FirstName:    strings.TrimSpace(body.FirstName),
 		LastName:     strings.TrimSpace(body.LastName),
-		Roles:        body.Roles,
 		IsActive:     true,
 	}
 	if err := u.Db.WithContext(c).Create(user).Error; err != nil {

@@ -1660,33 +1660,6 @@
 							"lastName": {
 								"type": "string"
 							},
-							"roles": {
-								"items": {
-									"properties": {
-										"hotelId": {
-											"nullable": true,
-											"type": "string"
-										},
-										"id": {
-											"minimum": 0,
-											"type": "integer"
-										},
-										"name": {
-											"type": "string"
-										},
-										"translation": {
-											"additionalProperties": {
-												"nullable": true,
-												"type": "string"
-											},
-											"nullable": true,
-											"type": "object"
-										}
-									},
-									"type": "object"
-								},
-								"type": "array"
-							},
 							"userHotels": {
 								"items": {
 									"properties": {
@@ -3963,33 +3936,6 @@
 							"lastName": {
 								"type": "string"
 							},
-							"roles": {
-								"items": {
-									"properties": {
-										"hotelId": {
-											"nullable": true,
-											"type": "string"
-										},
-										"id": {
-											"minimum": 0,
-											"type": "integer"
-										},
-										"name": {
-											"type": "string"
-										},
-										"translation": {
-											"additionalProperties": {
-												"nullable": true,
-												"type": "string"
-											},
-											"nullable": true,
-											"type": "object"
-										}
-									},
-									"type": "object"
-								},
-								"type": "array"
-							},
 							"userHotels": {
 								"items": {
 									"properties": {
@@ -4079,33 +4025,6 @@
 					},
 					"password": {
 						"type": "string"
-					},
-					"roles": {
-						"items": {
-							"properties": {
-								"hotelId": {
-									"nullable": true,
-									"type": "string"
-								},
-								"id": {
-									"minimum": 0,
-									"type": "integer"
-								},
-								"name": {
-									"type": "string"
-								},
-								"translation": {
-									"additionalProperties": {
-										"nullable": true,
-										"type": "string"
-									},
-									"nullable": true,
-									"type": "object"
-								}
-							},
-							"type": "object"
-						},
-						"type": "array"
 					}
 				},
 				"type": "object"
@@ -4131,33 +4050,6 @@
 								},
 								"lastName": {
 									"type": "string"
-								},
-								"roles": {
-									"items": {
-										"properties": {
-											"hotelId": {
-												"nullable": true,
-												"type": "string"
-											},
-											"id": {
-												"minimum": 0,
-												"type": "integer"
-											},
-											"name": {
-												"type": "string"
-											},
-											"translation": {
-												"additionalProperties": {
-													"nullable": true,
-													"type": "string"
-												},
-												"nullable": true,
-												"type": "object"
-											}
-										},
-										"type": "object"
-									},
-									"type": "array"
 								},
 								"userHotels": {
 									"items": {

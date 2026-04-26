@@ -7,31 +7,31 @@ export const useAuthStore = defineStore(
     const user = ref<SanitizedUser | null>(null);
     const isAuthenticated = ref(false);
     const loading = ref(true);
-    const currentRole = ref<Role>();
-    const userHotels = ref<any[]>([]);
+    const currentRole = ref<any>();
+    const userHotels = ref<UserHotelInfo[]>([]);
     const currentHotelId = ref<string>("");
 
     // getters
     const hasRole = (...roles: string[]) => {
-      if (!user.value) return false;
-      const userRoles = user.value.roles;
-      return roles.some((role) => userRoles?.find((v) => v.name === role));
+      if (!currentRole.value) return false;
+      return roles.some((role) => currentRole.value?.name === role);
     };
 
     const isAdmin = computed(() => hasRole("admin"));
 
-    const isManager = computed(() => hasRole("admin"));
+    const isManager = computed(() => hasRole("manager"));
 
     const isReceptionist = computed(
       () => hasRole("admin") || hasRole("manager") || hasRole("receptionist")
     );
 
-    const availableRoles = computed(() => {
-      return user.value?.roles ?? [];
-    });
-
     const availableHotels = computed(() => {
       return userHotels.value ?? [];
+    });
+
+    const availableRoles = computed(() => {
+      const hotel = availableHotels.value.find((h: any) => h.hotelId === currentHotelId.value);
+      return hotel?.role ? [hotel.role] : [];
     });
 
     const currentHotelName = computed(() => {
@@ -45,12 +45,13 @@ export const useAuthStore = defineStore(
         const { user: u, hotelId } = await postApiAuthLogin({ body: { email, password } });
         if (!u) throw Error("Couldn't login");
 
-        const roles = u?.roles as Required<Role>[];
-
         user.value = u as SanitizedUser;
-        currentRole.value = roles?.[0];
-        userHotels.value = u.userHotels ?? [];
+        userHotels.value = (u.userHotels as UserHotelInfo[]) ?? [];
         currentHotelId.value = hotelId ?? "";
+
+        const hotel = userHotels.value?.find((h: any) => h.hotelId === hotelId);
+        currentRole.value = hotel?.role;
+
         isAuthenticated.value = true;
 
         if (currentHotelId.value) {
@@ -83,16 +84,17 @@ export const useAuthStore = defineStore(
     async function fetchUser() {
       try {
         loading.value = true;
-        const { user: u, hotelId } = await getApiAuthMe({});
+        const { user: u, hotelId, userHotels: uh } = await getApiAuthMe({});
 
-        if (!u) throw Error("Couldn't login");
-
-        const roles = u?.roles as Required<Role>[];
+        if (!u) throw Error("Couldn't fetch user");
 
         user.value = u as SanitizedUser;
-        currentRole.value = roles?.[0];
-        userHotels.value = u.userHotels ?? [];
+        userHotels.value = (u.userHotels as UserHotelInfo[]) ?? [];
         currentHotelId.value = hotelId ?? "";
+
+        const hotel = uh?.find((h: any) => h.hotelId === hotelId);
+        currentRole.value = hotel?.role;
+
         isAuthenticated.value = true;
       } catch {
         user.value = null;
@@ -106,7 +108,7 @@ export const useAuthStore = defineStore(
     }
 
     function switchRole(roleId: number) {
-      const role = availableRoles.value.find((v) => v.id === roleId);
+      const role = availableRoles.value.find((v: any) => v.id === roleId);
       if (role) {
         currentRole.value = role;
       }
@@ -116,6 +118,7 @@ export const useAuthStore = defineStore(
       const hotel = availableHotels.value.find((h: any) => h.hotelId === hotelId);
       if (hotel) {
         currentHotelId.value = hotelId;
+        currentRole.value = hotel.role;
         setHotelCookie(hotelId);
       }
     }
