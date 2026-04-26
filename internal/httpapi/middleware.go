@@ -131,7 +131,7 @@ func (a *API) sessionUser(r *http.Request) (models.SanitizedUser, error) {
 	}
 
 	var s models.Session
-	if err := a.Db.WithContext(r.Context()).Preload("User.Roles").Where("id = ? AND expires_at > ?", cookie.Value, time.Now().UTC()).First(&s).Error; err != nil {
+	if err := a.Db.WithContext(r.Context()).Preload("User.UserHotels.Hotel").Preload("User.UserHotels.Role").Where("id = ? AND expires_at > ?", cookie.Value, time.Now().UTC()).First(&s).Error; err != nil {
 		return zero, err
 	}
 	if !s.User.IsActive {
@@ -141,5 +141,14 @@ func (a *API) sessionUser(r *http.Request) (models.SanitizedUser, error) {
 }
 
 func SanitizeUser(u *models.User) models.SanitizedUser {
-	return models.SanitizedUser{ID: u.ID, Email: u.Email, FirstName: u.FirstName, LastName: u.LastName, UserHotels: nil}
+	var hotels []models.UserHotelInfo
+	for _, uh := range u.UserHotels {
+		hotels = append(hotels, models.UserHotelInfo{
+			HotelID: uh.HotelID,
+			Hotel:   uh.Hotel,
+			RoleID:  uh.RoleID,
+			Role:    uh.Role,
+		})
+	}
+	return models.SanitizedUser{ID: u.ID, Email: u.Email, FirstName: u.FirstName, LastName: u.LastName, UserHotels: hotels}
 }
