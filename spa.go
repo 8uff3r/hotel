@@ -2,6 +2,7 @@ package spa
 
 import (
 	"embed"
+	"io"
 	"io/fs"
 	"net/http"
 	"path"
@@ -9,14 +10,14 @@ import (
 	"time"
 )
 
-//go:embed all:frontend/.output/public/*
+//go:embed all:frontend/.output/public
 var spaFiles embed.FS
 
 var distFS fs.FS
 
 func init() {
 	var err error
-	distFS, err = fs.Sub(spaFiles, "web/.output/public")
+	distFS, err = fs.Sub(spaFiles, "frontend/.output/public")
 
 	if err != nil {
 		panic(err)
@@ -35,10 +36,10 @@ var mimeTypes = map[string]string{
 	".woff":  "font/woff",
 }
 
-func SPAHandler() func(w http.ResponseWriter, r *http.Request) {
+func SPAHandler() http.Handler {
 	fileServer := http.FileServer(http.FS(distFS))
 
-	return func(w http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		p := strings.TrimPrefix(r.URL.Path, "/")
 
 		// serve static assets (files only, not directories)
@@ -53,15 +54,15 @@ func SPAHandler() func(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// fallback to index.html for Vue Router
-		data, err := fs.ReadFile(distFS, "index.html")
+		indexHTML, err := distFS.Open("index.html")
 		if err != nil {
 			http.Error(w, "index.html not found", http.StatusInternalServerError)
 			return
 		}
-
+		defer indexHTML.Close()
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		w.Write(data)
-	}
+		http.ServeContent(w, r, "index.html", time.Time{}, indexHTML.(io.ReadSeeker))
+	})
 }
 
 // isFile returns true only if the path exists AND is not a directory
