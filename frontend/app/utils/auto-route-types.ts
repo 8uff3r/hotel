@@ -245,3 +245,31 @@ export interface SanitizedUser {
   lastName: string;
   userHotels: UserHotelInfo[];
 }
+
+export interface Permission {
+  id?: number;
+  page: string;
+  action: string;
+  hotelId?: string;
+  label: string;
+  category: string;
+}
+export interface PermissionTemplate {
+  id?: number;
+  name: string;
+  description: string;
+  permissions: Permission[];
+}
+export interface UserPermission {
+  id?: number;
+  userId: number;
+  permissionId: number;
+  permission: Permission;
+  granted: boolean;
+}
+export interface UserTemplate {
+  id?: number;
+  userId: number;
+  templateId: number;
+  template: PermissionTemplate;
+}

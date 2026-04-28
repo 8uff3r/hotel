@@ -1,5 +1,14 @@
 import { defineStore } from "pinia";
 
+interface UserPermissionInfo {
+  permissionId: number;
+  page: string;
+  action: string;
+  label: string;
+  category: string;
+  granted: boolean;
+}
+
 export const useAuthStore = defineStore(
   "auth",
   () => {
@@ -10,6 +19,7 @@ export const useAuthStore = defineStore(
     const currentRole = ref<any>();
     const userHotels = ref<UserHotelInfo[]>([]);
     const currentHotelId = ref<string>("");
+    const permissions = ref<UserPermissionInfo[]>([]);
 
     // getters
     const hasRole = (...roles: string[]) => {
@@ -39,15 +49,32 @@ export const useAuthStore = defineStore(
       return hotel?.hotel?.name ?? "";
     });
 
+    const hasPermission = (page: string, action: string) => {
+      if (!permissions.value || permissions.value.length === 0) return false;
+      return permissions.value.some(
+        (p) => p.page === page && p.action === action && p.granted === true
+      );
+    };
+
+    const canRead = (page: string) => hasPermission(page, "read");
+    const canCreate = (page: string) => hasPermission(page, "create");
+    const canUpdate = (page: string) => hasPermission(page, "update");
+    const canDelete = (page: string) => hasPermission(page, "delete");
+    const canExport = (page: string) => hasPermission(page, "export");
+
+    const canAccess = (page: string) => canRead(page);
+
     // actions
     async function login(email: string, password: string) {
       try {
-        const { user: u, hotelId } = await postApiAuthLogin({ body: { email, password } });
+        const response = await postApiAuthLogin({ body: { email, password } });
+        const { user: u, hotelId, permissions: perms } = response;
         if (!u) throw Error("Couldn't login");
 
         user.value = u as SanitizedUser;
         userHotels.value = (u.userHotels as UserHotelInfo[]) ?? [];
         currentHotelId.value = hotelId ?? "";
+        permissions.value = perms ?? [];
 
         const hotel = userHotels.value?.find((h: any) => h.hotelId === hotelId);
         currentRole.value = hotel?.role;
@@ -74,6 +101,7 @@ export const useAuthStore = defineStore(
         currentRole.value = undefined;
         userHotels.value = [];
         currentHotelId.value = "";
+        permissions.value = [];
 
         return { success: true };
       } catch {
@@ -84,13 +112,14 @@ export const useAuthStore = defineStore(
     async function fetchUser() {
       try {
         loading.value = true;
-        const { user: u, hotelId, userHotels: uh } = await getApiAuthMe({});
+        const { user: u, hotelId, userHotels: uh, permissions: perms } = await getApiAuthMe({});
 
         if (!u) throw Error("Couldn't fetch user");
 
         user.value = u as SanitizedUser;
         userHotels.value = (u.userHotels as UserHotelInfo[]) ?? [];
         currentHotelId.value = hotelId ?? "";
+        permissions.value = perms ?? [];
 
         const hotel = uh?.find((h: any) => h.hotelId === hotelId);
         currentRole.value = hotel?.role;
@@ -102,6 +131,7 @@ export const useAuthStore = defineStore(
         isAuthenticated.value = false;
         userHotels.value = [];
         currentHotelId.value = "";
+        permissions.value = [];
       } finally {
         loading.value = false;
       }
@@ -137,10 +167,18 @@ export const useAuthStore = defineStore(
       currentRole,
       userHotels,
       currentHotelId,
+      permissions,
       hasRole,
       isAdmin,
       isManager,
       isReceptionist,
+      hasPermission,
+      canRead,
+      canCreate,
+      canUpdate,
+      canDelete,
+      canExport,
+      canAccess,
       availableRoles,
       availableHotels,
       currentHotelName,
@@ -153,7 +191,14 @@ export const useAuthStore = defineStore(
   },
   {
     persist: {
-      pick: ["isAuthenticated", "user", "currentRole", "userHotels", "currentHotelId"],
+      pick: [
+        "isAuthenticated",
+        "user",
+        "currentRole",
+        "userHotels",
+        "currentHotelId",
+        "permissions",
+      ],
     },
   }
 );

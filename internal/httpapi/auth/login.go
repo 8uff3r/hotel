@@ -20,8 +20,9 @@ type loginDto struct {
 }
 
 type loginResponse struct {
-	User    models.SanitizedUser `json:"user"`
-	HotelID string               `json:"hotelId"`
+	User        models.SanitizedUser        `json:"user"`
+	HotelID     string                      `json:"hotelId"`
+	Permissions []models.UserPermissionInfo `json:"permissions"`
 }
 
 func (a *AuthModule) loginHandler(c fuego.ContextWithBody[loginDto]) (loginResponse, error) {
@@ -41,7 +42,29 @@ func (a *AuthModule) loginHandler(c fuego.ContextWithBody[loginDto]) (loginRespo
 	userResponse := h.SanitizeUser(user)
 	userResponse.UserHotels = userHotels
 
-	return loginResponse{User: userResponse, HotelID: hotelID}, nil
+	permissions := a.getUserPermissions(user.ID)
+
+	return loginResponse{User: userResponse, HotelID: hotelID, Permissions: permissions}, nil
+}
+
+func (a *AuthModule) getUserPermissions(userID uint) []models.UserPermissionInfo {
+	var userPerms []models.UserPermission
+	if err := a.Db.Preload("Permission").Where("user_id = ?", userID).Find(&userPerms).Error; err != nil {
+		return nil
+	}
+
+	result := make([]models.UserPermissionInfo, 0, len(userPerms))
+	for _, up := range userPerms {
+		result = append(result, models.UserPermissionInfo{
+			PermissionID: up.PermissionID,
+			Page:         up.Permission.Page,
+			Action:       up.Permission.Action,
+			Label:        up.Permission.Label,
+			Category:     up.Permission.Category,
+			Granted:      up.Granted,
+		})
+	}
+	return result
 }
 
 func (a *AuthModule) getUserHotels(userID uint) ([]models.UserHotelInfo, string) {

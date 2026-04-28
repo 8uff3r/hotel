@@ -21,13 +21,15 @@ func (m AuthModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 }
 
 type MeResponse struct {
-	User    models.SanitizedUser `json:"user"`
-	HotelID string               `json:"hotelId"`
+	User        models.SanitizedUser        `json:"user"`
+	HotelID     string                      `json:"hotelId"`
+	Permissions []models.UserPermissionInfo `json:"permissions"`
 }
 
 func me(c fuego.ContextNoBody) (MeResponse, error) {
 	user := c.Value(h.UserKey{}).(models.SanitizedUser)
 	hotelID := c.Value(h.HotelIDKey{}).(string)
+	permissions := h.GetUserPermissionsFromContext(c)
 
-	return MeResponse{User: user, HotelID: hotelID}, nil
+	return MeResponse{User: user, HotelID: hotelID, Permissions: permissions}, nil
 }

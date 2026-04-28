@@ -46,6 +46,47 @@ type Role struct {
 	HotelID *string `json:"hotelId"`
 }
 
+type PermissionAction string
+
+const (
+	PermissionActionRead   PermissionAction = "read"
+	PermissionActionCreate PermissionAction = "create"
+	PermissionActionUpdate PermissionAction = "update"
+	PermissionActionDelete PermissionAction = "delete"
+	PermissionActionExport PermissionAction = "export"
+)
+
+type Permission struct {
+	Base
+	Page     string           `gorm:"not null;index" json:"page"`
+	Action   PermissionAction `gorm:"not null" json:"action"`
+	HotelID  *string          `json:"hotelId"`
+	Label    string           `gorm:"not null" json:"label"`
+	Category string           `gorm:"not null" json:"category"`
+}
+
+type PermissionTemplate struct {
+	Base
+	Name        string       `gorm:"not null" json:"name"`
+	Description string       `json:"description"`
+	Permissions []Permission `gorm:"many2many:template_permissions;" json:"permissions"`
+}
+
+type UserPermission struct {
+	Base
+	UserID       uint       `gorm:"not null;index" json:"userId"`
+	PermissionID uint       `gorm:"not null;index" json:"permissionId"`
+	Permission   Permission `gorm:"foreignKey:PermissionID" json:"permission"`
+	Granted      bool       `gorm:"not null;default:true" json:"granted"`
+}
+
+type UserTemplate struct {
+	Base
+	UserID     uint               `gorm:"not null;index" json:"userId"`
+	TemplateID uint               `gorm:"not null;index" json:"templateId"`
+	Template   PermissionTemplate `gorm:"foreignKey:TemplateID" json:"template"`
+}
+
 type Session struct {
 	ID        string    `gorm:"primaryKey" json:"id"`
 	UserID    uint      `gorm:"not null;index" json:"userId"`
@@ -282,7 +323,8 @@ func AllForDb() []any {
 	return []any{
 		&User{}, &Session{}, &Hotel{}, &Room{}, &Guest{}, &Reservation{}, &Payment{}, &Account{},
 		&Expense{}, &Income{}, &ParkingLot{}, &ParkingSpot{}, &Vehicle{}, &ParkingTransaction{}, &Amenity{},
-		&ParkingSpotType{}, &ParkingSpotStatus{}, &UserHotel{},
+		&ParkingSpotType{}, &ParkingSpotStatus{}, &UserHotel{}, &Permission{}, &PermissionTemplate{},
+		&UserPermission{}, &UserTemplate{},
 	}
 }
 
@@ -305,5 +347,30 @@ func AllForTypeGen() []any {
 	return []any{
 		User{}, Session{}, Hotel{}, Room{}, Guest{}, Reservation{}, Account{},
 		Expense{}, Income{}, ParkingLot{}, ParkingSpot{}, Vehicle{}, ParkingTransaction{}, Amenity{}, ParkingSpotType{}, ParkingSpotStatus{}, ParkingStats{}, SanitizedUser{}, UserHotelInfo{},
+		Permission{}, PermissionTemplate{}, UserPermission{}, UserTemplate{},
 	}
+}
+
+type SanitizedUserWithPermissions struct {
+	ID          uint                 `json:"id"`
+	Email       string               `json:"email"`
+	FirstName   string               `json:"firstName"`
+	LastName    string               `json:"lastName"`
+	UserHotels  []UserHotelInfo      `json:"userHotels"`
+	Permissions []UserPermissionInfo `json:"permissions"`
+}
+
+type UserPermissionInfo struct {
+	PermissionID uint             `json:"permissionId"`
+	Page         string           `json:"page"`
+	Action       PermissionAction `json:"action"`
+	Label        string           `json:"label"`
+	Category     string           `json:"category"`
+	Granted      bool             `json:"granted"`
+}
+
+type UserTemplateInfo struct {
+	TemplateID  uint   `json:"templateId"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
 }

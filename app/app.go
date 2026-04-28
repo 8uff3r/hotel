@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+	spa "hotel"
 	"log/slog"
 	"net/http"
 	"os"
@@ -20,6 +21,7 @@ import (
 	"hotel/internal/httpapi/guests"
 	"hotel/internal/httpapi/hotels"
 	"hotel/internal/httpapi/parking"
+	"hotel/internal/httpapi/permissions"
 	"hotel/internal/httpapi/reservation"
 	"hotel/internal/httpapi/rooms"
 	"hotel/internal/httpapi/users"
@@ -109,20 +111,26 @@ func New(cfg config.Config) (*App, error) {
 
 	apiGroup := fuego.Group(srv, "/api")
 	SetupRouter(&api, apiGroup, PathModuleMap{
-		"/":     system.SystemModule{},
-		"/auth": auth.AuthModule{},
-	})
-
-	fuego.Use(apiGroup, api.AuthMiddleware)
-	SetupRouter(&api, apiGroup, PathModuleMap{
+		"/":            system.SystemModule{},
+		"/auth":        auth.AuthModule{},
+		"/users":       users.UsersModule{},
 		"/rooms":       rooms.RoomsModule{},
 		"/guests":      guests.GuestsModule{},
-		"/users":       users.UsersModule{},
-		"/accounting":  accounting.AccountingModule{},
 		"/parking":     parking.ParkingModule{},
+		"/accounting":  accounting.AccountingModule{},
 		"/reservation": reservation.ReservationModule{},
 		"/hotels":      hotels.HotelsModule{},
 	})
+
+	apiGroup2 := fuego.Group(srv, "/api/permissions")
+	permsModule := permissions.PermissionsModule{&api}
+	permsModule.RegisterRoutes(&api, apiGroup2)
+
+	fuego.Use(apiGroup, api.AuthMiddleware)
+	fuego.Use(apiGroup2, api.AuthMiddleware)
+
+	spaGroup := fuego.Group(srv, "/")
+	spaGroup.Mux.Handle("/", spa.SPAHandler())
 
 	jobsCtx, cancel := context.WithCancel(context.Background())
 	go cleanupExpiredSessions(jobsCtx, database, logger)

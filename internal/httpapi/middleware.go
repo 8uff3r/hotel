@@ -31,11 +31,13 @@ func (a *API) AuthMiddleware(next http.Handler) http.Handler {
 
 		userHotels := a.getUserHotelsFromDB(user.ID)
 		hotelID := a.resolveHotelID(r, userHotels)
+		permissions := a.getUserPermissionsFromDB(user.ID)
 
 		ctx := r.Context()
 		ctx = context.WithValue(ctx, UserKey{}, user)
 		ctx = context.WithValue(ctx, UserHotelsKey{}, userHotels)
 		ctx = context.WithValue(ctx, HotelIDKey{}, hotelID)
+		ctx = context.WithValue(ctx, UserPermissionsKey{}, permissions)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
@@ -99,12 +101,40 @@ func (a *API) RecoverAndLogMiddleware(next http.Handler) http.Handler {
 type UserKey struct{}
 type HotelIDKey struct{}
 type UserHotelsKey struct{}
+type UserPermissionsKey struct{}
+
+func GetUserPermissionsFromContext(ctx context.Context) []models.UserPermissionInfo {
+	if perms, ok := ctx.Value(UserPermissionsKey{}).([]models.UserPermissionInfo); ok {
+		return perms
+	}
+	return nil
+}
 
 func GetHotelIDFromContext(ctx context.Context) string {
 	if hotelID, ok := ctx.Value(HotelIDKey{}).(string); ok {
 		return hotelID
 	}
 	return ""
+}
+
+func (a *API) getUserPermissionsFromDB(userID uint) []models.UserPermissionInfo {
+	var userPerms []models.UserPermission
+	if err := a.Db.Preload("Permission").Where("user_id = ?", userID).Find(&userPerms).Error; err != nil {
+		return nil
+	}
+
+	result := make([]models.UserPermissionInfo, 0, len(userPerms))
+	for _, up := range userPerms {
+		result = append(result, models.UserPermissionInfo{
+			PermissionID: up.PermissionID,
+			Page:         up.Permission.Page,
+			Action:       up.Permission.Action,
+			Label:        up.Permission.Label,
+			Category:     up.Permission.Category,
+			Granted:      up.Granted,
+		})
+	}
+	return result
 }
 
 func (a *API) GetHotelIDFromCookie(r *http.Request) (string, error) {
