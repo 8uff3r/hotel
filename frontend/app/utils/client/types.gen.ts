@@ -1362,8 +1362,11 @@ export type PermissionsResponse = {
         category?: string;
         hotelId?: string;
         id?: number;
-        label?: string;
+        name?: string;
         page?: string;
+        translation?: {
+            [key: string]: string;
+        };
     }>;
 };
 
@@ -1392,9 +1395,15 @@ export type TemplatesResponse = {
             category?: string;
             hotelId?: string;
             id?: number;
-            label?: string;
+            name?: string;
             page?: string;
+            translation?: {
+                [key: string]: string;
+            };
         }>;
+        translation?: {
+            [key: string]: string;
+        };
     }>;
 };
 

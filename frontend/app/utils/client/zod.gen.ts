@@ -1261,8 +1261,9 @@ export const zPermissionsResponse = z.object({
         category: z.string().optional(),
         hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
-        label: z.string().optional(),
-        page: z.string().optional()
+        name: z.string().optional(),
+        page: z.string().optional(),
+        translation: z.record(z.string(), z.string()).optional()
     })).optional()
 });
 
@@ -1291,9 +1292,11 @@ export const zTemplatesResponse = z.object({
             category: z.string().optional(),
             hotelId: z.string().optional(),
             id: z.int().gte(0).optional(),
-            label: z.string().optional(),
-            page: z.string().optional()
-        })).optional()
+            name: z.string().optional(),
+            page: z.string().optional(),
+            translation: z.record(z.string(), z.string()).optional()
+        })).optional(),
+        translation: z.record(z.string(), z.string()).optional()
     })).optional()
 });
 

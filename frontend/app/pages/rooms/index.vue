@@ -127,7 +127,7 @@
 import type { TableColumn } from "@nuxt/ui";
 
 definePageMeta({
-  requiresRole: ["admin", "manager", "receptionist"],
+  requiresPermission: "guests",
 });
 
 const { t } = useI18n();

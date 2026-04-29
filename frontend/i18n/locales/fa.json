@@ -51,7 +51,8 @@
       "roomRack": "پلن اتاق‌ها",
       "guests": "مهمان‌ها",
       "parking": "پارکینگ",
-      "attendance": "حضور و غیاب"
+      "attendance": "حضور و غیاب",
+      "users": "کاربران"
     },
     "admin": {
       "accounting": "حسابداری",

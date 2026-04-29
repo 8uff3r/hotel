@@ -1,14 +1,7 @@
+import type { UserPermissionsResponse } from "~/utils/client";
 import { defineStore } from "pinia";
 
-interface UserPermissionInfo {
-  permissionId: number;
-  page: string;
-  action: string;
-  label: string;
-  category: string;
-  granted: boolean;
-}
-
+type UserPermissionInfo = NonNullable<UserPermissionsResponse["permissions"]>[0];
 export const useAuthStore = defineStore(
   "auth",
   () => {
@@ -112,7 +105,7 @@ export const useAuthStore = defineStore(
     async function fetchUser() {
       try {
         loading.value = true;
-        const { user: u, hotelId, userHotels: uh, permissions: perms } = await getApiAuthMe({});
+        const { user: u, hotelId, permissions: perms } = await getApiAuthMe({});
 
         if (!u) throw Error("Couldn't fetch user");
 
@@ -121,7 +114,7 @@ export const useAuthStore = defineStore(
         currentHotelId.value = hotelId ?? "";
         permissions.value = perms ?? [];
 
-        const hotel = uh?.find((h: any) => h.hotelId === hotelId);
+        const hotel = u.userHotels?.find((h: any) => h.hotelId === hotelId);
         currentRole.value = hotel?.role;
 
         isAuthenticated.value = true;

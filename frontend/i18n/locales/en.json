@@ -51,7 +51,8 @@
       "roomRack": "Room Rack",
       "guests": "Guests",
       "parking": "Parking",
-      "attendance": "Attendance"
+      "attendance": "Attendance",
+      "users": "Users"
     },
     "admin": {
       "accounting": "Accounting",

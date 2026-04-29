@@ -16,6 +16,7 @@ export default defineNuxtRouteMiddleware((to) => {
   if (import.meta.server) {
     return;
   }
+  const nuxtApp = useNuxtApp();
 
   const publicRoutes = ["/login"];
 
@@ -26,7 +27,7 @@ export default defineNuxtRouteMiddleware((to) => {
   let authStore: ReturnType<typeof useAuthStore> | undefined;
 
   try {
-    authStore = useAuthStore();
+    authStore = useAuthStore(nuxtApp.$pinia);
   } catch {
     return navigateTo("/login");
   }
@@ -36,11 +37,8 @@ export default defineNuxtRouteMiddleware((to) => {
     return navigateTo("/login");
   }
 
-  console.log(authStore.$id);
-
-  if (authStore.loading) {
-    return;
-  }
+  console.log(authStore.$id, authStore.loading, authStore.availableRoles);
+  console.log(authStore.permissions);
 
   if (!authStore.isAuthenticated) {
     return navigateTo("/login");
@@ -70,3 +68,8 @@ export default defineNuxtRouteMiddleware((to) => {
     }
   }
 });
+
+const b = {
+  be: "beie",
+  jiji: 3,
+};

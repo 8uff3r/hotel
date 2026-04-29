@@ -44,7 +44,7 @@
         </div>
       </template>
 
-      <!-- Footer: Hotel Switcher + Role Switcher + User Menu -->
+      <!-- Footer: Hotel Switcher + User Menu -->
       <template #footer>
         <div class="flex w-full flex-col gap-2">
           <!-- Hotel Selector -->
@@ -59,16 +59,6 @@
           <div v-else-if="authStore.currentHotelName" class="truncate px-1 text-xs text-gray-400">
             {{ authStore.currentHotelName }}
           </div>
-
-          <!-- Role Switcher -->
-          <USelect
-            v-if="authStore.availableRoles.length > 1"
-            v-model="selectedRole"
-            :items="roleOptions"
-            size="xs"
-            class="w-full"
-            @change="handleRoleSwitch"
-          />
 
           <!-- User Dropdown -->
           <UDropdownMenu
@@ -85,7 +75,6 @@
                 </div>
                 <div class="flex min-w-0 flex-col text-left">
                   <span class="truncate text-sm font-medium text-white">{{ userName }}</span>
-                  <span class="truncate text-xs text-gray-400">{{ currentRoleDisplay }}</span>
                 </div>
               </div>
             </UButton>
@@ -154,26 +143,6 @@ const handleHotelSwitch = () => {
   if (selectedHotel.value) authStore.switchHotel(selectedHotel.value);
 };
 
-// Role switcher
-const roleOptions = computed(() =>
-  (authStore.availableRoles || []).map((role) => ({
-    id: role.id,
-    name: role.name.charAt(0).toUpperCase(),
-  }))
-);
-const selectedRole = ref(authStore.currentRole?.id);
-
-watch(
-  () => authStore.currentRole,
-  (newRole) => {
-    selectedRole.value = newRole?.id;
-  }
-);
-
-const handleRoleSwitch = () => {
-  if (selectedRole.value) authStore.switchRole(selectedRole.value);
-};
-
 // Navigation items — use state to hide labels when collapsed
 const navMenuItems = (state: "collapsed" | "expanded"): NavigationMenuItem[] =>
   [
@@ -184,6 +153,7 @@ const navMenuItems = (state: "collapsed" | "expanded"): NavigationMenuItem[] =>
     { label: t("layout.nav.guests"), icon: "i-lucide-users", to: "/guests" },
     { label: t("layout.nav.parking"), icon: "i-lucide-car", to: "/parking" },
     { label: t("layout.nav.attendance"), icon: "i-lucide-clock", to: "/attendance" },
+    { label: t("layout.nav.users"), icon: "i-lucide-users", to: "/users" },
   ].map((item) => ({ ...item, label: state === "collapsed" ? undefined : item.label }));
 
 const adminMenuItems = (state: "collapsed" | "expanded"): NavigationMenuItem[] => {
@@ -207,11 +177,6 @@ const userName = computed(() =>
   authStore.user
     ? `${authStore.user.firstName} ${authStore.user.lastName}`
     : t("layout.userFallback")
-);
-const currentRoleDisplay = computed(() =>
-  authStore.currentRole
-    ? authStore.currentRole.name.charAt(0).toUpperCase() + authStore.currentRole.name.slice(1)
-    : t("roles.staff")
 );
 
 // User dropdown menu

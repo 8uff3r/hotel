@@ -115,9 +115,9 @@ type User = NonNullable<PaginatedResponseModelsSanitizedUser["data"]>[0];
 
 const { t } = useI18n();
 const columns = computed<TableColumn<User>[]>(() => [
-  { accessorKey: "id", header: t("id") },
-  { accessorKey: "name", header: t("name") },
-  { accessorKey: "actions", header: t("actions") },
+  { accessorKey: "id", header: t("users.columns.id") },
+  { accessorKey: "name", header: t("users.columns.name") },
+  { accessorKey: "actions", header: t("users.columns.actions") },
 ]);
 
 const roleOptions = computed(() => [
