@@ -29,7 +29,7 @@ func init() {
 	}
 
 	distFile := "frontend/app/utils/permissions.gen.ts"
-	content := "export const Permissions = " + strings.TrimSpace(string(permissionsFile)) + ";"
+	content := "export const PERMISSIONS = " + strings.TrimSpace(string(permissionsFile)) + ";"
 
 	dir := filepath.Dir(distFile)
 	if err := os.MkdirAll(dir, 0755); err != nil {

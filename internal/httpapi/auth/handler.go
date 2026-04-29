@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	h "hotel/internal/httpapi"
 	"hotel/internal/models"
 
@@ -21,9 +22,9 @@ func (m AuthModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 }
 
 type MeResponse struct {
-	User        models.SanitizedUser        `json:"user"`
-	HotelID     string                      `json:"hotelId"`
-	Permissions []models.UserPermissionInfo `json:"permissions"`
+	User        models.SanitizedUser `json:"user"`
+	HotelID     string               `json:"hotelId"`
+	Permissions []string             `json:"permissions"`
 }
 
 func me(c fuego.ContextNoBody) (MeResponse, error) {
@@ -31,5 +32,10 @@ func me(c fuego.ContextNoBody) (MeResponse, error) {
 	hotelID := c.Value(h.HotelIDKey{}).(string)
 	permissions := h.GetUserPermissionsFromContext(c)
 
-	return MeResponse{User: user, HotelID: hotelID, Permissions: permissions}, nil
+	var permKeys []string
+	for _, p := range permissions {
+		permKeys = append(permKeys, fmt.Sprintf("%s:%s", p.Page, p.Action))
+	}
+
+	return MeResponse{User: user, HotelID: hotelID, Permissions: permKeys}, nil
 }

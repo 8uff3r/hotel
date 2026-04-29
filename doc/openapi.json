@@ -1647,45 +1647,7 @@
 					},
 					"permissions": {
 						"items": {
-							"properties": {
-								"action": {
-									"type": "string"
-								},
-								"category": {
-									"properties": {
-										"id": {
-											"minimum": 0,
-											"type": "integer"
-										},
-										"label": {
-											"type": "string"
-										},
-										"translation": {
-											"additionalProperties": {
-												"nullable": true,
-												"type": "string"
-											},
-											"nullable": true,
-											"type": "object"
-										}
-									},
-									"type": "object"
-								},
-								"granted": {
-									"type": "boolean"
-								},
-								"label": {
-									"type": "string"
-								},
-								"page": {
-									"type": "string"
-								},
-								"permissionId": {
-									"minimum": 0,
-									"type": "integer"
-								}
-							},
-							"type": "object"
+							"type": "string"
 						},
 						"type": "array"
 					},

@@ -1,4 +1,4 @@
-export const Permissions = {
+export const PERMISSIONS = {
   dashboard: {
     index: {
       read: "index:read",
