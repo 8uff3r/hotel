@@ -37,7 +37,7 @@ func (u *UsersModule) usersList(c fuego.ContextNoBody) (h.PaginatedResponse[mode
 		limit = 20
 	}
 	offset := (page - 1) * limit
-	if err := u.Db.WithContext(c).Model(&models.User{}).Order("id DESC").Limit(limit).Offset(offset).Find(&rows).Error; err != nil {
+	if err := u.Db.WithContext(c).Model(&models.User{}).Order("id DESC").Preload("UserHotels").Limit(limit).Offset(offset).Find(&rows).Error; err != nil {
 		return zero, fuego.InternalServerError{Title: "query_failed"}
 	}
 	out := make([]models.SanitizedUser, 0, len(rows))
