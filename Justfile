@@ -22,8 +22,11 @@ backend-build:
 frontend-build:
     cd wails/frontend && bun run build
 
-gen:
-    go run "internal/gen/typescript.go" && cd wails/frontend && bun run fmt
+gen-routes:
+    go run "cmd/codegen/route-types/main.go" && cd frontend && bun run fmt
+
+gen-perms:
+    go run "cmd/codegen/permissions/main.go" && cd frontend && bun run fmt
 
 seed:
     go run ./cmd/server seed
