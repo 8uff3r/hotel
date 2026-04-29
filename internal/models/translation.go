@@ -18,7 +18,7 @@ type TranslateBase struct {
 
 type Translatable interface {
 	GetTranslation() Translation
-	SetName(string)
+	SetLabel(string)
 	ClearTranslation()
 }
 
@@ -26,13 +26,12 @@ func (t *TranslateBase) GetTranslation() Translation {
 	return t.Translation
 }
 
-func (t *TranslateBase) SetName(name string) {
+func (t *TranslateBase) SetLabel(name string) {
 	t.Label = name
 }
 
 func (t *TranslateBase) ClearTranslation() {
-	t.Translation = nil // or zero value, depending on your Translation type
-	// If Translation is a map, set to nil or make empty
+	t.Translation = nil
 }
 
 func (t *Translation) Scan(value any) error {
@@ -50,7 +49,7 @@ func (t Translation) Value() (driver.Value, error) {
 func ApplyTranslationOnTranslatable(t Translatable, lang string) {
 	translations := t.GetTranslation()
 	if translated, exists := translations[lang]; exists {
-		t.SetName(translated)
+		t.SetLabel(translated)
 	}
 	t.ClearTranslation()
 }

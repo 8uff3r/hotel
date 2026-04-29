@@ -100,9 +100,9 @@ func seedPermissionTemplates(db *gorm.DB) {
 	}
 
 	var adminTemplate models.PermissionTemplate
-	if err := db.Where("label = ?", "admin").First(&adminTemplate).Error; err == gorm.ErrRecordNotFound {
+	if err := db.Where("slug = ?", "admin").First(&adminTemplate).Error; err == gorm.ErrRecordNotFound {
 		adminTemplate = models.PermissionTemplate{
-			TranslateBase: models.TranslateBase{Label: "admin", Translation: t["admin"]},
+			TranslateBase: models.TranslateBase{Slug: "admin", Translation: t["admin"]},
 			Description:   "Full administrative access to all features",
 		}
 		db.Create(&adminTemplate)
@@ -110,9 +110,9 @@ func seedPermissionTemplates(db *gorm.DB) {
 	db.Model(&adminTemplate).Association("Permissions").Append(&allPerms)
 
 	var managerTemplate models.PermissionTemplate
-	if err := db.Where("label = ?", "manager").First(&managerTemplate).Error; err == gorm.ErrRecordNotFound {
+	if err := db.Where("slug = ?", "manager").First(&managerTemplate).Error; err == gorm.ErrRecordNotFound {
 		managerTemplate = models.PermissionTemplate{
-			TranslateBase: models.TranslateBase{Label: "manager", Translation: t["manager"]},
+			TranslateBase: models.TranslateBase{Slug: "manager", Translation: t["manager"]},
 			Description:   "Management access to all operational features",
 		}
 		db.Create(&managerTemplate)
@@ -126,9 +126,9 @@ func seedPermissionTemplates(db *gorm.DB) {
 	db.Model(&managerTemplate).Association("Permissions").Replace(&managerPerms)
 
 	var receptionistTemplate models.PermissionTemplate
-	if err := db.Where("label = ?", "receptionist").First(&receptionistTemplate).Error; err == gorm.ErrRecordNotFound {
+	if err := db.Where("slug = ?", "receptionist").First(&receptionistTemplate).Error; err == gorm.ErrRecordNotFound {
 		receptionistTemplate = models.PermissionTemplate{
-			TranslateBase: models.TranslateBase{Label: "receptionist", Translation: t["receptionist"]},
+			TranslateBase: models.TranslateBase{Slug: "receptionist", Translation: t["receptionist"]},
 			Description:   "Front desk operations: check-in, reservations, guest management, parking",
 		}
 		db.Create(&receptionistTemplate)
@@ -147,9 +147,9 @@ func seedPermissionTemplates(db *gorm.DB) {
 	db.Model(&receptionistTemplate).Association("Permissions").Replace(&receptionistPerms)
 
 	var staffTemplate models.PermissionTemplate
-	if err := db.Where("label = ?", "staff").First(&staffTemplate).Error; err == gorm.ErrRecordNotFound {
+	if err := db.Where("slug = ?", "staff").First(&staffTemplate).Error; err == gorm.ErrRecordNotFound {
 		staffTemplate = models.PermissionTemplate{
-			TranslateBase: models.TranslateBase{Label: "staff", Translation: t["staff"]},
+			TranslateBase: models.TranslateBase{Slug: "staff", Translation: t["staff"]},
 			Description:   "Basic staff access - read only",
 		}
 		db.Create(&staffTemplate)
@@ -163,9 +163,9 @@ func seedPermissionTemplates(db *gorm.DB) {
 	db.Model(&staffTemplate).Association("Permissions").Replace(&staffPerms)
 
 	var housekeeperTemplate models.PermissionTemplate
-	if err := db.Where("label = ?", "housekeeper").First(&housekeeperTemplate).Error; err == gorm.ErrRecordNotFound {
+	if err := db.Where("slug = ?", "housekeeper").First(&housekeeperTemplate).Error; err == gorm.ErrRecordNotFound {
 		housekeeperTemplate = models.PermissionTemplate{
-			TranslateBase: models.TranslateBase{Label: "housekeeper", Translation: t["housekeeper"]},
+			TranslateBase: models.TranslateBase{Slug: "housekeeper", Translation: t["housekeeper"]},
 			Description:   "Housekeeping access to rooms",
 		}
 		db.Create(&housekeeperTemplate)
