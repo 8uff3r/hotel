@@ -10,13 +10,18 @@ const (
 	PermissionActionExport PermissionAction = "export"
 )
 
-type Permission struct {
+type PermissionCategory struct {
 	Base
 	TranslateBase
-	Page     string           `gorm:"not null;index" json:"page"`
-	Action   PermissionAction `gorm:"not null" json:"action"`
-	HotelID  *string          `json:"hotelId"`
-	Category string           `gorm:"not null" json:"category"`
+}
+
+type Permission struct {
+	Base
+	Translation Translation        `gorm:"type:jsonb" json:"translation,omitempty"`
+	Resource    string             `gorm:"not null;index" json:"resource"`
+	Action      PermissionAction   `gorm:"not null" json:"action"`
+	CategoryID  uint               `gorm:"not null" json:"categoryId"`
+	Category    PermissionCategory `gorm:"not null;foreignKey:CategoryID" json:"category"`
 }
 
 type PermissionTemplate struct {
@@ -29,6 +34,7 @@ type PermissionTemplate struct {
 type UserPermission struct {
 	Base
 	UserID       uint       `gorm:"not null;index" json:"userId"`
+	HotelID      *string    `json:"hotelId"`
 	PermissionID uint       `gorm:"not null;index" json:"permissionId"`
 	Permission   Permission `gorm:"foreignKey:PermissionID" json:"permission"`
 	Granted      bool       `gorm:"not null;default:true" json:"granted"`

@@ -48,7 +48,7 @@ func (a *API) AuthMiddleware(next http.Handler) http.Handler {
 
 func (a *API) getUserHotelsFromDB(userID uint) []models.UserHotelInfo {
 	var userHotels []models.UserHotel
-	if err := a.Db.Preload("Hotel").Preload("Role").Where("user_id = ?", userID).Find(&userHotels).Error; err != nil {
+	if err := a.Db.Preload("Hotel").Where("user_id = ?", userID).Find(&userHotels).Error; err != nil {
 		return nil
 	}
 
@@ -57,8 +57,6 @@ func (a *API) getUserHotelsFromDB(userID uint) []models.UserHotelInfo {
 		result = append(result, models.UserHotelInfo{
 			HotelID: uh.HotelID,
 			Hotel:   uh.Hotel,
-			RoleID:  uh.RoleID,
-			Role:    uh.Role,
 		})
 	}
 	return result
@@ -129,12 +127,11 @@ func (a *API) getUserPermissionsFromDB(userID uint, lang string) []models.UserPe
 
 	result := make([]models.UserPermissionInfo, 0, len(userPerms))
 	for _, up := range userPerms {
-		models.ApplyTranslationOnTranslatable(&up.Permission, lang)
 		result = append(result, models.UserPermissionInfo{
 			PermissionID: up.PermissionID,
-			Page:         up.Permission.Page,
+			Page:         up.Permission.Resource,
 			Action:       up.Permission.Action,
-			Label:        up.Permission.Name,
+			Label:        up.Permission.Translation[lang],
 			Category:     up.Permission.Category,
 			Granted:      up.Granted,
 		})
@@ -166,7 +163,7 @@ func (a *API) sessionUser(r *http.Request) (models.SanitizedUser, error) {
 	}
 
 	var s models.Session
-	if err := a.Db.WithContext(r.Context()).Preload("User.UserHotels.Hotel").Preload("User.UserHotels.Role").Where("id = ? AND expires_at > ?", cookie.Value, time.Now().UTC()).First(&s).Error; err != nil {
+	if err := a.Db.WithContext(r.Context()).Preload("User.UserHotels.Hotel").Where("id = ? AND expires_at > ?", cookie.Value, time.Now().UTC()).First(&s).Error; err != nil {
 		return zero, err
 	}
 	if !s.User.IsActive {
@@ -181,8 +178,6 @@ func SanitizeUser(u *models.User) models.SanitizedUser {
 		hotels = append(hotels, models.UserHotelInfo{
 			HotelID: uh.HotelID,
 			Hotel:   uh.Hotel,
-			RoleID:  uh.RoleID,
-			Role:    uh.Role,
 		})
 	}
 	return models.SanitizedUser{ID: u.ID, Email: u.Email, FirstName: u.FirstName, LastName: u.LastName, UserHotels: hotels}

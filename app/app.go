@@ -191,11 +191,6 @@ func ensureAdmin(db *gorm.DB, cfg config.Config) error {
 		return nil
 	}
 
-	var adminRole models.Role
-	if err := db.Model(&models.Role{}).Where("name = ?", "admin").First(&adminRole).Error; err != nil {
-		return err
-	}
-
 	hash, err := bcrypt.GenerateFromPassword([]byte(cfg.SeedAdminPass), bcrypt.DefaultCost)
 	if err != nil {
 		return fmt.Errorf("hash admin password: %w", err)
@@ -215,7 +210,6 @@ func ensureAdmin(db *gorm.DB, cfg config.Config) error {
 	if err := db.Create(&models.UserHotel{
 		UserID:  user.ID,
 		HotelID: cfg.SeedHotelCodeName,
-		RoleID:  adminRole.ID,
 	}).Error; err != nil {
 		return fmt.Errorf("create user-hotel link: %w", err)
 	}

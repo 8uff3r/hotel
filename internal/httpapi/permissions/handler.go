@@ -86,12 +86,11 @@ func (pm *PermissionsModule) userPermissions(c fuego.ContextNoBody) (userPermiss
 
 	result := make([]models.UserPermissionInfo, 0, len(userPerms))
 	for _, up := range userPerms {
-		models.ApplyTranslationOnTranslatable(&up.Permission, lang)
 		result = append(result, models.UserPermissionInfo{
 			PermissionID: up.PermissionID,
-			Page:         up.Permission.Page,
+			Page:         up.Permission.Resource,
 			Action:       up.Permission.Action,
-			Label:        up.Permission.Name,
+			Label:        up.Permission.Translation[lang],
 			Category:     up.Permission.Category,
 			Granted:      up.Granted,
 		})

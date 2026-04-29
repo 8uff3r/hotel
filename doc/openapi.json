@@ -247,7 +247,7 @@
 															"minimum": 0,
 															"type": "integer"
 														},
-														"name": {
+														"label": {
 															"type": "string"
 														},
 														"translation": {
@@ -307,7 +307,7 @@
 														"minimum": 0,
 														"type": "integer"
 													},
-													"name": {
+													"label": {
 														"type": "string"
 													},
 													"translation": {
@@ -340,7 +340,7 @@
 														"minimum": 0,
 														"type": "integer"
 													},
-													"name": {
+													"label": {
 														"type": "string"
 													},
 													"translation": {
@@ -632,7 +632,7 @@
 																	"minimum": 0,
 																	"type": "integer"
 																},
-																"name": {
+																"label": {
 																	"type": "string"
 																},
 																"translation": {
@@ -692,7 +692,7 @@
 																"minimum": 0,
 																"type": "integer"
 															},
-															"name": {
+															"label": {
 																"type": "string"
 															},
 															"translation": {
@@ -725,7 +725,7 @@
 																"minimum": 0,
 																"type": "integer"
 															},
-															"name": {
+															"label": {
 																"type": "string"
 															},
 															"translation": {
@@ -841,7 +841,7 @@
 														"minimum": 0,
 														"type": "integer"
 													},
-													"name": {
+													"label": {
 														"type": "string"
 													},
 													"translation": {
@@ -901,7 +901,7 @@
 													"minimum": 0,
 													"type": "integer"
 												},
-												"name": {
+												"label": {
 													"type": "string"
 												},
 												"translation": {
@@ -934,7 +934,7 @@
 													"minimum": 0,
 													"type": "integer"
 												},
-												"name": {
+												"label": {
 													"type": "string"
 												},
 												"translation": {
@@ -1116,7 +1116,7 @@
 																	"minimum": 0,
 																	"type": "integer"
 																},
-																"name": {
+																"label": {
 																	"type": "string"
 																},
 																"translation": {
@@ -1176,7 +1176,7 @@
 																"minimum": 0,
 																"type": "integer"
 															},
-															"name": {
+															"label": {
 																"type": "string"
 															},
 															"translation": {
@@ -1209,7 +1209,7 @@
 																"minimum": 0,
 																"type": "integer"
 															},
-															"name": {
+															"label": {
 																"type": "string"
 															},
 															"translation": {
@@ -1370,7 +1370,7 @@
 														"minimum": 0,
 														"type": "integer"
 													},
-													"name": {
+													"label": {
 														"type": "string"
 													},
 													"translation": {
@@ -1430,7 +1430,7 @@
 													"minimum": 0,
 													"type": "integer"
 												},
-												"name": {
+												"label": {
 													"type": "string"
 												},
 												"translation": {
@@ -1463,7 +1463,7 @@
 													"minimum": 0,
 													"type": "integer"
 												},
-												"name": {
+												"label": {
 													"type": "string"
 												},
 												"translation": {
@@ -1652,7 +1652,24 @@
 									"type": "string"
 								},
 								"category": {
-									"type": "string"
+									"properties": {
+										"id": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"label": {
+											"type": "string"
+										},
+										"translation": {
+											"additionalProperties": {
+												"nullable": true,
+												"type": "string"
+											},
+											"nullable": true,
+											"type": "object"
+										}
+									},
+									"type": "object"
 								},
 								"granted": {
 									"type": "boolean"
@@ -1712,34 +1729,6 @@
 										},
 										"hotelId": {
 											"type": "string"
-										},
-										"role": {
-											"properties": {
-												"hotelId": {
-													"nullable": true,
-													"type": "string"
-												},
-												"id": {
-													"minimum": 0,
-													"type": "integer"
-												},
-												"name": {
-													"type": "string"
-												},
-												"translation": {
-													"additionalProperties": {
-														"nullable": true,
-														"type": "string"
-													},
-													"nullable": true,
-													"type": "object"
-												}
-											},
-											"type": "object"
-										},
-										"roleId": {
-											"minimum": 0,
-											"type": "integer"
 										}
 									},
 									"type": "object"
@@ -1831,7 +1820,7 @@
 									"minimum": 0,
 									"type": "integer"
 								},
-								"name": {
+								"label": {
 									"type": "string"
 								},
 								"translation": {
@@ -2089,7 +2078,7 @@
 																		"minimum": 0,
 																		"type": "integer"
 																	},
-																	"name": {
+																	"label": {
 																		"type": "string"
 																	},
 																	"translation": {
@@ -2149,7 +2138,7 @@
 																	"minimum": 0,
 																	"type": "integer"
 																},
-																"name": {
+																"label": {
 																	"type": "string"
 																},
 																"translation": {
@@ -2182,7 +2171,7 @@
 																	"minimum": 0,
 																	"type": "integer"
 																},
-																"name": {
+																"label": {
 																	"type": "string"
 																},
 																"translation": {
@@ -2493,7 +2482,7 @@
 									"minimum": 0,
 									"type": "integer"
 								},
-								"name": {
+								"label": {
 									"type": "string"
 								},
 								"translation": {
@@ -2539,7 +2528,7 @@
 									"minimum": 0,
 									"type": "integer"
 								},
-								"name": {
+								"label": {
 									"type": "string"
 								},
 								"translation": {
@@ -2760,7 +2749,7 @@
 															"minimum": 0,
 															"type": "integer"
 														},
-														"name": {
+														"label": {
 															"type": "string"
 														},
 														"translation": {
@@ -2820,7 +2809,7 @@
 														"minimum": 0,
 														"type": "integer"
 													},
-													"name": {
+													"label": {
 														"type": "string"
 													},
 													"translation": {
@@ -2853,7 +2842,7 @@
 														"minimum": 0,
 														"type": "integer"
 													},
-													"name": {
+													"label": {
 														"type": "string"
 													},
 													"translation": {
@@ -2923,7 +2912,7 @@
 												"minimum": 0,
 												"type": "integer"
 											},
-											"name": {
+											"label": {
 												"type": "string"
 											},
 											"translation": {
@@ -2983,7 +2972,7 @@
 											"minimum": 0,
 											"type": "integer"
 										},
-										"name": {
+										"label": {
 											"type": "string"
 										},
 										"translation": {
@@ -3016,7 +3005,7 @@
 											"minimum": 0,
 											"type": "integer"
 										},
-										"name": {
+										"label": {
 											"type": "string"
 										},
 										"translation": {
@@ -3077,7 +3066,7 @@
 									"minimum": 0,
 									"type": "integer"
 								},
-								"name": {
+								"label": {
 									"type": "string"
 								},
 								"translation": {
@@ -3128,7 +3117,7 @@
 									"minimum": 0,
 									"type": "integer"
 								},
-								"name": {
+								"label": {
 									"type": "string"
 								},
 								"translation": {
@@ -3204,34 +3193,6 @@
 											},
 											"hotelId": {
 												"type": "string"
-											},
-											"role": {
-												"properties": {
-													"hotelId": {
-														"nullable": true,
-														"type": "string"
-													},
-													"id": {
-														"minimum": 0,
-														"type": "integer"
-													},
-													"name": {
-														"type": "string"
-													},
-													"translation": {
-														"additionalProperties": {
-															"nullable": true,
-															"type": "string"
-														},
-														"nullable": true,
-														"type": "object"
-													}
-												},
-												"type": "object"
-											},
-											"roleId": {
-												"minimum": 0,
-												"type": "integer"
 											}
 										},
 										"type": "object"
@@ -3570,7 +3531,7 @@
 												"minimum": 0,
 												"type": "integer"
 											},
-											"name": {
+											"label": {
 												"type": "string"
 											},
 											"translation": {
@@ -3630,7 +3591,7 @@
 											"minimum": 0,
 											"type": "integer"
 										},
-										"name": {
+										"label": {
 											"type": "string"
 										},
 										"translation": {
@@ -3663,7 +3624,7 @@
 											"minimum": 0,
 											"type": "integer"
 										},
-										"name": {
+										"label": {
 											"type": "string"
 										},
 										"translation": {
@@ -3712,7 +3673,7 @@
 									"minimum": 0,
 									"type": "integer"
 								},
-								"name": {
+								"label": {
 									"type": "string"
 								},
 								"translation": {
@@ -3772,7 +3733,7 @@
 								"minimum": 0,
 								"type": "integer"
 							},
-							"name": {
+							"label": {
 								"type": "string"
 							},
 							"translation": {
@@ -3805,7 +3766,7 @@
 								"minimum": 0,
 								"type": "integer"
 							},
-							"name": {
+							"label": {
 								"type": "string"
 							},
 							"translation": {
@@ -3927,7 +3888,24 @@
 									"type": "string"
 								},
 								"category": {
-									"type": "string"
+									"properties": {
+										"id": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"label": {
+											"type": "string"
+										},
+										"translation": {
+											"additionalProperties": {
+												"nullable": true,
+												"type": "string"
+											},
+											"nullable": true,
+											"type": "object"
+										}
+									},
+									"type": "object"
 								},
 								"granted": {
 									"type": "boolean"
@@ -3987,34 +3965,6 @@
 										},
 										"hotelId": {
 											"type": "string"
-										},
-										"role": {
-											"properties": {
-												"hotelId": {
-													"nullable": true,
-													"type": "string"
-												},
-												"id": {
-													"minimum": 0,
-													"type": "integer"
-												},
-												"name": {
-													"type": "string"
-												},
-												"translation": {
-													"additionalProperties": {
-														"nullable": true,
-														"type": "string"
-													},
-													"nullable": true,
-													"type": "object"
-												}
-											},
-											"type": "object"
-										},
-										"roleId": {
-											"minimum": 0,
-											"type": "integer"
 										}
 									},
 									"type": "object"
@@ -4040,20 +3990,34 @@
 									"type": "string"
 								},
 								"category": {
-									"type": "string"
+									"properties": {
+										"id": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"label": {
+											"type": "string"
+										},
+										"translation": {
+											"additionalProperties": {
+												"nullable": true,
+												"type": "string"
+											},
+											"nullable": true,
+											"type": "object"
+										}
+									},
+									"type": "object"
 								},
-								"hotelId": {
-									"nullable": true,
-									"type": "string"
+								"categoryId": {
+									"minimum": 0,
+									"type": "integer"
 								},
 								"id": {
 									"minimum": 0,
 									"type": "integer"
 								},
-								"name": {
-									"type": "string"
-								},
-								"page": {
+								"resource": {
 									"type": "string"
 								},
 								"translation": {
@@ -4098,7 +4062,7 @@
 									"minimum": 0,
 									"type": "integer"
 								},
-								"name": {
+								"label": {
 									"type": "string"
 								},
 								"permissions": {
@@ -4108,20 +4072,34 @@
 												"type": "string"
 											},
 											"category": {
-												"type": "string"
+												"properties": {
+													"id": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"label": {
+														"type": "string"
+													},
+													"translation": {
+														"additionalProperties": {
+															"nullable": true,
+															"type": "string"
+														},
+														"nullable": true,
+														"type": "object"
+													}
+												},
+												"type": "object"
 											},
-											"hotelId": {
-												"nullable": true,
-												"type": "string"
+											"categoryId": {
+												"minimum": 0,
+												"type": "integer"
 											},
 											"id": {
 												"minimum": 0,
 												"type": "integer"
 											},
-											"name": {
-												"type": "string"
-											},
-											"page": {
+											"resource": {
 												"type": "string"
 											},
 											"translation": {
@@ -4187,7 +4165,24 @@
 									"type": "string"
 								},
 								"category": {
-									"type": "string"
+									"properties": {
+										"id": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"label": {
+											"type": "string"
+										},
+										"translation": {
+											"additionalProperties": {
+												"nullable": true,
+												"type": "string"
+											},
+											"nullable": true,
+											"type": "object"
+										}
+									},
+									"type": "object"
 								},
 								"granted": {
 									"type": "boolean"

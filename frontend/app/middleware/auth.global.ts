@@ -68,8 +68,3 @@ export default defineNuxtRouteMiddleware((to) => {
     }
   }
 });
-
-const b = {
-  be: "beie",
-  jiji: 3,
-};

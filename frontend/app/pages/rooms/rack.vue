@@ -268,7 +268,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Room, RoomStatus } from "~/utils/auto-route-types";
+import type { Room, RoomStatus } from "~/utils/route-types.gen";
 
 definePageMeta({
   requiresRole: ["admin", "manager", "receptionist"],

@@ -11,7 +11,8 @@ type HasTranslatables interface {
 	GetTranslatables() []Translatable
 }
 type TranslateBase struct {
-	Name        string      `json:"name"`
+	Slug        string      `json:"-"`
+	Label       string      `gorm:"-" json:"label"`
 	Translation Translation `gorm:"type:jsonb" json:"translation,omitempty"`
 }
 
@@ -26,7 +27,7 @@ func (t *TranslateBase) GetTranslation() Translation {
 }
 
 func (t *TranslateBase) SetName(name string) {
-	t.Name = name
+	t.Label = name
 }
 
 func (t *TranslateBase) ClearTranslation() {
@@ -48,10 +49,8 @@ func (t Translation) Value() (driver.Value, error) {
 
 func ApplyTranslationOnTranslatable(t Translatable, lang string) {
 	translations := t.GetTranslation()
-	if lang != "en" {
-		if translated, exists := translations[lang]; exists {
-			t.SetName(translated)
-		}
+	if translated, exists := translations[lang]; exists {
+		t.SetName(translated)
 	}
 	t.ClearTranslation()
 }

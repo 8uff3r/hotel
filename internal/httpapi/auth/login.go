@@ -59,12 +59,11 @@ func (a *AuthModule) getUserPermissions(userID uint, lang string) []models.UserP
 
 	result := make([]models.UserPermissionInfo, 0, len(userPerms))
 	for _, up := range userPerms {
-		models.ApplyTranslationOnTranslatable(&up.Permission, lang)
 		result = append(result, models.UserPermissionInfo{
 			PermissionID: up.PermissionID,
-			Page:         up.Permission.Page,
+			Page:         up.Permission.Resource,
 			Action:       up.Permission.Action,
-			Label:        up.Permission.Name,
+			Label:        up.Permission.Translation[lang],
 			Category:     up.Permission.Category,
 			Granted:      up.Granted,
 		})
@@ -74,7 +73,7 @@ func (a *AuthModule) getUserPermissions(userID uint, lang string) []models.UserP
 
 func (a *AuthModule) getUserHotels(userID uint) ([]models.UserHotelInfo, string) {
 	var userHotels []models.UserHotel
-	if err := a.Db.Preload("Hotel").Preload("Role").Where("user_id = ?", userID).Find(&userHotels).Error; err != nil {
+	if err := a.Db.Preload("Hotel").Where("user_id = ?", userID).Find(&userHotels).Error; err != nil {
 		return nil, ""
 	}
 
@@ -84,8 +83,6 @@ func (a *AuthModule) getUserHotels(userID uint) ([]models.UserHotelInfo, string)
 		result[i] = models.UserHotelInfo{
 			HotelID: uh.HotelID,
 			Hotel:   uh.Hotel,
-			RoleID:  uh.RoleID,
-			Role:    uh.Role,
 		}
 		if i == 0 {
 			defaultHotelID = uh.HotelID

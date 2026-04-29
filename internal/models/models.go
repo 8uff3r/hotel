@@ -36,14 +36,6 @@ type UserHotel struct {
 	User    User   `gorm:"foreignKey:UserID" json:"-"`
 	HotelID string `gorm:"not null;index" json:"hotelId"`
 	Hotel   Hotel  `gorm:"foreignKey:HotelID" json:"hotel"`
-	RoleID  uint   `gorm:"not null" json:"roleId"`
-	Role    Role   `gorm:"foreignKey:RoleID" json:"role"`
-}
-
-type Role struct {
-	Base
-	TranslateBase
-	HotelID *string `json:"hotelId"`
 }
 
 type Session struct {
@@ -298,8 +290,6 @@ type SanitizedUser struct {
 type UserHotelInfo struct {
 	HotelID string `json:"hotelId"`
 	Hotel   Hotel  `json:"hotel"`
-	RoleID  uint   `json:"roleId"`
-	Role    Role   `json:"role"`
 }
 
 func AllForTypeGen() []any {
@@ -320,12 +310,12 @@ type SanitizedUserWithPermissions struct {
 }
 
 type UserPermissionInfo struct {
-	Label        string           `json:"label"`
-	PermissionID uint             `json:"permissionId"`
-	Page         string           `json:"page"`
-	Action       PermissionAction `json:"action"`
-	Category     string           `json:"category"`
-	Granted      bool             `json:"granted"`
+	Label        string             `json:"label"`
+	PermissionID uint               `json:"permissionId"`
+	Page         string             `json:"page"`
+	Action       PermissionAction   `json:"action"`
+	Category     PermissionCategory `json:"category"`
+	Granted      bool               `json:"granted"`
 }
 
 type UserTemplateInfo struct {
