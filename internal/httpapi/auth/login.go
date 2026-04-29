@@ -26,6 +26,10 @@ type loginResponse struct {
 }
 
 func (a *AuthModule) loginHandler(c fuego.ContextWithBody[loginDto]) (loginResponse, error) {
+	lang := c.Header("Accept-Language")
+	if lang == "" {
+		lang = "fa"
+	}
 	req, err := c.Body()
 	var zero loginResponse
 	if err != nil {
@@ -42,12 +46,12 @@ func (a *AuthModule) loginHandler(c fuego.ContextWithBody[loginDto]) (loginRespo
 	userResponse := h.SanitizeUser(user)
 	userResponse.UserHotels = userHotels
 
-	permissions := a.getUserPermissions(user.ID)
+	permissions := a.getUserPermissions(user.ID, lang)
 
 	return loginResponse{User: userResponse, HotelID: hotelID, Permissions: permissions}, nil
 }
 
-func (a *AuthModule) getUserPermissions(userID uint) []models.UserPermissionInfo {
+func (a *AuthModule) getUserPermissions(userID uint, lang string) []models.UserPermissionInfo {
 	var userPerms []models.UserPermission
 	if err := a.Db.Preload("Permission").Where("user_id = ?", userID).Find(&userPerms).Error; err != nil {
 		return nil
@@ -55,11 +59,12 @@ func (a *AuthModule) getUserPermissions(userID uint) []models.UserPermissionInfo
 
 	result := make([]models.UserPermissionInfo, 0, len(userPerms))
 	for _, up := range userPerms {
+		models.ApplyTranslationOnTranslatable(&up.Permission, lang)
 		result = append(result, models.UserPermissionInfo{
 			PermissionID: up.PermissionID,
 			Page:         up.Permission.Page,
 			Action:       up.Permission.Action,
-			Label:        up.Permission.Label,
+			Label:        up.Permission.Name,
 			Category:     up.Permission.Category,
 			Granted:      up.Granted,
 		})

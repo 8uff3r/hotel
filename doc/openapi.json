@@ -1645,6 +1645,33 @@
 					"hotelId": {
 						"type": "string"
 					},
+					"permissions": {
+						"items": {
+							"properties": {
+								"action": {
+									"type": "string"
+								},
+								"category": {
+									"type": "string"
+								},
+								"granted": {
+									"type": "boolean"
+								},
+								"label": {
+									"type": "string"
+								},
+								"page": {
+									"type": "string"
+								},
+								"permissionId": {
+									"minimum": 0,
+									"type": "integer"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					},
 					"user": {
 						"properties": {
 							"email": {
@@ -3133,6 +3160,105 @@
 				},
 				"type": "object"
 			},
+			"PaginatedResponse_models.SanitizedUser": {
+				"description": "PaginatedResponse_models.SanitizedUser schema",
+				"properties": {
+					"data": {
+						"items": {
+							"properties": {
+								"email": {
+									"type": "string"
+								},
+								"firstName": {
+									"type": "string"
+								},
+								"id": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"lastName": {
+									"type": "string"
+								},
+								"userHotels": {
+									"items": {
+										"properties": {
+											"hotel": {
+												"properties": {
+													"address": {
+														"type": "string"
+													},
+													"email": {
+														"type": "string"
+													},
+													"id": {
+														"type": "string"
+													},
+													"name": {
+														"type": "string"
+													},
+													"phone": {
+														"type": "string"
+													}
+												},
+												"type": "object"
+											},
+											"hotelId": {
+												"type": "string"
+											},
+											"role": {
+												"properties": {
+													"hotelId": {
+														"nullable": true,
+														"type": "string"
+													},
+													"id": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"name": {
+														"type": "string"
+													},
+													"translation": {
+														"additionalProperties": {
+															"nullable": true,
+															"type": "string"
+														},
+														"nullable": true,
+														"type": "object"
+													}
+												},
+												"type": "object"
+											},
+											"roleId": {
+												"minimum": 0,
+												"type": "integer"
+											}
+										},
+										"type": "object"
+									},
+									"type": "array"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"limit": {
+						"type": "integer"
+					},
+					"page": {
+						"type": "integer"
+					},
+					"total": {
+						"format": "int64",
+						"type": "integer"
+					},
+					"totalPages": {
+						"type": "integer"
+					}
+				},
+				"type": "object"
+			},
 			"PaginatedResponse_models.Vehicle": {
 				"description": "PaginatedResponse_models.Vehicle schema",
 				"properties": {
@@ -3794,6 +3920,33 @@
 					"hotelId": {
 						"type": "string"
 					},
+					"permissions": {
+						"items": {
+							"properties": {
+								"action": {
+									"type": "string"
+								},
+								"category": {
+									"type": "string"
+								},
+								"granted": {
+									"type": "boolean"
+								},
+								"label": {
+									"type": "string"
+								},
+								"page": {
+									"type": "string"
+								},
+								"permissionId": {
+									"minimum": 0,
+									"type": "integer"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					},
 					"user": {
 						"properties": {
 							"email": {
@@ -3877,9 +4030,128 @@
 			"okResponse": {
 				"description": "okResponse schema"
 			},
+			"permissionsResponse": {
+				"description": "permissionsResponse schema",
+				"properties": {
+					"data": {
+						"items": {
+							"properties": {
+								"action": {
+									"type": "string"
+								},
+								"category": {
+									"type": "string"
+								},
+								"hotelId": {
+									"nullable": true,
+									"type": "string"
+								},
+								"id": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"name": {
+									"type": "string"
+								},
+								"page": {
+									"type": "string"
+								},
+								"translation": {
+									"additionalProperties": {
+										"nullable": true,
+										"type": "string"
+									},
+									"nullable": true,
+									"type": "object"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"setPermissionDto": {
+				"description": "setPermissionDto schema",
+				"properties": {
+					"granted": {
+						"type": "boolean"
+					}
+				},
+				"type": "object"
+			},
 			"string": {
 				"description": "string schema",
 				"type": "string"
+			},
+			"templatesResponse": {
+				"description": "templatesResponse schema",
+				"properties": {
+					"data": {
+						"items": {
+							"properties": {
+								"description": {
+									"type": "string"
+								},
+								"id": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"name": {
+									"type": "string"
+								},
+								"permissions": {
+									"items": {
+										"properties": {
+											"action": {
+												"type": "string"
+											},
+											"category": {
+												"type": "string"
+											},
+											"hotelId": {
+												"nullable": true,
+												"type": "string"
+											},
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"name": {
+												"type": "string"
+											},
+											"page": {
+												"type": "string"
+											},
+											"translation": {
+												"additionalProperties": {
+													"nullable": true,
+													"type": "string"
+												},
+												"nullable": true,
+												"type": "object"
+											}
+										},
+										"type": "object"
+									},
+									"type": "array"
+								},
+								"translation": {
+									"additionalProperties": {
+										"nullable": true,
+										"type": "string"
+									},
+									"nullable": true,
+									"type": "object"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
 			},
 			"unknown-interface": {
 				"description": "unknown-interface schema"
@@ -3905,88 +4177,39 @@
 			"userCreateResponse": {
 				"description": "userCreateResponse schema"
 			},
-			"userListResponse": {
-				"description": "userListResponse schema",
+			"userPermissionsResponse": {
+				"description": "userPermissionsResponse schema",
 				"properties": {
-					"data": {
+					"permissions": {
 						"items": {
 							"properties": {
-								"email": {
+								"action": {
 									"type": "string"
 								},
-								"firstName": {
+								"category": {
 									"type": "string"
 								},
-								"id": {
+								"granted": {
+									"type": "boolean"
+								},
+								"label": {
+									"type": "string"
+								},
+								"page": {
+									"type": "string"
+								},
+								"permissionId": {
 									"minimum": 0,
 									"type": "integer"
-								},
-								"lastName": {
-									"type": "string"
-								},
-								"userHotels": {
-									"items": {
-										"properties": {
-											"hotel": {
-												"properties": {
-													"address": {
-														"type": "string"
-													},
-													"email": {
-														"type": "string"
-													},
-													"id": {
-														"type": "string"
-													},
-													"name": {
-														"type": "string"
-													},
-													"phone": {
-														"type": "string"
-													}
-												},
-												"type": "object"
-											},
-											"hotelId": {
-												"type": "string"
-											},
-											"role": {
-												"properties": {
-													"hotelId": {
-														"nullable": true,
-														"type": "string"
-													},
-													"id": {
-														"minimum": 0,
-														"type": "integer"
-													},
-													"name": {
-														"type": "string"
-													},
-													"translation": {
-														"additionalProperties": {
-															"nullable": true,
-															"type": "string"
-														},
-														"nullable": true,
-														"type": "object"
-													}
-												},
-												"type": "object"
-											},
-											"roleId": {
-												"minimum": 0,
-												"type": "integer"
-											}
-										},
-										"type": "object"
-									},
-									"type": "array"
 								}
 							},
 							"type": "object"
 						},
 						"type": "array"
+					},
+					"userId": {
+						"minimum": 0,
+						"type": "integer"
 					}
 				},
 				"type": "object"
@@ -7483,6 +7706,487 @@
 				]
 			}
 		},
+		"/api/permissions/": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/permissions.(*PermissionsModule).permissionsList`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/permissions/",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/permissionsResponse"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/permissionsResponse"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "permissions list",
+				"tags": [
+					"/PERMISSIONS"
+				]
+			}
+		},
+		"/api/permissions/templates": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/permissions.(*PermissionsModule).templatesList`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/permissions/templates",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/templatesResponse"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/templatesResponse"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "templates list",
+				"tags": [
+					"/PERMISSIONS"
+				]
+			}
+		},
+		"/api/permissions/user/{userId}": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/permissions.(*PermissionsModule).userPermissions`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/permissions/user/:userId",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/userPermissionsResponse"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/userPermissionsResponse"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "user permissions",
+				"tags": [
+					"/PERMISSIONS"
+				]
+			}
+		},
+		"/api/permissions/user/{userId}/permission/{permissionId}": {
+			"delete": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/permissions.(*PermissionsModule).removeUserPermission`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "DELETE_/api/permissions/user/:userId/permission/:permissionId",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "permissionId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/string"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/string"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "remove user permission",
+				"tags": [
+					"/PERMISSIONS"
+				]
+			}
+		},
+		"/api/permissions/user/{userId}/template/{templateId}": {
+			"post": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/permissions.(*PermissionsModule).applyTemplate`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "POST_/api/permissions/user/:userId/template/:templateId",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "templateId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/string"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/string"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "apply template",
+				"tags": [
+					"/PERMISSIONS"
+				]
+			}
+		},
+		"/api/permissions/user/{userId}/{permissionId}": {
+			"post": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/permissions.(*PermissionsModule).setUserPermission`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "POST_/api/permissions/user/:userId/:permissionId",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "permissionId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"*/*": {
+							"schema": {
+								"$ref": "#/components/schemas/setPermissionDto"
+							}
+						}
+					},
+					"description": "Request body for permissions.setPermissionDto",
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/string"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/string"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "set user permission",
+				"tags": [
+					"/PERMISSIONS"
+				]
+			}
+		},
 		"/api/readyz": {
 			"get": {
 				"description": "#### Controller: \n\n`hotel/internal/httpapi/_system.ready`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n\n---\n\n",
@@ -8696,12 +9400,12 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/userListResponse"
+									"$ref": "#/components/schemas/PaginatedResponse_models.SanitizedUser"
 								}
 							},
 							"application/xml": {
 								"schema": {
-									"$ref": "#/components/schemas/userListResponse"
+									"$ref": "#/components/schemas/PaginatedResponse_models.SanitizedUser"
 								}
 							}
 						},
@@ -8850,6 +9554,9 @@
 		},
 		{
 			"name": "/PARKING"
+		},
+		{
+			"name": "/PERMISSIONS"
 		},
 		{
 			"name": "/RESERVATION"

@@ -111,8 +111,12 @@ func New(cfg config.Config) (*App, error) {
 
 	apiGroup := fuego.Group(srv, "/api")
 	SetupRouter(&api, apiGroup, PathModuleMap{
-		"/":            system.SystemModule{},
-		"/auth":        auth.AuthModule{},
+		"/":     system.SystemModule{},
+		"/auth": auth.AuthModule{},
+	})
+
+	fuego.Use(apiGroup, api.AuthMiddleware)
+	SetupRouter(&api, apiGroup, PathModuleMap{
 		"/users":       users.UsersModule{},
 		"/rooms":       rooms.RoomsModule{},
 		"/guests":      guests.GuestsModule{},
@@ -120,14 +124,8 @@ func New(cfg config.Config) (*App, error) {
 		"/accounting":  accounting.AccountingModule{},
 		"/reservation": reservation.ReservationModule{},
 		"/hotels":      hotels.HotelsModule{},
+		"/permissions": permissions.PermissionsModule{},
 	})
-
-	apiGroup2 := fuego.Group(srv, "/api/permissions")
-	permsModule := permissions.PermissionsModule{&api}
-	permsModule.RegisterRoutes(&api, apiGroup2)
-
-	fuego.Use(apiGroup, api.AuthMiddleware)
-	fuego.Use(apiGroup2, api.AuthMiddleware)
 
 	spaGroup := fuego.Group(srv, "/")
 	spaGroup.Mux.Handle("/", spa.SPAHandler())

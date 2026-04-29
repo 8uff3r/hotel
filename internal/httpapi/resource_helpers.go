@@ -106,8 +106,8 @@ func listModel[T any](db *gorm.DB, model T, preload []string, translate bool, tr
 			lang = "fa"
 		}
 		if translate {
-			applyTranslations(&out, lang)
-			applyFieldTranslations(&out, lang)
+			models.ApplyTranslations(&out, lang)
+			models.ApplyFieldTranslations(&out, lang)
 		}
 
 		totalPages := int((total + int64(limit) - 1) / int64(limit))
@@ -124,7 +124,7 @@ func applyTranslationsReflection[T any](items *[]T, lang string) {
 	for i := range *items {
 		item := &(*items)[i]
 		if translatable, ok := any(item).(models.Translatable); ok {
-			applyTranslationOnTranslatable(translatable, lang)
+			models.ApplyTranslationOnTranslatable(translatable, lang)
 		}
 	}
 }
@@ -175,8 +175,8 @@ func getModel[T any](db *gorm.DB, model T, preload []string, translate bool) Fue
 		}
 		slice := []T{entity}
 		if translate {
-			applyTranslations(&slice, lang)
-			applyFieldTranslations(&slice, lang)
+			models.ApplyTranslations(&slice, lang)
+			models.ApplyFieldTranslations(&slice, lang)
 		}
 		return slice[0], nil
 	}
@@ -251,36 +251,4 @@ func BindAndValidate[T any](model *T, w http.ResponseWriter, r *http.Request) er
 		return err
 	}
 	return nil
-}
-func applyTranslationOnTranslatable(t models.Translatable, lang string) {
-	translations := t.GetTranslation()
-	if lang != "en" {
-		if translated, exists := translations[lang]; exists {
-			t.SetName(translated)
-		}
-	}
-	t.ClearTranslation()
-}
-
-func applyTranslations[T any](items *[]T, lang string) {
-	for i := range *items {
-		item := &(*items)[i]
-		if translatable, ok := any(item).(models.Translatable); ok {
-			applyTranslationOnTranslatable(translatable, lang)
-		}
-	}
-}
-
-func applyFieldTranslations[T any](items *[]T, lang string) {
-	for i := range *items {
-		item := &(*items)[i]
-
-		if container, ok := any(item).(models.HasTranslatables); ok {
-			translatables := container.GetTranslatables()
-
-			for _, tr := range translatables {
-				applyTranslationOnTranslatable(tr, lang)
-			}
-		}
-	}
 }

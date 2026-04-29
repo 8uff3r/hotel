@@ -1,0 +1,120 @@
+{
+  "Amenity": {
+    "WiFi": { "fa": "وای‌فای" },
+    "TV": { "fa": "تلویزیون" },
+    "Air Conditioning": { "fa": "تهویه مطبوع" },
+    "Mini Bar": { "fa": "مینی‌بار" },
+    "Safe": { "fa": "گاوصندوق" },
+    "Ocean View": { "fa": "نمای اقیانوس" },
+    "City View": { "fa": "نمای شهر" },
+    "Balcony": { "fa": "بالکن" },
+    "Jacuzzi": { "fa": "جکوزی" },
+    "Room Service": { "fa": "سرویس اتاق" }
+  },
+
+  "ParkingSpotType": {
+    "Standard": { "fa": "استاندارد" },
+    "Handicap": { "fa": "مخصوص معلولین" },
+    "Electric": { "fa": "شارژ خودرو برقی" },
+    "Compact": { "fa": "خودرو کوچک" },
+    "Large": { "fa": "خودرو بزرگ" }
+  },
+
+  "ParkingSpotStatus": {
+    "Available": { "fa": "در دسترس" },
+    "Occupied": { "fa": "اشغال شده" },
+    "Reserved": { "fa": "رزرو شده" },
+    "Maintenance": { "fa": "در حال تعمیر" }
+  },
+
+  "RoomStatus": {
+    "Available": { "fa": "در دسترس" },
+    "Occupied": { "fa": "اشغال شده" },
+    "Reserved": { "fa": "رزرو شده" },
+    "Maintenance": { "fa": "در حال تعمیر" }
+  },
+
+  "RoomType": {
+    "Single": { "fa": "تکی" },
+    "Double": { "fa": "دو تخته" },
+    "Suite": { "fa": "سوئیت" },
+    "Deluxe": { "fa": "دلوکس" }
+  },
+
+  "Role": {
+    "admin": { "fa": "ادمین" },
+    "staff": { "fa": "کارمند" },
+    "receptionist": { "fa": "پذیرش" },
+    "housekeeper": { "fa": "خانه‌دار" }
+  },
+
+  "Permission": {
+    "View Dashboard": { "fa": "مشاهده داشبورد" },
+
+    "View Guests": { "fa": "مشاهده مهمانان" },
+    "Create Guest": { "fa": "ایجاد مهمان" },
+    "Update Guest": { "fa": "ویرایش مهمان" },
+    "Delete Guest": { "fa": "حذف مهمان" },
+    "Export Guests": { "fa": "خروجی مهمانان" },
+    "View Guest Settlement": { "fa": "مشاهده تسویه مهمان" },
+
+    "View Rooms": { "fa": "مشاهده اتاق‌ها" },
+    "Create Room": { "fa": "ایجاد اتاق" },
+    "Update Room": { "fa": "ویرایش اتاق" },
+    "Delete Room": { "fa": "حذف اتاق" },
+    "View Room Rack": { "fa": "مشاهده رک اتاق" },
+
+    "View Reservations": { "fa": "مشاهده رزروها" },
+    "Create Reservation": { "fa": "ایجاد رزرو" },
+    "Update Reservation": { "fa": "ویرایش رزرو" },
+    "Delete Reservation": { "fa": "حذف رزرو" },
+
+    "View Users": { "fa": "مشاهده کاربران" },
+    "Create User": { "fa": "ایجاد کاربر" },
+    "Update User": { "fa": "ویرایش کاربر" },
+    "Delete User": { "fa": "حذف کاربر" },
+
+    "View Accounting": { "fa": "مشاهده حسابداری" },
+    "View Accounts": { "fa": "مشاهده حساب‌ها" },
+    "Create Account": { "fa": "ایجاد حساب" },
+    "Update Account": { "fa": "ویرایش حساب" },
+    "Delete Account": { "fa": "حذف حساب" },
+    "View Expenses": { "fa": "مشاهده هزینه‌ها" },
+    "Create Expense": { "fa": "ایجاد هزینه" },
+    "Update Expense": { "fa": "ویرایش هزینه" },
+    "Delete Expense": { "fa": "حذف هزینه" },
+    "Export Expenses": { "fa": "خروجی هزینه‌ها" },
+    "View Income": { "fa": "مشاهده درآمدها" },
+    "Create Income": { "fa": "ایجاد درآمد" },
+    "Update Income": { "fa": "ویرایش درآمد" },
+    "Delete Income": { "fa": "حذف درآمد" },
+    "Export Income": { "fa": "خروجی درآمدها" },
+
+    "View Parking": { "fa": "مشاهده پارکینگ" },
+    "View Parking Lots": { "fa": "مشاهده طبقات پارکینگ" },
+    "Create Parking Lot": { "fa": "ایجاد طبقه پارکینگ" },
+    "Update Parking Lot": { "fa": "ویرایش طبقه پارکینگ" },
+    "Delete Parking Lot": { "fa": "حذف طبقه پارکینگ" },
+    "View Parking Spots": { "fa": "مشاهده جای پارک" },
+    "Create Parking Spot": { "fa": "ایجاد جای پارک" },
+    "Update Parking Spot": { "fa": "ویرایش جای پارک" },
+    "Delete Parking Spot": { "fa": "حذف جای پارک" },
+    "View Vehicles": { "fa": "مشاهده خودروها" },
+    "Create Vehicle": { "fa": "ایجاد خودرو" },
+    "Update Vehicle": { "fa": "ویرایش خودرو" },
+    "Delete Vehicle": { "fa": "حذف خودرو" },
+    "View Parking Transactions": { "fa": "مشاهده تراکنش‌های پارکینگ" },
+    "Create Parking Transaction": { "fa": "ایجاد تراکنش پارکینگ" },
+    "Update Parking Transaction": { "fa": "ویرایش تراکنش پارکینگ" },
+    "Export Parking Transactions": { "fa": "خروجی تراکنش‌های پارکینگ" },
+    "Parking Check-In": { "fa": "ورود خودرو" }
+  },
+
+  "PermissionTemplate": {
+    "admin": { "fa": "مدیر کل" },
+    "manager": { "fa": "مدیر" },
+    "receptionist": { "fa": "پذیرش" },
+    "staff": { "fa": "کارمند" },
+    "housekeeper": { "fa": "خانه‌دار" }
+  }
+}

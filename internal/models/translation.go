@@ -45,3 +45,36 @@ func (t *Translation) Scan(value any) error {
 func (t Translation) Value() (driver.Value, error) {
 	return json.Marshal(t)
 }
+
+func ApplyTranslationOnTranslatable(t Translatable, lang string) {
+	translations := t.GetTranslation()
+	if lang != "en" {
+		if translated, exists := translations[lang]; exists {
+			t.SetName(translated)
+		}
+	}
+	t.ClearTranslation()
+}
+
+func ApplyTranslations[T any](items *[]T, lang string) {
+	for i := range *items {
+		item := &(*items)[i]
+		if translatable, ok := any(item).(Translatable); ok {
+			ApplyTranslationOnTranslatable(translatable, lang)
+		}
+	}
+}
+
+func ApplyFieldTranslations[T any](items *[]T, lang string) {
+	for i := range *items {
+		item := &(*items)[i]
+
+		if container, ok := any(item).(HasTranslatables); ok {
+			translatables := container.GetTranslatables()
+
+			for _, tr := range translatables {
+				ApplyTranslationOnTranslatable(tr, lang)
+			}
+		}
+	}
+}

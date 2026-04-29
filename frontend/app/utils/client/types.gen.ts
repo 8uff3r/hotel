@@ -539,6 +539,14 @@ export type Income = {
  */
 export type MeResponse = {
     hotelId?: string;
+    permissions?: Array<{
+        action?: string;
+        category?: string;
+        granted?: boolean;
+        label?: string;
+        page?: string;
+        permissionId?: number;
+    }>;
     user?: {
         email?: string;
         firstName?: string;
@@ -1034,6 +1042,41 @@ export type PaginatedResponseModelsRoomType = {
 };
 
 /**
+ * PaginatedResponse_models.SanitizedUser schema
+ */
+export type PaginatedResponseModelsSanitizedUser = {
+    data?: Array<{
+        email?: string;
+        firstName?: string;
+        id?: number;
+        lastName?: string;
+        userHotels?: Array<{
+            hotel?: {
+                address?: string;
+                email?: string;
+                id?: string;
+                name?: string;
+                phone?: string;
+            };
+            hotelId?: string;
+            role?: {
+                hotelId?: string;
+                id?: number;
+                name?: string;
+                translation?: {
+                    [key: string]: string;
+                };
+            };
+            roleId?: number;
+        }>;
+    }>;
+    limit?: number;
+    page?: number;
+    total?: number;
+    totalPages?: number;
+};
+
+/**
  * PaginatedResponse_models.Vehicle schema
  */
 export type PaginatedResponseModelsVehicle = {
@@ -1270,6 +1313,14 @@ export type LoginDto = {
  */
 export type LoginResponse = {
     hotelId?: string;
+    permissions?: Array<{
+        action?: string;
+        category?: string;
+        granted?: boolean;
+        label?: string;
+        page?: string;
+        permissionId?: number;
+    }>;
     user?: {
         email?: string;
         firstName?: string;
@@ -1303,9 +1354,49 @@ export type LoginResponse = {
 export type OkResponse = unknown;
 
 /**
+ * permissionsResponse schema
+ */
+export type PermissionsResponse = {
+    data?: Array<{
+        action?: string;
+        category?: string;
+        hotelId?: string;
+        id?: number;
+        label?: string;
+        page?: string;
+    }>;
+};
+
+/**
+ * setPermissionDto schema
+ */
+export type SetPermissionDto = {
+    granted?: boolean;
+};
+
+/**
  * string schema
  */
 export type String = string;
+
+/**
+ * templatesResponse schema
+ */
+export type TemplatesResponse = {
+    data?: Array<{
+        description?: string;
+        id?: number;
+        name?: string;
+        permissions?: Array<{
+            action?: string;
+            category?: string;
+            hotelId?: string;
+            id?: number;
+            label?: string;
+            page?: string;
+        }>;
+    }>;
+};
 
 /**
  * unknown-interface schema
@@ -1328,34 +1419,18 @@ export type UserCreateDto = {
 export type UserCreateResponse = unknown;
 
 /**
- * userListResponse schema
+ * userPermissionsResponse schema
  */
-export type UserListResponse = {
-    data?: Array<{
-        email?: string;
-        firstName?: string;
-        id?: number;
-        lastName?: string;
-        userHotels?: Array<{
-            hotel?: {
-                address?: string;
-                email?: string;
-                id?: string;
-                name?: string;
-                phone?: string;
-            };
-            hotelId?: string;
-            role?: {
-                hotelId?: string;
-                id?: number;
-                name?: string;
-                translation?: {
-                    [key: string]: string;
-                };
-            };
-            roleId?: number;
-        }>;
+export type UserPermissionsResponse = {
+    permissions?: Array<{
+        action?: string;
+        category?: string;
+        granted?: boolean;
+        label?: string;
+        page?: string;
+        permissionId?: number;
     }>;
+    userId?: number;
 };
 
 export type GetApiAccountingAccountsData = {
@@ -2930,6 +3005,218 @@ export type PutApiParkingVehiclesIdResponses = {
 
 export type PutApiParkingVehiclesIdResponse = PutApiParkingVehiclesIdResponses[keyof PutApiParkingVehiclesIdResponses];
 
+export type GetApiPermissionsData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/permissions/';
+};
+
+export type GetApiPermissionsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiPermissionsError = GetApiPermissionsErrors[keyof GetApiPermissionsErrors];
+
+export type GetApiPermissionsResponses = {
+    /**
+     * OK
+     */
+    200: PermissionsResponse;
+};
+
+export type GetApiPermissionsResponse = GetApiPermissionsResponses[keyof GetApiPermissionsResponses];
+
+export type GetApiPermissionsTemplatesData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/permissions/templates';
+};
+
+export type GetApiPermissionsTemplatesErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiPermissionsTemplatesError = GetApiPermissionsTemplatesErrors[keyof GetApiPermissionsTemplatesErrors];
+
+export type GetApiPermissionsTemplatesResponses = {
+    /**
+     * OK
+     */
+    200: TemplatesResponse;
+};
+
+export type GetApiPermissionsTemplatesResponse = GetApiPermissionsTemplatesResponses[keyof GetApiPermissionsTemplatesResponses];
+
+export type GetApiPermissionsUserUserIdData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        userId: string;
+    };
+    query?: never;
+    url: '/api/permissions/user/{userId}';
+};
+
+export type GetApiPermissionsUserUserIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiPermissionsUserUserIdError = GetApiPermissionsUserUserIdErrors[keyof GetApiPermissionsUserUserIdErrors];
+
+export type GetApiPermissionsUserUserIdResponses = {
+    /**
+     * OK
+     */
+    200: UserPermissionsResponse;
+};
+
+export type GetApiPermissionsUserUserIdResponse = GetApiPermissionsUserUserIdResponses[keyof GetApiPermissionsUserUserIdResponses];
+
+export type DeleteApiPermissionsUserUserIdPermissionPermissionIdData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        userId: string;
+        permissionId: string;
+    };
+    query?: never;
+    url: '/api/permissions/user/{userId}/permission/{permissionId}';
+};
+
+export type DeleteApiPermissionsUserUserIdPermissionPermissionIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type DeleteApiPermissionsUserUserIdPermissionPermissionIdError = DeleteApiPermissionsUserUserIdPermissionPermissionIdErrors[keyof DeleteApiPermissionsUserUserIdPermissionPermissionIdErrors];
+
+export type DeleteApiPermissionsUserUserIdPermissionPermissionIdResponses = {
+    /**
+     * OK
+     */
+    200: String;
+};
+
+export type DeleteApiPermissionsUserUserIdPermissionPermissionIdResponse = DeleteApiPermissionsUserUserIdPermissionPermissionIdResponses[keyof DeleteApiPermissionsUserUserIdPermissionPermissionIdResponses];
+
+export type PostApiPermissionsUserUserIdTemplateTemplateIdData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        userId: string;
+        templateId: string;
+    };
+    query?: never;
+    url: '/api/permissions/user/{userId}/template/{templateId}';
+};
+
+export type PostApiPermissionsUserUserIdTemplateTemplateIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PostApiPermissionsUserUserIdTemplateTemplateIdError = PostApiPermissionsUserUserIdTemplateTemplateIdErrors[keyof PostApiPermissionsUserUserIdTemplateTemplateIdErrors];
+
+export type PostApiPermissionsUserUserIdTemplateTemplateIdResponses = {
+    /**
+     * OK
+     */
+    200: String;
+};
+
+export type PostApiPermissionsUserUserIdTemplateTemplateIdResponse = PostApiPermissionsUserUserIdTemplateTemplateIdResponses[keyof PostApiPermissionsUserUserIdTemplateTemplateIdResponses];
+
+export type PostApiPermissionsUserUserIdPermissionIdData = {
+    /**
+     * Request body for permissions.setPermissionDto
+     */
+    body: SetPermissionDto;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        userId: string;
+        permissionId: string;
+    };
+    query?: never;
+    url: '/api/permissions/user/{userId}/{permissionId}';
+};
+
+export type PostApiPermissionsUserUserIdPermissionIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PostApiPermissionsUserUserIdPermissionIdError = PostApiPermissionsUserUserIdPermissionIdErrors[keyof PostApiPermissionsUserUserIdPermissionIdErrors];
+
+export type PostApiPermissionsUserUserIdPermissionIdResponses = {
+    /**
+     * OK
+     */
+    200: String;
+};
+
+export type PostApiPermissionsUserUserIdPermissionIdResponse = PostApiPermissionsUserUserIdPermissionIdResponses[keyof PostApiPermissionsUserUserIdPermissionIdResponses];
+
 export type GetApiReadyzData = {
     body?: never;
     headers?: {
@@ -3494,7 +3781,7 @@ export type GetApiUsersResponses = {
     /**
      * OK
      */
-    200: UserListResponse;
+    200: PaginatedResponseModelsSanitizedUser;
 };
 
 export type GetApiUsersResponse = GetApiUsersResponses[keyof GetApiUsersResponses];

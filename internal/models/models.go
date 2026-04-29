@@ -46,47 +46,6 @@ type Role struct {
 	HotelID *string `json:"hotelId"`
 }
 
-type PermissionAction string
-
-const (
-	PermissionActionRead   PermissionAction = "read"
-	PermissionActionCreate PermissionAction = "create"
-	PermissionActionUpdate PermissionAction = "update"
-	PermissionActionDelete PermissionAction = "delete"
-	PermissionActionExport PermissionAction = "export"
-)
-
-type Permission struct {
-	Base
-	Page     string           `gorm:"not null;index" json:"page"`
-	Action   PermissionAction `gorm:"not null" json:"action"`
-	HotelID  *string          `json:"hotelId"`
-	Label    string           `gorm:"not null" json:"label"`
-	Category string           `gorm:"not null" json:"category"`
-}
-
-type PermissionTemplate struct {
-	Base
-	Name        string       `gorm:"not null" json:"name"`
-	Description string       `json:"description"`
-	Permissions []Permission `gorm:"many2many:template_permissions;" json:"permissions"`
-}
-
-type UserPermission struct {
-	Base
-	UserID       uint       `gorm:"not null;index" json:"userId"`
-	PermissionID uint       `gorm:"not null;index" json:"permissionId"`
-	Permission   Permission `gorm:"foreignKey:PermissionID" json:"permission"`
-	Granted      bool       `gorm:"not null;default:true" json:"granted"`
-}
-
-type UserTemplate struct {
-	Base
-	UserID     uint               `gorm:"not null;index" json:"userId"`
-	TemplateID uint               `gorm:"not null;index" json:"templateId"`
-	Template   PermissionTemplate `gorm:"foreignKey:TemplateID" json:"template"`
-}
-
 type Session struct {
 	ID        string    `gorm:"primaryKey" json:"id"`
 	UserID    uint      `gorm:"not null;index" json:"userId"`
@@ -361,16 +320,16 @@ type SanitizedUserWithPermissions struct {
 }
 
 type UserPermissionInfo struct {
+	Label        string           `json:"label"`
 	PermissionID uint             `json:"permissionId"`
 	Page         string           `json:"page"`
 	Action       PermissionAction `json:"action"`
-	Label        string           `json:"label"`
 	Category     string           `json:"category"`
 	Granted      bool             `json:"granted"`
 }
 
 type UserTemplateInfo struct {
+	TranslateBase
 	TemplateID  uint   `json:"templateId"`
-	Name        string `json:"name"`
 	Description string `json:"description"`
 }

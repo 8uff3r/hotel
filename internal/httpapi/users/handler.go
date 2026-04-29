@@ -24,17 +24,27 @@ type userListResponse struct {
 	Data []models.SanitizedUser `json:"data"`
 }
 
-func (u *UsersModule) usersList(c fuego.ContextNoBody) (userListResponse, error) {
+func (u *UsersModule) usersList(c fuego.ContextNoBody) (h.PaginatedResponse[models.SanitizedUser], error) {
 	var rows []models.User
-	var zero userListResponse
-	if err := u.Db.WithContext(c).Model(&models.User{}).Order("id DESC").Find(&rows).Error; err != nil {
+	var zero h.PaginatedResponse[models.SanitizedUser]
+
+	page := c.QueryParamInt("page")
+	if page < 1 {
+		page = 1
+	}
+	limit := c.QueryParamInt("limit")
+	if limit < 1 || limit > 100 {
+		limit = 20
+	}
+	offset := (page - 1) * limit
+	if err := u.Db.WithContext(c).Model(&models.User{}).Order("id DESC").Limit(limit).Offset(offset).Find(&rows).Error; err != nil {
 		return zero, fuego.InternalServerError{Title: "query_failed"}
 	}
 	out := make([]models.SanitizedUser, 0, len(rows))
 	for i := range rows {
 		out = append(out, h.SanitizeUser(&rows[i]))
 	}
-	return userListResponse{Data: out}, nil
+	return h.PaginatedResponse[models.SanitizedUser]{Data: out}, nil
 }
 
 type userCreateDto struct {

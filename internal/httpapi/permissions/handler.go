@@ -23,14 +23,13 @@ type templatesResponse struct {
 
 func (m PermissionsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	pm := PermissionsModule{api}
-	group := fuego.Group(s, "/permissions")
 
-	fuego.Get(group, "/", pm.permissionsList)
-	fuego.Get(group, "/templates", pm.templatesList)
-	fuego.Get(group, "/user/{userId}", pm.userPermissions)
-	fuego.Post(group, "/user/{userId}", pm.setUserPermission)
-	fuego.Post(group, "/user/{userId}/template/{templateId}", pm.applyTemplate)
-	fuego.Delete(group, "/user/{userId}/permission/{permissionId}", pm.removeUserPermission)
+	fuego.Get(s, "/", pm.permissionsList)
+	fuego.Get(s, "/templates", pm.templatesList)
+	fuego.Get(s, "/user/{userId}", pm.userPermissions)
+	fuego.Post(s, "/user/{userId}/{permissionId}", pm.setUserPermission)
+	fuego.Post(s, "/user/{userId}/template/{templateId}", pm.applyTemplate)
+	fuego.Delete(s, "/user/{userId}/permission/{permissionId}", pm.removeUserPermission)
 }
 
 func (pm *PermissionsModule) permissionsList(c fuego.ContextNoBody) (permissionsResponse, error) {
@@ -68,6 +67,11 @@ type userPermissionsResponse struct {
 
 func (pm *PermissionsModule) userPermissions(c fuego.ContextNoBody) (userPermissionsResponse, error) {
 	userID := c.PathParam("userId")
+
+	lang := c.Header("Accept-Language")
+	if lang == "" {
+		lang = "fa"
+	}
 	var zero userPermissionsResponse
 
 	uid, err := strconv.ParseUint(userID, 10, 32)
@@ -82,11 +86,12 @@ func (pm *PermissionsModule) userPermissions(c fuego.ContextNoBody) (userPermiss
 
 	result := make([]models.UserPermissionInfo, 0, len(userPerms))
 	for _, up := range userPerms {
+		models.ApplyTranslationOnTranslatable(&up.Permission, lang)
 		result = append(result, models.UserPermissionInfo{
 			PermissionID: up.PermissionID,
 			Page:         up.Permission.Page,
 			Action:       up.Permission.Action,
-			Label:        up.Permission.Label,
+			Label:        up.Permission.Name,
 			Category:     up.Permission.Category,
 			Granted:      up.Granted,
 		})
@@ -231,24 +236,4 @@ func (pm *PermissionsModule) allPermissionsAndTemplates(c fuego.ContextNoBody) (
 	}
 
 	return allPermissionsResponse{Permissions: perms, Templates: tpls}, nil
-}
-
-func (pm *PermissionsModule) getUserPermissionsList(userID uint) ([]models.UserPermissionInfo, error) {
-	var userPerms []models.UserPermission
-	if err := pm.Db.Preload("Permission").Where("user_id = ?", userID).Find(&userPerms).Error; err != nil {
-		return nil, err
-	}
-
-	result := make([]models.UserPermissionInfo, 0, len(userPerms))
-	for _, up := range userPerms {
-		result = append(result, models.UserPermissionInfo{
-			PermissionID: up.PermissionID,
-			Page:         up.Permission.Page,
-			Action:       up.Permission.Action,
-			Label:        up.Permission.Label,
-			Category:     up.Permission.Category,
-			Granted:      up.Granted,
-		})
-	}
-	return result, nil
 }

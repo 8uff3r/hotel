@@ -7,6 +7,7 @@ import (
 	app "hotel/app"
 	"hotel/internal/config"
 	"hotel/internal/db"
+	"hotel/internal/db/seed"
 
 	"github.com/spf13/cobra"
 )
@@ -43,7 +44,7 @@ var seedCmd = &cobra.Command{
 		if err != nil {
 			panic("Couldn't connect to the database")
 		}
-		db.Seed(database)
+		seed.Seed(database)
 		slog.Info("Seeding Complete")
 	},
 }

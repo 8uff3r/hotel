@@ -66,25 +66,11 @@
           </div>
         </template>
 
-        <template #roles-cell="{ row }">
-          <div class="flex flex-wrap gap-1">
-            <UBadge
-              v-for="role in row.original.roles"
-              :key="role"
-              :color="getRoleColor(role)"
-              variant="soft"
-              size="sm"
-            >
-              {{ formatRole(role) }}
-            </UBadge>
-          </div>
-        </template>
-
-        <template #status-cell="{ row }">
+        <!-- <template #status-cell="{ row }">
           <UBadge :color="row.original.isActive ? 'success' : 'error'" variant="soft">
             {{ row.original.isActive ? t("statuses.active") : t("statuses.inactive") }}
           </UBadge>
-        </template>
+        </template> -->
 
         <template #actions-cell="{ row }">
           <div class="flex items-center gap-2">
@@ -119,27 +105,19 @@
 
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
+import type { PaginatedResponseModelsSanitizedUser } from "~/utils/client";
 
 definePageMeta({
   requiresRole: ["admin"],
 });
 
-interface UserRow {
-  id: number;
-  email: string;
-  firstName: string;
-  lastName: string;
-  isActive: boolean;
-  roles: string[];
-}
+type User = NonNullable<PaginatedResponseModelsSanitizedUser["data"]>[0];
 
 const { t } = useI18n();
-const columns = computed<TableColumn<UserRow>[]>(() => [
-  { accessorKey: "id", header: t("users.columns.id") },
-  { accessorKey: "name", header: t("users.columns.name") },
-  { accessorKey: "roles", header: t("users.columns.roles") },
-  { accessorKey: "status", header: t("users.columns.status") },
-  { accessorKey: "actions", header: t("users.columns.actions") },
+const columns = computed<TableColumn<User>[]>(() => [
+  { accessorKey: "id", header: t("id") },
+  { accessorKey: "name", header: t("name") },
+  { accessorKey: "actions", header: t("actions") },
 ]);
 
 const roleOptions = computed(() => [
@@ -156,7 +134,7 @@ const statusOptions = computed(() => [
   { value: "inactive", label: t("statuses.inactive") },
 ]);
 
-const users = ref<UserRow[]>([]);
+const users = ref<User[]>([]);
 const loading = ref(false);
 const page = ref(1);
 
@@ -192,22 +170,18 @@ const fetchUsers = async () => {
 
     if (filters.search) params.append("search", filters.search);
 
-    const response = await $fetch(`/api/users?${params.toString()}`);
+    const response = await getApiUsers({});
 
     let filteredData = response.data;
 
-    if (filters.role && filters.role !== "all") {
-      filteredData = filteredData.filter((u: UserRow) => u.roles.includes(filters.role));
-    }
-
     if (filters.status && filters.status !== "all") {
       const isActive = filters.status === "active";
-      filteredData = filteredData.filter((u: UserRow) => u.isActive === isActive);
+      filteredData = filteredData?.filter((u) => u.isActive === isActive);
     }
 
-    users.value = filteredData;
-    pagination.total = response.pagination.total;
-    pagination.totalPages = response.pagination.totalPages;
+    users.value = filteredData ?? [];
+    pagination.total = response.total ?? 0;
+    pagination.totalPages = response.totalPages ?? 1;
   } catch (error) {
     console.error("Failed to fetch users:", error);
   } finally {

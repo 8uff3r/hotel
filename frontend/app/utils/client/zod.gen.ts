@@ -484,6 +484,14 @@ export const zIncome = z.object({
  */
 export const zMeResponse = z.object({
     hotelId: z.string().optional(),
+    permissions: z.array(z.object({
+        action: z.string().optional(),
+        category: z.string().optional(),
+        granted: z.boolean().optional(),
+        label: z.string().optional(),
+        page: z.string().optional(),
+        permissionId: z.int().gte(0).optional()
+    })).optional(),
     user: z.object({
         email: z.string().optional(),
         firstName: z.string().optional(),
@@ -949,6 +957,39 @@ export const zPaginatedResponseModelsRoomType = z.object({
 });
 
 /**
+ * PaginatedResponse_models.SanitizedUser schema
+ */
+export const zPaginatedResponseModelsSanitizedUser = z.object({
+    data: z.array(z.object({
+        email: z.string().optional(),
+        firstName: z.string().optional(),
+        id: z.int().gte(0).optional(),
+        lastName: z.string().optional(),
+        userHotels: z.array(z.object({
+            hotel: z.object({
+                address: z.string().optional(),
+                email: z.string().optional(),
+                id: z.string().optional(),
+                name: z.string().optional(),
+                phone: z.string().optional()
+            }).optional(),
+            hotelId: z.string().optional(),
+            role: z.object({
+                hotelId: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                name: z.string().optional(),
+                translation: z.record(z.string(), z.string()).optional()
+            }).optional(),
+            roleId: z.int().gte(0).optional()
+        })).optional()
+    })).optional(),
+    limit: z.int().optional(),
+    page: z.int().optional(),
+    total: z.coerce.bigint().min(BigInt('-9223372036854775808'), { error: 'Invalid value: Expected int64 to be >= -9223372036854775808' }).max(BigInt('9223372036854775807'), { error: 'Invalid value: Expected int64 to be <= 9223372036854775807' }).optional(),
+    totalPages: z.int().optional()
+});
+
+/**
  * PaginatedResponse_models.Vehicle schema
  */
 export const zPaginatedResponseModelsVehicle = z.object({
@@ -1173,6 +1214,14 @@ export const zLoginDto = z.object({
  */
 export const zLoginResponse = z.object({
     hotelId: z.string().optional(),
+    permissions: z.array(z.object({
+        action: z.string().optional(),
+        category: z.string().optional(),
+        granted: z.boolean().optional(),
+        label: z.string().optional(),
+        page: z.string().optional(),
+        permissionId: z.int().gte(0).optional()
+    })).optional(),
     user: z.object({
         email: z.string().optional(),
         firstName: z.string().optional(),
@@ -1204,9 +1253,49 @@ export const zLoginResponse = z.object({
 export const zOkResponse = z.unknown();
 
 /**
+ * permissionsResponse schema
+ */
+export const zPermissionsResponse = z.object({
+    data: z.array(z.object({
+        action: z.string().optional(),
+        category: z.string().optional(),
+        hotelId: z.string().optional(),
+        id: z.int().gte(0).optional(),
+        label: z.string().optional(),
+        page: z.string().optional()
+    })).optional()
+});
+
+/**
+ * setPermissionDto schema
+ */
+export const zSetPermissionDto = z.object({
+    granted: z.boolean().optional()
+});
+
+/**
  * string schema
  */
 export const zString = z.string();
+
+/**
+ * templatesResponse schema
+ */
+export const zTemplatesResponse = z.object({
+    data: z.array(z.object({
+        description: z.string().optional(),
+        id: z.int().gte(0).optional(),
+        name: z.string().optional(),
+        permissions: z.array(z.object({
+            action: z.string().optional(),
+            category: z.string().optional(),
+            hotelId: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            page: z.string().optional()
+        })).optional()
+    })).optional()
+});
 
 /**
  * unknown-interface schema
@@ -1229,32 +1318,18 @@ export const zUserCreateDto = z.object({
 export const zUserCreateResponse = z.unknown();
 
 /**
- * userListResponse schema
+ * userPermissionsResponse schema
  */
-export const zUserListResponse = z.object({
-    data: z.array(z.object({
-        email: z.string().optional(),
-        firstName: z.string().optional(),
-        id: z.int().gte(0).optional(),
-        lastName: z.string().optional(),
-        userHotels: z.array(z.object({
-            hotel: z.object({
-                address: z.string().optional(),
-                email: z.string().optional(),
-                id: z.string().optional(),
-                name: z.string().optional(),
-                phone: z.string().optional()
-            }).optional(),
-            hotelId: z.string().optional(),
-            role: z.object({
-                hotelId: z.string().optional(),
-                id: z.int().gte(0).optional(),
-                name: z.string().optional(),
-                translation: z.record(z.string(), z.string()).optional()
-            }).optional(),
-            roleId: z.int().gte(0).optional()
-        })).optional()
-    })).optional()
+export const zUserPermissionsResponse = z.object({
+    permissions: z.array(z.object({
+        action: z.string().optional(),
+        category: z.string().optional(),
+        granted: z.boolean().optional(),
+        label: z.string().optional(),
+        page: z.string().optional(),
+        permissionId: z.int().gte(0).optional()
+    })).optional(),
+    userId: z.int().gte(0).optional()
 });
 
 export const zGetApiAccountingAccountsHeaders = z.object({
@@ -1865,6 +1940,84 @@ export const zPutApiParkingVehiclesIdPath = z.object({
  */
 export const zPutApiParkingVehiclesIdResponse = zVehicle;
 
+export const zGetApiPermissionsHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetApiPermissionsResponse = zPermissionsResponse;
+
+export const zGetApiPermissionsTemplatesHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetApiPermissionsTemplatesResponse = zTemplatesResponse;
+
+export const zGetApiPermissionsUserUserIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zGetApiPermissionsUserUserIdPath = z.object({
+    userId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetApiPermissionsUserUserIdResponse = zUserPermissionsResponse;
+
+export const zDeleteApiPermissionsUserUserIdPermissionPermissionIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zDeleteApiPermissionsUserUserIdPermissionPermissionIdPath = z.object({
+    userId: z.string(),
+    permissionId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zDeleteApiPermissionsUserUserIdPermissionPermissionIdResponse = zString;
+
+export const zPostApiPermissionsUserUserIdTemplateTemplateIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zPostApiPermissionsUserUserIdTemplateTemplateIdPath = z.object({
+    userId: z.string(),
+    templateId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zPostApiPermissionsUserUserIdTemplateTemplateIdResponse = zString;
+
+/**
+ * Request body for permissions.setPermissionDto
+ */
+export const zPostApiPermissionsUserUserIdPermissionIdBody = zSetPermissionDto;
+
+export const zPostApiPermissionsUserUserIdPermissionIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zPostApiPermissionsUserUserIdPermissionIdPath = z.object({
+    userId: z.string(),
+    permissionId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zPostApiPermissionsUserUserIdPermissionIdResponse = zString;
+
 export const zGetApiReadyzHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -2080,7 +2233,7 @@ export const zGetApiUsersHeaders = z.object({
 /**
  * OK
  */
-export const zGetApiUsersResponse = zUserListResponse;
+export const zGetApiUsersResponse = zPaginatedResponseModelsSanitizedUser;
 
 /**
  * Request body for users.userCreateDto

@@ -19,21 +19,23 @@
     <!-- User Selection View -->
     <UCard v-if="!selectedUser">
       <UTable :data="filteredUsers" :columns="userColumns" :loading="loading" striped>
-        <template #name-data="{ row }">
+        <template #name-cell="{ row }">
           <div class="flex items-center gap-3">
             <div
               class="flex h-10 w-10 items-center justify-center rounded-full bg-primary-100 text-primary-600 dark:bg-primary-900 dark:text-primary-300"
             >
-              {{ row.firstName?.charAt(0) }}{{ row.lastName?.charAt(0) }}
+              {{ row.original.firstName?.charAt(0) }}{{ row.original.lastName?.charAt(0) }}
             </div>
             <div>
-              <div class="font-medium">{{ row.firstName }} {{ row.lastName }}</div>
-              <div class="text-sm text-gray-500">{{ row.email }}</div>
+              <div class="font-medium">
+                {{ row.original.firstName }} {{ row.original.lastName }}
+              </div>
+              <div class="text-sm text-gray-500">{{ row.original.email }}</div>
             </div>
           </div>
         </template>
-        <template #actions-data="{ row }">
-          <UButton size="sm" variant="outline" @click="selectUser(row)">
+        <template #actions-cell="{ row }">
+          <UButton size="sm" variant="outline" @click="selectUser(row.original)">
             {{ t("permissions.manage") }}
           </UButton>
         </template>
@@ -57,9 +59,9 @@
             </div>
           </div>
           <div class="flex gap-2">
-            <USelect
+            <HSelect
               v-model="selectedTemplate"
-              :items="templateOptions"
+              :items="templates"
               :placeholder="t('permissions.selectTemplate')"
               class="w-48"
               @change="applyTemplate"
@@ -112,6 +114,12 @@
 </template>
 
 <script setup lang="ts">
+import type { TableColumn } from "@nuxt/ui";
+import type { PaginatedResponseModelsSanitizedUser, UserPermissionsResponse } from "~/utils/client";
+
+type User = NonNullable<PaginatedResponseModelsSanitizedUser["data"]>[0];
+type Permission = NonNullable<UserPermissionsResponse["permissions"]>[0];
+
 definePageMeta({
   requiresPermission: {
     page: "users",
@@ -121,90 +129,70 @@ definePageMeta({
 
 const { t } = useI18n();
 
-interface UserPermissionInfo {
-  permissionId: number;
-  page: string;
-  action: string;
-  label: string;
-  category: string;
-  granted: boolean;
-}
-
-interface PermissionTemplate {
-  id: number;
-  name: string;
-  description: string;
-}
-
-interface User {
-  id: number;
-  email: string;
-  firstName: string;
-  lastName: string;
-}
-
 const searchQuery = ref("");
 const selectedUser = ref<User | null>(null);
 const selectedTemplate = ref<number | null>(null);
 const loading = ref(false);
 
-const userColumns = [
-  { key: "name", label: t("users.name") },
-  { key: "actions", label: "" },
+const userColumns: TableColumn<User>[] = [
+  { accessorKey: "name", header: t("users.name") },
+  { accessorKey: "actions", header: "" },
 ];
 
-const { data: users } = await useAsyncData("users", () => getApiUsers({}));
+const { data: users } = await useAsyncData("users", () => getApiUsers({}), {
+  transform: (d) => d.data,
+  default: () => [],
+});
 
 const { data: allPermissions } = await useAsyncData("permissions", () => getApiPermissions({}), {
+  transform: (d) => d.data,
   default: () => [],
 });
 
 const { data: templates } = await useAsyncData("templates", () => getApiPermissionsTemplates({}), {
+  transform: (d) => d.data,
   default: () => [],
 });
 
-let userPermissions = ref<UserPermissionInfo[]>([]);
+const userPermissions = ref<UserPermissionsResponse["permissions"]>([]);
 
 const filteredUsers = computed(() => {
-  if (!users.value?.data) return [];
+  if (!users.value) return [];
   const query = searchQuery.value.toLowerCase();
-  if (!query) return users.value.data;
-  return users.value.data.filter(
-    (u: User) =>
+  if (!query) return users.value;
+  return users.value.filter(
+    (u) =>
       u.firstName?.toLowerCase().includes(query) ||
       u.lastName?.toLowerCase().includes(query) ||
       u.email?.toLowerCase().includes(query)
   );
 });
 
-const templateOptions = computed(() => {
-  if (!templates.value?.data) return [];
-  return templates.value.data.map((t: PermissionTemplate) => ({
-    value: t.id,
-    label: t.name,
-  }));
-});
-
 const permissionCategories = computed(() => {
-  if (!allPermissions.value?.data) return [];
+  if (!allPermissions.value) return [];
   const categories = new Set<string>();
-  allPermissions.value.data.forEach((p: any) => {
+  allPermissions.value.forEach((p: any) => {
     categories.add(p.category);
   });
   return Array.from(categories);
 });
 
 function getPermissionsForCategory(category: string) {
-  return allPermissions.value?.data?.filter((p: any) => p.category === category) || [];
+  return userPermissions.value?.filter((p) => p.category === category) || [];
 }
 
 async function selectUser(user: User) {
+  if (!user.id) return;
   selectedUser.value = user;
   selectedTemplate.value = null;
   loading.value = true;
   try {
-    const response = await getApiPermissionsUserUserId({ userId: user.id.toString() });
-    userPermissions.value = response.permissions || [];
+    const response = await getApiPermissionsUserUserId({
+      path: {
+        userId: user.id.toString(),
+      },
+    });
+    userPermissions.value = response.permissions ?? [];
   } catch (e) {
     userPermissions.value = [];
   } finally {
@@ -213,12 +201,14 @@ async function selectUser(user: User) {
 }
 
 async function applyTemplate() {
-  if (!selectedUser.value || !selectedTemplate.value) return;
+  if (!selectedUser.value?.id || !selectedTemplate.value) return;
   loading.value = true;
   try {
     await postApiPermissionsUserUserIdTemplateTemplateId({
-      userId: selectedUser.value.id.toString(),
-      templateId: selectedTemplate.value.toString(),
+      path: {
+        userId: selectedUser.value.id.toString(),
+        templateId: selectedTemplate.value.toString(),
+      },
     });
     await selectUser(selectedUser.value);
   } catch (e) {
@@ -228,14 +218,16 @@ async function applyTemplate() {
   }
 }
 
-async function togglePermission(perm: UserPermissionInfo) {
-  if (!selectedUser.value) return;
+async function togglePermission(perm: Permission) {
+  if (!selectedUser.value?.id || !perm.permissionId) return;
   loading.value = true;
   try {
-    await postApiPermissionsUserUserId({
-      userId: selectedUser.value.id.toString(),
+    await postApiPermissionsUserUserIdPermissionId({
+      path: {
+        userId: selectedUser.value.id.toString(),
+        permissionId: perm.permissionId.toString(),
+      },
       body: {
-        permissionId: perm.permissionId,
         granted: !perm.granted,
       },
     });

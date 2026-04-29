@@ -28,10 +28,14 @@ func (a *API) AuthMiddleware(next http.Handler) http.Handler {
 			WriteErr(w, http.StatusUnauthorized, "unauthorized")
 			return
 		}
+		lang := r.Header.Get("Accept-Language")
+		if lang == "" {
+			lang = "fa"
+		}
 
 		userHotels := a.getUserHotelsFromDB(user.ID)
 		hotelID := a.resolveHotelID(r, userHotels)
-		permissions := a.getUserPermissionsFromDB(user.ID)
+		permissions := a.getUserPermissionsFromDB(user.ID, lang)
 
 		ctx := r.Context()
 		ctx = context.WithValue(ctx, UserKey{}, user)
@@ -117,7 +121,7 @@ func GetHotelIDFromContext(ctx context.Context) string {
 	return ""
 }
 
-func (a *API) getUserPermissionsFromDB(userID uint) []models.UserPermissionInfo {
+func (a *API) getUserPermissionsFromDB(userID uint, lang string) []models.UserPermissionInfo {
 	var userPerms []models.UserPermission
 	if err := a.Db.Preload("Permission").Where("user_id = ?", userID).Find(&userPerms).Error; err != nil {
 		return nil
@@ -125,11 +129,12 @@ func (a *API) getUserPermissionsFromDB(userID uint) []models.UserPermissionInfo 
 
 	result := make([]models.UserPermissionInfo, 0, len(userPerms))
 	for _, up := range userPerms {
+		models.ApplyTranslationOnTranslatable(&up.Permission, lang)
 		result = append(result, models.UserPermissionInfo{
 			PermissionID: up.PermissionID,
 			Page:         up.Permission.Page,
 			Action:       up.Permission.Action,
-			Label:        up.Permission.Label,
+			Label:        up.Permission.Name,
 			Category:     up.Permission.Category,
 			Granted:      up.Granted,
 		})
