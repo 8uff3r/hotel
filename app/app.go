@@ -214,6 +214,21 @@ func ensureAdmin(db *gorm.DB, cfg config.Config) error {
 		return fmt.Errorf("create user-hotel link: %w", err)
 	}
 
+	var usersPermissions []models.Permission
+	if err := db.Where("resource = ?", "users").Find(&usersPermissions).Error; err != nil {
+		return fmt.Errorf("couldn't find permissions for the `users` resource")
+	}
+
+	var userPermissions []models.UserPermission
+	for _, p := range usersPermissions {
+		userPermissions = append(userPermissions, models.UserPermission{
+			UserID:       user.ID,
+			HotelID:      &cfg.SeedHotelCodeName,
+			PermissionID: p.ID,
+		})
+	}
+	db.CreateInBatches(userPermissions, len(userPermissions))
+
 	return nil
 }
 

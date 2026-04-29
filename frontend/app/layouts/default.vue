@@ -143,18 +143,58 @@ const handleHotelSwitch = () => {
   if (selectedHotel.value) authStore.switchHotel(selectedHotel.value);
 };
 
+const items = computed(() =>
+  (
+    [
+      {
+        label: t("layout.nav.dashboard"),
+        icon: "i-lucide-layout-dashboard",
+        to: "/",
+        permission: PERMISSIONS.dashboard.index.read,
+      },
+      {
+        label: t("layout.nav.reservations"),
+        icon: "i-lucide-calendar-days",
+        to: "/reservations",
+        permission: PERMISSIONS.reservations.reservations.read,
+      },
+      {
+        label: t("layout.nav.rooms"),
+        icon: "i-lucide-bed",
+        to: "/rooms",
+        permission: PERMISSIONS.rooms.rooms.read,
+      },
+      {
+        label: t("layout.nav.roomRack"),
+        icon: "i-lucide-layout-grid",
+        to: "/rooms/rack",
+        permission: PERMISSIONS.rooms.roomsRack.read,
+      },
+      {
+        label: t("layout.nav.guests"),
+        icon: "i-lucide-users",
+        to: "/guests",
+        permission: PERMISSIONS.guests.guests.read,
+      },
+      {
+        label: t("layout.nav.parking"),
+        icon: "i-lucide-car",
+        to: "/parking",
+        permission: PERMISSIONS.parking.parking.read,
+      },
+      // { label: t("layout.nav.attendance"), icon: "i-lucide-clock", to: "/attendance" },
+      {
+        label: t("layout.nav.users"),
+        icon: "i-lucide-users",
+        to: "/users",
+        permission: PERMISSIONS.users.users.read,
+      },
+    ] as (NavigationMenuItem & { permission: string })[]
+  ).filter((v) => authStore.can(v.permission))
+);
 // Navigation items — use state to hide labels when collapsed
-const navMenuItems = (state: "collapsed" | "expanded"): NavigationMenuItem[] =>
-  [
-    { label: t("layout.nav.dashboard"), icon: "i-lucide-layout-dashboard", to: "/" },
-    { label: t("layout.nav.reservations"), icon: "i-lucide-calendar-days", to: "/reservations" },
-    { label: t("layout.nav.rooms"), icon: "i-lucide-bed", to: "/rooms" },
-    { label: t("layout.nav.roomRack"), icon: "i-lucide-layout-grid", to: "/rooms/rack" },
-    { label: t("layout.nav.guests"), icon: "i-lucide-users", to: "/guests" },
-    { label: t("layout.nav.parking"), icon: "i-lucide-car", to: "/parking" },
-    { label: t("layout.nav.attendance"), icon: "i-lucide-clock", to: "/attendance" },
-    { label: t("layout.nav.users"), icon: "i-lucide-users", to: "/users" },
-  ].map((item) => ({ ...item, label: state === "collapsed" ? undefined : item.label }));
+const navMenuItems = (state: "collapsed" | "expanded") =>
+  items.value.map((item) => ({ ...item, label: state === "collapsed" ? undefined : item.label }));
 
 const adminMenuItems = (state: "collapsed" | "expanded"): NavigationMenuItem[] => {
   const items: NavigationMenuItem[] = [];

@@ -121,10 +121,7 @@ type User = NonNullable<PaginatedResponseModelsSanitizedUser["data"]>[0];
 type Permission = NonNullable<UserPermissionsResponse["permissions"]>[0];
 
 definePageMeta({
-  requiresPermission: {
-    page: "users",
-    actions: ["read"],
-  },
+  requiresPermission: PERMISSIONS.users.users.update,
 });
 
 const { t } = useI18n();

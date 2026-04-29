@@ -1,7 +1,5 @@
-import type { UserPermissionsResponse } from "~/utils/client";
 import { defineStore } from "pinia";
 
-type UserPermissionInfo = NonNullable<UserPermissionsResponse["permissions"]>[0];
 export const useAuthStore = defineStore(
   "auth",
   () => {
@@ -12,7 +10,8 @@ export const useAuthStore = defineStore(
     const currentRole = ref<any>();
     const userHotels = ref<UserHotelInfo[]>([]);
     const currentHotelId = ref<string>("");
-    const permissions = ref<UserPermissionInfo[]>([]);
+    const permissions = ref<string[] | undefined>([]);
+    const permissionsSet = computed(() => new Set(permissions.value ?? []));
 
     // getters
     const hasRole = (...roles: string[]) => {
@@ -42,11 +41,12 @@ export const useAuthStore = defineStore(
       return hotel?.hotel?.name ?? "";
     });
 
+    const can = (permission: string) => {
+      return permissionsSet.value?.has(permission);
+    };
+
     const hasPermission = (page: string, action: string) => {
-      if (!permissions.value || permissions.value.length === 0) return false;
-      return permissions.value.some(
-        (p) => p.page === page && p.action === action && p.granted === true
-      );
+      return can(`${page}:${action}`);
     };
 
     const canRead = (page: string) => hasPermission(page, "read");
@@ -114,9 +114,6 @@ export const useAuthStore = defineStore(
         currentHotelId.value = hotelId ?? "";
         permissions.value = perms ?? [];
 
-        const hotel = u.userHotels?.find((h: any) => h.hotelId === hotelId);
-        currentRole.value = hotel?.role;
-
         isAuthenticated.value = true;
       } catch {
         user.value = null;
@@ -166,6 +163,7 @@ export const useAuthStore = defineStore(
       isManager,
       isReceptionist,
       hasPermission,
+      can,
       canRead,
       canCreate,
       canUpdate,
@@ -184,6 +182,7 @@ export const useAuthStore = defineStore(
   },
   {
     persist: {
+      storage: sessionStorage,
       pick: [
         "isAuthenticated",
         "user",

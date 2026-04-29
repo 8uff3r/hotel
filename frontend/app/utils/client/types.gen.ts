@@ -87,7 +87,7 @@ export type Guest = {
             amenities?: Array<{
                 hotelId?: string;
                 id?: number;
-                name?: string;
+                label?: string;
                 translation?: {
                     [key: string]: string;
                 };
@@ -104,7 +104,7 @@ export type Guest = {
                 colorHex?: string;
                 hotelId?: number;
                 id?: number;
-                name?: string;
+                label?: string;
                 translation?: {
                     [key: string]: string;
                 };
@@ -114,7 +114,7 @@ export type Guest = {
                 colorHex?: string;
                 hotelId?: number;
                 id?: number;
-                name?: string;
+                label?: string;
                 translation?: {
                     [key: string]: string;
                 };
@@ -205,7 +205,7 @@ export type GuestWithReservationRequest = {
                 amenities?: Array<{
                     hotelId?: string;
                     id?: number;
-                    name?: string;
+                    label?: string;
                     translation?: {
                         [key: string]: string;
                     };
@@ -222,7 +222,7 @@ export type GuestWithReservationRequest = {
                     colorHex?: string;
                     hotelId?: number;
                     id?: number;
-                    name?: string;
+                    label?: string;
                     translation?: {
                         [key: string]: string;
                     };
@@ -232,7 +232,7 @@ export type GuestWithReservationRequest = {
                     colorHex?: string;
                     hotelId?: number;
                     id?: number;
-                    name?: string;
+                    label?: string;
                     translation?: {
                         [key: string]: string;
                     };
@@ -266,7 +266,7 @@ export type GuestWithReservationRequest = {
             amenities?: Array<{
                 hotelId?: string;
                 id?: number;
-                name?: string;
+                label?: string;
                 translation?: {
                     [key: string]: string;
                 };
@@ -283,7 +283,7 @@ export type GuestWithReservationRequest = {
                 colorHex?: string;
                 hotelId?: number;
                 id?: number;
-                name?: string;
+                label?: string;
                 translation?: {
                     [key: string]: string;
                 };
@@ -293,7 +293,7 @@ export type GuestWithReservationRequest = {
                 colorHex?: string;
                 hotelId?: number;
                 id?: number;
-                name?: string;
+                label?: string;
                 translation?: {
                     [key: string]: string;
                 };
@@ -351,7 +351,7 @@ export type GuestWithReservationResponse = {
                 amenities?: Array<{
                     hotelId?: string;
                     id?: number;
-                    name?: string;
+                    label?: string;
                     translation?: {
                         [key: string]: string;
                     };
@@ -368,7 +368,7 @@ export type GuestWithReservationResponse = {
                     colorHex?: string;
                     hotelId?: number;
                     id?: number;
-                    name?: string;
+                    label?: string;
                     translation?: {
                         [key: string]: string;
                     };
@@ -378,7 +378,7 @@ export type GuestWithReservationResponse = {
                     colorHex?: string;
                     hotelId?: number;
                     id?: number;
-                    name?: string;
+                    label?: string;
                     translation?: {
                         [key: string]: string;
                     };
@@ -425,7 +425,7 @@ export type GuestWithReservationResponse = {
             amenities?: Array<{
                 hotelId?: string;
                 id?: number;
-                name?: string;
+                label?: string;
                 translation?: {
                     [key: string]: string;
                 };
@@ -442,7 +442,7 @@ export type GuestWithReservationResponse = {
                 colorHex?: string;
                 hotelId?: number;
                 id?: number;
-                name?: string;
+                label?: string;
                 translation?: {
                     [key: string]: string;
                 };
@@ -452,7 +452,7 @@ export type GuestWithReservationResponse = {
                 colorHex?: string;
                 hotelId?: number;
                 id?: number;
-                name?: string;
+                label?: string;
                 translation?: {
                     [key: string]: string;
                 };
@@ -539,14 +539,7 @@ export type Income = {
  */
 export type MeResponse = {
     hotelId?: string;
-    permissions?: Array<{
-        action?: string;
-        category?: string;
-        granted?: boolean;
-        label?: string;
-        page?: string;
-        permissionId?: number;
-    }>;
+    permissions?: Array<string>;
     user?: {
         email?: string;
         firstName?: string;
@@ -561,15 +554,6 @@ export type MeResponse = {
                 phone?: string;
             };
             hotelId?: string;
-            role?: {
-                hotelId?: string;
-                id?: number;
-                name?: string;
-                translation?: {
-                    [key: string]: string;
-                };
-            };
-            roleId?: number;
         }>;
     };
 };
@@ -604,7 +588,7 @@ export type PaginatedResponseModelsAmenity = {
     data?: Array<{
         hotelId?: string;
         id?: number;
-        name?: string;
+        label?: string;
         translation?: {
             [key: string]: string;
         };
@@ -688,7 +672,7 @@ export type PaginatedResponseModelsGuest = {
                 amenities?: Array<{
                     hotelId?: string;
                     id?: number;
-                    name?: string;
+                    label?: string;
                     translation?: {
                         [key: string]: string;
                     };
@@ -705,7 +689,7 @@ export type PaginatedResponseModelsGuest = {
                     colorHex?: string;
                     hotelId?: number;
                     id?: number;
-                    name?: string;
+                    label?: string;
                     translation?: {
                         [key: string]: string;
                     };
@@ -715,7 +699,7 @@ export type PaginatedResponseModelsGuest = {
                     colorHex?: string;
                     hotelId?: number;
                     id?: number;
-                    name?: string;
+                    label?: string;
                     translation?: {
                         [key: string]: string;
                     };
@@ -823,7 +807,7 @@ export type PaginatedResponseModelsParkingSpotStatus = {
     data?: Array<{
         hotelId?: string;
         id?: number;
-        name?: string;
+        label?: string;
         translation?: {
             [key: string]: string;
         };
@@ -841,7 +825,7 @@ export type PaginatedResponseModelsParkingSpotType = {
     data?: Array<{
         hotelId?: string;
         id?: number;
-        name?: string;
+        label?: string;
         translation?: {
             [key: string]: string;
         };
@@ -912,7 +896,7 @@ export type PaginatedResponseModelsReservation = {
             amenities?: Array<{
                 hotelId?: string;
                 id?: number;
-                name?: string;
+                label?: string;
                 translation?: {
                     [key: string]: string;
                 };
@@ -929,7 +913,7 @@ export type PaginatedResponseModelsReservation = {
                 colorHex?: string;
                 hotelId?: number;
                 id?: number;
-                name?: string;
+                label?: string;
                 translation?: {
                     [key: string]: string;
                 };
@@ -939,7 +923,7 @@ export type PaginatedResponseModelsReservation = {
                 colorHex?: string;
                 hotelId?: number;
                 id?: number;
-                name?: string;
+                label?: string;
                 translation?: {
                     [key: string]: string;
                 };
@@ -963,7 +947,7 @@ export type PaginatedResponseModelsRoom = {
         amenities?: Array<{
             hotelId?: string;
             id?: number;
-            name?: string;
+            label?: string;
             translation?: {
                 [key: string]: string;
             };
@@ -980,7 +964,7 @@ export type PaginatedResponseModelsRoom = {
             colorHex?: string;
             hotelId?: number;
             id?: number;
-            name?: string;
+            label?: string;
             translation?: {
                 [key: string]: string;
             };
@@ -990,7 +974,7 @@ export type PaginatedResponseModelsRoom = {
             colorHex?: string;
             hotelId?: number;
             id?: number;
-            name?: string;
+            label?: string;
             translation?: {
                 [key: string]: string;
             };
@@ -1011,7 +995,7 @@ export type PaginatedResponseModelsRoomStatus = {
         colorHex?: string;
         hotelId?: number;
         id?: number;
-        name?: string;
+        label?: string;
         translation?: {
             [key: string]: string;
         };
@@ -1030,7 +1014,7 @@ export type PaginatedResponseModelsRoomType = {
         colorHex?: string;
         hotelId?: number;
         id?: number;
-        name?: string;
+        label?: string;
         translation?: {
             [key: string]: string;
         };
@@ -1059,15 +1043,6 @@ export type PaginatedResponseModelsSanitizedUser = {
                 phone?: string;
             };
             hotelId?: string;
-            role?: {
-                hotelId?: string;
-                id?: number;
-                name?: string;
-                translation?: {
-                    [key: string]: string;
-                };
-            };
-            roleId?: number;
         }>;
     }>;
     limit?: number;
@@ -1188,7 +1163,7 @@ export type Reservation = {
         amenities?: Array<{
             hotelId?: string;
             id?: number;
-            name?: string;
+            label?: string;
             translation?: {
                 [key: string]: string;
             };
@@ -1205,7 +1180,7 @@ export type Reservation = {
             colorHex?: string;
             hotelId?: number;
             id?: number;
-            name?: string;
+            label?: string;
             translation?: {
                 [key: string]: string;
             };
@@ -1215,7 +1190,7 @@ export type Reservation = {
             colorHex?: string;
             hotelId?: number;
             id?: number;
-            name?: string;
+            label?: string;
             translation?: {
                 [key: string]: string;
             };
@@ -1233,7 +1208,7 @@ export type Room = {
     amenities?: Array<{
         hotelId?: string;
         id?: number;
-        name?: string;
+        label?: string;
         translation?: {
             [key: string]: string;
         };
@@ -1250,7 +1225,7 @@ export type Room = {
         colorHex?: string;
         hotelId?: number;
         id?: number;
-        name?: string;
+        label?: string;
         translation?: {
             [key: string]: string;
         };
@@ -1260,7 +1235,7 @@ export type Room = {
         colorHex?: string;
         hotelId?: number;
         id?: number;
-        name?: string;
+        label?: string;
         translation?: {
             [key: string]: string;
         };
@@ -1313,14 +1288,7 @@ export type LoginDto = {
  */
 export type LoginResponse = {
     hotelId?: string;
-    permissions?: Array<{
-        action?: string;
-        category?: string;
-        granted?: boolean;
-        label?: string;
-        page?: string;
-        permissionId?: number;
-    }>;
+    permissions?: Array<string>;
     user?: {
         email?: string;
         firstName?: string;
@@ -1335,15 +1303,6 @@ export type LoginResponse = {
                 phone?: string;
             };
             hotelId?: string;
-            role?: {
-                hotelId?: string;
-                id?: number;
-                name?: string;
-                translation?: {
-                    [key: string]: string;
-                };
-            };
-            roleId?: number;
         }>;
     };
 };
@@ -1359,11 +1318,16 @@ export type OkResponse = unknown;
 export type PermissionsResponse = {
     data?: Array<{
         action?: string;
-        category?: string;
-        hotelId?: string;
+        category?: {
+            id?: number;
+            label?: string;
+            translation?: {
+                [key: string]: string;
+            };
+        };
+        categoryId?: number;
         id?: number;
-        name?: string;
-        page?: string;
+        resource?: string;
         translation?: {
             [key: string]: string;
         };
@@ -1389,14 +1353,19 @@ export type TemplatesResponse = {
     data?: Array<{
         description?: string;
         id?: number;
-        name?: string;
+        label?: string;
         permissions?: Array<{
             action?: string;
-            category?: string;
-            hotelId?: string;
+            category?: {
+                id?: number;
+                label?: string;
+                translation?: {
+                    [key: string]: string;
+                };
+            };
+            categoryId?: number;
             id?: number;
-            name?: string;
-            page?: string;
+            resource?: string;
             translation?: {
                 [key: string]: string;
             };
@@ -1433,7 +1402,13 @@ export type UserCreateResponse = unknown;
 export type UserPermissionsResponse = {
     permissions?: Array<{
         action?: string;
-        category?: string;
+        category?: {
+            id?: number;
+            label?: string;
+            translation?: {
+                [key: string]: string;
+            };
+        };
         granted?: boolean;
         label?: string;
         page?: string;

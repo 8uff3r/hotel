@@ -26,7 +26,7 @@
                   }"
                   variant="soft"
                 >
-                  {{ room.status?.name }}
+                  {{ room.status?.label }}
                 </UBadge>
               </div>
             </template>
@@ -108,7 +108,7 @@
                       class="cursor-pointer"
                       @click="toggleAmenity(amenity.id!)"
                     >
-                      {{ amenity.name }}
+                      {{ amenity.label }}
                     </UBadge>
                   </div>
                 </UFormField>
@@ -135,7 +135,7 @@
             </template>
             <div class="flex items-center gap-3">
               <UIcon name="i-lucide-bed-double" class="h-6 w-6 text-primary" />
-              <span class="text-lg capitalize">{{ room.roomType?.name }}</span>
+              <span class="text-lg capitalize">{{ room.roomType?.label }}</span>
             </div>
           </UCard>
 
@@ -178,7 +178,7 @@ import type z from "zod";
 import { zRoom } from "~/utils/client/zod.gen";
 
 definePageMeta({
-  requiresRole: ["admin", "manager", "receptionist"],
+  requiresPermission: PERMISSIONS.rooms.rooms.read,
 });
 const { t } = useI18n();
 

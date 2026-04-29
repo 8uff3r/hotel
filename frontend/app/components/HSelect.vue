@@ -1,3 +1,3 @@
 <template>
-  <USelect value-key="id" label-key="name" />
+  <USelect value-key="id" />
 </template>

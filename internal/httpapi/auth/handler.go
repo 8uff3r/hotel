@@ -32,10 +32,16 @@ func me(c fuego.ContextNoBody) (MeResponse, error) {
 	hotelID := c.Value(h.HotelIDKey{}).(string)
 	permissions := h.GetUserPermissionsFromContext(c)
 
+	return MeResponse{User: user, HotelID: hotelID, Permissions: tokenizePermissions(permissions)}, nil
+}
+
+func tokenizePermissions(permissions []models.UserPermissionInfo) []string {
 	var permKeys []string
 	for _, p := range permissions {
 		permKeys = append(permKeys, fmt.Sprintf("%s:%s", p.Page, p.Action))
 	}
-
-	return MeResponse{User: user, HotelID: hotelID, Permissions: permKeys}, nil
+	if permKeys == nil {
+		return []string{}
+	}
+	return permKeys
 }

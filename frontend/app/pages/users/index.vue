@@ -108,7 +108,7 @@ import type { TableColumn } from "@nuxt/ui";
 import type { PaginatedResponseModelsSanitizedUser } from "~/utils/client";
 
 definePageMeta({
-  requiresRole: ["admin"],
+  requiresPermission: PERMISSIONS.users.users.read,
 });
 
 type User = NonNullable<PaginatedResponseModelsSanitizedUser["data"]>[0];

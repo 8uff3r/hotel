@@ -95,7 +95,7 @@
                 class="cursor-pointer"
                 @click="toggleAmenity(amenity.id!)"
               >
-                {{ amenity.name }}
+                {{ amenity.label }}
               </UBadge>
             </div>
           </UFormField>
@@ -120,7 +120,7 @@ import type z from "zod";
 import { zRoom } from "~/utils/client/zod.gen";
 
 definePageMeta({
-  requiresRole: ["admin", "manager"],
+  requiresPermission: PERMISSIONS.rooms.rooms.create,
 });
 const { t } = useI18n();
 

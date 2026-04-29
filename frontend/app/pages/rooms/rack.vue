@@ -271,7 +271,7 @@
 import type { Room, RoomStatus } from "~/utils/route-types.gen";
 
 definePageMeta({
-  requiresRole: ["admin", "manager", "receptionist"],
+  requiresPermission: PERMISSIONS.rooms.rooms.read,
 });
 
 const { t } = useI18n();

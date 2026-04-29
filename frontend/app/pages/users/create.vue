@@ -93,7 +93,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-  requiresRole: ["admin"],
+  requiresPermission: PERMISSIONS.users.users.create,
 });
 const { t } = useI18n();
 

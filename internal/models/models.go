@@ -28,6 +28,8 @@ type User struct {
 	LastName     string      `gorm:"not null" json:"lastName"`
 	UserHotels   []UserHotel `gorm:"foreignKey:UserID" json:"userHotels"`
 	IsActive     bool        `gorm:"not null;default:true" json:"isActive"`
+
+	Permissions []UserPermission `gorm:"foreignKey:UserID" json:"permissions,omitempty"`
 }
 
 type UserHotel struct {

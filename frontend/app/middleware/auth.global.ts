@@ -1,14 +1,15 @@
 import { useAuthStore } from "~/stores/auth";
-
-interface PermissionRequirement {
-  page: string;
-  actions?: string[];
-}
 import "vue-router";
 
 declare module "vue-router" {
   interface RouteMeta {
-    requiresPermission?: PermissionRequirement;
+    requiresPermission?: string;
+  }
+}
+
+declare module "nuxt/app" {
+  interface RouteMeta {
+    requiresPermission?: string;
   }
 }
 
@@ -53,18 +54,8 @@ export default defineNuxtRouteMiddleware((to) => {
   }
 
   if (to.meta.requiresPermission) {
-    const { page, actions } = to.meta.requiresPermission;
-
-    if (!authStore.canRead(page)) {
+    if (!authStore.can(to.meta.requiresPermission)) {
       return navigateTo("/");
-    }
-
-    if (actions && actions.length > 0) {
-      for (const action of actions) {
-        if (!authStore.hasPermission(page, action)) {
-          return navigateTo("/");
-        }
-      }
     }
   }
 });

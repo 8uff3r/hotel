@@ -56,14 +56,17 @@
         </template>
 
         <template #roomType-cell="{ row }">
-          <UBadge :color="getRoomTypeColor(row.original.status?.name) as any" variant="soft">
-            {{ row.original.roomType?.name }}
+          <UBadge
+            :style="{ backgroundColor: `#${row.original.roomType?.colorHex}` }"
+            variant="soft"
+          >
+            {{ row.original.roomType?.label }}
           </UBadge>
         </template>
 
         <template #status-cell="{ row }">
-          <UBadge :color="getStatusColor(row.original.statusId) as any" variant="soft">
-            {{ row.original.status?.name }}
+          <UBadge :style="{ backgroundColor: `#${row.original.status?.colorHex}` }" variant="soft">
+            {{ row.original.status?.label }}
           </UBadge>
         </template>
 
@@ -125,9 +128,11 @@
 
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
+import type { PaginatedResponseModelsRoom } from "~/utils/client";
 
+type Room = NonNullable<PaginatedResponseModelsRoom["data"]>[0];
 definePageMeta({
-  requiresPermission: "guests",
+  requiresPermission: PERMISSIONS.rooms.rooms.read,
 });
 
 const { t } = useI18n();

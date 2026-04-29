@@ -101,23 +101,14 @@
 
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
+import type { PaginatedResponseModelsAccount } from "~/utils/client";
 
 definePageMeta({
-  requiresRole: ["admin", "manager"],
+  requiresPermission: ["admin", "manager"],
 });
 
-interface AccountRow {
-  id: number;
-  accountCode: string;
-  accountName: string;
-  accountType: string;
-  accountSubType: string | null;
-  description: string | null;
-  normalBalance: string;
-  isActive: boolean;
-}
-
-const columns: TableColumn<AccountRow>[] = [
+type Account = NonNullable<PaginatedResponseModelsAccount["data"]>[0];
+const columns: TableColumn<Account>[] = [
   { accessorKey: "accountCode", header: "Code" },
   { accessorKey: "accountName", header: "Account Name" },
   { accessorKey: "accountType", header: "Type" },
@@ -135,7 +126,7 @@ const accountTypeOptions = [
   { value: "expense", label: "Expense" },
 ];
 
-const accounts = ref<AccountRow[]>([]);
+const accounts = ref<Account[]>([]);
 const { t } = useI18n();
 const loading = ref(false);
 const page = ref(1);
@@ -174,12 +165,10 @@ const fetchAccounts = async () => {
     if (filters.accountType && filters.accountType !== "all")
       query["accountType"] = filters.accountType;
 
-    const response = await $fetch("/api/accounts", {
-      query,
-    });
-    accounts.value = response.data;
-    pagination.total = response.pagination.total;
-    pagination.totalPages = response.pagination.totalPages;
+    const response = await getApiAccountingAccounts({});
+    accounts.value = response.data ?? [];
+    pagination.total = response.total ?? 0;
+    pagination.totalPages = response.totalPages ?? 1;
   } catch (error) {
     console.error("Failed to fetch accounts:", error);
   } finally {
@@ -194,7 +183,8 @@ const clearFilters = () => {
   fetchAccounts();
 };
 
-const formatAccountType = (type: string): string => {
+const formatAccountType = (type: string | undefined): string => {
+  if (!type) return "";
   const types: Record<string, string> = {
     asset: "Asset",
     liability: "Liability",
@@ -205,7 +195,10 @@ const formatAccountType = (type: string): string => {
   return types[type] || type;
 };
 
-const getTypeColor = (type: string): "info" | "warning" | "success" | "error" | "neutral" => {
+const getTypeColor = (
+  type: string | undefined
+): "info" | "warning" | "success" | "error" | "neutral" => {
+  if (!type) return "neutral";
   const colors: Record<string, "info" | "warning" | "success" | "error" | "neutral"> = {
     asset: "info",
     liability: "warning",

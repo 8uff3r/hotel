@@ -20,9 +20,9 @@ type loginDto struct {
 }
 
 type loginResponse struct {
-	User        models.SanitizedUser        `json:"user"`
-	HotelID     string                      `json:"hotelId"`
-	Permissions []models.UserPermissionInfo `json:"permissions"`
+	User        models.SanitizedUser `json:"user"`
+	HotelID     string               `json:"hotelId"`
+	Permissions []string             `json:"permissions"`
 }
 
 func (a *AuthModule) loginHandler(c fuego.ContextWithBody[loginDto]) (loginResponse, error) {
@@ -48,7 +48,7 @@ func (a *AuthModule) loginHandler(c fuego.ContextWithBody[loginDto]) (loginRespo
 
 	permissions := a.getUserPermissions(user.ID, lang)
 
-	return loginResponse{User: userResponse, HotelID: hotelID, Permissions: permissions}, nil
+	return loginResponse{User: userResponse, HotelID: hotelID, Permissions: tokenizePermissions(permissions)}, nil
 }
 
 func (a *AuthModule) getUserPermissions(userID uint, lang string) []models.UserPermissionInfo {
