@@ -3,7 +3,7 @@
 This repository is a **hotel management system** with:
 
 - **Go backend** at the repository root (`cmd/server/`)
-- **Nuxt/Vue frontend** embedded in Wails desktop wrapper (`wails/frontend/`)
+- **Nuxt/Vue frontend** (`frontend/`)
 - **Wails desktop app** (`wails/`)
 - **PostgreSQL** as persistence (auto-migrated by GORM)
 
@@ -46,7 +46,7 @@ Route modules:
 
 ### Frontend (Nuxt/Vue)
 
-Primary structure in `wails/frontend/app/`:
+Primary structure in `frontend/app/`:
 
 - `pages/`: route screens by domain
 - `layouts/default.vue`: shell/sidebar/topbar
@@ -57,7 +57,7 @@ Primary structure in `wails/frontend/app/`:
 
 Nuxt config:
 
-- `wails/frontend/nuxt.config.ts`
+- `frontend/nuxt.config.ts`
   - `ssr: false`
   - dev proxy for `/api`, `/healthz`, `/readyz` to `http://127.0.0.1:8080`
 
@@ -77,20 +77,17 @@ Nuxt config:
   - `POST /api/auth/login`
   - `POST /api/auth/logout` (requires auth middleware in module)
   - `GET /api/auth/me` (requires auth)
-- Frontend route access is enforced in `wails/frontend/app/middleware/auth.global.ts`.
+- Frontend route access is enforced in `frontend/app/middleware/auth.global.ts`.
 - Page-level role checks are declared via `definePageMeta({ requiresRole: [...] })`.
 
-## Schema and type generation
+## Permissions
 
-- GORM auto-migrations run on startup in `internal/db/db.go` via `db.AutoMigrate(models.AllPtr()...)`.
-- TypeScript types are generated from Go structs by:
-  - `go run internal/gen/typescript.go`
-- Output file:
-  - `wails/frontend/app/utils/auto-route-types.ts`
-- Preferred workflow after model changes:
-  1. update Go models
-  2. run `just gen`
-  3. adapt frontend types/usage if needed
+- Defined in `internal/db/seed/permissions.json` as an object: `{ category: { pageKey: { action: "page:action" } } }`
+- Page keys are camelCase (e.g., `guestsSettle`, `roomsRack`) to be valid TS object keys
+- Values use slashes (e.g., `"guests/settle:read"`)
+- Embedded in Go via `//go:embed`; seed package's `init()` generates `frontend/app/utils/permissions.gen.ts`
+- Translations in `internal/db/seed/translations.json` use `page:action` as keys (e.g., `"guests/settle:read"`)
+- Model uses `Resource`, `Action`, and `CategoryID`; `PermissionCategory` has `Slug` field
 
 ## Local development commands
 
@@ -98,8 +95,7 @@ From repo root:
 
 - `just dev` — run backend (`air`) + frontend dev server in parallel
 - `just build` — build backend and frontend
-- `just seed` — seed reference data
-- `just gen` — regenerate TS types and format frontend generated output
+- `just seed` — seed reference data (also generates permissions.gen.ts on init)
 
 Direct commands:
 
@@ -120,7 +116,7 @@ Backend (`internal/config/config.go`):
 - `READ_TIMEOUT_SECONDS`, `WRITE_TIMEOUT_SECONDS`, `IDLE_TIMEOUT_SECONDS`
 - `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`, `SEED_ADMIN_FIRST_NAME`, `SEED_ADMIN_LAST_NAME`
 
-Frontend (`wails/frontend/nuxt.config.ts` runtime config):
+Frontend (`frontend/nuxt.config.ts` runtime config):
 
 - `BACKEND_URL`
 - `NUXT_PUBLIC_HOTEL_NAME`
@@ -142,15 +138,15 @@ Frontend (`wails/frontend/nuxt.config.ts` runtime config):
 
 ### Frontend conventions
 
-- Domain pages live in `wails/frontend/app/pages/<domain>/...`.
+- Domain pages live in `frontend/app/pages/<domain>/...`.
 - Use `definePageMeta` for role requirements.
 - Use Pinia auth store (`useAuthStore`) for session state and role checks.
 - Consume backend via `$fetch('/api/...')`.
-- Prefer generated types from `wails/frontend/app/utils/auto-route-types.ts` over ad-hoc interfaces.
+- Prefer generated types from `frontend/app/utils/auto-route-types.ts` over ad-hoc interfaces.
 
 ## Notes and gotchas
 
-- Wails app embeds `wails/frontend/.output`; production builds must generate frontend output before embedding.
+- Wails app embeds `frontend/.output`; production builds must generate frontend output before embedding.
 - Wails has its own `go.mod` (`wails/go.mod`) to isolate it from the server which uses `go-fuego`.
 - No dedicated test suite is currently present; validate changes by running the app and exercising affected API/UI flows.
 
