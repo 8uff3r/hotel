@@ -21,6 +21,7 @@ func (m UsersModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Get(s, "/", u.usersList)
 	fuego.Post(s, "/", u.usersCreate)
 	fuego.Get(s, "/{id}", u.userView)
+	fuego.Put(s, "/{id}", u.userUpdate)
 }
 
 type userListResponse struct {
@@ -42,6 +43,44 @@ func (u UsersModule) userView(c fuego.ContextNoBody) (models.SanitizedUser, erro
 		}
 		return zero, fuego.InternalServerError{Title: "query_failed"}
 	}
+	return h.SanitizeUser(&row), nil
+}
+
+func (u *UsersModule) userUpdate(c fuego.ContextWithBody[userUpdateDto]) (models.SanitizedUser, error) {
+	var zero models.SanitizedUser
+	id := c.PathParam("id")
+	uid, err := strconv.ParseUint(id, 10, 32)
+	if err != nil {
+		return zero, fuego.BadRequestError{Title: "invalid_id"}
+	}
+
+	body, err := c.Body()
+	if err != nil {
+		return zero, fuego.BadRequestError{}
+	}
+
+	var row models.User
+	if err := u.Db.WithContext(c).Model(&models.User{}).Preload("UserHotels").First(&row, uint(uid)).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return zero, fuego.NotFoundError{Title: "not_found"}
+		}
+		return zero, fuego.InternalServerError{Title: "query_failed"}
+	}
+
+	if body.Email != "" {
+		row.Email = strings.TrimSpace(body.Email)
+	}
+	if body.FirstName != "" {
+		row.FirstName = strings.TrimSpace(body.FirstName)
+	}
+	if body.LastName != "" {
+		row.LastName = strings.TrimSpace(body.LastName)
+	}
+
+	if err := u.Db.WithContext(c).Save(&row).Error; err != nil {
+		return zero, fuego.BadRequestError{Title: "update_failed"}
+	}
+
 	return h.SanitizeUser(&row), nil
 }
 
@@ -76,6 +115,12 @@ type userCreateDto struct {
 }
 type userCreateResponse struct {
 	ID uint `json:"id"`
+}
+
+type userUpdateDto struct {
+	Email     string `json:"email"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
 }
 
 func (u *UsersModule) usersCreate(c fuego.ContextWithBody[userCreateDto]) (userCreateResponse, error) {
