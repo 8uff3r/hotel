@@ -9,7 +9,7 @@ import (
 	"github.com/tkrajina/typescriptify-golang-structs/typescriptify"
 )
 
-const distFile = "frontend/app/utils/auto-route-types.ts"
+const distFile = "frontend/app/utils/route-types.gen.ts"
 
 func main() {
 	converter := typescriptify.New()

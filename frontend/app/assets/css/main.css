@@ -9,3 +9,10 @@
 :root {
   font-family: var(--font-vazirmatn-fd);
 }
+
+button {
+  cursor: pointer;
+  &:disabled {
+    cursor: default;
+  }
+}

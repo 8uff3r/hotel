@@ -54,10 +54,40 @@
             <UButton variant="ghost" size="sm" :to="`/users/${row.original.id}/edit`">
               <UIcon name="i-lucide-pencil" class="h-4 w-4" />
             </UButton>
+            <UButton variant="ghost" size="sm" color="error" @click="confirmDelete(row.original)">
+              <UIcon name="i-lucide-trash-2" class="h-4 w-4" />
+            </UButton>
           </div>
         </template>
       </UTable>
+
+      <template #footer>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-gray-500">
+            {{ t("pagination.pageOf", { page: 1, totalPages: 1 }) }}
+          </span>
+        </div>
+      </template>
     </UCard>
+
+    <UModal v-model="deleteModalOpen">
+      <template #header>
+        <h2 class="text-lg font-semibold">{{ t("actions.confirmDelete") }}</h2>
+      </template>
+      <template #body>
+        <p>{{ t("users.confirmDelete", { name: selectedUser?.firstName }) }}</p>
+      </template>
+      <template #footer>
+        <div class="flex justify-end gap-3">
+          <UButton variant="outline" @click="deleteModalOpen = false">{{
+            t("actions.cancel")
+          }}</UButton>
+          <UButton color="error" :loading="deleting" @click="deleteUser">{{
+            t("actions.delete")
+          }}</UButton>
+        </div>
+      </template>
+    </UModal>
   </div>
 </template>
 
@@ -72,6 +102,8 @@ definePageMeta({
 type User = NonNullable<PaginatedResponseModelsSanitizedUser["data"]>[0];
 
 const { t } = useI18n();
+const toast = useToast();
+
 const columns = computed<TableColumn<User>[]>(() => [
   { accessorKey: "id", header: t("users.columns.id") },
   { accessorKey: "name", header: t("users.columns.name") },
@@ -81,6 +113,10 @@ const columns = computed<TableColumn<User>[]>(() => [
 const sourceUsers = ref<User[]>([]);
 const users = ref<User[]>([]);
 const loading = ref(false);
+
+const deleting = ref(false);
+const deleteModalOpen = ref(false);
+const selectedUser = ref<User | null>(null);
 
 const filters = reactive({
   search: "",
@@ -122,6 +158,28 @@ const fetchUsers = async () => {
 const clearFilters = () => {
   filters.search = "";
   applyFilters();
+};
+
+const confirmDelete = (user: User) => {
+  selectedUser.value = user;
+  deleteModalOpen.value = true;
+};
+
+const deleteUser = async () => {
+  if (!selectedUser.value) return;
+
+  deleting.value = true;
+  try {
+    await $fetch(`/api/users/${selectedUser.value.id}`, { method: "DELETE" });
+    deleteModalOpen.value = false;
+    toast.add({ title: t("users.deleted"), color: "success" });
+    await fetchUsers();
+  } catch (error) {
+    console.error("Failed to delete user:", error);
+    toast.add({ title: t("users.deleteFailed"), color: "error" });
+  } finally {
+    deleting.value = false;
+  }
 };
 
 onMounted(fetchUsers);

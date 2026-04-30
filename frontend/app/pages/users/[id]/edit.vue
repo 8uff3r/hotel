@@ -1,94 +1,190 @@
 <template>
   <div>
-    <div class="mb-6 flex items-center justify-between">
-      <div>
-        <UButton :to="`/users/${userId}`" variant="ghost" size="sm" class="mb-2">
-          <UIcon name="i-lucide-arrow-left" class="mr-1" />
-          Back to details
-        </UButton>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Edit User Permissions</h1>
-      </div>
+    <div class="mb-6">
+      <UButton variant="ghost" to="/users" class="mb-4">
+        <UIcon name="i-lucide-arrow-left" class="mr-2" />
+        {{ t("actions.backToUsers") }}
+      </UButton>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t("users.editUser") }}</h1>
     </div>
 
     <UCard>
-      <template #header>
-        <div class="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <div class="font-semibold">{{ user?.firstName }} {{ user?.lastName }}</div>
-            <div class="text-sm text-gray-500">{{ user?.email }}</div>
-          </div>
-          <div class="flex gap-2">
-            <USelect
-              v-model="selectedTemplateId"
-              :items="templateOptions"
-              placeholder="Apply template"
-              class="w-56"
-            />
-            <UButton color="primary" variant="outline" :loading="loading" @click="applyTemplate">
-              Apply
-            </UButton>
+      <UForm @submit="handleSubmit" :state="form" class="space-y-6">
+        <div class="flex flex-col gap-16">
+          <div class="flex w-full gap-4 max-md:flex-col">
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+              <UFormField :label="t('forms.emailRequired')" name="email" required>
+                <UInput
+                  v-model="form.email"
+                  type="email"
+                  :placeholder="t('users.emailPlaceholder')"
+                  :disabled="loading"
+                />
+              </UFormField>
+
+              <UFormField :label="t('forms.firstNameRequired')" name="firstName" required>
+                <UInput
+                  v-model="form.firstName"
+                  :placeholder="t('forms.firstNamePlaceholder')"
+                  :disabled="loading"
+                />
+              </UFormField>
+
+              <UFormField :label="t('forms.lastNameRequired')" name="lastName" required>
+                <UInput
+                  v-model="form.lastName"
+                  :placeholder="t('forms.lastNamePlaceholder')"
+                  :disabled="loading"
+                />
+              </UFormField>
+            </div>
           </div>
         </div>
+
+        <div class="mt-6 flex justify-end gap-3">
+          <UButton variant="outline" to="/users" :disabled="loading">
+            {{ t("actions.cancel") }}
+          </UButton>
+          <UButton type="submit" color="primary" :loading="loading">
+            {{ t("actions.saveChanges") }}
+          </UButton>
+        </div>
+      </UForm>
+    </UCard>
+
+    <UCard class="mt-6">
+      <template #header>
+        <h2 class="text-lg font-semibold">{{ t("users.permissions") }}</h2>
       </template>
 
-      <div v-if="loading" class="flex items-center gap-2 py-2 text-sm text-gray-500">
+      <div v-if="permissionsLoading" class="flex items-center gap-2 py-2 text-sm text-gray-500">
         <UIcon name="i-lucide-loader-2" class="h-4 w-4 animate-spin" />
-        Loading permissions...
+        {{ t("users.loadingPermissions") }}
       </div>
-
       <div v-else class="space-y-4">
-        <div v-for="group in permissionGroups" :key="group.key">
-          <h3 class="mb-2 font-medium">{{ group.label }}</h3>
-          <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            <UCheckbox
-              v-for="permission in group.permissions"
-              :key="permission.id"
-              :model-value="grantedPermissionIds.has(permission.id)"
-              :label="permission.label"
-              @update:model-value="togglePermission(permission.id, $event)"
-            />
-          </div>
-        </div>
+        <UCollapsible
+          v-for="category in permissionCategories"
+          :key="category.key"
+          :open="openCategories.has(category.key)"
+          @update:open="toggleCategory(category.key, $event)"
+        >
+          <UButton
+            class="group"
+            :label="category.label"
+            color="neutral"
+            variant="soft"
+            :trailing-icon="
+              localeProperties.dir === 'rtl' ? 'i-lucide-chevron-left' : 'i-lucide-chevron-right'
+            "
+            :ui="{
+              trailingIcon: `
+              ${
+                localeProperties.dir === 'rtl'
+                  ? 'group-data-[state=open]:-rotate-90'
+                  : 'group-data-[state=open]:rotate-90'
+              }
+              transition-transform duration-200`,
+            }"
+            block
+          />
+
+          <template #content>
+            <div class="grid gap-2 py-2 sm:grid-cols-2 lg:grid-cols-3">
+              <HToggleButton
+                v-for="permission in category.permissions"
+                :key="permission.id"
+                v-model="selectedPermissionIds[permission.id]"
+                @update:model-value="togglePermission(permission.id, $event)"
+              >
+                {{ permission.label }}
+              </HToggleButton>
+            </div>
+          </template>
+        </UCollapsible>
       </div>
     </UCard>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { PaginatedResponseModelsSanitizedUser } from "~/utils/client";
+import type {
+  PermissionsResponse,
+  GetApiPermissionsUserUserIdResponse,
+  PutApiUsersIdResponse,
+  SanitizedUser,
+} from "~/utils/client";
 
 definePageMeta({
   requiresPermission: PERMISSIONS.users.users.update,
 });
 
-type User = NonNullable<PaginatedResponseModelsSanitizedUser["data"]>[0];
-
 const route = useRoute();
-const userId = route.params.id as string;
+const { t, localeProperties } = useI18n();
 const toast = useToast();
+const router = useRouter();
 
-const grantedPermissionIds = ref(new Set<number>());
-const selectedTemplateId = ref<number>();
+const userId = computed(() => Number(route.params.id));
 
-const templateOptions = computed(() =>
-  (data.value?.templates ?? [])
-    .filter((tpl) => tpl.id)
-    .map((tpl) => ({
-      label: tpl.label || `Template #${tpl.id}`,
-      value: tpl.id!,
-    }))
-);
+const loading = ref(false);
+const permissionsLoading = ref(true);
 
-const permissionGroups = computed(() => {
+const form = ref({
+  email: "",
+  firstName: "",
+  lastName: "",
+});
+
+type Permission = NonNullable<PermissionsResponse["data"]>[0];
+type UserPermission = NonNullable<GetApiPermissionsUserUserIdResponse["permissions"]>[0];
+
+const allPermissions = ref<Permission[]>([]);
+const userPermissions = ref<UserPermission[]>([]);
+const selectedPermissionIds = reactive<Record<number, boolean>>({});
+const openCategories = ref(new Set<string>());
+
+const fetchData = async () => {
+  permissionsLoading.value = true;
+  try {
+    const [userResp, allPermsResp, userPermsResp] = await Promise.all([
+      getApiUsersId({ path: { id: userId.value.toString() } }),
+      getApiPermissions({}),
+      getApiPermissionsUserUserId({ path: { userId: String(userId.value) } }),
+    ]);
+
+    const user = userResp;
+    form.value.email = user.email ?? "";
+    form.value.firstName = user.firstName ?? "";
+    form.value.lastName = user.lastName ?? "";
+
+    allPermissions.value = allPermsResp.data ?? [];
+    userPermissions.value = userPermsResp.permissions ?? [];
+
+    for (const up of userPermissions.value) {
+      if (up.permissionId && up.granted) {
+        selectedPermissionIds[up.permissionId] = true;
+      }
+    }
+  } catch (error) {
+    console.error("Failed to fetch data:", error);
+    toast.add({ title: t("users.loadFailed"), color: "error" });
+    // router.push("/users");
+  } finally {
+    permissionsLoading.value = false;
+  }
+};
+
+const permissionCategories = computed(() => {
   const grouped = new Map<
     string,
     { key: string; label: string; permissions: { id: number; label: string }[] }
   >();
 
-  for (const permission of data.value?.permissions ?? []) {
+  for (const permission of allPermissions.value) {
     if (!permission.id) continue;
-    const categoryLabel = permission.category?.label || "General";
-    const key = `${permission.categoryId || 0}-${categoryLabel}`;
+    const categoryLabel = permission.category?.label || "";
+    const resource = permission.resource || "";
+    const action = permission.action || "";
+    const key = `category-${permission.categoryId || 0}`;
 
     if (!grouped.has(key)) {
       grouped.set(key, { key, label: categoryLabel, permissions: [] });
@@ -96,73 +192,74 @@ const permissionGroups = computed(() => {
 
     grouped.get(key)!.permissions.push({
       id: permission.id,
-      label:
-        permission.translation?.en ||
-        permission.translation?.fa ||
-        `${permission.resource}:${permission.action}`,
+      label: permission.resource || `${resource}:${action}`,
     });
   }
 
-  return Array.from(grouped.values());
+  const result = Array.from(grouped.values());
+  if (result.length > 0 && !openCategories.value.size) {
+    openCategories.value.add(result[0]!.key);
+  }
+  return result;
 });
 
-const {
-  data,
-  pending: loading,
-  refresh,
-} = await useAsyncData(`users-edit-${userId}`, async () => {
-  const [userResponse, permissionsResp, templatesResp, userPermissionsResp] = await Promise.all([
-    $fetch<User>(`/api/users/${userId}`),
-    getApiPermissions({}),
-    getApiPermissionsTemplates({}),
-    getApiPermissionsUserUserId({ path: { userId } }),
-  ]);
-
-  return {
-    user: userResponse,
-    permissions: permissionsResp.data ?? [],
-    templates: templatesResp.data ?? [],
-    userPermissions: userPermissionsResp.permissions ?? [],
-  };
-});
-
-watchEffect(() => {
-  grantedPermissionIds.value = new Set(
-    (data.value?.userPermissions ?? [])
-      .filter((p) => p.granted && p.permissionId)
-      .map((p) => p.permissionId as number)
-  );
-});
-
-const user = computed(() => data.value?.user ?? null);
-
-const togglePermission = async (permissionId: number, checked: boolean | string) => {
-  try {
-    await postApiPermissionsUserUserIdPermissionId({
-      path: { userId, permissionId: String(permissionId) },
-      body: { granted: Boolean(checked) },
-    });
-
-    const next = new Set(grantedPermissionIds.value);
-    if (checked) next.add(permissionId);
-    else next.delete(permissionId);
-    grantedPermissionIds.value = next;
-  } catch {
-    toast.add({ title: "Failed to update permission", color: "error" });
+const toggleCategory = (key: string, open: boolean) => {
+  if (open) {
+    openCategories.value.add(key);
+  } else {
+    openCategories.value.delete(key);
   }
 };
 
-const applyTemplate = async () => {
-  if (!selectedTemplateId.value) return;
-
+const togglePermission = async (permissionId: number, granted: boolean) => {
   try {
-    await postApiPermissionsUserUserIdTemplateTemplateId({
-      path: { userId, templateId: String(selectedTemplateId.value) },
-    });
-    await refresh();
-    toast.add({ title: "Template applied", color: "success" });
-  } catch {
-    toast.add({ title: "Failed to apply template", color: "error" });
+    if (granted) {
+      await postApiPermissionsUserUserIdPermissionId({
+        path: {
+          userId: String(userId.value),
+          permissionId: String(permissionId),
+        },
+      });
+    } else {
+      await deleteApiPermissionsUserUserIdPermissionId({
+        path: {
+          userId: String(userId.value),
+          permissionId: String(permissionId),
+        },
+      });
+    }
+  } catch (error) {
+    console.error("Failed to update permission:", error);
+    selectedPermissionIds[permissionId] = !granted;
+    toast.add({ title: t("users.permissionUpdateFailed"), color: "error" });
   }
 };
+
+const handleSubmit = async () => {
+  loading.value = true;
+  try {
+    await putApiUsersId({
+      path: { id: String(userId.value) },
+      body: {
+        email: form.value.email,
+        firstName: form.value.firstName,
+        lastName: form.value.lastName,
+      },
+    });
+
+    toast.add({ title: t("users.updated"), color: "success" });
+    router.push("/users");
+  } catch (error: any) {
+    console.error("Failed to update user:", error);
+    toast.add({
+      title: t("users.updateFailed"),
+      description: error?.data?.error || error?.message || t("users.updateFailed"),
+      color: "error",
+    });
+  } finally {
+    loading.value = false;
+  }
+};
+
+onMounted(fetchData);
 </script>

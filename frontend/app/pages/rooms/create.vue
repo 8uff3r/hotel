@@ -87,16 +87,14 @@
           <!-- Amenities -->
           <UFormField :label="t('rooms.amenities')" name="amenities" class="md:col-span-2">
             <div class="flex flex-wrap gap-2">
-              <UBadge
+              <HToggleButton
                 v-for="amenity in availableAmenities"
                 :key="amenity.id"
-                :variant="form.amenities?.find((v) => v.id === amenity.id) ? 'solid' : 'outline'"
-                :color="form.amenities?.find((v) => v.id === amenity.id) ? 'primary' : 'neutral'"
-                class="cursor-pointer"
-                @click="toggleAmenity(amenity.id!)"
+                :model-value="!!form.amenities?.find((v) => v.id === amenity.id)"
+                @update:modelValue="toggleAmenity(amenity.id!)"
               >
                 {{ amenity.label }}
-              </UBadge>
+              </HToggleButton>
             </div>
           </UFormField>
         </div>
