@@ -17,7 +17,7 @@ type PermissionCategory struct {
 
 type Permission struct {
 	Base
-	Translation Translation        `gorm:"type:jsonb" json:"translation,omitempty"`
+	Translation Translation        `gorm:"type:jsonb" json:"-"`
 	Resource    string             `gorm:"not null;index;uniqueIndex:idx_permissions_resource_action" json:"resource"`
 	Action      PermissionAction   `gorm:"not null;uniqueIndex:idx_permissions_resource_action" json:"action"`
 	CategoryID  uint               `gorm:"not null" json:"categoryId"`
