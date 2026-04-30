@@ -13,7 +13,7 @@
         <div class="flex flex-col gap-16">
           <div class="flex w-full gap-4 max-md:flex-col">
             <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
-              <UFormField :label="t('forms.emailRequired')" name="email" required>
+              <UFormField :label="t('forms.email')" name="email" required>
                 <UInput
                   v-model="form.email"
                   type="email"
@@ -22,7 +22,7 @@
                 />
               </UFormField>
 
-              <UFormField :label="t('forms.firstNameRequired')" name="firstName" required>
+              <UFormField :label="t('forms.firstName')" name="firstName" required>
                 <UInput
                   v-model="form.firstName"
                   :placeholder="t('forms.firstNamePlaceholder')"
@@ -30,7 +30,7 @@
                 />
               </UFormField>
 
-              <UFormField :label="t('forms.lastNameRequired')" name="lastName" required>
+              <UFormField :label="t('forms.lastName')" name="lastName" required>
                 <UInput
                   v-model="form.lastName"
                   :placeholder="t('forms.lastNamePlaceholder')"
@@ -198,7 +198,7 @@ const permissionCategories = computed(() => {
 
   const result = Array.from(grouped.values());
   if (result.length > 0 && !openCategories.value.size) {
-    openCategories.value.add(result[0]!.key);
+    // openCategories.value.add(result[0]!.key);
   }
   return result;
 });
