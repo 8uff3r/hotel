@@ -115,13 +115,14 @@ export const useAuthStore = defineStore(
         permissions.value = perms ?? [];
 
         isAuthenticated.value = true;
-      } catch {
+      } catch (e: any) {
         user.value = null;
         currentRole.value = undefined;
         isAuthenticated.value = false;
         userHotels.value = [];
         currentHotelId.value = "";
         permissions.value = [];
+        if (e.status === 401) navigateTo("/login");
       } finally {
         loading.value = false;
       }
