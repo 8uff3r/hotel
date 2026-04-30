@@ -11,9 +11,9 @@ type HasTranslatables interface {
 	GetTranslatables() []Translatable
 }
 type TranslateBase struct {
-	Slug        string      `json:"-"`
+	Slug        string      `json:"slug"`
 	Label       string      `gorm:"-" json:"label"`
-	Translation Translation `gorm:"type:jsonb" json:"translation,omitempty"`
+	Translation Translation `gorm:"type:jsonb" json:"-"`
 }
 
 type Translatable interface {
