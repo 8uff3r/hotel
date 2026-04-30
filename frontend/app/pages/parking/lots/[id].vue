@@ -26,14 +26,14 @@
 
         <UCard>
           <template #header>
-            <span class="text-sm text-gray-500">Hourly Rate</span>
+            <span class="text-sm text-gray-500">{{ t("parking.hourly_rate") }}</span>
           </template>
           <div class="text-3xl font-bold">${{ parkingLot.hourlyRate }}</div>
         </UCard>
 
         <UCard>
           <template #header>
-            <span class="text-sm text-gray-500">Daily Rate</span>
+            <span class="text-sm text-gray-500">{{ t("parking.daily_rate") }}</span>
           </template>
           <div class="text-3xl font-bold">${{ parkingLot.dailyRate }}</div>
         </UCard>
@@ -42,7 +42,7 @@
       <UCard>
         <template #header>
           <div class="flex items-center justify-between">
-            <span class="font-semibold">Edit Parking Lot</span>
+            <span class="font-semibold">{{ t("parking.edit_parking_lot") }}</span>
             <UBadge :color="getStatusColor(parkingLot.status) as any" variant="soft">
               {{ parkingLot.status }}
             </UBadge>
@@ -52,44 +52,46 @@
         <form @submit.prevent="updateParkingLot">
           <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <label class="mb-1 block text-sm font-medium">Name *</label>
+              <label class="mb-1 block text-sm font-medium">{{ t("parking.name") }} *</label>
               <UInput v-model="form.name" required />
             </div>
 
             <div>
-              <label class="mb-1 block text-sm font-medium">Location</label>
+              <label class="mb-1 block text-sm font-medium">{{ t("parking.location") }}</label>
               <UInput v-model="form.location" />
             </div>
 
             <div>
-              <label class="mb-1 block text-sm font-medium">Total Spots</label>
+              <label class="mb-1 block text-sm font-medium">{{ t("parking.total_spots") }}</label>
               <UInput v-model="form.totalSpots" type="number" />
             </div>
 
             <div>
-              <label class="mb-1 block text-sm font-medium">Hourly Rate ($)</label>
+              <label class="mb-1 block text-sm font-medium">{{ t("parking.hourly_rate_dollar") }}</label>
               <UInput v-model="form.hourlyRate" />
             </div>
 
             <div>
-              <label class="mb-1 block text-sm font-medium">Daily Rate ($)</label>
+              <label class="mb-1 block text-sm font-medium">{{ t("parking.daily_rate_dollar") }}</label>
               <UInput v-model="form.dailyRate" />
             </div>
 
             <div>
-              <label class="mb-1 block text-sm font-medium">Status</label>
+              <label class="mb-1 block text-sm font-medium">{{ t("common.status") }}</label>
               <USelect v-model="form.status" :items="statusOptions" />
             </div>
 
             <div class="md:col-span-2">
-              <label class="mb-1 block text-sm font-medium">Description</label>
+              <label class="mb-1 block text-sm font-medium">{{ t("common.description") }}</label>
               <UTextarea v-model="form.description" :rows="3" />
             </div>
           </div>
 
           <div class="mt-6 flex justify-end gap-3">
-            <UButton variant="outline" to="/parking/lots">Cancel</UButton>
-            <UButton type="submit" color="primary" :loading="saving">Save Changes</UButton>
+            <UButton variant="outline" to="/parking/lots">{{ t("common.cancel") }}</UButton>
+            <UButton type="submit" color="primary" :loading="saving">{{
+              t("actions.saveChanges")
+            }}</UButton>
           </div>
         </form>
       </UCard>
@@ -121,9 +123,9 @@ const form = reactive({
 });
 
 const statusOptions = [
-  { value: "active", label: "Active" },
-  { value: "full", label: "Full" },
-  { value: "closed", label: "Closed" },
+  { value: "active", label: t("parking.status_active") },
+  { value: "full", label: t("parking.status_full") },
+  { value: "closed", label: t("parking.status_closed") },
 ];
 
 const fetchParkingLot = async () => {

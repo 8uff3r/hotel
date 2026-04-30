@@ -40,7 +40,7 @@
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-lg font-semibold">{{ t("parking.parking_spots") }}</span>
-          <span class="text-sm text-gray-500">{{ pagination.total }} spots</span>
+          <span class="text-sm text-gray-500">{{ t("parking.spots_count", { count: pagination.total }) }}</span>
         </div>
       </template>
 
@@ -71,7 +71,7 @@
         </template>
 
         <template #isCovered-cell="{ row }">
-          {{ row.original.isCovered ? "Yes" : "No" }}
+          {{ row.original.isCovered ? t("common.yes") : t("common.no") }}
         </template>
 
         <template #actions-cell="{ row }">
@@ -89,7 +89,7 @@
       <template #footer>
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-500">
-            Page {{ pagination.page }} of {{ pagination.totalPages }}
+            {{ t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages }) }}
           </span>
           <UPagination
             v-model="page"
@@ -103,15 +103,15 @@
 
     <UModal v-model="deleteModalOpen">
       <template #header>
-        <h2 class="text-lg font-semibold">Confirm Delete</h2>
+        <h2 class="text-lg font-semibold">{{ t("actions.confirmDelete") }}</h2>
       </template>
       <template #body>
-        <p>Are you sure you want to delete spot "{{ selectedSpot?.spotNumber }}"?</p>
+        <p>{{ t("parking.confirm_delete_spot", { spot: selectedSpot?.spotNumber }) }}</p>
       </template>
       <template #footer>
         <div class="flex justify-end gap-3">
-          <UButton variant="outline" @click="deleteModalOpen = false">Cancel</UButton>
-          <UButton color="error" :loading="deleting" @click="deleteSpot">Delete</UButton>
+          <UButton variant="outline" @click="deleteModalOpen = false">{{ t("actions.cancel") }}</UButton>
+          <UButton color="error" :loading="deleting" @click="deleteSpot">{{ t("actions.delete") }}</UButton>
         </div>
       </template>
     </UModal>
@@ -135,19 +135,18 @@ interface Spot {
   isCovered: boolean;
 }
 
-const columns: TableColumn<Spot>[] = [
-  { accessorKey: "spotNumber", header: "Spot #" },
-  { accessorKey: "lotId", header: "Lot" },
-  { accessorKey: "floor", header: "Floor" },
-  { accessorKey: "spotType", header: "Type" },
-  { accessorKey: "isCovered", header: "Covered" },
-  { accessorKey: "status", header: "Status" },
-  { accessorKey: "actions", header: "Actions" },
-];
-
 const spots = ref<Spot[]>([]);
 const lots = ref<any[]>([]);
 const { t } = useI18n();
+const columns: TableColumn<Spot>[] = [
+  { accessorKey: "spotNumber", header: t("parking.spot_number") },
+  { accessorKey: "lotId", header: t("parking.parking_lot") },
+  { accessorKey: "floor", header: t("common.floor") },
+  { accessorKey: "spotType", header: t("parking.spot_type") },
+  { accessorKey: "isCovered", header: t("parking.covered") },
+  { accessorKey: "status", header: t("common.status") },
+  { accessorKey: "actions", header: t("parking.actions") },
+];
 const loading = ref(false);
 const deleting = ref(false);
 const deleteModalOpen = ref(false);
@@ -167,11 +166,11 @@ const pagination = reactive({
 });
 
 const statusOptions = [
-  { value: "all", label: "All Statuses" },
-  { value: "available", label: "Available" },
-  { value: "occupied", label: "Occupied" },
-  { value: "reserved", label: "Reserved" },
-  { value: "maintenance", label: "Maintenance" },
+  { value: "all", label: t("common.all_statuses") },
+  { value: "available", label: t("parking.status_available") },
+  { value: "occupied", label: t("parking.status_occupied") },
+  { value: "reserved", label: t("parking.status_reserved") },
+  { value: "maintenance", label: t("parking.status_maintenance") },
 ];
 
 const lotOptions = ref<{ value: string; label: string }[]>([]);
@@ -181,7 +180,7 @@ const fetchLots = async () => {
     const res = await $fetch("/api/parking/lots");
     lots.value = res.data;
     lotOptions.value = [
-      { value: "all", label: "All Lots" },
+      { value: "all", label: t("parking.all_lots") },
       ...lots.value.map((l: any) => ({ value: l.id.toString(), label: l.name })),
     ];
   } catch (error) {

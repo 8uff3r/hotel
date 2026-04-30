@@ -40,7 +40,7 @@
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-lg font-semibold">{{ t("parking.registered_vehicles") }}</span>
-          <span class="text-sm text-gray-500">{{ pagination.total }} vehicles</span>
+          <span class="text-sm text-gray-500">{{ t("parking.vehicles_count", { count: pagination.total }) }}</span>
         </div>
       </template>
 
@@ -66,7 +66,7 @@
 
         <template #isRegistered-cell="{ row }">
           <UBadge :color="row.original.isRegistered ? 'success' : 'warning'" variant="soft">
-            {{ row.original.isRegistered ? "Registered" : "Guest" }}
+            {{ row.original.isRegistered ? t("parking.registered") : t("common.guest") }}
           </UBadge>
         </template>
 
@@ -85,7 +85,7 @@
       <template #footer>
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-500">
-            Page {{ pagination.page }} of {{ pagination.totalPages }}
+            {{ t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages }) }}
           </span>
           <UPagination
             v-model="page"
@@ -99,15 +99,15 @@
 
     <UModal v-model="deleteModalOpen">
       <template #header>
-        <h2 class="text-lg font-semibold">Confirm Delete</h2>
+        <h2 class="text-lg font-semibold">{{ t("actions.confirmDelete") }}</h2>
       </template>
       <template #body>
-        <p>Are you sure you want to delete vehicle "{{ selectedVehicle?.licensePlate }}"?</p>
+        <p>{{ t("parking.confirm_delete_vehicle", { plate: selectedVehicle?.licensePlate }) }}</p>
       </template>
       <template #footer>
         <div class="flex justify-end gap-3">
-          <UButton variant="outline" @click="deleteModalOpen = false">Cancel</UButton>
-          <UButton color="error" :loading="deleting" @click="deleteVehicle">Delete</UButton>
+          <UButton variant="outline" @click="deleteModalOpen = false">{{ t("actions.cancel") }}</UButton>
+          <UButton color="error" :loading="deleting" @click="deleteVehicle">{{ t("actions.delete") }}</UButton>
         </div>
       </template>
     </UModal>
@@ -132,20 +132,19 @@ interface Vehicle {
   isRegistered: number;
 }
 
-const columns: TableColumn<Vehicle>[] = [
-  { accessorKey: "licensePlate", header: "License Plate" },
-  { accessorKey: "guestId", header: "Guest" },
-  { accessorKey: "vehicleType", header: "Type" },
-  { accessorKey: "make", header: "Make" },
-  { accessorKey: "model", header: "Model" },
-  { accessorKey: "color", header: "Color" },
-  { accessorKey: "isRegistered", header: "Status" },
-  { accessorKey: "actions", header: "Actions" },
-];
-
 const vehicles = ref<Vehicle[]>([]);
 const guests = ref<any[]>([]);
 const { t } = useI18n();
+const columns: TableColumn<Vehicle>[] = [
+  { accessorKey: "licensePlate", header: t("parking.license_plate") },
+  { accessorKey: "guestId", header: t("common.guest") },
+  { accessorKey: "vehicleType", header: t("parking.type") },
+  { accessorKey: "make", header: t("parking.make") },
+  { accessorKey: "model", header: t("parking.model") },
+  { accessorKey: "color", header: t("parking.color") },
+  { accessorKey: "isRegistered", header: t("common.status") },
+  { accessorKey: "actions", header: t("parking.actions") },
+];
 const loading = ref(false);
 const deleting = ref(false);
 const deleteModalOpen = ref(false);
@@ -165,12 +164,12 @@ const pagination = reactive({
 });
 
 const typeOptions = [
-  { value: "all", label: "All Types" },
-  { value: "car", label: "Car" },
-  { value: "motorcycle", label: "Motorcycle" },
-  { value: "truck", label: "Truck" },
-  { value: "van", label: "Van" },
-  { value: "other", label: "Other" },
+  { value: "all", label: t("common.all_types") },
+  { value: "car", label: t("parking.vehicle_type_car") },
+  { value: "motorcycle", label: t("parking.vehicle_type_motorcycle") },
+  { value: "truck", label: t("parking.vehicle_type_truck") },
+  { value: "van", label: t("parking.vehicle_type_van") },
+  { value: "other", label: t("parking.vehicle_type_other") },
 ];
 
 let searchTimeout: ReturnType<typeof setTimeout> | null = null;

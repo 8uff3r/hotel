@@ -15,7 +15,7 @@
       <form @submit.prevent="createVehicle">
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <label class="mb-1 block text-sm font-medium">License Plate *</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.license_plate") }} *</label>
             <UInput v-model="form.licensePlate" :placeholder="t('parking.abc_1234')" required />
           </div>
 
@@ -100,11 +100,11 @@ const loading = ref(false);
 const router = useRouter();
 
 const typeOptions = [
-  { value: "car", label: "Car" },
-  { value: "motorcycle", label: "Motorcycle" },
-  { value: "truck", label: "Truck" },
-  { value: "van", label: "Van" },
-  { value: "other", label: "Other" },
+  { value: "car", label: t("parking.vehicle_type_car") },
+  { value: "motorcycle", label: t("parking.vehicle_type_motorcycle") },
+  { value: "truck", label: t("parking.vehicle_type_truck") },
+  { value: "van", label: t("parking.vehicle_type_van") },
+  { value: "other", label: t("parking.vehicle_type_other") },
 ];
 
 const fetchGuests = async () => {

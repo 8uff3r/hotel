@@ -20,12 +20,12 @@
         <form @submit.prevent="checkIn">
           <div class="space-y-4">
             <div>
-              <label class="mb-1 block text-sm font-medium">License Plate *</label>
+              <label class="mb-1 block text-sm font-medium">{{ t("parking.license_plate") }} *</label>
               <UInput v-model="form.licensePlate" :placeholder="t('parking.abc_1234')" required />
             </div>
 
             <div>
-              <label class="mb-1 block text-sm font-medium">Parking Lot *</label>
+              <label class="mb-1 block text-sm font-medium">{{ t("parking.parking_lot") }} *</label>
               <USelect
                 v-model="form.lotId"
                 :items="lotOptions"
@@ -36,7 +36,7 @@
             </div>
 
             <div>
-              <label class="mb-1 block text-sm font-medium">Parking Spot (Optional)</label>
+              <label class="mb-1 block text-sm font-medium">{{ t("parking.parking_spot_optional") }}</label>
               <USelect
                 v-model="form.spotId"
                 :items="spotOptions"
@@ -45,7 +45,7 @@
             </div>
 
             <div>
-              <label class="mb-1 block text-sm font-medium">Guest</label>
+              <label class="mb-1 block text-sm font-medium">{{ t("common.guest") }}</label>
               <USelect
                 v-model="form.guestId"
                 :items="guestOptions"
@@ -56,7 +56,7 @@
             </div>
 
             <div>
-              <label class="mb-1 block text-sm font-medium">Reservation</label>
+              <label class="mb-1 block text-sm font-medium">{{ t("parking.reservation") }}</label>
               <USelect
                 v-model="form.reservationId"
                 :items="reservationOptions"
@@ -66,16 +66,18 @@
             </div>
 
             <div>
-              <label class="mb-1 block text-sm font-medium">Rate Type</label>
+              <label class="mb-1 block text-sm font-medium">{{ t("parking.rate_type") }}</label>
               <USelect v-model="form.rateApplied" :items="rateOptions" />
             </div>
           </div>
 
           <div class="mt-6 flex justify-end gap-3">
-            <UButton type="button" variant="outline" to="/parking/transactions">Cancel</UButton>
+            <UButton type="button" variant="outline" to="/parking/transactions">{{
+              t("common.cancel")
+            }}</UButton>
             <UButton type="submit" color="primary" :loading="loading">
               <UIcon name="i-lucide-car" class="mr-2" />
-              Check In
+              {{ t("parking.check_in") }}
             </UButton>
           </div>
         </form>
@@ -83,19 +85,19 @@
 
       <UCard>
         <template #header>
-          <span class="font-semibold">Quick Stats</span>
+          <span class="font-semibold">{{ t("parking.quick_stats") }}</span>
         </template>
         <div class="space-y-4">
           <div class="flex items-center justify-between rounded-lg bg-gray-50 p-3 dark:bg-gray-800">
-            <span class="text-gray-500">Available Spots</span>
+            <span class="text-gray-500">{{ t("parking.available_spots") }}</span>
             <span class="text-2xl font-bold text-green-600">{{ stats.available }}</span>
           </div>
           <div class="flex items-center justify-between rounded-lg bg-gray-50 p-3 dark:bg-gray-800">
-            <span class="text-gray-500">Occupied Spots</span>
+            <span class="text-gray-500">{{ t("parking.occupied_spots") }}</span>
             <span class="text-2xl font-bold text-warning">{{ stats.occupied }}</span>
           </div>
           <div class="flex items-center justify-between rounded-lg bg-gray-50 p-3 dark:bg-gray-800">
-            <span class="text-gray-500">Active Vehicles</span>
+            <span class="text-gray-500">{{ t("parking.active_vehicles") }}</span>
             <span class="text-2xl font-bold text-info">{{ stats.active }}</span>
           </div>
         </div>
@@ -133,8 +135,8 @@ const stats = reactive({
 });
 
 const rateOptions = [
-  { value: "hourly", label: "Hourly" },
-  { value: "daily", label: "Daily" },
+  { value: "hourly", label: t("parking.hourly") },
+  { value: "daily", label: t("parking.daily") },
 ];
 
 const fetchInitialData = async () => {
@@ -172,7 +174,7 @@ const loadSpots = async () => {
   try {
     const res = await $fetch(`/api/parking/spots?lotId=${form.lotId}&status=available`);
     spotOptions.value = [
-      { value: "", label: "Auto-assign" },
+      { value: "", label: t("parking.auto_assign") },
       ...(res.data as any[]).map((s) => ({
         value: s.id.toString(),
         label: `${s.spotNumber} (${s.spotType})`,

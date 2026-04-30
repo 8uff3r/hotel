@@ -26,44 +26,46 @@
       <form @submit.prevent="updateSpot">
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <label class="mb-1 block text-sm font-medium">Parking Lot *</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.parking_lot") }} *</label>
             <HSelect v-model="form.lotId" :items="lotOptions" required />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Spot Number *</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.spot_number") }} *</label>
             <UInput v-model="form.spotNumber" required />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Floor</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("common.floor") }}</label>
             <UInput v-model="form.floor" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Spot Type</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.spot_type") }}</label>
             <HSelect v-model="form.spotType" :items="spotTypeOptions" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Status</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("common.status") }}</label>
             <HSelect v-model="form.status" :items="statusOptions" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Is Covered?</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.is_covered") }}</label>
             <UCheckbox v-model="form.isCovered" :label="t('parking.covered_parking')" />
           </div>
 
           <div class="md:col-span-2">
-            <label class="mb-1 block text-sm font-medium">Description</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("common.description") }}</label>
             <UTextarea v-model="form.description" :rows="3" />
           </div>
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton variant="outline" to="/parking/spots">Cancel</UButton>
-          <UButton type="submit" color="primary" :loading="saving">Save Changes</UButton>
+          <UButton variant="outline" to="/parking/spots">{{ t("common.cancel") }}</UButton>
+          <UButton type="submit" color="primary" :loading="saving">{{
+            t("actions.saveChanges")
+          }}</UButton>
         </div>
       </form>
     </UCard>

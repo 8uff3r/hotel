@@ -13,7 +13,7 @@
       <form @submit.prevent="createSpot">
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <label class="mb-1 block text-sm font-medium">Parking Lot *</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.parking_lot") }} *</label>
             <HSelect
               v-model="form.lotId"
               :items="lots"
@@ -23,7 +23,7 @@
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Spot Number *</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.spot_number") }} *</label>
             <UInput v-model="form.spotNumber" :placeholder="t('parking.a_101')" required />
           </div>
 
@@ -90,18 +90,18 @@ const loading = ref(false);
 const router = useRouter();
 
 const spotTypeOptions = [
-  { value: "standard", label: "Standard" },
-  { value: "handicap", label: "Handicap" },
-  { value: "electric", label: "Electric" },
-  { value: "compact", label: "Compact" },
-  { value: "large", label: "Large" },
+  { value: "standard", label: t("parking.spot_type_standard") },
+  { value: "handicap", label: t("parking.spot_type_handicap") },
+  { value: "electric", label: t("parking.spot_type_electric") },
+  { value: "compact", label: t("parking.spot_type_compact") },
+  { value: "large", label: t("parking.spot_type_large") },
 ];
 
 const statusOptions = [
-  { value: "available", label: "Available" },
-  { value: "occupied", label: "Occupied" },
-  { value: "reserved", label: "Reserved" },
-  { value: "maintenance", label: "Maintenance" },
+  { value: "available", label: t("parking.status_available") },
+  { value: "occupied", label: t("parking.status_occupied") },
+  { value: "reserved", label: t("parking.status_reserved") },
+  { value: "maintenance", label: t("parking.status_maintenance") },
 ];
 
 const { data: lots } = useAsyncData(async () => {

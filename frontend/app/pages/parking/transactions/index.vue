@@ -47,7 +47,7 @@
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-lg font-semibold">{{ t("parking.transactions") }}</span>
-          <span class="text-sm text-gray-500">{{ pagination.total }} transactions</span>
+          <span class="text-sm text-gray-500">{{ t("parking.transactions_count", { count: pagination.total }) }}</span>
         </div>
       </template>
 
@@ -70,7 +70,7 @@
         </template>
 
         <template #hoursParked-cell="{ row }">
-          {{ row.original.hoursParked ? row.original.hoursParked.toFixed(1) + " hrs" : "-" }}
+          {{ row.original.hoursParked ? t("parking.hours_short", { hours: row.original.hoursParked.toFixed(1) }) : "-" }}
         </template>
 
         <template #amountDue-cell="{ row }">
@@ -110,7 +110,7 @@
       <template #footer>
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-500">
-            Page {{ pagination.page }} of {{ pagination.totalPages }}
+            {{ t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages }) }}
           </span>
           <UPagination
             v-model="page"
@@ -124,42 +124,42 @@
 
     <UModal v-model="checkoutModalOpen">
       <template #header>
-        <h2 class="text-lg font-semibold">Check Out Vehicle</h2>
+        <h2 class="text-lg font-semibold">{{ t("parking.check_out_vehicle") }}</h2>
       </template>
       <template #body>
         <div v-if="selectedTx" class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <span class="text-sm text-gray-500">License Plate</span>
+              <span class="text-sm text-gray-500">{{ t("parking.license_plate") }}</span>
               <div class="font-medium">{{ selectedTx.licensePlate }}</div>
             </div>
             <div>
-              <span class="text-sm text-gray-500">Entry Time</span>
+              <span class="text-sm text-gray-500">{{ t("parking.entry_time") }}</span>
               <div class="font-medium">{{ formatDate(selectedTx.entryTime) }}</div>
             </div>
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Payment Method</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.payment_method") }}</label>
             <USelect v-model="checkoutForm.paymentMethod" :items="paymentMethods" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Amount Paid</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.amount_paid") }}</label>
             <UInput v-model="checkoutForm.amountPaid" type="number" step="0.01" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Notes</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("common.notes") }}</label>
             <UTextarea v-model="checkoutForm.notes" :rows="2" />
           </div>
         </div>
       </template>
       <template #footer>
         <div class="flex justify-end gap-3">
-          <UButton variant="outline" @click="checkoutModalOpen = false">Cancel</UButton>
+          <UButton variant="outline" @click="checkoutModalOpen = false">{{ t("common.cancel") }}</UButton>
           <UButton color="warning" :loading="checkingOut" @click="confirmCheckout"
-            >Check Out</UButton
+            >{{ t("parking.check_out") }}</UButton
           >
         </div>
       </template>
@@ -186,19 +186,18 @@ interface Transaction {
   paymentStatus: string;
 }
 
-const columns: TableColumn<Transaction>[] = [
-  { accessorKey: "licensePlate", header: "License Plate" },
-  { accessorKey: "entryTime", header: "Entry Time" },
-  { accessorKey: "exitTime", header: "Exit Time" },
-  { accessorKey: "hoursParked", header: "Duration" },
-  { accessorKey: "amountDue", header: "Amount Due" },
-  { accessorKey: "status", header: "Status" },
-  { accessorKey: "paymentStatus", header: "Payment" },
-  { accessorKey: "actions", header: "Actions" },
-];
-
 const transactions = ref<Transaction[]>([]);
 const { t } = useI18n();
+const columns: TableColumn<Transaction>[] = [
+  { accessorKey: "licensePlate", header: t("parking.license_plate") },
+  { accessorKey: "entryTime", header: t("parking.entry_time") },
+  { accessorKey: "exitTime", header: t("parking.exit_time") },
+  { accessorKey: "hoursParked", header: t("parking.duration") },
+  { accessorKey: "amountDue", header: t("parking.amount_due") },
+  { accessorKey: "status", header: t("common.status") },
+  { accessorKey: "paymentStatus", header: t("parking.payment") },
+  { accessorKey: "actions", header: t("parking.actions") },
+];
 const loading = ref(false);
 const checkoutModalOpen = ref(false);
 const selectedTx = ref<Transaction | null>(null);
@@ -225,23 +224,23 @@ const pagination = reactive({
 });
 
 const statusOptions = [
-  { value: "all", label: "All Statuses" },
-  { value: "active", label: "Active" },
-  { value: "completed", label: "Completed" },
-  { value: "cancelled", label: "Cancelled" },
+  { value: "all", label: t("common.all_statuses") },
+  { value: "active", label: t("parking.status_active") },
+  { value: "completed", label: t("parking.status_completed") },
+  { value: "cancelled", label: t("parking.status_cancelled") },
 ];
 
 const paymentStatusOptions = [
-  { value: "all", label: "All Payments" },
-  { value: "pending", label: "Pending" },
-  { value: "paid", label: "Paid" },
-  { value: "waived", label: "Waived" },
+  { value: "all", label: t("common.all_payments") },
+  { value: "pending", label: t("parking.payment_pending") },
+  { value: "paid", label: t("parking.payment_paid") },
+  { value: "waived", label: t("parking.payment_waived") },
 ];
 
 const paymentMethods = [
-  { value: "cash", label: "Cash" },
-  { value: "card", label: "Card" },
-  { value: "guest_account", label: "Guest Account" },
+  { value: "cash", label: t("parking.payment_cash") },
+  { value: "card", label: t("parking.payment_card") },
+  { value: "guest_account", label: t("parking.payment_guest_account") },
 ];
 
 let searchTimeout: ReturnType<typeof setTimeout> | null = null;

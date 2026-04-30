@@ -20,7 +20,7 @@
         <div class="flex items-center justify-between">
           <span class="font-semibold">{{ t("parking.edit_vehicle") }}</span>
           <UBadge :color="vehicle.isRegistered ? 'success' : 'warning'" variant="soft">
-            {{ vehicle.isRegistered ? "Registered" : "Guest" }}
+            {{ vehicle.isRegistered ? t("parking.registered") : t("common.guest") }}
           </UBadge>
         </div>
       </template>
@@ -28,12 +28,12 @@
       <form @submit.prevent="updateVehicle">
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <label class="mb-1 block text-sm font-medium">License Plate *</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.license_plate") }} *</label>
             <UInput v-model="form.licensePlate" required />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Guest</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("common.guest") }}</label>
             <USelect
               v-model="form.guestId"
               :items="guestOptions"
@@ -44,39 +44,41 @@
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Vehicle Type</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.vehicle_type") }}</label>
             <USelect v-model="form.vehicleType" :items="typeOptions" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Make</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.make") }}</label>
             <UInput v-model="form.make" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Model</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.model") }}</label>
             <UInput v-model="form.model" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Color</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.color") }}</label>
             <UInput v-model="form.color" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Is Registered?</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.is_registered") }}</label>
             <UCheckbox v-model="form.isRegistered" :label="t('parking.registered_vehicle')" />
           </div>
 
           <div class="md:col-span-2">
-            <label class="mb-1 block text-sm font-medium">Notes</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("common.notes") }}</label>
             <UTextarea v-model="form.notes" :rows="3" />
           </div>
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton variant="outline" to="/parking/vehicles">Cancel</UButton>
-          <UButton type="submit" color="primary" :loading="saving">Save Changes</UButton>
+          <UButton variant="outline" to="/parking/vehicles">{{ t("common.cancel") }}</UButton>
+          <UButton type="submit" color="primary" :loading="saving">{{
+            t("actions.saveChanges")
+          }}</UButton>
         </div>
       </form>
     </UCard>
@@ -111,11 +113,11 @@ const form = reactive({
 const guestOptions = ref<{ value: string; label: string }[]>([]);
 
 const typeOptions = [
-  { value: "car", label: "Car" },
-  { value: "motorcycle", label: "Motorcycle" },
-  { value: "truck", label: "Truck" },
-  { value: "van", label: "Van" },
-  { value: "other", label: "Other" },
+  { value: "car", label: t("parking.vehicle_type_car") },
+  { value: "motorcycle", label: t("parking.vehicle_type_motorcycle") },
+  { value: "truck", label: t("parking.vehicle_type_truck") },
+  { value: "van", label: t("parking.vehicle_type_van") },
+  { value: "other", label: t("parking.vehicle_type_other") },
 ];
 
 const fetchData = async () => {

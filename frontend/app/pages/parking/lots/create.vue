@@ -15,7 +15,7 @@
       <form @submit.prevent="createParkingLot">
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <label class="mb-1 block text-sm font-medium">Name *</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.name") }} *</label>
             <UInput v-model="form.name" :placeholder="t('parking.main_parking')" required />
           </div>
 
@@ -30,12 +30,12 @@
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Hourly Rate ($)</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.hourly_rate_dollar") }}</label>
             <UInput v-model="form.hourlyRate" type="number" placeholder="5.00" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Daily Rate ($)</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.daily_rate_dollar") }}</label>
             <UInput v-model="form.dailyRate" type="number" placeholder="25.00" />
           </div>
 
@@ -86,13 +86,13 @@ const form = reactive({
   description: "",
 });
 
+const { t } = useI18n();
 const statusOptions = [
-  { value: "active", label: "Active" },
-  { value: "full", label: "Full" },
-  { value: "closed", label: "Closed" },
+  { value: "active", label: t("parking.status_active") },
+  { value: "full", label: t("parking.status_full") },
+  { value: "closed", label: t("parking.status_closed") },
 ];
 
-const { t } = useI18n();
 const loading = ref(false);
 const router = useRouter();
 

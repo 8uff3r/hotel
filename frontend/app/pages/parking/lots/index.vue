@@ -20,7 +20,7 @@
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-lg font-semibold">{{ t("parking.parking_lots") }}</span>
-          <span class="text-sm text-gray-500">{{ pagination.total }} lots</span>
+          <span class="text-sm text-gray-500">{{ t("parking.lots_count", { count: pagination.total }) }}</span>
         </div>
       </template>
 
@@ -34,7 +34,9 @@
           </NuxtLink>
         </template>
 
-        <template #totalSpots-cell="{ row }"> {{ row.original.totalSpots }} spots </template>
+        <template #totalSpots-cell="{ row }">
+          {{ t("parking.spots_count", { count: row.original.totalSpots }) }}
+        </template>
 
         <template #hourlyRate-cell="{ row }"> ${{ row.original.hourlyRate }}/hr </template>
 
@@ -61,7 +63,7 @@
       <template #footer>
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-500">
-            Page {{ pagination.page }} of {{ pagination.totalPages }}
+            {{ t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages }) }}
           </span>
           <UPagination
             v-model="page"
@@ -75,15 +77,15 @@
 
     <UModal v-model="deleteModalOpen">
       <template #header>
-        <h2 class="text-lg font-semibold">Confirm Delete</h2>
+        <h2 class="text-lg font-semibold">{{ t("actions.confirmDelete") }}</h2>
       </template>
       <template #body>
-        <p>Are you sure you want to delete parking lot "{{ selectedLot?.name }}"?</p>
+        <p>{{ t("parking.confirm_delete_lot", { name: selectedLot?.name }) }}</p>
       </template>
       <template #footer>
         <div class="flex justify-end gap-3">
-          <UButton variant="outline" @click="deleteModalOpen = false">Cancel</UButton>
-          <UButton color="error" :loading="deleting" @click="deleteLot">Delete</UButton>
+          <UButton variant="outline" @click="deleteModalOpen = false">{{ t("actions.cancel") }}</UButton>
+          <UButton color="error" :loading="deleting" @click="deleteLot">{{ t("actions.delete") }}</UButton>
         </div>
       </template>
     </UModal>
@@ -107,18 +109,17 @@ interface ParkingLot {
   status: string;
 }
 
-const columns: TableColumn<ParkingLot>[] = [
-  { accessorKey: "name", header: "Name" },
-  { accessorKey: "location", header: "Location" },
-  { accessorKey: "totalSpots", header: "Capacity" },
-  { accessorKey: "hourlyRate", header: "Hourly Rate" },
-  { accessorKey: "dailyRate", header: "Daily Rate" },
-  { accessorKey: "status", header: "Status" },
-  { accessorKey: "actions", header: "Actions" },
-];
-
 const parkingLots = ref<ParkingLot[]>([]);
 const { t } = useI18n();
+const columns: TableColumn<ParkingLot>[] = [
+  { accessorKey: "name", header: t("parking.name") },
+  { accessorKey: "location", header: t("parking.location") },
+  { accessorKey: "totalSpots", header: t("parking.capacity") },
+  { accessorKey: "hourlyRate", header: t("parking.hourly_rate") },
+  { accessorKey: "dailyRate", header: t("parking.daily_rate") },
+  { accessorKey: "status", header: t("common.status") },
+  { accessorKey: "actions", header: t("parking.actions") },
+];
 const loading = ref(false);
 const deleting = ref(false);
 const deleteModalOpen = ref(false);

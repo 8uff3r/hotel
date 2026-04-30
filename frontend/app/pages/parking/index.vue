@@ -19,21 +19,21 @@
 
       <UCard>
         <template #header>
-          <span class="text-sm text-gray-500">Total Spots</span>
+          <span class="text-sm text-gray-500">{{ t("parking.total_spots") }}</span>
         </template>
         <div class="text-3xl font-bold">{{ stats?.spots }}</div>
       </UCard>
 
       <UCard>
         <template #header>
-          <span class="text-sm text-gray-500">Available</span>
+          <span class="text-sm text-gray-500">{{ t("parking.available") }}</span>
         </template>
         <div class="text-3xl font-bold text-green-600">{{ stats?.availableSpots }}</div>
       </UCard>
 
       <UCard>
         <template #header>
-          <span class="text-sm text-gray-500">Active Vehicles</span>
+          <span class="text-sm text-gray-500">{{ t("parking.active_vehicles") }}</span>
         </template>
         <div class="text-3xl font-bold text-blue-600">{{ 0 }}</div>
       </UCard>
@@ -43,10 +43,10 @@
       <UCard>
         <template #header>
           <div class="flex items-center justify-between">
-            <span class="font-semibold">Parking Lots</span>
+            <span class="font-semibold">{{ t("parking.parking_lots") }}</span>
             <UButton size="sm" to="/parking/lots/create" color="primary">
               <UIcon name="i-lucide-plus" class="mr-1" />
-              Add Lot
+              {{ t("parking.add_lot") }}
             </UButton>
           </div>
         </template>
@@ -59,7 +59,7 @@
             <div>
               <div class="font-medium">{{ lot.name }}</div>
               <div class="text-sm text-gray-500">
-                {{ lot.totalSpots }} spots - {{ lot.hourlyRate }}/hr
+                {{ t("parking.spots_and_hourly_rate", { spots: lot.totalSpots, rate: lot.hourlyRate }) }}
               </div>
             </div>
             <UBadge :color="lot.status === 'active' ? 'success' : 'warning'" variant="soft">
@@ -67,7 +67,7 @@
             </UBadge>
           </div>
           <div v-if="lots.length === 0" class="py-4 text-center text-gray-500">
-            No parking lots found
+            {{ t("parking.no_parking_lots_found") }}
           </div>
         </div>
       </UCard>
@@ -75,8 +75,10 @@
       <UCard>
         <template #header>
           <div class="flex items-center justify-between">
-            <span class="font-semibold">Recent Transactions</span>
-            <UButton size="sm" to="/parking/transactions" variant="outline"> View All </UButton>
+            <span class="font-semibold">{{ t("parking.recent_transactions") }}</span>
+            <UButton size="sm" to="/parking/transactions" variant="outline">
+              {{ t("actions.viewAll") }}
+            </UButton>
           </div>
         </template>
         <div class="space-y-3">
@@ -94,7 +96,7 @@
             </UBadge>
           </div>
           <div v-if="recentTransactions.length === 0" class="py-4 text-center text-gray-500">
-            No recent transactions
+            {{ t("parking.no_recent_transactions") }}
           </div>
         </div>
       </UCard>

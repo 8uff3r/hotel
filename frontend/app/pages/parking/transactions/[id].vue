@@ -26,7 +26,7 @@
 
         <UCard>
           <template #header>
-            <span class="text-sm text-gray-500">Status</span>
+            <span class="text-sm text-gray-500">{{ t("common.status") }}</span>
           </template>
           <UBadge :color="getStatusColor(transaction.status) as any" size="lg">
             {{ transaction.status }}
@@ -35,7 +35,7 @@
 
         <UCard>
           <template #header>
-            <span class="text-sm text-gray-500">Payment</span>
+            <span class="text-sm text-gray-500">{{ t("parking.payment") }}</span>
           </template>
           <UBadge :color="getPaymentColor(transaction.paymentStatus) as any" size="lg">
             {{ transaction.paymentStatus }}
@@ -45,55 +45,55 @@
 
       <UCard>
         <template #header>
-          <span class="font-semibold">Transaction Information</span>
+          <span class="font-semibold">{{ t("parking.transaction_information") }}</span>
         </template>
 
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <div class="mb-1 text-sm text-gray-500">Entry Time</div>
+            <div class="mb-1 text-sm text-gray-500">{{ t("parking.entry_time") }}</div>
             <div class="font-medium">{{ formatDate(transaction.entryTime) }}</div>
           </div>
 
           <div>
-            <div class="mb-1 text-sm text-gray-500">Exit Time</div>
+            <div class="mb-1 text-sm text-gray-500">{{ t("parking.exit_time") }}</div>
             <div class="font-medium">
               {{ transaction.exitTime ? formatDate(transaction.exitTime) : "-" }}
             </div>
           </div>
 
           <div>
-            <div class="mb-1 text-sm text-gray-500">Duration</div>
+            <div class="mb-1 text-sm text-gray-500">{{ t("parking.duration") }}</div>
             <div class="font-medium">
-              {{ transaction.hoursParked ? transaction.hoursParked.toFixed(1) + " hours" : "-" }}
+              {{ transaction.hoursParked ? t("parking.hours_long", { hours: transaction.hoursParked.toFixed(1) }) : "-" }}
             </div>
           </div>
 
           <div>
-            <div class="mb-1 text-sm text-gray-500">Rate Applied</div>
-            <div class="font-medium">{{ transaction.rateApplied || "hourly" }}</div>
+            <div class="mb-1 text-sm text-gray-500">{{ t("parking.rate_applied") }}</div>
+            <div class="font-medium">{{ transaction.rateApplied || t("parking.hourly") }}</div>
           </div>
 
           <div>
-            <div class="mb-1 text-sm text-gray-500">Amount Due</div>
+            <div class="mb-1 text-sm text-gray-500">{{ t("parking.amount_due") }}</div>
             <div class="text-xl font-medium">
               ${{ transaction.amountDue?.toFixed(2) || "0.00" }}
             </div>
           </div>
 
           <div>
-            <div class="mb-1 text-sm text-gray-500">Amount Paid</div>
+            <div class="mb-1 text-sm text-gray-500">{{ t("parking.amount_paid") }}</div>
             <div class="text-xl font-medium">
               ${{ transaction.amountPaid?.toFixed(2) || "0.00" }}
             </div>
           </div>
 
           <div v-if="transaction.paymentMethod">
-            <div class="mb-1 text-sm text-gray-500">Payment Method</div>
+            <div class="mb-1 text-sm text-gray-500">{{ t("parking.payment_method") }}</div>
             <div class="font-medium">{{ transaction.paymentMethod }}</div>
           </div>
 
           <div v-if="transaction.notes">
-            <div class="mb-1 text-sm text-gray-500">Notes</div>
+            <div class="mb-1 text-sm text-gray-500">{{ t("common.notes") }}</div>
             <div class="font-medium">{{ transaction.notes }}</div>
           </div>
         </div>
@@ -101,7 +101,7 @@
         <div v-if="transaction.status === 'active'" class="mt-6 flex justify-end">
           <UButton color="warning" @click="openCheckout">
             <UIcon name="i-lucide-log-out" class="mr-2" />
-            Check Out Now
+            {{ t("parking.check_out_now") }}
           </UButton>
         </div>
       </UCard>
@@ -109,31 +109,31 @@
 
     <UModal v-model="checkoutModalOpen">
       <template #header>
-        <h2 class="text-lg font-semibold">Check Out Vehicle</h2>
+        <h2 class="text-lg font-semibold">{{ t("parking.check_out_vehicle") }}</h2>
       </template>
       <template #body>
         <div class="space-y-4">
           <div>
-            <label class="mb-1 block text-sm font-medium">Payment Method</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.payment_method") }}</label>
             <USelect v-model="checkoutForm.paymentMethod" :items="paymentMethods" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Amount Paid</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("parking.amount_paid") }}</label>
             <UInput v-model="checkoutForm.amountPaid" type="number" step="0.01" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">Notes</label>
+            <label class="mb-1 block text-sm font-medium">{{ t("common.notes") }}</label>
             <UTextarea v-model="checkoutForm.notes" :rows="2" />
           </div>
         </div>
       </template>
       <template #footer>
         <div class="flex justify-end gap-3">
-          <UButton variant="outline" @click="checkoutModalOpen = false">Cancel</UButton>
+          <UButton variant="outline" @click="checkoutModalOpen = false">{{ t("common.cancel") }}</UButton>
           <UButton color="warning" :loading="checkingOut" @click="confirmCheckout"
-            >Check Out</UButton
+            >{{ t("parking.check_out") }}</UButton
           >
         </div>
       </template>
@@ -162,9 +162,9 @@ const checkoutForm = reactive({
 });
 
 const paymentMethods = [
-  { value: "cash", label: "Cash" },
-  { value: "card", label: "Card" },
-  { value: "guest_account", label: "Guest Account" },
+  { value: "cash", label: t("parking.payment_cash") },
+  { value: "card", label: t("parking.payment_card") },
+  { value: "guest_account", label: t("parking.payment_guest_account") },
 ];
 
 const fetchTransaction = async () => {
