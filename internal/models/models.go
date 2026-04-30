@@ -77,33 +77,28 @@ type Room struct {
 type RoomType struct {
 	Base
 	TranslateBase
-	HotelID  *uint  `json:"hotelId"`
 	ColorHex string `gorm:"type:char(6);default:null" json:"colorHex,omitempty"`
 }
 
 type RoomStatus struct {
 	Base
 	TranslateBase
-	HotelID  *uint  `json:"hotelId"`
 	ColorHex string `gorm:"type:char(6);default:null" json:"colorHex,omitempty"`
 }
 
 type Amenity struct {
 	Base
 	TranslateBase
-	HotelID *string `json:"hotelId"`
 }
 
 type ParkingSpotType struct {
 	Base
 	TranslateBase
-	HotelID *string `json:"hotelId"`
 }
 
 type ParkingSpotStatus struct {
 	Base
 	TranslateBase
-	HotelID *string `json:"hotelId"`
 }
 
 type Guest struct {
