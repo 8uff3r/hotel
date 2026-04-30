@@ -105,6 +105,39 @@
 					"address": {
 						"type": "string"
 					},
+					"companions": {
+						"items": {
+							"nullable": true,
+							"properties": {
+								"firstName": {
+									"type": "string"
+								},
+								"guestId": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"id": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"idNumber": {
+									"type": "string"
+								},
+								"lastName": {
+									"type": "string"
+								},
+								"nationalId": {
+									"type": "string"
+								},
+								"relation": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"nullable": true,
+						"type": "array"
+					},
 					"dateOfBirth": {
 						"format": "date-time",
 						"type": "string"
@@ -456,10 +489,66 @@
 			"GuestWithReservationRequest": {
 				"description": "GuestWithReservationRequest schema",
 				"properties": {
+					"companions": {
+						"items": {
+							"properties": {
+								"firstName": {
+									"type": "string"
+								},
+								"idNumber": {
+									"type": "string"
+								},
+								"lastName": {
+									"type": "string"
+								},
+								"nationalId": {
+									"type": "string"
+								},
+								"relation": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					},
 					"guest": {
 						"properties": {
 							"address": {
 								"type": "string"
+							},
+							"companions": {
+								"items": {
+									"nullable": true,
+									"properties": {
+										"firstName": {
+											"type": "string"
+										},
+										"guestId": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"id": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"idNumber": {
+											"type": "string"
+										},
+										"lastName": {
+											"type": "string"
+										},
+										"nationalId": {
+											"type": "string"
+										},
+										"relation": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								},
+								"nullable": true,
+								"type": "array"
 							},
 							"dateOfBirth": {
 								"format": "date-time",
@@ -886,6 +975,39 @@
 						"properties": {
 							"address": {
 								"type": "string"
+							},
+							"companions": {
+								"items": {
+									"nullable": true,
+									"properties": {
+										"firstName": {
+											"type": "string"
+										},
+										"guestId": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"id": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"idNumber": {
+											"type": "string"
+										},
+										"lastName": {
+											"type": "string"
+										},
+										"nationalId": {
+											"type": "string"
+										},
+										"relation": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								},
+								"nullable": true,
+								"type": "array"
 							},
 							"dateOfBirth": {
 								"format": "date-time",
@@ -1743,6 +1865,39 @@
 							"properties": {
 								"address": {
 									"type": "string"
+								},
+								"companions": {
+									"items": {
+										"nullable": true,
+										"properties": {
+											"firstName": {
+												"type": "string"
+											},
+											"guestId": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"idNumber": {
+												"type": "string"
+											},
+											"lastName": {
+												"type": "string"
+											},
+											"nationalId": {
+												"type": "string"
+											},
+											"relation": {
+												"type": "string"
+											}
+										},
+										"type": "object"
+									},
+									"nullable": true,
+									"type": "array"
 								},
 								"dateOfBirth": {
 									"format": "date-time",

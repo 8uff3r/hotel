@@ -118,7 +118,18 @@ type Guest struct {
 	PostalCode   string    `json:"postalCode"`
 	Occupation   string    `json:"occupation"`
 
-	Reservations []Reservation `gorm:"foreignKey:GuestID" json:"reservations,omitempty"`
+	Reservations []Reservation    `gorm:"foreignKey:GuestID" json:"reservations,omitempty"`
+	Companions   []GuestCompanion `gorm:"foreignKey:GuestID" json:"companions,omitempty"`
+}
+
+type GuestCompanion struct {
+	Base
+	GuestID    uint   `gorm:"not null;index" json:"guestId"`
+	FirstName  string `gorm:"not null" json:"firstName"`
+	LastName   string `gorm:"not null" json:"lastName"`
+	NationalID string `json:"nationalId"`
+	IDNumber   string `json:"idNumber"`
+	Relation   string `json:"relation"`
 }
 
 type Reservation struct {
@@ -291,7 +302,7 @@ type UserHotelInfo struct {
 
 func AllForTypeGen() []any {
 	return []any{
-		User{}, Session{}, Hotel{}, Room{}, Guest{}, Reservation{}, Account{},
+		User{}, Session{}, Hotel{}, Room{}, Guest{}, GuestCompanion{}, Reservation{}, Account{},
 		Expense{}, Income{}, ParkingLot{}, ParkingSpot{}, Vehicle{}, ParkingTransaction{}, Amenity{}, ParkingSpotType{}, ParkingSpotStatus{}, ParkingStats{}, SanitizedUser{}, UserHotelInfo{},
 		Permission{}, PermissionTemplate{}, UserPermission{}, UserTemplate{},
 	}

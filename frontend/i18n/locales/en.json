@@ -181,6 +181,13 @@
     "metaInformation": "Meta Information",
     "notFound": "Guest not found",
     "guestNumber": "Guest #{id}",
+    "companions": "Companions",
+    "addCompanion": "Add Companion",
+    "companionDetails": "Companion Details",
+    "companionRelation": "Relation",
+    "companionsList": "Companions List",
+    "noCompanions": "No companions added",
+    "deleteCompanion": "Delete Companion",
     "columns": {
       "id": "ID",
       "name": "Name",

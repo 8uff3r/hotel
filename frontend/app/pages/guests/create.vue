@@ -230,6 +230,48 @@
             </template>
           </UCollapsible>
 
+          <!-- SECTION: Companions -->
+          <UCollapsible>
+            <template #default="{ open }">
+              <UButton
+                :label="t('guests.companions')"
+                color="neutral"
+                variant="outline"
+                :trailing-icon="open ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'"
+                size="lg"
+                block
+              />
+            </template>
+            <template #content>
+              <div class="mt-2 rounded-md p-4 ring ring-accented/40 ring-inset">
+                <div class="mb-4 flex items-center justify-between">
+                  <span class="text-sm font-medium">{{ t("guests.companionsList") }}</span>
+                  <UButton size="sm" color="primary" @click="showCompanionModal = true">
+                    <UIcon name="i-lucide-plus" class="mr-1" />
+                    {{ t("guests.addCompanion") }}
+                  </UButton>
+                </div>
+
+                <div v-if="companions.length === 0" class="py-4 text-center text-gray-500">
+                  {{ t("guests.noCompanions") }}
+                </div>
+
+                <UTable v-else :data="companions" :columns="companionColumns" striped>
+                  <template #actions-cell="{ row }">
+                    <UButton
+                      variant="ghost"
+                      color="error"
+                      size="xs"
+                      @click="removeCompanion(row.index)"
+                    >
+                      <UIcon name="i-lucide-trash-2" />
+                    </UButton>
+                  </template>
+                </UTable>
+              </div>
+            </template>
+          </UCollapsible>
+
           <div class="flex justify-end gap-3 pt-4">
             <UButton variant="outline" to="/guests" :disabled="loading">{{
               t("actions.cancel")
@@ -273,6 +315,49 @@
         </div>
       </UCard>
     </div>
+
+    <!-- Add Companion Modal -->
+    <UModal v-model:open="showCompanionModal" :title="t('guests.addCompanion')">
+      <template #content>
+        <form @submit.prevent="addCompanion" class="p-4">
+          <div class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+              <UFormField :label="t('forms.firstName')" name="newCompanion.firstName" required>
+                <UInput v-model="newCompanion.firstName" :disabled="addingCompanion" />
+              </UFormField>
+              <UFormField :label="t('forms.lastName')" name="newCompanion.lastName" required>
+                <UInput v-model="newCompanion.lastName" :disabled="addingCompanion" />
+              </UFormField>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <UFormField :label="t('guest.nationalId')" name="newCompanion.nationalId">
+                <UInput v-model="newCompanion.nationalId" :disabled="addingCompanion" />
+              </UFormField>
+              <UFormField :label="t('guest.idPassportNumber')" name="newCompanion.idNumber">
+                <UInput v-model="newCompanion.idNumber" :disabled="addingCompanion" />
+              </UFormField>
+            </div>
+
+            <UFormField :label="t('guests.companionRelation')" name="newCompanion.relation">
+              <USelect
+                v-model="newCompanion.relation"
+                :items="relationOptions"
+                :disabled="addingCompanion"
+              />
+            </UFormField>
+          </div>
+          <div class="mt-6 flex justify-end gap-3">
+            <UButton variant="outline" type="button" @click="showCompanionModal = false">
+              {{ t("actions.cancel") }}
+            </UButton>
+            <UButton type="submit" color="primary" :loading="addingCompanion">
+              {{ t("guests.addCompanion") }}
+            </UButton>
+          </div>
+        </form>
+      </template>
+    </UModal>
   </div>
 </template>
 
@@ -299,6 +384,59 @@ const form = ref<Required<Schema> & { roomIds: number[] }>({
   payment: {},
 });
 
+const companions = ref<
+  Array<{ firstName: string; lastName: string; nationalId: string; idNumber: string; relation: string }>
+>([]);
+
+const showCompanionModal = ref(false);
+const addingCompanion = ref(false);
+
+const newCompanion = ref({
+  firstName: "",
+  lastName: "",
+  nationalId: "",
+  idNumber: "",
+  relation: "",
+});
+
+const relationOptions = [
+  { value: "spouse", label: "همسر" },
+  { value: "child", label: "فرزند" },
+  { value: "parent", label: "والد" },
+  { value: "sibling", label: "خواهر/برادر" },
+  { value: "relative", label: "خویشاوند" },
+  { value: "friend", label: "دوست" },
+  { value: "colleague", label: "همکار" },
+  { value: "other", label: "سایر" },
+];
+
+const companionColumns = [
+  { accessorKey: "firstName", header: t("forms.firstName") },
+  { accessorKey: "lastName", header: t("forms.lastName") },
+  { accessorKey: "nationalId", header: t("guest.nationalId") },
+  { accessorKey: "idNumber", header: t("guest.idPassportNumber") },
+  { accessorKey: "relation", header: t("guests.companionRelation") },
+  { accessorKey: "actions", header: t("guests.columns.actions") },
+];
+
+const addCompanion = () => {
+  if (newCompanion.value.firstName && newCompanion.value.lastName) {
+    companions.value.push({ ...newCompanion.value });
+    newCompanion.value = {
+      firstName: "",
+      lastName: "",
+      nationalId: "",
+      idNumber: "",
+      relation: "",
+    };
+    showCompanionModal.value = false;
+  }
+};
+
+const removeCompanion = (index: number) => {
+  companions.value.splice(index, 1);
+};
+
 const { data: rooms } = useAsyncData(async () => {
   const res = await getApiRooms({});
   return res.data?.map((v) => ({
@@ -321,7 +459,8 @@ const handleSubmit = async (event: FormSubmitEvent<Schema>) => {
       } as Schema["guest"],
       reservation: event.data.reservation,
       payment: event.data.payment,
-    };
+      companions: companions.value,
+    } as unknown as Schema;
 
     await postApiGuestsWithReservation({
       body,

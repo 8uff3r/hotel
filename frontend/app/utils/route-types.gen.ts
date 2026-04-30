@@ -1,10 +1,24 @@
 /* Do not change, this code is generated from Golang structs */
 
-export interface Role {
+export interface PermissionCategory {
   id?: number;
-  name: string;
-  translation?: { [key: string]: string };
+  slug: string;
+  label: string;
+}
+export interface Permission {
+  id?: number;
+  resource: string;
+  action: string;
+  categoryId: number;
+  category: PermissionCategory;
+}
+export interface UserPermission {
+  id?: number;
+  userId: number;
   hotelId?: string;
+  permissionId: number;
+  permission: Permission;
+  granted: boolean;
 }
 export interface Hotel {
   id: string;
@@ -18,8 +32,6 @@ export interface UserHotel {
   userId: number;
   hotelId: string;
   hotel: Hotel;
-  roleId: number;
-  role: Role;
 }
 export interface User {
   id?: number;
@@ -28,6 +40,7 @@ export interface User {
   lastName: string;
   userHotels: UserHotel[];
   isActive: boolean;
+  permissions?: UserPermission[];
 }
 export interface Time {}
 export interface Session {
@@ -39,23 +52,20 @@ export interface Session {
 
 export interface RoomStatus {
   id?: number;
-  name: string;
-  translation?: { [key: string]: string };
-  hotelId?: number;
+  slug: string;
+  label: string;
   colorHex?: string;
 }
 export interface RoomType {
   id?: number;
-  name: string;
-  translation?: { [key: string]: string };
-  hotelId?: number;
+  slug: string;
+  label: string;
   colorHex?: string;
 }
 export interface Amenity {
   id?: number;
-  name: string;
-  translation?: { [key: string]: string };
-  hotelId?: string;
+  slug: string;
+  label: string;
 }
 export interface Room {
   id?: number;
@@ -71,6 +81,15 @@ export interface Room {
   roomType: RoomType;
   statusId: number;
   status: RoomStatus;
+}
+export interface GuestCompanion {
+  id?: number;
+  guestId: number;
+  firstName: string;
+  lastName: string;
+  nationalId: string;
+  idNumber: string;
+  relation: string;
 }
 export interface Payment {
   id?: number;
@@ -118,6 +137,7 @@ export interface Guest {
   postalCode: string;
   occupation: string;
   reservations?: Reservation[];
+  companions?: GuestCompanion[];
 }
 
 export interface Account {
@@ -217,15 +237,13 @@ export interface ParkingTransaction {
 
 export interface ParkingSpotType {
   id?: number;
-  name: string;
-  translation?: { [key: string]: string };
-  hotelId?: string;
+  slug: string;
+  label: string;
 }
 export interface ParkingSpotStatus {
   id?: number;
-  name: string;
-  translation?: { [key: string]: string };
-  hotelId?: string;
+  slug: string;
+  label: string;
 }
 export interface ParkingStats {
   lots: number;
@@ -235,8 +253,6 @@ export interface ParkingStats {
 export interface UserHotelInfo {
   hotelId: string;
   hotel: Hotel;
-  roleId: number;
-  role: Role;
 }
 export interface SanitizedUser {
   id?: number;
@@ -246,27 +262,14 @@ export interface SanitizedUser {
   userHotels: UserHotelInfo[];
 }
 
-export interface Permission {
-  id?: number;
-  page: string;
-  action: string;
-  hotelId?: string;
-  label: string;
-  category: string;
-}
 export interface PermissionTemplate {
   id?: number;
-  name: string;
+  slug: string;
+  label: string;
   description: string;
   permissions: Permission[];
 }
-export interface UserPermission {
-  id?: number;
-  userId: number;
-  permissionId: number;
-  permission: Permission;
-  granted: boolean;
-}
+
 export interface UserTemplate {
   id?: number;
   userId: number;

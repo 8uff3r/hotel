@@ -45,6 +45,15 @@ export type Expense = {
  */
 export type Guest = {
     address?: string;
+    companions?: Array<{
+        firstName?: string;
+        guestId?: number;
+        id?: number;
+        idNumber?: string;
+        lastName?: string;
+        nationalId?: string;
+        relation?: string;
+    }>;
     dateOfBirth?: string;
     fatherName?: string;
     firstName: string;
@@ -152,8 +161,24 @@ export type GuestSettlementResponse = {
  * GuestWithReservationRequest schema
  */
 export type GuestWithReservationRequest = {
+    companions?: Array<{
+        firstName?: string;
+        idNumber?: string;
+        lastName?: string;
+        nationalId?: string;
+        relation?: string;
+    }>;
     guest?: {
         address?: string;
+        companions?: Array<{
+            firstName?: string;
+            guestId?: number;
+            id?: number;
+            idNumber?: string;
+            lastName?: string;
+            nationalId?: string;
+            relation?: string;
+        }>;
         dateOfBirth?: string;
         fatherName?: string;
         firstName: string;
@@ -282,6 +307,15 @@ export type GuestWithReservationRequest = {
 export type GuestWithReservationResponse = {
     guest?: {
         address?: string;
+        companions?: Array<{
+            firstName?: string;
+            guestId?: number;
+            id?: number;
+            idNumber?: string;
+            lastName?: string;
+            nationalId?: string;
+            relation?: string;
+        }>;
         dateOfBirth?: string;
         fatherName?: string;
         firstName: string;
@@ -582,6 +616,15 @@ export type PaginatedResponseModelsExpense = {
 export type PaginatedResponseModelsGuest = {
     data?: Array<{
         address?: string;
+        companions?: Array<{
+            firstName?: string;
+            guestId?: number;
+            id?: number;
+            idNumber?: string;
+            lastName?: string;
+            nationalId?: string;
+            relation?: string;
+        }>;
         dateOfBirth?: string;
         fatherName?: string;
         firstName: string;
@@ -1252,7 +1295,9 @@ export type LoginResponse = {
 /**
  * okResponse schema
  */
-export type OkResponse = unknown;
+export type OkResponse = {
+    ok?: boolean;
+};
 
 /**
  * permissionsResponse schema

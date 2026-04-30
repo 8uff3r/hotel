@@ -19,6 +19,15 @@ type GuestWithReservationRequest struct {
 	Guest       models.Guest       `json:"guest"`
 	Reservation ReservationRequest `json:"reservation"`
 	Payment     PaymentRequest     `json:"payment"`
+	Companions  []CompanionRequest `json:"companions"`
+}
+
+type CompanionRequest struct {
+	FirstName  string `json:"firstName"`
+	LastName   string `json:"lastName"`
+	NationalID string `json:"nationalId"`
+	IDNumber   string `json:"idNumber"`
+	Relation   string `json:"relation"`
 }
 
 type ReservationRequest struct {
@@ -107,6 +116,20 @@ func (gm *GuestsModule) createGuestWithReservation(c fuego.ContextWithBody[Guest
 	err = gm.Db.WithContext(c).Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(&body.Guest).Error; err != nil {
 			return err
+		}
+
+		for _, comp := range body.Companions {
+			companion := models.GuestCompanion{
+				GuestID:    body.Guest.ID,
+				FirstName:  comp.FirstName,
+				LastName:   comp.LastName,
+				NationalID: comp.NationalID,
+				IDNumber:   comp.IDNumber,
+				Relation:   comp.Relation,
+			}
+			if err := tx.Create(&companion).Error; err != nil {
+				return err
+			}
 		}
 
 		reservation := models.Reservation{

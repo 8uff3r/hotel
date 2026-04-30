@@ -43,6 +43,15 @@ export const zExpense = z.object({
  */
 export const zGuest = z.object({
     address: z.string().optional(),
+    companions: z.array(z.object({
+        firstName: z.string().optional(),
+        guestId: z.int().gte(0).optional(),
+        id: z.int().gte(0).optional(),
+        idNumber: z.string().optional(),
+        lastName: z.string().optional(),
+        nationalId: z.string().optional(),
+        relation: z.string().optional()
+    })).optional(),
     dateOfBirth: z.iso.datetime({ offset: true }).optional(),
     fatherName: z.string().optional(),
     firstName: z.string().min(2).max(50),
@@ -150,8 +159,24 @@ export const zGuestSettlementResponse = z.object({
  * GuestWithReservationRequest schema
  */
 export const zGuestWithReservationRequest = z.object({
+    companions: z.array(z.object({
+        firstName: z.string().optional(),
+        idNumber: z.string().optional(),
+        lastName: z.string().optional(),
+        nationalId: z.string().optional(),
+        relation: z.string().optional()
+    })).optional(),
     guest: z.object({
         address: z.string().optional(),
+        companions: z.array(z.object({
+            firstName: z.string().optional(),
+            guestId: z.int().gte(0).optional(),
+            id: z.int().gte(0).optional(),
+            idNumber: z.string().optional(),
+            lastName: z.string().optional(),
+            nationalId: z.string().optional(),
+            relation: z.string().optional()
+        })).optional(),
         dateOfBirth: z.iso.datetime({ offset: true }).optional(),
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
@@ -280,6 +305,15 @@ export const zGuestWithReservationRequest = z.object({
 export const zGuestWithReservationResponse = z.object({
     guest: z.object({
         address: z.string().optional(),
+        companions: z.array(z.object({
+            firstName: z.string().optional(),
+            guestId: z.int().gte(0).optional(),
+            id: z.int().gte(0).optional(),
+            idNumber: z.string().optional(),
+            lastName: z.string().optional(),
+            nationalId: z.string().optional(),
+            relation: z.string().optional()
+        })).optional(),
         dateOfBirth: z.iso.datetime({ offset: true }).optional(),
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
@@ -557,6 +591,15 @@ export const zPaginatedResponseModelsExpense = z.object({
 export const zPaginatedResponseModelsGuest = z.object({
     data: z.array(z.object({
         address: z.string().optional(),
+        companions: z.array(z.object({
+            firstName: z.string().optional(),
+            guestId: z.int().gte(0).optional(),
+            id: z.int().gte(0).optional(),
+            idNumber: z.string().optional(),
+            lastName: z.string().optional(),
+            nationalId: z.string().optional(),
+            relation: z.string().optional()
+        })).optional(),
         dateOfBirth: z.iso.datetime({ offset: true }).optional(),
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
@@ -1227,7 +1270,9 @@ export const zLoginResponse = z.object({
 /**
  * okResponse schema
  */
-export const zOkResponse = z.unknown();
+export const zOkResponse = z.object({
+    ok: z.boolean().optional()
+});
 
 /**
  * permissionsResponse schema

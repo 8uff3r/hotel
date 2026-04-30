@@ -181,6 +181,13 @@
     "metaInformation": "اطلاعات متا",
     "notFound": "مهمان یافت نشد",
     "guestNumber": "مهمان #{id}",
+    "companions": "همراهان",
+    "addCompanion": "افزودن همراه",
+    "companionDetails": "اطلاعات همراه",
+    "companionRelation": "نسبت",
+    "companionsList": "فهرست همراهان",
+    "noCompanions": "هیچ همراهی اضافه نشده",
+    "deleteCompanion": "حذف همراه",
     "columns": {
       "id": "شناسه",
       "name": "نام",
