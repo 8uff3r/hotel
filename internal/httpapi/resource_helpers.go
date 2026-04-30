@@ -217,7 +217,9 @@ func UpdateModel[T any](db *gorm.DB, model T) FuegoHandler[T, T, any] {
 	}
 }
 
-type okResponse struct{ ok bool }
+type okResponse struct {
+	Ok bool `json:"ok"`
+}
 
 type deleteDto struct{ id string }
 
@@ -235,7 +237,7 @@ func DeleteModel(db *gorm.DB, model any) FuegoHandler[okResponse, any, deleteDto
 		if res.RowsAffected == 0 {
 			return zero, fuego.NotFoundError{}
 		}
-		return okResponse{ok: true}, nil
+		return okResponse{Ok: true}, nil
 	}
 }
 

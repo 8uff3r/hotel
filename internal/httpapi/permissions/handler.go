@@ -17,24 +17,24 @@ type permissionsResponse struct {
 	Data []models.Permission `json:"data"`
 }
 
-type templatesResponse struct {
-	Data []models.PermissionTemplate `json:"data"`
-}
-
 func (m PermissionsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	pm := PermissionsModule{api}
 
 	fuego.Get(s, "/", pm.permissionsList)
-	fuego.Get(s, "/templates", pm.templatesList)
+	fuego.Get(s, "/templates", h.ListModel(api.Db, models.PermissionTemplate{}))
 	fuego.Get(s, "/user/{userId}", pm.userPermissions)
-	fuego.Post(s, "/user/{userId}/{permissionId}", pm.setUserPermission)
 	fuego.Post(s, "/user/{userId}/template/{templateId}", pm.applyTemplate)
-	fuego.Delete(s, "/user/{userId}/permission/{permissionId}", pm.removeUserPermission)
+	fuego.Post(s, "/user/{userId}/{permissionId}", pm.setUserPermission)
+	fuego.Delete(s, "/user/{userId}/{permissionId}", pm.setUserPermission)
 }
 
 func (pm *PermissionsModule) permissionsList(c fuego.ContextNoBody) (permissionsResponse, error) {
 	var perms []models.Permission
 	var zero permissionsResponse
+	lang := c.Header("Accept-Language")
+	if lang == "" {
+		lang = "fa"
+	}
 
 	sortColumn := c.QueryParam("sort")
 	order := "category_id, resource, action"
@@ -44,20 +44,15 @@ func (pm *PermissionsModule) permissionsList(c fuego.ContextNoBody) (permissions
 		order = "action, resource, category_id"
 	}
 
-	if err := pm.Db.WithContext(c).Order(order).Find(&perms).Error; err != nil {
+	if err := pm.Db.WithContext(c).Preload("Category").Order(order).Find(&perms).Error; err != nil {
 		return zero, fuego.InternalServerError{Title: "query_failed"}
 	}
+	for i := range perms {
+		perms[i].Resource = perms[i].Translation[lang]
+		perms[i].Category.Label = perms[i].Category.Translation[lang]
+	}
+
 	return permissionsResponse{Data: perms}, nil
-}
-
-func (pm *PermissionsModule) templatesList(c fuego.ContextNoBody) (templatesResponse, error) {
-	var tpls []models.PermissionTemplate
-	var zero templatesResponse
-
-	if err := pm.Db.WithContext(c).Preload("Permissions").Find(&tpls).Error; err != nil {
-		return zero, fuego.InternalServerError{Title: "query_failed"}
-	}
-	return templatesResponse{Data: tpls}, nil
 }
 
 type userPermissionsResponse struct {
@@ -99,13 +94,14 @@ func (pm *PermissionsModule) userPermissions(c fuego.ContextNoBody) (userPermiss
 	return userPermissionsResponse{UserID: uint(uid), Permissions: result}, nil
 }
 
-type setPermissionDto struct {
-	Granted bool `json:"granted"`
+type okResponse struct {
+	Ok bool `json:"ok"`
 }
 
-func (pm *PermissionsModule) setUserPermission(c fuego.ContextWithBody[setPermissionDto]) (map[string]string, error) {
+func (pm *PermissionsModule) setUserPermission(c fuego.ContextNoBody) (*okResponse, error) {
 	userID := c.PathParam("userId")
 	permissionID := c.PathParam("permissionId")
+	shouldAdd := c.Request().Method == "POST"
 
 	uid, err := strconv.ParseUint(userID, 10, 32)
 	if err != nil {
@@ -116,7 +112,6 @@ func (pm *PermissionsModule) setUserPermission(c fuego.ContextWithBody[setPermis
 		return nil, fuego.BadRequestError{Title: "invalid_permission_id"}
 	}
 
-	body, err := c.Body()
 	if err != nil {
 		return nil, fuego.BadRequestError{}
 	}
@@ -125,7 +120,7 @@ func (pm *PermissionsModule) setUserPermission(c fuego.ContextWithBody[setPermis
 	result := pm.Db.Where("user_id = ? AND permission_id = ?", uid, pid).First(&existing)
 
 	if result.Error == gorm.ErrRecordNotFound {
-		if body.Granted {
+		if shouldAdd {
 			newPerm := models.UserPermission{
 				UserID:       uint(uid),
 				PermissionID: uint(pid),
@@ -136,7 +131,7 @@ func (pm *PermissionsModule) setUserPermission(c fuego.ContextWithBody[setPermis
 			}
 		}
 	} else if result.Error == nil {
-		if !body.Granted {
+		if !shouldAdd {
 			if err := pm.Db.Delete(&existing).Error; err != nil {
 				return nil, fuego.InternalServerError{Title: "delete_failed"}
 			}
@@ -150,10 +145,10 @@ func (pm *PermissionsModule) setUserPermission(c fuego.ContextWithBody[setPermis
 		return nil, fuego.InternalServerError{Title: "query_failed"}
 	}
 
-	return map[string]string{"status": "ok"}, nil
+	return &okResponse{Ok: true}, nil
 }
 
-func (pm *PermissionsModule) applyTemplate(c fuego.ContextNoBody) (map[string]string, error) {
+func (pm *PermissionsModule) applyTemplate(c fuego.ContextNoBody) (*okResponse, error) {
 	userID := c.PathParam("userId")
 	templateID := c.PathParam("templateId")
 
@@ -193,27 +188,7 @@ func (pm *PermissionsModule) applyTemplate(c fuego.ContextNoBody) (map[string]st
 		}
 	}
 
-	return map[string]string{"status": "ok"}, nil
-}
-
-func (pm *PermissionsModule) removeUserPermission(c fuego.ContextNoBody) (map[string]string, error) {
-	userID := c.PathParam("userId")
-	permissionID := c.PathParam("permissionId")
-
-	uid, err := strconv.ParseUint(userID, 10, 32)
-	if err != nil {
-		return nil, fuego.BadRequestError{Title: "invalid_user_id"}
-	}
-	pid, err := strconv.ParseUint(permissionID, 10, 32)
-	if err != nil {
-		return nil, fuego.BadRequestError{Title: "invalid_permission_id"}
-	}
-
-	if err := pm.Db.Where("user_id = ? AND permission_id = ?", uid, pid).Delete(&models.UserPermission{}).Error; err != nil {
-		return nil, fuego.InternalServerError{Title: "delete_failed"}
-	}
-
-	return map[string]string{"status": "ok"}, nil
+	return &okResponse{Ok: true}, nil
 }
 
 type allPermissionsResponse struct {
