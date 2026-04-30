@@ -37,11 +37,11 @@ func (pm *PermissionsModule) permissionsList(c fuego.ContextNoBody) (permissions
 	var zero permissionsResponse
 
 	sortColumn := c.QueryParam("sort")
-	order := "category, page, action"
+	order := "category_id, resource, action"
 	if sortColumn == "page" {
-		order = "page, category, action"
+		order = "resource, category_id, action"
 	} else if sortColumn == "action" {
-		order = "action, page, category"
+		order = "action, resource, category_id"
 	}
 
 	if err := pm.Db.WithContext(c).Order(order).Find(&perms).Error; err != nil {

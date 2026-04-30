@@ -1149,6 +1149,26 @@ export const zRoom = z.object({
 });
 
 /**
+ * SanitizedUser schema
+ */
+export const zSanitizedUser = z.object({
+    email: z.string().optional(),
+    firstName: z.string().optional(),
+    id: z.int().gte(0).optional(),
+    lastName: z.string().optional(),
+    userHotels: z.array(z.object({
+        hotel: z.object({
+            address: z.string().optional(),
+            email: z.string().optional(),
+            id: z.string().optional(),
+            name: z.string().optional(),
+            phone: z.string().optional()
+        }).optional(),
+        hotelId: z.string().optional()
+    })).optional()
+});
+
+/**
  * SettleGuestRequest schema
  */
 export const zSettleGuestRequest = z.object({
@@ -1289,7 +1309,9 @@ export const zUserCreateDto = z.object({
 /**
  * userCreateResponse schema
  */
-export const zUserCreateResponse = z.unknown();
+export const zUserCreateResponse = z.object({
+    id: z.int().gte(0).optional()
+});
 
 /**
  * userPermissionsResponse schema
@@ -2226,3 +2248,16 @@ export const zPostApiUsersHeaders = z.object({
  * OK
  */
 export const zPostApiUsersResponse = zUserCreateResponse;
+
+export const zGetApiUsersIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zGetApiUsersIdPath = z.object({
+    id: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetApiUsersIdResponse = zSanitizedUser;

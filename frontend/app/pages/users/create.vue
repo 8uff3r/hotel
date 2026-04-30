@@ -6,85 +6,73 @@
           <UIcon name="i-lucide-arrow-left" class="mr-1" />
           {{ t("actions.backToUsers") }}
         </UButton>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
-          {{ t("users.createTitle") }}
-        </h1>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Create User</h1>
       </div>
     </div>
 
     <UCard>
-      <form @submit.prevent="createUser">
+      <form @submit.prevent="createUser" class="space-y-6">
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div>
-            <label class="mb-1 block text-sm font-medium">{{ t("forms.emailRequired") }}</label>
-            <UInput
-              v-model="form.email"
-              type="email"
-              :placeholder="t('users.create.emailPlaceholder')"
-              required
-            />
-          </div>
+          <UFormField label="Email" required>
+            <UInput v-model="form.email" type="email" placeholder="user@example.com" required />
+          </UFormField>
 
-          <div>
-            <label class="mb-1 block text-sm font-medium">{{ t("forms.passwordRequired") }}</label>
+          <UFormField label="Password" required>
             <UInput
               v-model="form.password"
               type="password"
-              :placeholder="t('users.create.passwordPlaceholder')"
+              placeholder="Create a password"
               required
             />
-          </div>
+          </UFormField>
 
-          <div>
-            <label class="mb-1 block text-sm font-medium">{{ t("forms.firstNameRequired") }}</label>
-            <UInput
-              v-model="form.firstName"
-              :placeholder="t('forms.firstNamePlaceholder')"
-              required
-            />
-          </div>
+          <UFormField label="First name" required>
+            <UInput v-model="form.firstName" placeholder="First name" required />
+          </UFormField>
 
-          <div>
-            <label class="mb-1 block text-sm font-medium">{{ t("forms.lastNameRequired") }}</label>
-            <UInput
-              v-model="form.lastName"
-              :placeholder="t('forms.lastNamePlaceholder')"
-              required
-            />
-          </div>
+          <UFormField label="Last name" required>
+            <UInput v-model="form.lastName" placeholder="Last name" required />
+          </UFormField>
+        </div>
 
-          <div class="md:col-span-2">
-            <label class="mb-1 block text-sm font-medium">{{ t("users.rolesRequired") }}</label>
-            <div class="flex flex-wrap gap-4">
-              <UCheckbox
-                v-for="role in roleOptions"
-                :key="role.value"
-                :model-value="form.roles.includes(role.value)"
-                :label="role.label"
-                @update:model-value="toggleRole(role.value, $event)"
-              />
+        <div class="rounded-lg border p-4">
+          <h2 class="mb-3 text-lg font-semibold">Permission template</h2>
+          <USelect
+            v-model="selectedTemplateId"
+            :items="templateOptions"
+            placeholder="No template"
+            class="max-w-lg"
+          />
+          <p class="mt-2 text-sm text-gray-500">
+            Templates can be combined with additional direct permissions below.
+          </p>
+        </div>
+
+        <div class="rounded-lg border p-4">
+          <h2 class="mb-3 text-lg font-semibold">Direct permissions</h2>
+          <div v-if="permissionsLoading" class="flex items-center gap-2 py-2 text-sm text-gray-500">
+            <UIcon name="i-lucide-loader-2" class="h-4 w-4 animate-spin" />
+            Loading permissions...
+          </div>
+          <div v-else class="space-y-4">
+            <div v-for="group in permissionGroups" :key="group.key">
+              <div class="mb-2 font-medium">{{ group.label }}</div>
+              <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                <UCheckbox
+                  v-for="permission in group.permissions"
+                  :key="permission.id"
+                  :model-value="selectedPermissionIds.has(permission.id)"
+                  :label="permission.label"
+                  @update:model-value="togglePermission(permission.id, $event)"
+                />
+              </div>
             </div>
-            <p v-if="form.roles.length === 0" class="mt-1 text-sm text-red-500">
-              {{ t("users.rolesRequiredError") }}
-            </p>
-          </div>
-
-          <div>
-            <label class="mb-1 block text-sm font-medium">{{ t("users.active") }}</label>
-            <UCheckbox v-model="form.isActive" :label="t('users.activeAccount')" />
           </div>
         </div>
 
-        <div class="mt-6 flex justify-end gap-3">
+        <div class="flex justify-end gap-3">
           <UButton type="button" variant="outline" to="/users">{{ t("actions.cancel") }}</UButton>
-          <UButton
-            type="submit"
-            color="primary"
-            :loading="loading"
-            :disabled="form.roles.length === 0"
-          >
-            {{ t("users.createUser") }}
-          </UButton>
+          <UButton type="submit" color="primary" :loading="loading">Create User</UButton>
         </div>
       </form>
     </UCard>
@@ -92,64 +80,142 @@
 </template>
 
 <script setup lang="ts">
+import type { PermissionsResponse, PostApiUsersResponse, TemplatesResponse } from "~/utils/client";
+
 definePageMeta({
   requiresPermission: PERMISSIONS.users.users.create,
 });
+
 const { t } = useI18n();
+const toast = useToast();
+const router = useRouter();
 
 const form = reactive({
   email: "",
   password: "",
   firstName: "",
   lastName: "",
-  roles: [] as string[],
-  isActive: true,
 });
-
-const roleOptions = computed(() => [
-  { value: "admin", label: t("roles.admin") },
-  { value: "manager", label: t("roles.manager") },
-  { value: "receptionist", label: t("roles.receptionist") },
-  { value: "staff", label: t("roles.staff") },
-]);
-
-const toggleRole = (role: string, checked: boolean | string) => {
-  const isChecked = !!checked;
-  if (isChecked) {
-    if (!form.roles.includes(role)) {
-      form.roles.push(role);
-    }
-  } else {
-    const index = form.roles.indexOf(role);
-    if (index > -1) {
-      form.roles.splice(index, 1);
-    }
-  }
-};
+type Permission = NonNullable<PermissionsResponse["data"]>[0];
+type PermissionTemplate = NonNullable<TemplatesResponse["data"]>[0];
 
 const loading = ref(false);
-const router = useRouter();
+const selectedTemplateId = ref<number | null>(null);
+const selectedPermissionIds = ref(new Set<number>());
+const allPermissions = ref<Permission[]>([]);
+const templates = ref<PermissionTemplate[]>([]);
+
+const { pending: permissionsLoading } = await useAsyncData("users-create-permissions", async () => {
+  const [permissionsResp, templatesResp] = await Promise.all([
+    getApiPermissions({}),
+    getApiPermissionsTemplates({}),
+  ]);
+  allPermissions.value = permissionsResp.data ?? [];
+  templates.value = templatesResp.data ?? [];
+  return true;
+});
+
+const templateOptions = computed(() => {
+  const items = [{ label: "No template", value: null as number | null }];
+  templates.value.forEach((tpl) => {
+    if (!tpl.id) return;
+    items.push({ label: tpl.label || `Template #${tpl.id}`, value: tpl.id });
+  });
+  return items;
+});
+
+const permissionGroups = computed(() => {
+  const grouped = new Map<
+    string,
+    { key: string; label: string; permissions: { id: number; label: string }[] }
+  >();
+
+  for (const permission of allPermissions.value) {
+    if (!permission.id) continue;
+    const categoryLabel = permission.category?.label || "General";
+    const resource = permission.resource || "resource";
+    const action = permission.action || "read";
+    const key = `${permission.categoryId || 0}-${categoryLabel}`;
+
+    if (!grouped.has(key)) {
+      grouped.set(key, { key, label: categoryLabel, permissions: [] });
+    }
+
+    grouped.get(key)!.permissions.push({
+      id: permission.id,
+      label: permission.translation?.en || permission.translation?.fa || `${resource}:${action}`,
+    });
+  }
+
+  return Array.from(grouped.values());
+});
+
+const togglePermission = (permissionId: number, checked: boolean | string) => {
+  const next = new Set(selectedPermissionIds.value);
+  if (checked) next.add(permissionId);
+  else next.delete(permissionId);
+  selectedPermissionIds.value = next;
+};
+
+const resolveCreatedUserId = async (response: PostApiUsersResponse): Promise<number | null> => {
+  const maybeId = Number((response as any)?.id);
+  if (Number.isFinite(maybeId) && maybeId > 0) return maybeId;
+
+  const usersResp = await getApiUsers({});
+  const matched = (usersResp.data ?? []).find(
+    (u) => u.email?.toLowerCase() === form.email.toLowerCase()
+  );
+  return matched?.id ?? null;
+};
 
 const createUser = async () => {
-  if (form.roles.length === 0) return;
-
   loading.value = true;
   try {
-    await $fetch("/api/users", {
-      method: "POST",
+    const created = await postApiUsers({
       body: {
         email: form.email,
         password: form.password,
         firstName: form.firstName,
         lastName: form.lastName,
-        roles: form.roles,
-        isActive: form.isActive,
       },
     });
+
+    const userId = await resolveCreatedUserId(created);
+
+    if (userId) {
+      if (selectedTemplateId.value) {
+        await postApiPermissionsUserUserIdTemplateTemplateId({
+          path: {
+            userId: String(userId),
+            templateId: String(selectedTemplateId.value),
+          },
+        });
+      }
+
+      if (selectedPermissionIds.value.size > 0) {
+        await Promise.all(
+          Array.from(selectedPermissionIds.value).map((permissionId) =>
+            postApiPermissionsUserUserIdPermissionId({
+              path: {
+                userId: String(userId),
+                permissionId: String(permissionId),
+              },
+              body: { granted: true },
+            })
+          )
+        );
+      }
+    }
+
+    toast.add({ title: "User created", color: "success" });
     router.push("/users");
   } catch (error: any) {
     console.error("Failed to create user:", error);
-    alert(error.data?.message || t("users.createFailed"));
+    toast.add({
+      title: "Failed to create user",
+      description: error?.data?.error || error?.message || t("users.createFailed"),
+      color: "error",
+    });
   } finally {
     loading.value = false;
   }

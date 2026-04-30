@@ -1244,6 +1244,26 @@ export type Room = {
 };
 
 /**
+ * SanitizedUser schema
+ */
+export type SanitizedUser = {
+    email?: string;
+    firstName?: string;
+    id?: number;
+    lastName?: string;
+    userHotels?: Array<{
+        hotel?: {
+            address?: string;
+            email?: string;
+            id?: string;
+            name?: string;
+            phone?: string;
+        };
+        hotelId?: string;
+    }>;
+};
+
+/**
  * SettleGuestRequest schema
  */
 export type SettleGuestRequest = {
@@ -1394,7 +1414,9 @@ export type UserCreateDto = {
 /**
  * userCreateResponse schema
  */
-export type UserCreateResponse = unknown;
+export type UserCreateResponse = {
+    id?: number;
+};
 
 /**
  * userPermissionsResponse schema
@@ -3805,3 +3827,38 @@ export type PostApiUsersResponses = {
 };
 
 export type PostApiUsersResponse = PostApiUsersResponses[keyof PostApiUsersResponses];
+
+export type GetApiUsersIdData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/users/{id}';
+};
+
+export type GetApiUsersIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiUsersIdError = GetApiUsersIdErrors[keyof GetApiUsersIdErrors];
+
+export type GetApiUsersIdResponses = {
+    /**
+     * OK
+     */
+    200: SanitizedUser;
+};
+
+export type GetApiUsersIdResponse = GetApiUsersIdResponses[keyof GetApiUsersIdResponses];

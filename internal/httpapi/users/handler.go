@@ -3,10 +3,12 @@ package users
 import (
 	h "hotel/internal/httpapi"
 	"hotel/internal/models"
+	"strconv"
 	"strings"
 
 	"github.com/go-fuego/fuego"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 type UsersModule struct {
@@ -18,10 +20,29 @@ func (m UsersModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 
 	fuego.Get(s, "/", u.usersList)
 	fuego.Post(s, "/", u.usersCreate)
+	fuego.Get(s, "/{id}", u.userView)
 }
 
 type userListResponse struct {
 	Data []models.SanitizedUser `json:"data"`
+}
+
+func (u UsersModule) userView(c fuego.ContextNoBody) (models.SanitizedUser, error) {
+	var zero models.SanitizedUser
+	id := c.PathParam("id")
+	uid, err := strconv.ParseUint(id, 10, 32)
+	if err != nil {
+		return zero, fuego.BadRequestError{Title: "invalid_id"}
+	}
+
+	var row models.User
+	if err := u.Db.WithContext(c).Model(&models.User{}).Preload("UserHotels").First(&row, uint(uid)).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return zero, fuego.NotFoundError{Title: "not_found"}
+		}
+		return zero, fuego.InternalServerError{Title: "query_failed"}
+	}
+	return h.SanitizeUser(&row), nil
 }
 
 func (u *UsersModule) usersList(c fuego.ContextNoBody) (h.PaginatedResponse[models.SanitizedUser], error) {
@@ -54,7 +75,7 @@ type userCreateDto struct {
 	LastName  string `json:"lastName"`
 }
 type userCreateResponse struct {
-	id uint
+	ID uint `json:"id"`
 }
 
 func (u *UsersModule) usersCreate(c fuego.ContextWithBody[userCreateDto]) (userCreateResponse, error) {
@@ -78,5 +99,5 @@ func (u *UsersModule) usersCreate(c fuego.ContextWithBody[userCreateDto]) (userC
 		return zero, fuego.BadRequestError{Title: "create_failed"}
 	}
 	c.SetStatus(201)
-	return userCreateResponse{id: user.ID}, nil
+	return userCreateResponse{ID: user.ID}, nil
 }

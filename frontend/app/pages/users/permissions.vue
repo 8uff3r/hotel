@@ -47,7 +47,7 @@
       <template #header>
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-4">
-            <UButton variant="ghost" @click="selectedUser = null">
+            <UButton variant="ghost" @click="selectedUser = undefined">
               <UIcon name="i-lucide-arrow-left" class="mr-2" />
               {{ t("actions.back") }}
             </UButton>
@@ -59,7 +59,7 @@
             </div>
           </div>
           <div class="flex gap-2">
-            <HSelect
+            <USelect
               v-model="selectedTemplate"
               :items="templates"
               :placeholder="t('permissions.selectTemplate')"
@@ -71,8 +71,8 @@
       </template>
 
       <div class="space-y-4">
-        <div v-for="category in permissionCategories" :key="category">
-          <h3 class="mb-2 text-lg font-semibold">{{ category }}</h3>
+        <div v-for="category in permissionCategories" :key="category?.id ?? category?.label">
+          <h3 class="mb-2 text-lg font-semibold">{{ getCategoryLabel(category) }}</h3>
           <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             <div
               v-for="perm in getPermissionsForCategory(category)"
@@ -119,6 +119,7 @@ import type { PaginatedResponseModelsSanitizedUser, UserPermissionsResponse } fr
 
 type User = NonNullable<PaginatedResponseModelsSanitizedUser["data"]>[0];
 type Permission = NonNullable<UserPermissionsResponse["permissions"]>[0];
+type PermissionCategory = Permission["category"];
 
 definePageMeta({
   requiresPermission: PERMISSIONS.users.users.update,
@@ -127,8 +128,8 @@ definePageMeta({
 const { t } = useI18n();
 
 const searchQuery = ref("");
-const selectedUser = ref<User | null>(null);
-const selectedTemplate = ref<number | null>(null);
+const selectedUser = ref<User>();
+const selectedTemplate = ref<number>();
 const loading = ref(false);
 
 const userColumns: TableColumn<User>[] = [
@@ -166,22 +167,29 @@ const filteredUsers = computed(() => {
 });
 
 const permissionCategories = computed(() => {
-  if (!allPermissions.value) return [];
-  const categories = new Set<string>();
-  allPermissions.value.forEach((p: any) => {
-    categories.add(p.category);
+  const groups = new Map<string, PermissionCategory>();
+  (allPermissions.value ?? []).forEach((p: any) => {
+    const category = p.category;
+    if (!category) return;
+    const key = `${category.id ?? 0}-${category.label ?? "General"}`;
+    groups.set(key, category);
   });
-  return Array.from(categories);
+  return Array.from(groups.values());
 });
 
-function getPermissionsForCategory(category: string) {
-  return userPermissions.value?.filter((p) => p.category === category) || [];
+function getCategoryLabel(category: PermissionCategory) {
+  return category?.label || "General";
+}
+
+function getPermissionsForCategory(category: PermissionCategory) {
+  if (!category) return [];
+  return (userPermissions.value ?? []).filter((p) => p.category?.id === category.id);
 }
 
 async function selectUser(user: User) {
   if (!user.id) return;
   selectedUser.value = user;
-  selectedTemplate.value = null;
+  selectedTemplate.value = undefined;
   loading.value = true;
   try {
     const response = await getApiPermissionsUserUserId({

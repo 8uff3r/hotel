@@ -8,7 +8,6 @@
       </UButton>
     </div>
 
-    <!-- Filters -->
     <UCard class="mb-6">
       <div class="flex flex-wrap items-center gap-4">
         <UInput
@@ -18,32 +17,15 @@
           class="w-full sm:w-64"
           @input="debouncedSearch"
         />
-        <USelect
-          v-model="filters.role"
-          :items="roleOptions"
-          :placeholder="t('users.allRoles')"
-          class="w-full sm:w-40"
-          @change="fetchUsers"
-        />
-        <USelect
-          v-model="filters.status"
-          :items="statusOptions"
-          :placeholder="t('users.allStatus')"
-          class="w-full sm:w-40"
-          @change="fetchUsers"
-        />
-        <UButton variant="outline" @click="clearFilters"> {{ t("actions.clear") }} </UButton>
+        <UButton variant="outline" @click="clearFilters">{{ t("actions.clear") }}</UButton>
       </div>
     </UCard>
 
-    <!-- Users Table -->
     <UCard>
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-lg font-semibold">{{ t("users.list") }}</span>
-          <span class="text-sm text-gray-500">{{
-            t("users.count", { count: pagination.total })
-          }}</span>
+          <span class="text-sm text-gray-500">{{ t("users.count", { count: users.length }) }}</span>
         </div>
       </template>
 
@@ -60,17 +42,9 @@
         <template #name-cell="{ row }">
           <div>
             <p class="font-medium">{{ row.original.firstName }} {{ row.original.lastName }}</p>
-            <p v-if="row.original.email" class="text-sm text-gray-500">
-              {{ row.original.email }}
-            </p>
+            <p v-if="row.original.email" class="text-sm text-gray-500">{{ row.original.email }}</p>
           </div>
         </template>
-
-        <!-- <template #status-cell="{ row }">
-          <UBadge :color="row.original.isActive ? 'success' : 'error'" variant="soft">
-            {{ row.original.isActive ? t("statuses.active") : t("statuses.inactive") }}
-          </UBadge>
-        </template> -->
 
         <template #actions-cell="{ row }">
           <div class="flex items-center gap-2">
@@ -83,22 +57,6 @@
           </div>
         </template>
       </UTable>
-
-      <template #footer>
-        <div class="flex items-center justify-between">
-          <span class="text-sm text-gray-500">
-            {{
-              t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages })
-            }}
-          </span>
-          <UPagination
-            v-model="page"
-            :page-count="pagination.limit"
-            :total="pagination.total"
-            @change="fetchUsers"
-          />
-        </div>
-      </template>
     </UCard>
   </div>
 </template>
@@ -120,68 +78,40 @@ const columns = computed<TableColumn<User>[]>(() => [
   { accessorKey: "actions", header: t("users.columns.actions") },
 ]);
 
-const roleOptions = computed(() => [
-  { value: "all", label: t("users.allRoles") },
-  { value: "admin", label: t("roles.admin") },
-  { value: "manager", label: t("roles.manager") },
-  { value: "receptionist", label: t("roles.receptionist") },
-  { value: "staff", label: t("roles.staff") },
-]);
-
-const statusOptions = computed(() => [
-  { value: "all", label: t("users.allStatus") },
-  { value: "active", label: t("statuses.active") },
-  { value: "inactive", label: t("statuses.inactive") },
-]);
-
+const sourceUsers = ref<User[]>([]);
 const users = ref<User[]>([]);
 const loading = ref(false);
-const page = ref(1);
 
 const filters = reactive({
   search: "",
-  role: "",
-  status: "",
-});
-
-const pagination = reactive({
-  page: 1,
-  limit: 10,
-  total: 0,
-  totalPages: 0,
 });
 
 let searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
+const applyFilters = () => {
+  const query = filters.search.trim().toLowerCase();
+  if (!query) {
+    users.value = [...sourceUsers.value];
+    return;
+  }
+
+  users.value = sourceUsers.value.filter((u) => {
+    const fullName = `${u.firstName ?? ""} ${u.lastName ?? ""}`.toLowerCase();
+    return fullName.includes(query) || (u.email ?? "").toLowerCase().includes(query);
+  });
+};
+
 const debouncedSearch = () => {
   if (searchTimeout) clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    pagination.page = 1;
-    fetchUsers();
-  }, 300);
+  searchTimeout = setTimeout(applyFilters, 300);
 };
 
 const fetchUsers = async () => {
   loading.value = true;
   try {
-    const params = new URLSearchParams();
-    params.append("page", pagination.page.toString());
-    params.append("limit", pagination.limit.toString());
-
-    if (filters.search) params.append("search", filters.search);
-
     const response = await getApiUsers({});
-
-    let filteredData = response.data;
-
-    if (filters.status && filters.status !== "all") {
-      const isActive = filters.status === "active";
-      filteredData = filteredData?.filter((u) => u.isActive === isActive);
-    }
-
-    users.value = filteredData ?? [];
-    pagination.total = response.total ?? 0;
-    pagination.totalPages = response.totalPages ?? 1;
+    sourceUsers.value = response.data ?? [];
+    applyFilters();
   } catch (error) {
     console.error("Failed to fetch users:", error);
   } finally {
@@ -191,30 +121,7 @@ const fetchUsers = async () => {
 
 const clearFilters = () => {
   filters.search = "";
-  filters.role = "";
-  filters.status = "";
-  pagination.page = 1;
-  fetchUsers();
-};
-
-const formatRole = (role: string): string => {
-  const roles: Record<string, string> = {
-    admin: t("roles.admin"),
-    manager: t("roles.manager"),
-    receptionist: t("roles.receptionist"),
-    staff: t("roles.staff"),
-  };
-  return roles[role] || role;
-};
-
-const getRoleColor = (role: string): "success" | "info" | "warning" | "error" | "neutral" => {
-  const colors: Record<string, "success" | "info" | "warning" | "error" | "neutral"> = {
-    admin: "error",
-    manager: "info",
-    receptionist: "success",
-    staff: "neutral",
-  };
-  return colors[role] || "neutral";
+  applyFilters();
 };
 
 onMounted(fetchUsers);

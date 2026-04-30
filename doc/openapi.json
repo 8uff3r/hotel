@@ -3752,6 +3752,56 @@
 				],
 				"type": "object"
 			},
+			"SanitizedUser": {
+				"description": "SanitizedUser schema",
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"id": {
+						"minimum": 0,
+						"type": "integer"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"userHotels": {
+						"items": {
+							"properties": {
+								"hotel": {
+									"properties": {
+										"address": {
+											"type": "string"
+										},
+										"email": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"phone": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								},
+								"hotelId": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
 			"SettleGuestRequest": {
 				"description": "SettleGuestRequest schema",
 				"properties": {
@@ -4077,7 +4127,14 @@
 				"type": "object"
 			},
 			"userCreateResponse": {
-				"description": "userCreateResponse schema"
+				"description": "userCreateResponse schema",
+				"properties": {
+					"id": {
+						"minimum": 0,
+						"type": "integer"
+					}
+				},
+				"type": "object"
 			},
 			"userPermissionsResponse": {
 				"description": "userPermissionsResponse schema",
@@ -9443,6 +9500,83 @@
 					}
 				},
 				"summary": "users create",
+				"tags": [
+					"/USERS"
+				]
+			}
+		},
+		"/api/users/{id}": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/users.UsersModule.userView`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/users/:id",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SanitizedUser"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/SanitizedUser"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "user view",
 				"tags": [
 					"/USERS"
 				]
