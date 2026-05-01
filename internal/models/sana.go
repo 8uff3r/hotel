@@ -21,3 +21,39 @@ type SanaRoomRack struct {
 	IsSynced     bool      `gorm:"default:false" json:"isSynced"`
 	LastError    string    `json:"lastError,omitempty"`
 }
+
+type TravelReason struct {
+	Base
+	TranslateBase
+	SanaID   string `gorm:"uniqueIndex" json:"sanaId"`
+	SanaName string `json:"sanaName"`
+}
+
+type FamilyRelationship struct {
+	Base
+	TranslateBase
+	SanaID   string `gorm:"uniqueIndex" json:"sanaId"`
+	SanaName string `json:"sanaName"`
+}
+
+type Nationality struct {
+	Base
+	TranslateBase
+	SanaID   string `gorm:"uniqueIndex" json:"sanaId"`
+	SanaName string `json:"sanaName"`
+}
+
+type Country struct {
+	Base
+	TranslateBase
+	SanaID   string `gorm:"uniqueIndex" json:"sanaId"`
+	SanaName string `json:"sanaName"`
+	IsIran   bool   `gorm:"default:false" json:"isIran"`
+}
+
+type Occupation struct {
+	Base
+	TranslateBase
+	SanaID   string `gorm:"uniqueIndex" json:"sanaId"`
+	SanaName string `json:"sanaName"`
+}

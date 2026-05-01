@@ -7,6 +7,12 @@ import (
 	"time"
 )
 
+type SanaConfig struct {
+	KelidVahed     string
+	KelidPeimankar string
+	CodeVahed      int
+}
+
 type Config struct {
 	Addr              string
 	DBPath            string
@@ -27,6 +33,7 @@ type Config struct {
 	SeedAdminPass     string
 	SeedAdminFName    string
 	SeedAdminLName    string
+	Sana              SanaConfig
 }
 
 func Load() (Config, error) {
@@ -50,6 +57,11 @@ func Load() (Config, error) {
 		SeedAdminPass:     getEnv("SEED_ADMIN_PASSWORD", "admin123"),
 		SeedAdminFName:    getEnv("SEED_ADMIN_FIRST_NAME", "System"),
 		SeedAdminLName:    getEnv("SEED_ADMIN_LAST_NAME", "Admin"),
+		Sana: SanaConfig{
+			KelidVahed:     getEnv("SANA_KELID_VAHED", ""),
+			KelidPeimankar: getEnv("SANA_KELID_PEIMANKAR", ""),
+			CodeVahed:      getInt("SANA_CODE_VAHED", 0),
+		},
 	}
 
 	if cfg.SeedAdminPass == "" {
@@ -79,4 +91,16 @@ func getDuration(key string, fallback time.Duration) time.Duration {
 		return time.Duration(v) * time.Hour
 	}
 	return time.Duration(v) * time.Second
+}
+
+func getInt(key string, fallback int) int {
+	raw := os.Getenv(key)
+	if raw == "" {
+		return fallback
+	}
+	v, err := strconv.Atoi(raw)
+	if err != nil {
+		return fallback
+	}
+	return v
 }

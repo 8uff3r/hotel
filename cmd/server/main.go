@@ -44,7 +44,7 @@ var seedCmd = &cobra.Command{
 		if err != nil {
 			panic("Couldn't connect to the database")
 		}
-		seed.Seed(database)
+		seed.Seed(database, cfg)
 		slog.Info("Seeding Complete")
 	},
 }

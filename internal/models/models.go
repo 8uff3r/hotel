@@ -284,6 +284,7 @@ func AllForDb() []any {
 		&Expense{}, &Income{}, &ParkingLot{}, &ParkingSpot{}, &Vehicle{}, &ParkingTransaction{}, &Amenity{},
 		&ParkingSpotType{}, &ParkingSpotStatus{}, &UserHotel{}, &Permission{}, &PermissionTemplate{},
 		&UserPermission{}, &UserTemplate{}, &SanaGuest{}, &SanaRoomRack{},
+		&TravelReason{}, &FamilyRelationship{}, &Nationality{}, &Country{}, &Occupation{},
 	}
 }
 
@@ -305,6 +306,7 @@ func AllForTypeGen() []any {
 		User{}, Session{}, Hotel{}, Room{}, Guest{}, GuestCompanion{}, Reservation{}, Account{},
 		Expense{}, Income{}, ParkingLot{}, ParkingSpot{}, Vehicle{}, ParkingTransaction{}, Amenity{}, ParkingSpotType{}, ParkingSpotStatus{}, ParkingStats{}, SanitizedUser{}, UserHotelInfo{},
 		Permission{}, PermissionTemplate{}, UserPermission{}, UserTemplate{},
+		TravelReason{}, FamilyRelationship{}, Nationality{}, Country{}, Occupation{},
 	}
 }
 

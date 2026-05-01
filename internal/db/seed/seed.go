@@ -3,6 +3,7 @@ package seed
 import (
 	"encoding/json"
 	"fmt"
+	"hotel/internal/config"
 	"hotel/internal/models"
 	"log"
 
@@ -22,7 +23,7 @@ func init() {
 		log.Fatalf("failed to load translations: %v", err)
 	}
 }
-func Seed(db *gorm.DB) {
+func Seed(db *gorm.DB, cfg config.Config) {
 	if err := db.AutoMigrate(models.AllForDb()...); err != nil {
 		panic(fmt.Sprintf("auto migrate: %s", err))
 	}
@@ -33,6 +34,7 @@ func Seed(db *gorm.DB) {
 	seedRoomTypes(db)
 	seedPermissions(db)
 	seedPermissionTemplates(db)
+	seedSanaReferenceData(db, cfg)
 }
 
 func seed[T any](db *gorm.DB, defaultValues []T) error {
