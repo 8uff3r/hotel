@@ -283,7 +283,7 @@ func AllForDb() []any {
 		&User{}, &Session{}, &Hotel{}, &Room{}, &Guest{}, &Reservation{}, &Payment{}, &Account{},
 		&Expense{}, &Income{}, &ParkingLot{}, &ParkingSpot{}, &Vehicle{}, &ParkingTransaction{}, &Amenity{},
 		&ParkingSpotType{}, &ParkingSpotStatus{}, &UserHotel{}, &Permission{}, &PermissionTemplate{},
-		&UserPermission{}, &UserTemplate{},
+		&UserPermission{}, &UserTemplate{}, &SanaGuest{}, &SanaRoomRack{},
 	}
 }
 

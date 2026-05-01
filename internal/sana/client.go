@@ -131,9 +131,9 @@ func (c *Client) GereftanPayam(ShomarePayam int) ([]PayamItem, error) {
 	return result.Items, nil
 }
 
-func (c *Client) SabtChidemanVahed(Rac string) (SabtChidemanResponse, error) {
+func (c *Client) SabtChidemanVahed(req SabtChidemanInput) (SabtChidemanResponse, error) {
 	params := c.baseParams()
-	params["Rac"] = Rac
+	params["Rac"] = BuildRac(req)
 	body, err := c.get("SabtChidemanVahed", params)
 	if err != nil {
 		return SabtChidemanResponse{}, err

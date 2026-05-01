@@ -1,5 +1,7 @@
 package sana
 
+import "fmt"
+
 type AnavinItem struct {
 	ID   string `json:"ID"`
 	Name string `json:"Name"`
@@ -51,27 +53,24 @@ type ErrorCodeResponse struct {
 	Items []ErrorCodeItem `json:"tb_Anavin"`
 }
 
-type RoomRack struct {
+type SabtChidemanInput struct {
 	Sakhteman  int
-	TedadAtagh int
-	OtaghList  []RoomRackFloor
+	TedadOtagh int
+	Floors     []Floor
 }
 
-type RoomRackFloor struct {
-	ShomareTabaghe string
-	OtaghList      []string
+type Floor struct {
+	Number int
+	Rooms  []string
 }
 
-func BuildRac(roomRack RoomRack) string {
-	result := "sakhteman:" + string(rune('0'+roomRack.Sakhteman)) + "|tedadotagh:" + string(rune('0'+roomRack.TedadAtagh))
-	for _, floor := range roomRack.OtaghList {
-		result += "|" + floor.ShomareTabaghe + ":"
-		for i, otagh := range floor.OtaghList {
-			if i > 0 {
-				result += ","
-			}
-			result += otagh
+func BuildRac(input SabtChidemanInput) string {
+	result := fmt.Sprintf("sakhteman:%d|tedadotagh:%d", input.Sakhteman, input.TedadOtagh)
+	for _, floor := range input.Floors {
+		for _, room := range floor.Rooms {
+			result += fmt.Sprintf("|%d:%s", floor.Number, room)
 		}
 	}
+	result += "|"
 	return result
 }
