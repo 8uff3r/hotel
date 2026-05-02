@@ -30,12 +30,16 @@
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">{{ t("parking.hourly_rate_dollar") }}</label>
+            <label class="mb-1 block text-sm font-medium">{{
+              t("parking.hourly_rate_dollar")
+            }}</label>
             <UInput v-model="form.hourlyRate" type="number" placeholder="5.00" />
           </div>
 
           <div>
-            <label class="mb-1 block text-sm font-medium">{{ t("parking.daily_rate_dollar") }}</label>
+            <label class="mb-1 block text-sm font-medium">{{
+              t("parking.daily_rate_dollar")
+            }}</label>
             <UInput v-model="form.dailyRate" type="number" placeholder="25.00" />
           </div>
 

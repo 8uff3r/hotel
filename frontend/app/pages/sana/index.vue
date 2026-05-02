@@ -3,7 +3,7 @@
     <div class="mb-6 flex items-center justify-between">
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t("sana.title") }}</h1>
 
-      <UModal v-model="syncAllModalOpen">
+      <UModal v-model:open="syncAllModalOpen">
         <UButton color="primary">
           <UIcon name="i-lucide-refresh-cw" class="mr-2" />
           {{ t("sana.syncAll") }}

@@ -20,6 +20,18 @@ export const zAccount = z.object({
 });
 
 /**
+ * Country schema
+ */
+export const zCountry = z.object({
+    id: z.int().gte(0).optional(),
+    isIran: z.boolean().optional(),
+    label: z.string().optional(),
+    sanaId: z.string().optional(),
+    sanaName: z.string().optional(),
+    slug: z.string().optional()
+});
+
+/**
  * Expense schema
  */
 export const zExpense = z.object({
@@ -36,6 +48,17 @@ export const zExpense = z.object({
     paymentStatus: z.string().optional(),
     reference: z.string().optional(),
     vendor: z.string().optional()
+});
+
+/**
+ * FamilyRelationship schema
+ */
+export const zFamilyRelationship = z.object({
+    id: z.int().gte(0).optional(),
+    label: z.string().optional(),
+    sanaId: z.string().optional(),
+    sanaName: z.string().optional(),
+    slug: z.string().optional()
 });
 
 /**
@@ -520,6 +543,28 @@ export const zMeResponse = z.object({
             hotelId: z.string().optional()
         })).optional()
     }).optional()
+});
+
+/**
+ * Nationality schema
+ */
+export const zNationality = z.object({
+    id: z.int().gte(0).optional(),
+    label: z.string().optional(),
+    sanaId: z.string().optional(),
+    sanaName: z.string().optional(),
+    slug: z.string().optional()
+});
+
+/**
+ * Occupation schema
+ */
+export const zOccupation = z.object({
+    id: z.int().gte(0).optional(),
+    label: z.string().optional(),
+    sanaId: z.string().optional(),
+    sanaName: z.string().optional(),
+    slug: z.string().optional()
 });
 
 /**
@@ -1184,6 +1229,39 @@ export const zRoom = z.object({
 });
 
 /**
+ * SanaGuestResponse schema
+ */
+export const zSanaGuestResponse = z.object({
+    guest: z.object({
+        firstName: z.string().optional(),
+        lastName: z.string().optional(),
+        nationalId: z.string().optional()
+    }).optional(),
+    guestId: z.int().gte(0).optional(),
+    id: z.int().gte(0).optional(),
+    recordMosafer: z.int().optional(),
+    shomareOtagh: z.string().optional(),
+    shomarePaziresh: z.string().optional(),
+    syncTime: z.string().optional()
+});
+
+/**
+ * SanaRoomResponse schema
+ */
+export const zSanaRoomResponse = z.object({
+    hotelId: z.string().optional(),
+    id: z.int().gte(0).optional(),
+    isSynced: z.boolean().optional(),
+    lastError: z.string().optional(),
+    lastSyncTime: z.string().optional(),
+    rac: z.string().optional(),
+    room: z.object({
+        id: z.int().gte(0).optional(),
+        roomNumber: z.string().optional()
+    }).optional()
+});
+
+/**
  * SanitizedUser schema
  */
 export const zSanitizedUser = z.object({
@@ -1213,6 +1291,17 @@ export const zSettleGuestRequest = z.object({
     paymentMethod: z.string().optional(),
     reference: z.string().optional(),
     reservationIds: z.array(z.int().gte(0)).optional()
+});
+
+/**
+ * TravelReason schema
+ */
+export const zTravelReason = z.object({
+    id: z.int().gte(0).optional(),
+    label: z.string().optional(),
+    sanaId: z.string().optional(),
+    sanaName: z.string().optional(),
+    slug: z.string().optional()
 });
 
 /**
@@ -2239,6 +2328,96 @@ export const zPutApiRoomsIdPath = z.object({
  * OK
  */
 export const zPutApiRoomsIdResponse = zRoom;
+
+export const zGetApiSanaCountriesHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetApiSanaCountriesResponse = z.array(zCountry);
+
+export const zGetApiSanaFamilyRelationshipsHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetApiSanaFamilyRelationshipsResponse = z.array(zFamilyRelationship);
+
+export const zGetApiSanaGuestsHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetApiSanaGuestsResponse = z.array(zSanaGuestResponse);
+
+export const zPostApiSanaGuestsIdSyncHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zPostApiSanaGuestsIdSyncResponse = zSanaGuestResponse;
+
+export const zGetApiSanaNationalitiesHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetApiSanaNationalitiesResponse = z.array(zNationality);
+
+export const zGetApiSanaOccupationsHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetApiSanaOccupationsResponse = z.array(zOccupation);
+
+export const zGetApiSanaRoomsHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetApiSanaRoomsResponse = z.array(zSanaRoomResponse);
+
+export const zPostApiSanaRoomsIdSyncHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zPostApiSanaRoomsIdSyncResponse = zSanaRoomResponse;
+
+export const zPostApiSanaSyncAllHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zPostApiSanaSyncAllResponse = zString;
+
+export const zGetApiSanaTravelReasonsHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetApiSanaTravelReasonsResponse = z.array(zTravelReason);
 
 export const zGetApiUsersHeaders = z.object({
     Accept: z.string().optional()

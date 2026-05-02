@@ -47,7 +47,9 @@
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-lg font-semibold">{{ t("parking.transactions") }}</span>
-          <span class="text-sm text-gray-500">{{ t("parking.transactions_count", { count: pagination.total }) }}</span>
+          <span class="text-sm text-gray-500">{{
+            t("parking.transactions_count", { count: pagination.total })
+          }}</span>
         </div>
       </template>
 
@@ -70,7 +72,11 @@
         </template>
 
         <template #hoursParked-cell="{ row }">
-          {{ row.original.hoursParked ? t("parking.hours_short", { hours: row.original.hoursParked.toFixed(1) }) : "-" }}
+          {{
+            row.original.hoursParked
+              ? t("parking.hours_short", { hours: row.original.hoursParked.toFixed(1) })
+              : "-"
+          }}
         </template>
 
         <template #amountDue-cell="{ row }">
@@ -110,7 +116,9 @@
       <template #footer>
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-500">
-            {{ t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages }) }}
+            {{
+              t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages })
+            }}
           </span>
           <UPagination
             v-model="page"
@@ -157,10 +165,12 @@
       </template>
       <template #footer>
         <div class="flex justify-end gap-3">
-          <UButton variant="outline" @click="checkoutModalOpen = false">{{ t("common.cancel") }}</UButton>
-          <UButton color="warning" :loading="checkingOut" @click="confirmCheckout"
-            >{{ t("parking.check_out") }}</UButton
-          >
+          <UButton variant="outline" @click="checkoutModalOpen = false">{{
+            t("common.cancel")
+          }}</UButton>
+          <UButton color="warning" :loading="checkingOut" @click="confirmCheckout">{{
+            t("parking.check_out")
+          }}</UButton>
         </div>
       </template>
     </UModal>

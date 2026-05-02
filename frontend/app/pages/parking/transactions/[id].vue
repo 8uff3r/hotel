@@ -64,7 +64,11 @@
           <div>
             <div class="mb-1 text-sm text-gray-500">{{ t("parking.duration") }}</div>
             <div class="font-medium">
-              {{ transaction.hoursParked ? t("parking.hours_long", { hours: transaction.hoursParked.toFixed(1) }) : "-" }}
+              {{
+                transaction.hoursParked
+                  ? t("parking.hours_long", { hours: transaction.hoursParked.toFixed(1) })
+                  : "-"
+              }}
             </div>
           </div>
 
@@ -131,10 +135,12 @@
       </template>
       <template #footer>
         <div class="flex justify-end gap-3">
-          <UButton variant="outline" @click="checkoutModalOpen = false">{{ t("common.cancel") }}</UButton>
-          <UButton color="warning" :loading="checkingOut" @click="confirmCheckout"
-            >{{ t("parking.check_out") }}</UButton
-          >
+          <UButton variant="outline" @click="checkoutModalOpen = false">{{
+            t("common.cancel")
+          }}</UButton>
+          <UButton color="warning" :loading="checkingOut" @click="confirmCheckout">{{
+            t("parking.check_out")
+          }}</UButton>
         </div>
       </template>
     </UModal>

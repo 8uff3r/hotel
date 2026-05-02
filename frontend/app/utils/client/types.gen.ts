@@ -22,6 +22,18 @@ export type Account = {
 };
 
 /**
+ * Country schema
+ */
+export type Country = {
+    id?: number;
+    isIran?: boolean;
+    label?: string;
+    sanaId?: string;
+    sanaName?: string;
+    slug?: string;
+};
+
+/**
  * Expense schema
  */
 export type Expense = {
@@ -38,6 +50,17 @@ export type Expense = {
     paymentStatus?: string;
     reference?: string;
     vendor?: string;
+};
+
+/**
+ * FamilyRelationship schema
+ */
+export type FamilyRelationship = {
+    id?: number;
+    label?: string;
+    sanaId?: string;
+    sanaName?: string;
+    slug?: string;
 };
 
 /**
@@ -545,6 +568,28 @@ export type MeResponse = {
             hotelId?: string;
         }>;
     };
+};
+
+/**
+ * Nationality schema
+ */
+export type Nationality = {
+    id?: number;
+    label?: string;
+    sanaId?: string;
+    sanaName?: string;
+    slug?: string;
+};
+
+/**
+ * Occupation schema
+ */
+export type Occupation = {
+    id?: number;
+    label?: string;
+    sanaId?: string;
+    sanaName?: string;
+    slug?: string;
 };
 
 /**
@@ -1209,6 +1254,39 @@ export type Room = {
 };
 
 /**
+ * SanaGuestResponse schema
+ */
+export type SanaGuestResponse = {
+    guest?: {
+        firstName?: string;
+        lastName?: string;
+        nationalId?: string;
+    };
+    guestId?: number;
+    id?: number;
+    recordMosafer?: number;
+    shomareOtagh?: string;
+    shomarePaziresh?: string;
+    syncTime?: string;
+};
+
+/**
+ * SanaRoomResponse schema
+ */
+export type SanaRoomResponse = {
+    hotelId?: string;
+    id?: number;
+    isSynced?: boolean;
+    lastError?: string;
+    lastSyncTime?: string;
+    rac?: string;
+    room?: {
+        id?: number;
+        roomNumber?: string;
+    };
+};
+
+/**
  * SanitizedUser schema
  */
 export type SanitizedUser = {
@@ -1238,6 +1316,17 @@ export type SettleGuestRequest = {
     paymentMethod?: string;
     reference?: string;
     reservationIds?: Array<number>;
+};
+
+/**
+ * TravelReason schema
+ */
+export type TravelReason = {
+    id?: number;
+    label?: string;
+    sanaId?: string;
+    sanaName?: string;
+    slug?: string;
 };
 
 /**
@@ -3690,6 +3779,336 @@ export type PutApiRoomsIdResponses = {
 };
 
 export type PutApiRoomsIdResponse = PutApiRoomsIdResponses[keyof PutApiRoomsIdResponses];
+
+export type GetApiSanaCountriesData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/sana/countries';
+};
+
+export type GetApiSanaCountriesErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiSanaCountriesError = GetApiSanaCountriesErrors[keyof GetApiSanaCountriesErrors];
+
+export type GetApiSanaCountriesResponses = {
+    /**
+     * OK
+     */
+    200: Array<Country>;
+};
+
+export type GetApiSanaCountriesResponse = GetApiSanaCountriesResponses[keyof GetApiSanaCountriesResponses];
+
+export type GetApiSanaFamilyRelationshipsData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/sana/family-relationships';
+};
+
+export type GetApiSanaFamilyRelationshipsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiSanaFamilyRelationshipsError = GetApiSanaFamilyRelationshipsErrors[keyof GetApiSanaFamilyRelationshipsErrors];
+
+export type GetApiSanaFamilyRelationshipsResponses = {
+    /**
+     * OK
+     */
+    200: Array<FamilyRelationship>;
+};
+
+export type GetApiSanaFamilyRelationshipsResponse = GetApiSanaFamilyRelationshipsResponses[keyof GetApiSanaFamilyRelationshipsResponses];
+
+export type GetApiSanaGuestsData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/sana/guests';
+};
+
+export type GetApiSanaGuestsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiSanaGuestsError = GetApiSanaGuestsErrors[keyof GetApiSanaGuestsErrors];
+
+export type GetApiSanaGuestsResponses = {
+    /**
+     * OK
+     */
+    200: Array<SanaGuestResponse>;
+};
+
+export type GetApiSanaGuestsResponse = GetApiSanaGuestsResponses[keyof GetApiSanaGuestsResponses];
+
+export type PostApiSanaGuestsIdSyncData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/sana/guests/:id/sync';
+};
+
+export type PostApiSanaGuestsIdSyncErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PostApiSanaGuestsIdSyncError = PostApiSanaGuestsIdSyncErrors[keyof PostApiSanaGuestsIdSyncErrors];
+
+export type PostApiSanaGuestsIdSyncResponses = {
+    /**
+     * OK
+     */
+    200: SanaGuestResponse;
+};
+
+export type PostApiSanaGuestsIdSyncResponse = PostApiSanaGuestsIdSyncResponses[keyof PostApiSanaGuestsIdSyncResponses];
+
+export type GetApiSanaNationalitiesData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/sana/nationalities';
+};
+
+export type GetApiSanaNationalitiesErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiSanaNationalitiesError = GetApiSanaNationalitiesErrors[keyof GetApiSanaNationalitiesErrors];
+
+export type GetApiSanaNationalitiesResponses = {
+    /**
+     * OK
+     */
+    200: Array<Nationality>;
+};
+
+export type GetApiSanaNationalitiesResponse = GetApiSanaNationalitiesResponses[keyof GetApiSanaNationalitiesResponses];
+
+export type GetApiSanaOccupationsData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/sana/occupations';
+};
+
+export type GetApiSanaOccupationsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiSanaOccupationsError = GetApiSanaOccupationsErrors[keyof GetApiSanaOccupationsErrors];
+
+export type GetApiSanaOccupationsResponses = {
+    /**
+     * OK
+     */
+    200: Array<Occupation>;
+};
+
+export type GetApiSanaOccupationsResponse = GetApiSanaOccupationsResponses[keyof GetApiSanaOccupationsResponses];
+
+export type GetApiSanaRoomsData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/sana/rooms';
+};
+
+export type GetApiSanaRoomsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiSanaRoomsError = GetApiSanaRoomsErrors[keyof GetApiSanaRoomsErrors];
+
+export type GetApiSanaRoomsResponses = {
+    /**
+     * OK
+     */
+    200: Array<SanaRoomResponse>;
+};
+
+export type GetApiSanaRoomsResponse = GetApiSanaRoomsResponses[keyof GetApiSanaRoomsResponses];
+
+export type PostApiSanaRoomsIdSyncData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/sana/rooms/:id/sync';
+};
+
+export type PostApiSanaRoomsIdSyncErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PostApiSanaRoomsIdSyncError = PostApiSanaRoomsIdSyncErrors[keyof PostApiSanaRoomsIdSyncErrors];
+
+export type PostApiSanaRoomsIdSyncResponses = {
+    /**
+     * OK
+     */
+    200: SanaRoomResponse;
+};
+
+export type PostApiSanaRoomsIdSyncResponse = PostApiSanaRoomsIdSyncResponses[keyof PostApiSanaRoomsIdSyncResponses];
+
+export type PostApiSanaSyncAllData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/sana/sync-all';
+};
+
+export type PostApiSanaSyncAllErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PostApiSanaSyncAllError = PostApiSanaSyncAllErrors[keyof PostApiSanaSyncAllErrors];
+
+export type PostApiSanaSyncAllResponses = {
+    /**
+     * OK
+     */
+    200: String;
+};
+
+export type PostApiSanaSyncAllResponse = PostApiSanaSyncAllResponses[keyof PostApiSanaSyncAllResponses];
+
+export type GetApiSanaTravelReasonsData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/sana/travel-reasons';
+};
+
+export type GetApiSanaTravelReasonsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiSanaTravelReasonsError = GetApiSanaTravelReasonsErrors[keyof GetApiSanaTravelReasonsErrors];
+
+export type GetApiSanaTravelReasonsResponses = {
+    /**
+     * OK
+     */
+    200: Array<TravelReason>;
+};
+
+export type GetApiSanaTravelReasonsResponse = GetApiSanaTravelReasonsResponses[keyof GetApiSanaTravelReasonsResponses];
 
 export type GetApiUsersData = {
     body?: never;

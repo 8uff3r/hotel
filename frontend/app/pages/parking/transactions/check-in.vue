@@ -20,7 +20,9 @@
         <form @submit.prevent="checkIn">
           <div class="space-y-4">
             <div>
-              <label class="mb-1 block text-sm font-medium">{{ t("parking.license_plate") }} *</label>
+              <label class="mb-1 block text-sm font-medium"
+                >{{ t("parking.license_plate") }} *</label
+              >
               <UInput v-model="form.licensePlate" :placeholder="t('parking.abc_1234')" required />
             </div>
 
@@ -36,7 +38,9 @@
             </div>
 
             <div>
-              <label class="mb-1 block text-sm font-medium">{{ t("parking.parking_spot_optional") }}</label>
+              <label class="mb-1 block text-sm font-medium">{{
+                t("parking.parking_spot_optional")
+              }}</label>
               <USelect
                 v-model="form.spotId"
                 :items="spotOptions"

@@ -59,7 +59,12 @@
             <div>
               <div class="font-medium">{{ lot.name }}</div>
               <div class="text-sm text-gray-500">
-                {{ t("parking.spots_and_hourly_rate", { spots: lot.totalSpots, rate: lot.hourlyRate }) }}
+                {{
+                  t("parking.spots_and_hourly_rate", {
+                    spots: lot.totalSpots,
+                    rate: lot.hourlyRate,
+                  })
+                }}
               </div>
             </div>
             <UBadge :color="lot.status === 'active' ? 'success' : 'warning'" variant="soft">

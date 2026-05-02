@@ -4,8 +4,8 @@ import * as z from 'zod';
 
 import type { Client, Composable, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { DeleteApiHotelsIdData, DeleteApiHotelsIdError, DeleteApiHotelsIdResponse, DeleteApiParkingLotsIdData, DeleteApiParkingLotsIdError, DeleteApiParkingLotsIdResponse, DeleteApiParkingSpotsIdData, DeleteApiParkingSpotsIdError, DeleteApiParkingSpotsIdResponse, DeleteApiParkingVehiclesIdData, DeleteApiParkingVehiclesIdError, DeleteApiParkingVehiclesIdResponse, DeleteApiPermissionsUserUserIdPermissionIdData, DeleteApiPermissionsUserUserIdPermissionIdError, DeleteApiPermissionsUserUserIdPermissionIdResponse, DeleteApiRoomsIdData, DeleteApiRoomsIdError, DeleteApiRoomsIdResponse, GetApiAccountingAccountsData, GetApiAccountingAccountsError, GetApiAccountingAccountsResponse, GetApiAccountingExpensesData, GetApiAccountingExpensesError, GetApiAccountingExpensesResponse, GetApiAccountingIncomeData, GetApiAccountingIncomeError, GetApiAccountingIncomeResponse, GetApiAuthMeData, GetApiAuthMeError, GetApiAuthMeResponse, GetApiGuestsData, GetApiGuestsError, GetApiGuestsIdData, GetApiGuestsIdError, GetApiGuestsIdResponse, GetApiGuestsIdSettleData, GetApiGuestsIdSettleError, GetApiGuestsIdSettleResponse, GetApiGuestsResponse, GetApiHealthzData, GetApiHealthzError, GetApiHealthzResponse, GetApiHotelsData, GetApiHotelsError, GetApiHotelsIdData, GetApiHotelsIdError, GetApiHotelsIdResponse, GetApiHotelsResponse, GetApiParkingLotsData, GetApiParkingLotsError, GetApiParkingLotsIdData, GetApiParkingLotsIdError, GetApiParkingLotsIdResponse, GetApiParkingLotsResponse, GetApiParkingSpotsData, GetApiParkingSpotsError, GetApiParkingSpotsIdData, GetApiParkingSpotsIdError, GetApiParkingSpotsIdResponse, GetApiParkingSpotsResponse, GetApiParkingSpotsStatusesData, GetApiParkingSpotsStatusesError, GetApiParkingSpotsStatusesResponse, GetApiParkingSpotsTypesData, GetApiParkingSpotsTypesError, GetApiParkingSpotsTypesResponse, GetApiParkingStatsData, GetApiParkingStatsError, GetApiParkingStatsResponse, GetApiParkingTransactionsData, GetApiParkingTransactionsError, GetApiParkingTransactionsIdData, GetApiParkingTransactionsIdError, GetApiParkingTransactionsIdResponse, GetApiParkingTransactionsResponse, GetApiParkingVehiclesData, GetApiParkingVehiclesError, GetApiParkingVehiclesIdData, GetApiParkingVehiclesIdError, GetApiParkingVehiclesIdResponse, GetApiParkingVehiclesResponse, GetApiPermissionsData, GetApiPermissionsError, GetApiPermissionsResponse, GetApiPermissionsTemplatesData, GetApiPermissionsTemplatesError, GetApiPermissionsTemplatesResponse, GetApiPermissionsUserUserIdData, GetApiPermissionsUserUserIdError, GetApiPermissionsUserUserIdResponse, GetApiReadyzData, GetApiReadyzError, GetApiReadyzResponse, GetApiReservationData, GetApiReservationError, GetApiReservationIdData, GetApiReservationIdError, GetApiReservationIdResponse, GetApiReservationResponse, GetApiRoomsAmenitiesData, GetApiRoomsAmenitiesError, GetApiRoomsAmenitiesResponse, GetApiRoomsData, GetApiRoomsError, GetApiRoomsIdData, GetApiRoomsIdError, GetApiRoomsIdResponse, GetApiRoomsResponse, GetApiRoomsStatusesData, GetApiRoomsStatusesError, GetApiRoomsStatusesResponse, GetApiRoomsTypesData, GetApiRoomsTypesError, GetApiRoomsTypesResponse, GetApiUsersData, GetApiUsersError, GetApiUsersIdData, GetApiUsersIdError, GetApiUsersIdResponse, GetApiUsersResponse, PostApiAccountingAccountsData, PostApiAccountingAccountsError, PostApiAccountingAccountsResponse, PostApiAccountingExpensesData, PostApiAccountingExpensesError, PostApiAccountingExpensesResponse, PostApiAccountingIncomeData, PostApiAccountingIncomeError, PostApiAccountingIncomeResponse, PostApiAuthLoginData, PostApiAuthLoginError, PostApiAuthLoginResponse, PostApiAuthLogoutData, PostApiAuthLogoutError, PostApiAuthLogoutResponse, PostApiGuestsData, PostApiGuestsError, PostApiGuestsIdSettleData, PostApiGuestsIdSettleError, PostApiGuestsIdSettleResponse, PostApiGuestsResponse, PostApiGuestsWithReservationData, PostApiGuestsWithReservationError, PostApiGuestsWithReservationResponse, PostApiHotelsData, PostApiHotelsError, PostApiHotelsResponse, PostApiParkingLotsData, PostApiParkingLotsError, PostApiParkingLotsResponse, PostApiParkingSpotsData, PostApiParkingSpotsError, PostApiParkingSpotsResponse, PostApiParkingTransactionsData, PostApiParkingTransactionsError, PostApiParkingTransactionsIdCheckOutData, PostApiParkingTransactionsIdCheckOutError, PostApiParkingTransactionsIdCheckOutResponse, PostApiParkingTransactionsResponse, PostApiParkingVehiclesData, PostApiParkingVehiclesError, PostApiParkingVehiclesResponse, PostApiPermissionsUserUserIdPermissionIdData, PostApiPermissionsUserUserIdPermissionIdError, PostApiPermissionsUserUserIdPermissionIdResponse, PostApiPermissionsUserUserIdTemplateTemplateIdData, PostApiPermissionsUserUserIdTemplateTemplateIdError, PostApiPermissionsUserUserIdTemplateTemplateIdResponse, PostApiReservationData, PostApiReservationError, PostApiReservationIdCheckInData, PostApiReservationIdCheckInError, PostApiReservationIdCheckInResponse, PostApiReservationIdCheckOutData, PostApiReservationIdCheckOutError, PostApiReservationIdCheckOutResponse, PostApiReservationResponse, PostApiRoomsData, PostApiRoomsError, PostApiRoomsResponse, PostApiUsersData, PostApiUsersError, PostApiUsersResponse, PutApiGuestsIdData, PutApiGuestsIdError, PutApiGuestsIdResponse, PutApiHotelsIdData, PutApiHotelsIdError, PutApiHotelsIdResponse, PutApiParkingLotsIdData, PutApiParkingLotsIdError, PutApiParkingLotsIdResponse, PutApiParkingSpotsIdData, PutApiParkingSpotsIdError, PutApiParkingSpotsIdResponse, PutApiParkingVehiclesIdData, PutApiParkingVehiclesIdError, PutApiParkingVehiclesIdResponse, PutApiReservationIdData, PutApiReservationIdError, PutApiReservationIdResponse, PutApiRoomsIdData, PutApiRoomsIdError, PutApiRoomsIdResponse, PutApiUsersIdData, PutApiUsersIdError, PutApiUsersIdResponse } from './types.gen';
-import { zDeleteApiHotelsIdHeaders, zDeleteApiHotelsIdPath, zDeleteApiHotelsIdResponse, zDeleteApiParkingLotsIdHeaders, zDeleteApiParkingLotsIdPath, zDeleteApiParkingLotsIdResponse, zDeleteApiParkingSpotsIdHeaders, zDeleteApiParkingSpotsIdPath, zDeleteApiParkingSpotsIdResponse, zDeleteApiParkingVehiclesIdHeaders, zDeleteApiParkingVehiclesIdPath, zDeleteApiParkingVehiclesIdResponse, zDeleteApiPermissionsUserUserIdPermissionIdHeaders, zDeleteApiPermissionsUserUserIdPermissionIdPath, zDeleteApiPermissionsUserUserIdPermissionIdResponse, zDeleteApiRoomsIdHeaders, zDeleteApiRoomsIdPath, zDeleteApiRoomsIdResponse, zGetApiAccountingAccountsHeaders, zGetApiAccountingAccountsQuery, zGetApiAccountingAccountsResponse, zGetApiAccountingExpensesHeaders, zGetApiAccountingExpensesQuery, zGetApiAccountingExpensesResponse, zGetApiAccountingIncomeHeaders, zGetApiAccountingIncomeQuery, zGetApiAccountingIncomeResponse, zGetApiAuthMeHeaders, zGetApiAuthMeResponse, zGetApiGuestsHeaders, zGetApiGuestsIdHeaders, zGetApiGuestsIdPath, zGetApiGuestsIdResponse, zGetApiGuestsIdSettleHeaders, zGetApiGuestsIdSettlePath, zGetApiGuestsIdSettleResponse, zGetApiGuestsQuery, zGetApiGuestsResponse, zGetApiHealthzHeaders, zGetApiHealthzResponse, zGetApiHotelsHeaders, zGetApiHotelsIdHeaders, zGetApiHotelsIdPath, zGetApiHotelsIdResponse, zGetApiHotelsQuery, zGetApiHotelsResponse, zGetApiParkingLotsHeaders, zGetApiParkingLotsIdHeaders, zGetApiParkingLotsIdPath, zGetApiParkingLotsIdResponse, zGetApiParkingLotsQuery, zGetApiParkingLotsResponse, zGetApiParkingSpotsHeaders, zGetApiParkingSpotsIdHeaders, zGetApiParkingSpotsIdPath, zGetApiParkingSpotsIdResponse, zGetApiParkingSpotsQuery, zGetApiParkingSpotsResponse, zGetApiParkingSpotsStatusesHeaders, zGetApiParkingSpotsStatusesQuery, zGetApiParkingSpotsStatusesResponse, zGetApiParkingSpotsTypesHeaders, zGetApiParkingSpotsTypesQuery, zGetApiParkingSpotsTypesResponse, zGetApiParkingStatsHeaders, zGetApiParkingStatsResponse, zGetApiParkingTransactionsHeaders, zGetApiParkingTransactionsIdHeaders, zGetApiParkingTransactionsIdPath, zGetApiParkingTransactionsIdResponse, zGetApiParkingTransactionsQuery, zGetApiParkingTransactionsResponse, zGetApiParkingVehiclesHeaders, zGetApiParkingVehiclesIdHeaders, zGetApiParkingVehiclesIdPath, zGetApiParkingVehiclesIdResponse, zGetApiParkingVehiclesQuery, zGetApiParkingVehiclesResponse, zGetApiPermissionsHeaders, zGetApiPermissionsResponse, zGetApiPermissionsTemplatesHeaders, zGetApiPermissionsTemplatesQuery, zGetApiPermissionsTemplatesResponse, zGetApiPermissionsUserUserIdHeaders, zGetApiPermissionsUserUserIdPath, zGetApiPermissionsUserUserIdResponse, zGetApiReadyzHeaders, zGetApiReadyzResponse, zGetApiReservationHeaders, zGetApiReservationIdHeaders, zGetApiReservationIdPath, zGetApiReservationIdResponse, zGetApiReservationQuery, zGetApiReservationResponse, zGetApiRoomsAmenitiesHeaders, zGetApiRoomsAmenitiesQuery, zGetApiRoomsAmenitiesResponse, zGetApiRoomsHeaders, zGetApiRoomsIdHeaders, zGetApiRoomsIdPath, zGetApiRoomsIdResponse, zGetApiRoomsQuery, zGetApiRoomsResponse, zGetApiRoomsStatusesHeaders, zGetApiRoomsStatusesQuery, zGetApiRoomsStatusesResponse, zGetApiRoomsTypesHeaders, zGetApiRoomsTypesQuery, zGetApiRoomsTypesResponse, zGetApiUsersHeaders, zGetApiUsersIdHeaders, zGetApiUsersIdPath, zGetApiUsersIdResponse, zGetApiUsersResponse, zPostApiAccountingAccountsBody, zPostApiAccountingAccountsHeaders, zPostApiAccountingAccountsResponse, zPostApiAccountingExpensesBody, zPostApiAccountingExpensesHeaders, zPostApiAccountingExpensesResponse, zPostApiAccountingIncomeBody, zPostApiAccountingIncomeHeaders, zPostApiAccountingIncomeResponse, zPostApiAuthLoginBody, zPostApiAuthLoginHeaders, zPostApiAuthLoginResponse, zPostApiAuthLogoutHeaders, zPostApiAuthLogoutResponse, zPostApiGuestsBody, zPostApiGuestsHeaders, zPostApiGuestsIdSettleBody, zPostApiGuestsIdSettleHeaders, zPostApiGuestsIdSettlePath, zPostApiGuestsIdSettleResponse, zPostApiGuestsResponse, zPostApiGuestsWithReservationBody, zPostApiGuestsWithReservationHeaders, zPostApiGuestsWithReservationResponse, zPostApiHotelsBody, zPostApiHotelsHeaders, zPostApiHotelsResponse, zPostApiParkingLotsBody, zPostApiParkingLotsHeaders, zPostApiParkingLotsResponse, zPostApiParkingSpotsBody, zPostApiParkingSpotsHeaders, zPostApiParkingSpotsResponse, zPostApiParkingTransactionsBody, zPostApiParkingTransactionsHeaders, zPostApiParkingTransactionsIdCheckOutHeaders, zPostApiParkingTransactionsIdCheckOutPath, zPostApiParkingTransactionsIdCheckOutResponse, zPostApiParkingTransactionsResponse, zPostApiParkingVehiclesBody, zPostApiParkingVehiclesHeaders, zPostApiParkingVehiclesResponse, zPostApiPermissionsUserUserIdPermissionIdHeaders, zPostApiPermissionsUserUserIdPermissionIdPath, zPostApiPermissionsUserUserIdPermissionIdResponse, zPostApiPermissionsUserUserIdTemplateTemplateIdHeaders, zPostApiPermissionsUserUserIdTemplateTemplateIdPath, zPostApiPermissionsUserUserIdTemplateTemplateIdResponse, zPostApiReservationBody, zPostApiReservationHeaders, zPostApiReservationIdCheckInHeaders, zPostApiReservationIdCheckInPath, zPostApiReservationIdCheckInResponse, zPostApiReservationIdCheckOutHeaders, zPostApiReservationIdCheckOutPath, zPostApiReservationIdCheckOutResponse, zPostApiReservationResponse, zPostApiRoomsBody, zPostApiRoomsHeaders, zPostApiRoomsResponse, zPostApiUsersBody, zPostApiUsersHeaders, zPostApiUsersResponse, zPutApiGuestsIdBody, zPutApiGuestsIdHeaders, zPutApiGuestsIdPath, zPutApiGuestsIdResponse, zPutApiHotelsIdBody, zPutApiHotelsIdHeaders, zPutApiHotelsIdPath, zPutApiHotelsIdResponse, zPutApiParkingLotsIdBody, zPutApiParkingLotsIdHeaders, zPutApiParkingLotsIdPath, zPutApiParkingLotsIdResponse, zPutApiParkingSpotsIdBody, zPutApiParkingSpotsIdHeaders, zPutApiParkingSpotsIdPath, zPutApiParkingSpotsIdResponse, zPutApiParkingVehiclesIdBody, zPutApiParkingVehiclesIdHeaders, zPutApiParkingVehiclesIdPath, zPutApiParkingVehiclesIdResponse, zPutApiReservationIdBody, zPutApiReservationIdHeaders, zPutApiReservationIdPath, zPutApiReservationIdResponse, zPutApiRoomsIdBody, zPutApiRoomsIdHeaders, zPutApiRoomsIdPath, zPutApiRoomsIdResponse, zPutApiUsersIdBody, zPutApiUsersIdHeaders, zPutApiUsersIdPath, zPutApiUsersIdResponse } from './zod.gen';
+import type { DeleteApiHotelsIdData, DeleteApiHotelsIdError, DeleteApiHotelsIdResponse, DeleteApiParkingLotsIdData, DeleteApiParkingLotsIdError, DeleteApiParkingLotsIdResponse, DeleteApiParkingSpotsIdData, DeleteApiParkingSpotsIdError, DeleteApiParkingSpotsIdResponse, DeleteApiParkingVehiclesIdData, DeleteApiParkingVehiclesIdError, DeleteApiParkingVehiclesIdResponse, DeleteApiPermissionsUserUserIdPermissionIdData, DeleteApiPermissionsUserUserIdPermissionIdError, DeleteApiPermissionsUserUserIdPermissionIdResponse, DeleteApiRoomsIdData, DeleteApiRoomsIdError, DeleteApiRoomsIdResponse, GetApiAccountingAccountsData, GetApiAccountingAccountsError, GetApiAccountingAccountsResponse, GetApiAccountingExpensesData, GetApiAccountingExpensesError, GetApiAccountingExpensesResponse, GetApiAccountingIncomeData, GetApiAccountingIncomeError, GetApiAccountingIncomeResponse, GetApiAuthMeData, GetApiAuthMeError, GetApiAuthMeResponse, GetApiGuestsData, GetApiGuestsError, GetApiGuestsIdData, GetApiGuestsIdError, GetApiGuestsIdResponse, GetApiGuestsIdSettleData, GetApiGuestsIdSettleError, GetApiGuestsIdSettleResponse, GetApiGuestsResponse, GetApiHealthzData, GetApiHealthzError, GetApiHealthzResponse, GetApiHotelsData, GetApiHotelsError, GetApiHotelsIdData, GetApiHotelsIdError, GetApiHotelsIdResponse, GetApiHotelsResponse, GetApiParkingLotsData, GetApiParkingLotsError, GetApiParkingLotsIdData, GetApiParkingLotsIdError, GetApiParkingLotsIdResponse, GetApiParkingLotsResponse, GetApiParkingSpotsData, GetApiParkingSpotsError, GetApiParkingSpotsIdData, GetApiParkingSpotsIdError, GetApiParkingSpotsIdResponse, GetApiParkingSpotsResponse, GetApiParkingSpotsStatusesData, GetApiParkingSpotsStatusesError, GetApiParkingSpotsStatusesResponse, GetApiParkingSpotsTypesData, GetApiParkingSpotsTypesError, GetApiParkingSpotsTypesResponse, GetApiParkingStatsData, GetApiParkingStatsError, GetApiParkingStatsResponse, GetApiParkingTransactionsData, GetApiParkingTransactionsError, GetApiParkingTransactionsIdData, GetApiParkingTransactionsIdError, GetApiParkingTransactionsIdResponse, GetApiParkingTransactionsResponse, GetApiParkingVehiclesData, GetApiParkingVehiclesError, GetApiParkingVehiclesIdData, GetApiParkingVehiclesIdError, GetApiParkingVehiclesIdResponse, GetApiParkingVehiclesResponse, GetApiPermissionsData, GetApiPermissionsError, GetApiPermissionsResponse, GetApiPermissionsTemplatesData, GetApiPermissionsTemplatesError, GetApiPermissionsTemplatesResponse, GetApiPermissionsUserUserIdData, GetApiPermissionsUserUserIdError, GetApiPermissionsUserUserIdResponse, GetApiReadyzData, GetApiReadyzError, GetApiReadyzResponse, GetApiReservationData, GetApiReservationError, GetApiReservationIdData, GetApiReservationIdError, GetApiReservationIdResponse, GetApiReservationResponse, GetApiRoomsAmenitiesData, GetApiRoomsAmenitiesError, GetApiRoomsAmenitiesResponse, GetApiRoomsData, GetApiRoomsError, GetApiRoomsIdData, GetApiRoomsIdError, GetApiRoomsIdResponse, GetApiRoomsResponse, GetApiRoomsStatusesData, GetApiRoomsStatusesError, GetApiRoomsStatusesResponse, GetApiRoomsTypesData, GetApiRoomsTypesError, GetApiRoomsTypesResponse, GetApiSanaCountriesData, GetApiSanaCountriesError, GetApiSanaCountriesResponse, GetApiSanaFamilyRelationshipsData, GetApiSanaFamilyRelationshipsError, GetApiSanaFamilyRelationshipsResponse, GetApiSanaGuestsData, GetApiSanaGuestsError, GetApiSanaGuestsResponse, GetApiSanaNationalitiesData, GetApiSanaNationalitiesError, GetApiSanaNationalitiesResponse, GetApiSanaOccupationsData, GetApiSanaOccupationsError, GetApiSanaOccupationsResponse, GetApiSanaRoomsData, GetApiSanaRoomsError, GetApiSanaRoomsResponse, GetApiSanaTravelReasonsData, GetApiSanaTravelReasonsError, GetApiSanaTravelReasonsResponse, GetApiUsersData, GetApiUsersError, GetApiUsersIdData, GetApiUsersIdError, GetApiUsersIdResponse, GetApiUsersResponse, PostApiAccountingAccountsData, PostApiAccountingAccountsError, PostApiAccountingAccountsResponse, PostApiAccountingExpensesData, PostApiAccountingExpensesError, PostApiAccountingExpensesResponse, PostApiAccountingIncomeData, PostApiAccountingIncomeError, PostApiAccountingIncomeResponse, PostApiAuthLoginData, PostApiAuthLoginError, PostApiAuthLoginResponse, PostApiAuthLogoutData, PostApiAuthLogoutError, PostApiAuthLogoutResponse, PostApiGuestsData, PostApiGuestsError, PostApiGuestsIdSettleData, PostApiGuestsIdSettleError, PostApiGuestsIdSettleResponse, PostApiGuestsResponse, PostApiGuestsWithReservationData, PostApiGuestsWithReservationError, PostApiGuestsWithReservationResponse, PostApiHotelsData, PostApiHotelsError, PostApiHotelsResponse, PostApiParkingLotsData, PostApiParkingLotsError, PostApiParkingLotsResponse, PostApiParkingSpotsData, PostApiParkingSpotsError, PostApiParkingSpotsResponse, PostApiParkingTransactionsData, PostApiParkingTransactionsError, PostApiParkingTransactionsIdCheckOutData, PostApiParkingTransactionsIdCheckOutError, PostApiParkingTransactionsIdCheckOutResponse, PostApiParkingTransactionsResponse, PostApiParkingVehiclesData, PostApiParkingVehiclesError, PostApiParkingVehiclesResponse, PostApiPermissionsUserUserIdPermissionIdData, PostApiPermissionsUserUserIdPermissionIdError, PostApiPermissionsUserUserIdPermissionIdResponse, PostApiPermissionsUserUserIdTemplateTemplateIdData, PostApiPermissionsUserUserIdTemplateTemplateIdError, PostApiPermissionsUserUserIdTemplateTemplateIdResponse, PostApiReservationData, PostApiReservationError, PostApiReservationIdCheckInData, PostApiReservationIdCheckInError, PostApiReservationIdCheckInResponse, PostApiReservationIdCheckOutData, PostApiReservationIdCheckOutError, PostApiReservationIdCheckOutResponse, PostApiReservationResponse, PostApiRoomsData, PostApiRoomsError, PostApiRoomsResponse, PostApiSanaGuestsIdSyncData, PostApiSanaGuestsIdSyncError, PostApiSanaGuestsIdSyncResponse, PostApiSanaRoomsIdSyncData, PostApiSanaRoomsIdSyncError, PostApiSanaRoomsIdSyncResponse, PostApiSanaSyncAllData, PostApiSanaSyncAllError, PostApiSanaSyncAllResponse, PostApiUsersData, PostApiUsersError, PostApiUsersResponse, PutApiGuestsIdData, PutApiGuestsIdError, PutApiGuestsIdResponse, PutApiHotelsIdData, PutApiHotelsIdError, PutApiHotelsIdResponse, PutApiParkingLotsIdData, PutApiParkingLotsIdError, PutApiParkingLotsIdResponse, PutApiParkingSpotsIdData, PutApiParkingSpotsIdError, PutApiParkingSpotsIdResponse, PutApiParkingVehiclesIdData, PutApiParkingVehiclesIdError, PutApiParkingVehiclesIdResponse, PutApiReservationIdData, PutApiReservationIdError, PutApiReservationIdResponse, PutApiRoomsIdData, PutApiRoomsIdError, PutApiRoomsIdResponse, PutApiUsersIdData, PutApiUsersIdError, PutApiUsersIdResponse } from './types.gen';
+import { zDeleteApiHotelsIdHeaders, zDeleteApiHotelsIdPath, zDeleteApiHotelsIdResponse, zDeleteApiParkingLotsIdHeaders, zDeleteApiParkingLotsIdPath, zDeleteApiParkingLotsIdResponse, zDeleteApiParkingSpotsIdHeaders, zDeleteApiParkingSpotsIdPath, zDeleteApiParkingSpotsIdResponse, zDeleteApiParkingVehiclesIdHeaders, zDeleteApiParkingVehiclesIdPath, zDeleteApiParkingVehiclesIdResponse, zDeleteApiPermissionsUserUserIdPermissionIdHeaders, zDeleteApiPermissionsUserUserIdPermissionIdPath, zDeleteApiPermissionsUserUserIdPermissionIdResponse, zDeleteApiRoomsIdHeaders, zDeleteApiRoomsIdPath, zDeleteApiRoomsIdResponse, zGetApiAccountingAccountsHeaders, zGetApiAccountingAccountsQuery, zGetApiAccountingAccountsResponse, zGetApiAccountingExpensesHeaders, zGetApiAccountingExpensesQuery, zGetApiAccountingExpensesResponse, zGetApiAccountingIncomeHeaders, zGetApiAccountingIncomeQuery, zGetApiAccountingIncomeResponse, zGetApiAuthMeHeaders, zGetApiAuthMeResponse, zGetApiGuestsHeaders, zGetApiGuestsIdHeaders, zGetApiGuestsIdPath, zGetApiGuestsIdResponse, zGetApiGuestsIdSettleHeaders, zGetApiGuestsIdSettlePath, zGetApiGuestsIdSettleResponse, zGetApiGuestsQuery, zGetApiGuestsResponse, zGetApiHealthzHeaders, zGetApiHealthzResponse, zGetApiHotelsHeaders, zGetApiHotelsIdHeaders, zGetApiHotelsIdPath, zGetApiHotelsIdResponse, zGetApiHotelsQuery, zGetApiHotelsResponse, zGetApiParkingLotsHeaders, zGetApiParkingLotsIdHeaders, zGetApiParkingLotsIdPath, zGetApiParkingLotsIdResponse, zGetApiParkingLotsQuery, zGetApiParkingLotsResponse, zGetApiParkingSpotsHeaders, zGetApiParkingSpotsIdHeaders, zGetApiParkingSpotsIdPath, zGetApiParkingSpotsIdResponse, zGetApiParkingSpotsQuery, zGetApiParkingSpotsResponse, zGetApiParkingSpotsStatusesHeaders, zGetApiParkingSpotsStatusesQuery, zGetApiParkingSpotsStatusesResponse, zGetApiParkingSpotsTypesHeaders, zGetApiParkingSpotsTypesQuery, zGetApiParkingSpotsTypesResponse, zGetApiParkingStatsHeaders, zGetApiParkingStatsResponse, zGetApiParkingTransactionsHeaders, zGetApiParkingTransactionsIdHeaders, zGetApiParkingTransactionsIdPath, zGetApiParkingTransactionsIdResponse, zGetApiParkingTransactionsQuery, zGetApiParkingTransactionsResponse, zGetApiParkingVehiclesHeaders, zGetApiParkingVehiclesIdHeaders, zGetApiParkingVehiclesIdPath, zGetApiParkingVehiclesIdResponse, zGetApiParkingVehiclesQuery, zGetApiParkingVehiclesResponse, zGetApiPermissionsHeaders, zGetApiPermissionsResponse, zGetApiPermissionsTemplatesHeaders, zGetApiPermissionsTemplatesQuery, zGetApiPermissionsTemplatesResponse, zGetApiPermissionsUserUserIdHeaders, zGetApiPermissionsUserUserIdPath, zGetApiPermissionsUserUserIdResponse, zGetApiReadyzHeaders, zGetApiReadyzResponse, zGetApiReservationHeaders, zGetApiReservationIdHeaders, zGetApiReservationIdPath, zGetApiReservationIdResponse, zGetApiReservationQuery, zGetApiReservationResponse, zGetApiRoomsAmenitiesHeaders, zGetApiRoomsAmenitiesQuery, zGetApiRoomsAmenitiesResponse, zGetApiRoomsHeaders, zGetApiRoomsIdHeaders, zGetApiRoomsIdPath, zGetApiRoomsIdResponse, zGetApiRoomsQuery, zGetApiRoomsResponse, zGetApiRoomsStatusesHeaders, zGetApiRoomsStatusesQuery, zGetApiRoomsStatusesResponse, zGetApiRoomsTypesHeaders, zGetApiRoomsTypesQuery, zGetApiRoomsTypesResponse, zGetApiSanaCountriesHeaders, zGetApiSanaCountriesResponse, zGetApiSanaFamilyRelationshipsHeaders, zGetApiSanaFamilyRelationshipsResponse, zGetApiSanaGuestsHeaders, zGetApiSanaGuestsResponse, zGetApiSanaNationalitiesHeaders, zGetApiSanaNationalitiesResponse, zGetApiSanaOccupationsHeaders, zGetApiSanaOccupationsResponse, zGetApiSanaRoomsHeaders, zGetApiSanaRoomsResponse, zGetApiSanaTravelReasonsHeaders, zGetApiSanaTravelReasonsResponse, zGetApiUsersHeaders, zGetApiUsersIdHeaders, zGetApiUsersIdPath, zGetApiUsersIdResponse, zGetApiUsersResponse, zPostApiAccountingAccountsBody, zPostApiAccountingAccountsHeaders, zPostApiAccountingAccountsResponse, zPostApiAccountingExpensesBody, zPostApiAccountingExpensesHeaders, zPostApiAccountingExpensesResponse, zPostApiAccountingIncomeBody, zPostApiAccountingIncomeHeaders, zPostApiAccountingIncomeResponse, zPostApiAuthLoginBody, zPostApiAuthLoginHeaders, zPostApiAuthLoginResponse, zPostApiAuthLogoutHeaders, zPostApiAuthLogoutResponse, zPostApiGuestsBody, zPostApiGuestsHeaders, zPostApiGuestsIdSettleBody, zPostApiGuestsIdSettleHeaders, zPostApiGuestsIdSettlePath, zPostApiGuestsIdSettleResponse, zPostApiGuestsResponse, zPostApiGuestsWithReservationBody, zPostApiGuestsWithReservationHeaders, zPostApiGuestsWithReservationResponse, zPostApiHotelsBody, zPostApiHotelsHeaders, zPostApiHotelsResponse, zPostApiParkingLotsBody, zPostApiParkingLotsHeaders, zPostApiParkingLotsResponse, zPostApiParkingSpotsBody, zPostApiParkingSpotsHeaders, zPostApiParkingSpotsResponse, zPostApiParkingTransactionsBody, zPostApiParkingTransactionsHeaders, zPostApiParkingTransactionsIdCheckOutHeaders, zPostApiParkingTransactionsIdCheckOutPath, zPostApiParkingTransactionsIdCheckOutResponse, zPostApiParkingTransactionsResponse, zPostApiParkingVehiclesBody, zPostApiParkingVehiclesHeaders, zPostApiParkingVehiclesResponse, zPostApiPermissionsUserUserIdPermissionIdHeaders, zPostApiPermissionsUserUserIdPermissionIdPath, zPostApiPermissionsUserUserIdPermissionIdResponse, zPostApiPermissionsUserUserIdTemplateTemplateIdHeaders, zPostApiPermissionsUserUserIdTemplateTemplateIdPath, zPostApiPermissionsUserUserIdTemplateTemplateIdResponse, zPostApiReservationBody, zPostApiReservationHeaders, zPostApiReservationIdCheckInHeaders, zPostApiReservationIdCheckInPath, zPostApiReservationIdCheckInResponse, zPostApiReservationIdCheckOutHeaders, zPostApiReservationIdCheckOutPath, zPostApiReservationIdCheckOutResponse, zPostApiReservationResponse, zPostApiRoomsBody, zPostApiRoomsHeaders, zPostApiRoomsResponse, zPostApiSanaGuestsIdSyncHeaders, zPostApiSanaGuestsIdSyncResponse, zPostApiSanaRoomsIdSyncHeaders, zPostApiSanaRoomsIdSyncResponse, zPostApiSanaSyncAllHeaders, zPostApiSanaSyncAllResponse, zPostApiUsersBody, zPostApiUsersHeaders, zPostApiUsersResponse, zPutApiGuestsIdBody, zPutApiGuestsIdHeaders, zPutApiGuestsIdPath, zPutApiGuestsIdResponse, zPutApiHotelsIdBody, zPutApiHotelsIdHeaders, zPutApiHotelsIdPath, zPutApiHotelsIdResponse, zPutApiParkingLotsIdBody, zPutApiParkingLotsIdHeaders, zPutApiParkingLotsIdPath, zPutApiParkingLotsIdResponse, zPutApiParkingSpotsIdBody, zPutApiParkingSpotsIdHeaders, zPutApiParkingSpotsIdPath, zPutApiParkingSpotsIdResponse, zPutApiParkingVehiclesIdBody, zPutApiParkingVehiclesIdHeaders, zPutApiParkingVehiclesIdPath, zPutApiParkingVehiclesIdResponse, zPutApiReservationIdBody, zPutApiReservationIdHeaders, zPutApiReservationIdPath, zPutApiReservationIdResponse, zPutApiRoomsIdBody, zPutApiRoomsIdHeaders, zPutApiRoomsIdPath, zPutApiRoomsIdResponse, zPutApiUsersIdBody, zPutApiUsersIdHeaders, zPutApiUsersIdPath, zPutApiUsersIdResponse } from './zod.gen';
 
 export type Options<TComposable extends Composable = '$fetch', TData extends TDataShape = TDataShape, ResT = unknown, DefaultT = undefined> = Options2<TComposable, TData, ResT, DefaultT> & {
     /**
@@ -1920,6 +1920,286 @@ export const putApiRoomsId = <TComposable extends Composable = '$fetch', Default
         'Content-Type': '*/*',
         ...options.headers
     }
+});
+
+/**
+ * get countries
+ *
+ * #### Controller:
+ *
+ * `hotel/internal/httpapi/sana.SanaModule.getCountries`
+ *
+ * #### Middlewares:
+ *
+ * - `github.com/go-fuego/fuego.defaultLogger.middleware`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
+ *
+ * ---
+ *
+ *
+ */
+export const getApiSanaCountries = <TComposable extends Composable = '$fetch', DefaultT extends GetApiSanaCountriesResponse = GetApiSanaCountriesResponse>(options: Options<TComposable, GetApiSanaCountriesData, GetApiSanaCountriesResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiSanaCountriesResponse | DefaultT, GetApiSanaCountriesError, DefaultT>({
+    requestValidator: async (data) => await z.object({
+        body: z.never().optional(),
+        headers: zGetApiSanaCountriesHeaders.optional(),
+        path: z.never().optional(),
+        query: z.never().optional()
+    }).parseAsync(data),
+    responseValidator: async (data) => await zGetApiSanaCountriesResponse.parseAsync(data),
+    url: '/api/sana/countries',
+    ...options
+});
+
+/**
+ * get family relationships
+ *
+ * #### Controller:
+ *
+ * `hotel/internal/httpapi/sana.SanaModule.getFamilyRelationships`
+ *
+ * #### Middlewares:
+ *
+ * - `github.com/go-fuego/fuego.defaultLogger.middleware`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
+ *
+ * ---
+ *
+ *
+ */
+export const getApiSanaFamilyRelationships = <TComposable extends Composable = '$fetch', DefaultT extends GetApiSanaFamilyRelationshipsResponse = GetApiSanaFamilyRelationshipsResponse>(options: Options<TComposable, GetApiSanaFamilyRelationshipsData, GetApiSanaFamilyRelationshipsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiSanaFamilyRelationshipsResponse | DefaultT, GetApiSanaFamilyRelationshipsError, DefaultT>({
+    requestValidator: async (data) => await z.object({
+        body: z.never().optional(),
+        headers: zGetApiSanaFamilyRelationshipsHeaders.optional(),
+        path: z.never().optional(),
+        query: z.never().optional()
+    }).parseAsync(data),
+    responseValidator: async (data) => await zGetApiSanaFamilyRelationshipsResponse.parseAsync(data),
+    url: '/api/sana/family-relationships',
+    ...options
+});
+
+/**
+ * get sana guests
+ *
+ * #### Controller:
+ *
+ * `hotel/internal/httpapi/sana.SanaModule.getSanaGuests`
+ *
+ * #### Middlewares:
+ *
+ * - `github.com/go-fuego/fuego.defaultLogger.middleware`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
+ *
+ * ---
+ *
+ *
+ */
+export const getApiSanaGuests = <TComposable extends Composable = '$fetch', DefaultT extends GetApiSanaGuestsResponse = GetApiSanaGuestsResponse>(options: Options<TComposable, GetApiSanaGuestsData, GetApiSanaGuestsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiSanaGuestsResponse | DefaultT, GetApiSanaGuestsError, DefaultT>({
+    requestValidator: async (data) => await z.object({
+        body: z.never().optional(),
+        headers: zGetApiSanaGuestsHeaders.optional(),
+        path: z.never().optional(),
+        query: z.never().optional()
+    }).parseAsync(data),
+    responseValidator: async (data) => await zGetApiSanaGuestsResponse.parseAsync(data),
+    url: '/api/sana/guests',
+    ...options
+});
+
+/**
+ * sync guest
+ *
+ * #### Controller:
+ *
+ * `hotel/internal/httpapi/sana.SanaModule.syncGuest`
+ *
+ * #### Middlewares:
+ *
+ * - `github.com/go-fuego/fuego.defaultLogger.middleware`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
+ *
+ * ---
+ *
+ *
+ */
+export const postApiSanaGuestsIdSync = <TComposable extends Composable = '$fetch', DefaultT extends PostApiSanaGuestsIdSyncResponse = PostApiSanaGuestsIdSyncResponse>(options: Options<TComposable, PostApiSanaGuestsIdSyncData, PostApiSanaGuestsIdSyncResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiSanaGuestsIdSyncResponse | DefaultT, PostApiSanaGuestsIdSyncError, DefaultT>({
+    requestValidator: async (data) => await z.object({
+        body: z.never().optional(),
+        headers: zPostApiSanaGuestsIdSyncHeaders.optional(),
+        path: z.never().optional(),
+        query: z.never().optional()
+    }).parseAsync(data),
+    responseValidator: async (data) => await zPostApiSanaGuestsIdSyncResponse.parseAsync(data),
+    url: '/api/sana/guests/:id/sync',
+    ...options
+});
+
+/**
+ * get nationalities
+ *
+ * #### Controller:
+ *
+ * `hotel/internal/httpapi/sana.SanaModule.getNationalities`
+ *
+ * #### Middlewares:
+ *
+ * - `github.com/go-fuego/fuego.defaultLogger.middleware`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
+ *
+ * ---
+ *
+ *
+ */
+export const getApiSanaNationalities = <TComposable extends Composable = '$fetch', DefaultT extends GetApiSanaNationalitiesResponse = GetApiSanaNationalitiesResponse>(options: Options<TComposable, GetApiSanaNationalitiesData, GetApiSanaNationalitiesResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiSanaNationalitiesResponse | DefaultT, GetApiSanaNationalitiesError, DefaultT>({
+    requestValidator: async (data) => await z.object({
+        body: z.never().optional(),
+        headers: zGetApiSanaNationalitiesHeaders.optional(),
+        path: z.never().optional(),
+        query: z.never().optional()
+    }).parseAsync(data),
+    responseValidator: async (data) => await zGetApiSanaNationalitiesResponse.parseAsync(data),
+    url: '/api/sana/nationalities',
+    ...options
+});
+
+/**
+ * get occupations
+ *
+ * #### Controller:
+ *
+ * `hotel/internal/httpapi/sana.SanaModule.getOccupations`
+ *
+ * #### Middlewares:
+ *
+ * - `github.com/go-fuego/fuego.defaultLogger.middleware`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
+ *
+ * ---
+ *
+ *
+ */
+export const getApiSanaOccupations = <TComposable extends Composable = '$fetch', DefaultT extends GetApiSanaOccupationsResponse = GetApiSanaOccupationsResponse>(options: Options<TComposable, GetApiSanaOccupationsData, GetApiSanaOccupationsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiSanaOccupationsResponse | DefaultT, GetApiSanaOccupationsError, DefaultT>({
+    requestValidator: async (data) => await z.object({
+        body: z.never().optional(),
+        headers: zGetApiSanaOccupationsHeaders.optional(),
+        path: z.never().optional(),
+        query: z.never().optional()
+    }).parseAsync(data),
+    responseValidator: async (data) => await zGetApiSanaOccupationsResponse.parseAsync(data),
+    url: '/api/sana/occupations',
+    ...options
+});
+
+/**
+ * get sana rooms
+ *
+ * #### Controller:
+ *
+ * `hotel/internal/httpapi/sana.SanaModule.getSanaRooms`
+ *
+ * #### Middlewares:
+ *
+ * - `github.com/go-fuego/fuego.defaultLogger.middleware`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
+ *
+ * ---
+ *
+ *
+ */
+export const getApiSanaRooms = <TComposable extends Composable = '$fetch', DefaultT extends GetApiSanaRoomsResponse = GetApiSanaRoomsResponse>(options: Options<TComposable, GetApiSanaRoomsData, GetApiSanaRoomsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiSanaRoomsResponse | DefaultT, GetApiSanaRoomsError, DefaultT>({
+    requestValidator: async (data) => await z.object({
+        body: z.never().optional(),
+        headers: zGetApiSanaRoomsHeaders.optional(),
+        path: z.never().optional(),
+        query: z.never().optional()
+    }).parseAsync(data),
+    responseValidator: async (data) => await zGetApiSanaRoomsResponse.parseAsync(data),
+    url: '/api/sana/rooms',
+    ...options
+});
+
+/**
+ * sync room
+ *
+ * #### Controller:
+ *
+ * `hotel/internal/httpapi/sana.SanaModule.syncRoom`
+ *
+ * #### Middlewares:
+ *
+ * - `github.com/go-fuego/fuego.defaultLogger.middleware`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
+ *
+ * ---
+ *
+ *
+ */
+export const postApiSanaRoomsIdSync = <TComposable extends Composable = '$fetch', DefaultT extends PostApiSanaRoomsIdSyncResponse = PostApiSanaRoomsIdSyncResponse>(options: Options<TComposable, PostApiSanaRoomsIdSyncData, PostApiSanaRoomsIdSyncResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiSanaRoomsIdSyncResponse | DefaultT, PostApiSanaRoomsIdSyncError, DefaultT>({
+    requestValidator: async (data) => await z.object({
+        body: z.never().optional(),
+        headers: zPostApiSanaRoomsIdSyncHeaders.optional(),
+        path: z.never().optional(),
+        query: z.never().optional()
+    }).parseAsync(data),
+    responseValidator: async (data) => await zPostApiSanaRoomsIdSyncResponse.parseAsync(data),
+    url: '/api/sana/rooms/:id/sync',
+    ...options
+});
+
+/**
+ * sync all
+ *
+ * #### Controller:
+ *
+ * `hotel/internal/httpapi/sana.SanaModule.syncAll`
+ *
+ * #### Middlewares:
+ *
+ * - `github.com/go-fuego/fuego.defaultLogger.middleware`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
+ *
+ * ---
+ *
+ *
+ */
+export const postApiSanaSyncAll = <TComposable extends Composable = '$fetch', DefaultT extends PostApiSanaSyncAllResponse = PostApiSanaSyncAllResponse>(options: Options<TComposable, PostApiSanaSyncAllData, PostApiSanaSyncAllResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiSanaSyncAllResponse | DefaultT, PostApiSanaSyncAllError, DefaultT>({
+    requestValidator: async (data) => await z.object({
+        body: z.never().optional(),
+        headers: zPostApiSanaSyncAllHeaders.optional(),
+        path: z.never().optional(),
+        query: z.never().optional()
+    }).parseAsync(data),
+    responseValidator: async (data) => await zPostApiSanaSyncAllResponse.parseAsync(data),
+    url: '/api/sana/sync-all',
+    ...options
+});
+
+/**
+ * get travel reasons
+ *
+ * #### Controller:
+ *
+ * `hotel/internal/httpapi/sana.SanaModule.getTravelReasons`
+ *
+ * #### Middlewares:
+ *
+ * - `github.com/go-fuego/fuego.defaultLogger.middleware`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
+ *
+ * ---
+ *
+ *
+ */
+export const getApiSanaTravelReasons = <TComposable extends Composable = '$fetch', DefaultT extends GetApiSanaTravelReasonsResponse = GetApiSanaTravelReasonsResponse>(options: Options<TComposable, GetApiSanaTravelReasonsData, GetApiSanaTravelReasonsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiSanaTravelReasonsResponse | DefaultT, GetApiSanaTravelReasonsError, DefaultT>({
+    requestValidator: async (data) => await z.object({
+        body: z.never().optional(),
+        headers: zGetApiSanaTravelReasonsHeaders.optional(),
+        path: z.never().optional(),
+        query: z.never().optional()
+    }).parseAsync(data),
+    responseValidator: async (data) => await zGetApiSanaTravelReasonsResponse.parseAsync(data),
+    url: '/api/sana/travel-reasons',
+    ...options
 });
 
 /**

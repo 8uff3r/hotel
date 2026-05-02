@@ -20,7 +20,9 @@
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-lg font-semibold">{{ t("parking.parking_lots") }}</span>
-          <span class="text-sm text-gray-500">{{ t("parking.lots_count", { count: pagination.total }) }}</span>
+          <span class="text-sm text-gray-500">{{
+            t("parking.lots_count", { count: pagination.total })
+          }}</span>
         </div>
       </template>
 
@@ -63,7 +65,9 @@
       <template #footer>
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-500">
-            {{ t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages }) }}
+            {{
+              t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages })
+            }}
           </span>
           <UPagination
             v-model="page"
@@ -84,8 +88,12 @@
       </template>
       <template #footer>
         <div class="flex justify-end gap-3">
-          <UButton variant="outline" @click="deleteModalOpen = false">{{ t("actions.cancel") }}</UButton>
-          <UButton color="error" :loading="deleting" @click="deleteLot">{{ t("actions.delete") }}</UButton>
+          <UButton variant="outline" @click="deleteModalOpen = false">{{
+            t("actions.cancel")
+          }}</UButton>
+          <UButton color="error" :loading="deleting" @click="deleteLot">{{
+            t("actions.delete")
+          }}</UButton>
         </div>
       </template>
     </UModal>
