@@ -39,6 +39,7 @@
     "failed": "ورود ناموفق بود"
   },
   "layout": {
+    "logout": "خروج",
     "administration": "مدیریت",
     "userFallback": "کاربر",
     "nav": {
@@ -48,6 +49,7 @@
       "roomRack": "پلن اتاق‌ها",
       "guests": "مهمان‌ها",
       "parking": "پارکینگ",
+      "sana": "همگام‌سازی ثبت",
       "attendance": "حضور و غیاب",
       "users": "کاربران"
     },
@@ -580,5 +582,28 @@
     "summaryPrice": "قیمت",
     "perNight": "/ شب",
     "unspecified": "نامشخص"
+  },
+  "sana": {
+    "title": "همگام‌سازی ثبت مسافرین",
+    "syncAll": "همگام‌سازی همه",
+    "syncAllTitle": "همگام‌سازی همه اطلاعات",
+    "syncAllDescription": "آیا می‌خواهید همه اطلاعات مهمان‌ها و اتاق‌ها را با سامانه ثبت مسافرین همگام‌سازی کنید؟",
+    "guests": "مهمان‌ها",
+    "rooms": "اتاق‌ها",
+    "synced": "همگام‌سازی شده",
+    "notSynced": "همگام‌سازی نشده",
+    "columns": {
+      "name": "نام",
+      "nationalId": "کد ملی",
+      "recordMosafer": "کد مسافر",
+      "shomarePaziresh": "شماره پذیرش",
+      "roomNumber": "شماره اتاق",
+      "rac": "چیدمان",
+      "status": "وضعیت",
+      "syncTime": "زمان همگام‌سازی",
+      "lastSyncTime": "آخرین همگام‌سازی",
+      "lastError": "خطا",
+      "actions": "عملیات"
+    }
   }
 }

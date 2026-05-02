@@ -126,7 +126,7 @@ func New(cfg config.Config) (*App, error) {
 		"/reservation": reservation.ReservationModule{},
 		"/hotels":      hotels.HotelsModule{},
 		"/permissions": permissions.PermissionsModule{},
-		"/sana":        sanahttp.New(database),
+		"/sana":        sanahttp.New(database, cfg.Sana),
 	})
 
 	spaGroup := fuego.Group(srv, "/")

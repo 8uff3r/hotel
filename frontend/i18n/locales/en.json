@@ -39,6 +39,7 @@
     "failed": "Login failed"
   },
   "layout": {
+    "logout": "Log out",
     "administration": "Administration",
     "userFallback": "User",
     "nav": {
@@ -48,6 +49,7 @@
       "roomRack": "Room Rack",
       "guests": "Guests",
       "parking": "Parking",
+      "sana": "Sana Sync",
       "attendance": "Attendance",
       "users": "Users"
     },
@@ -578,5 +580,28 @@
     "summaryPrice": "Price",
     "perNight": "/ night",
     "unspecified": "Unspecified"
+  },
+  "sana": {
+    "title": "Sana Passenger Registration Sync",
+    "syncAll": "Sync All",
+    "syncAllTitle": "Sync All Data",
+    "syncAllDescription": "Do you want to sync all guest and room data with the Sana passenger registration system?",
+    "guests": "Guests",
+    "rooms": "Rooms",
+    "synced": "Synced",
+    "notSynced": "Not Synced",
+    "columns": {
+      "name": "Name",
+      "nationalId": "National ID",
+      "recordMosafer": "Passenger Code",
+      "shomarePaziresh": "Reception Number",
+      "roomNumber": "Room Number",
+      "rac": "Rack",
+      "status": "Status",
+      "syncTime": "Sync Time",
+      "lastSyncTime": "Last Sync",
+      "lastError": "Error",
+      "actions": "Actions"
+    }
   }
 }

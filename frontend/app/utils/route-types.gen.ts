@@ -276,3 +276,39 @@ export interface UserTemplate {
   templateId: number;
   template: PermissionTemplate;
 }
+export interface TravelReason {
+  id?: number;
+  slug: string;
+  label: string;
+  sanaId: string;
+  sanaName: string;
+}
+export interface FamilyRelationship {
+  id?: number;
+  slug: string;
+  label: string;
+  sanaId: string;
+  sanaName: string;
+}
+export interface Nationality {
+  id?: number;
+  slug: string;
+  label: string;
+  sanaId: string;
+  sanaName: string;
+}
+export interface Country {
+  id?: number;
+  slug: string;
+  label: string;
+  sanaId: string;
+  sanaName: string;
+  isIran: boolean;
+}
+export interface Occupation {
+  id?: number;
+  slug: string;
+  label: string;
+  sanaId: string;
+  sanaName: string;
+}

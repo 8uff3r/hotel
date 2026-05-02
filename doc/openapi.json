@@ -45,6 +45,31 @@
 				},
 				"type": "object"
 			},
+			"Country": {
+				"description": "Country schema",
+				"properties": {
+					"id": {
+						"minimum": 0,
+						"type": "integer"
+					},
+					"isIran": {
+						"type": "boolean"
+					},
+					"label": {
+						"type": "string"
+					},
+					"sanaId": {
+						"type": "string"
+					},
+					"sanaName": {
+						"type": "string"
+					},
+					"slug": {
+						"type": "string"
+					}
+				},
+				"type": "object"
+			},
 			"Expense": {
 				"description": "Expense schema",
 				"properties": {
@@ -94,6 +119,28 @@
 						"type": "string"
 					},
 					"vendor": {
+						"type": "string"
+					}
+				},
+				"type": "object"
+			},
+			"FamilyRelationship": {
+				"description": "FamilyRelationship schema",
+				"properties": {
+					"id": {
+						"minimum": 0,
+						"type": "integer"
+					},
+					"label": {
+						"type": "string"
+					},
+					"sanaId": {
+						"type": "string"
+					},
+					"sanaName": {
+						"type": "string"
+					},
+					"slug": {
 						"type": "string"
 					}
 				},
@@ -1676,6 +1723,50 @@
 							}
 						},
 						"type": "object"
+					}
+				},
+				"type": "object"
+			},
+			"Nationality": {
+				"description": "Nationality schema",
+				"properties": {
+					"id": {
+						"minimum": 0,
+						"type": "integer"
+					},
+					"label": {
+						"type": "string"
+					},
+					"sanaId": {
+						"type": "string"
+					},
+					"sanaName": {
+						"type": "string"
+					},
+					"slug": {
+						"type": "string"
+					}
+				},
+				"type": "object"
+			},
+			"Occupation": {
+				"description": "Occupation schema",
+				"properties": {
+					"id": {
+						"minimum": 0,
+						"type": "integer"
+					},
+					"label": {
+						"type": "string"
+					},
+					"sanaId": {
+						"type": "string"
+					},
+					"sanaName": {
+						"type": "string"
+					},
+					"slug": {
+						"type": "string"
 					}
 				},
 				"type": "object"
@@ -3647,6 +3738,88 @@
 				],
 				"type": "object"
 			},
+			"SanaGuestResponse": {
+				"description": "SanaGuestResponse schema",
+				"properties": {
+					"guest": {
+						"nullable": true,
+						"properties": {
+							"firstName": {
+								"type": "string"
+							},
+							"lastName": {
+								"type": "string"
+							},
+							"nationalId": {
+								"type": "string"
+							}
+						},
+						"type": "object"
+					},
+					"guestId": {
+						"minimum": 0,
+						"type": "integer"
+					},
+					"id": {
+						"minimum": 0,
+						"type": "integer"
+					},
+					"recordMosafer": {
+						"type": "integer"
+					},
+					"shomareOtagh": {
+						"type": "string"
+					},
+					"shomarePaziresh": {
+						"type": "string"
+					},
+					"syncTime": {
+						"nullable": true,
+						"type": "string"
+					}
+				},
+				"type": "object"
+			},
+			"SanaRoomResponse": {
+				"description": "SanaRoomResponse schema",
+				"properties": {
+					"hotelId": {
+						"type": "string"
+					},
+					"id": {
+						"minimum": 0,
+						"type": "integer"
+					},
+					"isSynced": {
+						"type": "boolean"
+					},
+					"lastError": {
+						"nullable": true,
+						"type": "string"
+					},
+					"lastSyncTime": {
+						"nullable": true,
+						"type": "string"
+					},
+					"rac": {
+						"type": "string"
+					},
+					"room": {
+						"nullable": true,
+						"properties": {
+							"id": {
+								"minimum": 0,
+								"type": "integer"
+							},
+							"roomNumber": {
+								"type": "string"
+							}
+						},
+						"type": "object"
+					}
+				},
+				"type": "object"
+			},
 			"SanitizedUser": {
 				"description": "SanitizedUser schema",
 				"properties": {
@@ -3726,6 +3899,28 @@
 							"type": "integer"
 						},
 						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"TravelReason": {
+				"description": "TravelReason schema",
+				"properties": {
+					"id": {
+						"minimum": 0,
+						"type": "integer"
+					},
+					"label": {
+						"type": "string"
+					},
+					"sanaId": {
+						"type": "string"
+					},
+					"sanaName": {
+						"type": "string"
+					},
+					"slug": {
+						"type": "string"
 					}
 				},
 				"type": "object"
@@ -9166,6 +9361,738 @@
 				]
 			}
 		},
+		"/api/sana/countries": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/sana.SanaModule.getCountries`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/sana/countries",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Country"
+									},
+									"type": "array"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Country"
+									},
+									"type": "array"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "get countries",
+				"tags": [
+					"/SANA"
+				]
+			}
+		},
+		"/api/sana/family-relationships": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/sana.SanaModule.getFamilyRelationships`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/sana/family-relationships",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/FamilyRelationship"
+									},
+									"type": "array"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/FamilyRelationship"
+									},
+									"type": "array"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "get family relationships",
+				"tags": [
+					"/SANA"
+				]
+			}
+		},
+		"/api/sana/guests": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/sana.SanaModule.getSanaGuests`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/sana/guests",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/SanaGuestResponse"
+									},
+									"type": "array"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/SanaGuestResponse"
+									},
+									"type": "array"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "get sana guests",
+				"tags": [
+					"/SANA"
+				]
+			}
+		},
+		"/api/sana/guests/:id/sync": {
+			"post": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/sana.SanaModule.syncGuest`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "POST_/api/sana/guests/:id/sync",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SanaGuestResponse"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/SanaGuestResponse"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "sync guest",
+				"tags": [
+					"/SANA"
+				]
+			}
+		},
+		"/api/sana/nationalities": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/sana.SanaModule.getNationalities`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/sana/nationalities",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Nationality"
+									},
+									"type": "array"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Nationality"
+									},
+									"type": "array"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "get nationalities",
+				"tags": [
+					"/SANA"
+				]
+			}
+		},
+		"/api/sana/occupations": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/sana.SanaModule.getOccupations`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/sana/occupations",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Occupation"
+									},
+									"type": "array"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Occupation"
+									},
+									"type": "array"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "get occupations",
+				"tags": [
+					"/SANA"
+				]
+			}
+		},
+		"/api/sana/rooms": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/sana.SanaModule.getSanaRooms`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/sana/rooms",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/SanaRoomResponse"
+									},
+									"type": "array"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/SanaRoomResponse"
+									},
+									"type": "array"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "get sana rooms",
+				"tags": [
+					"/SANA"
+				]
+			}
+		},
+		"/api/sana/rooms/:id/sync": {
+			"post": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/sana.SanaModule.syncRoom`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "POST_/api/sana/rooms/:id/sync",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SanaRoomResponse"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/SanaRoomResponse"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "sync room",
+				"tags": [
+					"/SANA"
+				]
+			}
+		},
+		"/api/sana/sync-all": {
+			"post": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/sana.SanaModule.syncAll`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "POST_/api/sana/sync-all",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/string"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/string"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "sync all",
+				"tags": [
+					"/SANA"
+				]
+			}
+		},
+		"/api/sana/travel-reasons": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/sana.SanaModule.getTravelReasons`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/sana/travel-reasons",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/TravelReason"
+									},
+									"type": "array"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/TravelReason"
+									},
+									"type": "array"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "get travel reasons",
+				"tags": [
+					"/SANA"
+				]
+			}
+		},
 		"/api/users/": {
 			"get": {
 				"description": "#### Controller: \n\n`hotel/internal/httpapi/users.(*UsersModule).usersList`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
@@ -9510,6 +10437,9 @@
 		},
 		{
 			"name": "/ROOMS"
+		},
+		{
+			"name": "/SANA"
 		},
 		{
 			"name": "/USERS"

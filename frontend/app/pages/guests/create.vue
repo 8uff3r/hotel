@@ -385,7 +385,13 @@ const form = ref<Required<Schema> & { roomIds: number[] }>({
 });
 
 const companions = ref<
-  Array<{ firstName: string; lastName: string; nationalId: string; idNumber: string; relation: string }>
+  Array<{
+    firstName: string;
+    lastName: string;
+    nationalId: string;
+    idNumber: string;
+    relation: string;
+  }>
 >([]);
 
 const showCompanionModal = ref(false);

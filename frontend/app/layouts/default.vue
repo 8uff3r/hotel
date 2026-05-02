@@ -182,6 +182,12 @@ const items = computed(() =>
         to: "/parking",
         permission: PERMISSIONS.parking.parking.read,
       },
+      {
+        label: t("layout.nav.sana"),
+        icon: "i-lucide-cloud-sync",
+        to: "/sana",
+        permission: PERMISSIONS.dashboard.index.read,
+      },
       // { label: t("layout.nav.attendance"), icon: "i-lucide-clock", to: "/attendance" },
       {
         label: t("layout.nav.users"),
