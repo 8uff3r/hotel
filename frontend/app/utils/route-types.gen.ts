@@ -153,68 +153,123 @@ export interface Account {
   description: string;
   normalBalance: string;
 }
+export interface PaymentStatus {
+  id?: number;
+  slug: string;
+  label: string;
+  colorHex?: string;
+}
+export interface ExpenseCategory {
+  id?: number;
+  slug: string;
+  label: string;
+}
 export interface Expense {
   id?: number;
-  hotelId?: number;
   expenseDate: Time;
   description: string;
   amount: number;
-  category: string;
   vendor: string;
   reference: string;
-  paymentMethod: string;
-  paymentStatus: string;
-  accountId?: number;
   notes: string;
   createdBy?: number;
+  hotelId?: number;
+  hotel: Hotel;
+  accountId?: number;
+  account: Account;
+  categoryId: number;
+  category: ExpenseCategory;
+  paymentStatusId: number;
+  paymentStatus: PaymentStatus;
+  paymentMethodId: number;
+  paymentMethod: string;
+}
+export interface IncomeCategory {
+  id?: number;
+  slug: string;
+  label: string;
 }
 export interface Income {
   id?: number;
-  hotelId?: number;
   incomeDate: Time;
   description: string;
   amount: number;
-  category: string;
   source: string;
   reference: string;
-  paymentMethod: string;
-  paymentStatus: string;
-  accountId?: number;
-  reservationId?: number;
   notes: string;
   createdBy?: number;
+  hotelId?: number;
+  hotel: Hotel;
+  accountId?: number;
+  account: Account;
+  reservationId?: number;
+  reservation: Reservation;
+  paymentStatusId: number;
+  paymentStatus: PaymentStatus;
+  paymentMethodId: number;
+  paymentMethod: string;
+  categoryId: number;
+  category: IncomeCategory;
+}
+export interface ParkingLotStatus {
+  id?: number;
+  slug: string;
+  label: string;
 }
 export interface ParkingLot {
   id?: number;
-  hotelId?: number;
   name: string;
   location: string;
   totalSpots: number;
   hourlyRate: number;
   dailyRate: number;
-  status: string;
   description: string;
+  statusId: number;
+  status: ParkingLotStatus;
+  hotelId?: number;
+  hotel: Hotel;
+}
+export interface ParkingSpotStatus {
+  id?: number;
+  slug: string;
+  label: string;
+  colorHex?: string;
+}
+export interface ParkingSpotType {
+  id?: number;
+  slug: string;
+  label: string;
 }
 export interface ParkingSpot {
   id?: number;
-  lotId?: number;
   spotNumber: string;
   floor: string;
-  spotType: string;
-  status: string;
   isCovered: boolean;
   description: string;
+  lotId?: number;
+  lot: ParkingLot;
+  spotTypeId: number;
+  spotType: ParkingSpotType;
+  statusId: number;
+  status: ParkingSpotStatus;
+}
+export interface VehicleType {
+  id?: number;
+  slug: string;
+  label: string;
 }
 export interface Vehicle {
   id?: number;
-  guestId?: number;
   licensePlate: string;
-  vehicleType: string;
   make: string;
   model: string;
   color: string;
   isRegistered: boolean;
   notes: string;
+  vehicleType: number;
+  vehicle: VehicleType;
+  guestId: number;
+  guest: Guest;
 }
 export interface ParkingTransaction {
   id?: number;
@@ -235,16 +290,6 @@ export interface ParkingTransaction {
   notes: string;
 }
 
-export interface ParkingSpotType {
-  id?: number;
-  slug: string;
-  label: string;
-}
-export interface ParkingSpotStatus {
-  id?: number;
-  slug: string;
-  label: string;
-}
 export interface ParkingStats {
   lots: number;
   spots: number;
@@ -311,4 +356,86 @@ export interface Occupation {
   label: string;
   sanaId: string;
   sanaName: string;
+}
+export interface InventoryItemStatus {
+  id?: number;
+  slug: string;
+  label: string;
+  colorHex?: string;
+}
+export interface InventoryItemCategory {
+  id?: number;
+  slug: string;
+  label: string;
+}
+export interface InventoryItemUnit {
+  id?: number;
+  slug: string;
+  label: string;
+}
+export interface InventoryItem {
+  id?: number;
+  name: string;
+  quantity: number;
+  unitCost: number;
+  reorderLevel: number;
+  isActive: boolean;
+  description: string;
+  unitId: number;
+  unit: InventoryItemUnit;
+  categoryId: number;
+  category: InventoryItemCategory;
+  statusId: number;
+  status: InventoryItemStatus;
+  hotelId?: number;
+}
+export interface RestaurantBillStatus {
+  id?: number;
+  slug: string;
+  label: string;
+  colorHex?: string;
+}
+export interface RestaurantBill {
+  id?: number;
+  billDate: Time;
+  subtotal: number;
+  taxAmount: number;
+  discountAmount: number;
+  totalAmount: number;
+  isExternal: boolean;
+  externalRestaurant: string;
+  notes: string;
+  settled: boolean;
+  settledAt?: Time;
+  settledBy?: number;
+  hotelId?: number;
+  reservationId?: number;
+  reservation: Reservation;
+  guestId?: number;
+  guest: Guest;
+  roomId?: number;
+  room: Room;
+  statusId: number;
+  status: RestaurantBillStatus;
+}
+export interface MealTransaction {
+  id?: number;
+  itemName: string;
+  quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+  isExternal: boolean;
+  notes: string;
+  inventoryItemId?: number;
+  inventoryItem: InventoryItem;
+  billId: number;
+  hotelId?: number;
+  hotel: Hotel;
+}
+export interface RestaurantStats {
+  totalBills: number;
+  totalRevenue: number;
+  internalRevenue: number;
+  externalRevenue: number;
+  totalMeals: number;
 }

@@ -106,4 +106,25 @@ export const PERMISSIONS = {
       read: "parking-transactions-check-in:read",
     },
   },
+
+  restaurant: {
+    restaurant: {
+      read: "restaurant:read",
+    },
+    restaurantInventory: {
+      read: "restaurant-inventory:read",
+      create: "restaurant-inventory:create",
+      update: "restaurant-inventory:update",
+      delete: "restaurant-inventory:delete",
+    },
+    restaurantServing: {
+      read: "restaurant-serving:read",
+      create: "restaurant-serving:create",
+      update: "restaurant-serving:update",
+      delete: "restaurant-serving:delete",
+    },
+    restaurantReports: {
+      read: "restaurant-reports:read",
+    },
+  },
 };

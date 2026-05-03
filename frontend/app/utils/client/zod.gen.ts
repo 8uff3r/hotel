@@ -522,6 +522,22 @@ export const zIncome = z.object({
 });
 
 /**
+ * InventoryItem schema
+ */
+export const zInventoryItem = z.object({
+    category: z.string().optional(),
+    description: z.string().optional(),
+    hotelId: z.int().gte(0).optional(),
+    id: z.int().gte(0).optional(),
+    isActive: z.boolean().optional(),
+    name: z.string().optional(),
+    quantity: z.number().optional(),
+    reorderLevel: z.number().optional(),
+    unit: z.string().optional(),
+    unitCost: z.number().optional()
+});
+
+/**
  * MeResponse schema
  */
 export const zMeResponse = z.object({
@@ -543,6 +559,22 @@ export const zMeResponse = z.object({
             hotelId: z.string().optional()
         })).optional()
     }).optional()
+});
+
+/**
+ * MealTransaction schema
+ */
+export const zMealTransaction = z.object({
+    billId: z.int().gte(0).optional(),
+    hotelId: z.int().gte(0).optional(),
+    id: z.int().gte(0).optional(),
+    inventoryItemId: z.int().gte(0).optional(),
+    isExternal: z.boolean().optional(),
+    itemName: z.string().optional(),
+    notes: z.string().optional(),
+    quantity: z.number().optional(),
+    totalPrice: z.number().optional(),
+    unitPrice: z.number().optional()
 });
 
 /**
@@ -766,6 +798,50 @@ export const zPaginatedResponseModelsIncome = z.object({
 });
 
 /**
+ * PaginatedResponse_models.InventoryItem schema
+ */
+export const zPaginatedResponseModelsInventoryItem = z.object({
+    data: z.array(z.object({
+        category: z.string().optional(),
+        description: z.string().optional(),
+        hotelId: z.int().gte(0).optional(),
+        id: z.int().gte(0).optional(),
+        isActive: z.boolean().optional(),
+        name: z.string().optional(),
+        quantity: z.number().optional(),
+        reorderLevel: z.number().optional(),
+        unit: z.string().optional(),
+        unitCost: z.number().optional()
+    })).optional(),
+    limit: z.int().optional(),
+    page: z.int().optional(),
+    total: z.coerce.bigint().min(BigInt('-9223372036854775808'), { error: 'Invalid value: Expected int64 to be >= -9223372036854775808' }).max(BigInt('9223372036854775807'), { error: 'Invalid value: Expected int64 to be <= 9223372036854775807' }).optional(),
+    totalPages: z.int().optional()
+});
+
+/**
+ * PaginatedResponse_models.MealTransaction schema
+ */
+export const zPaginatedResponseModelsMealTransaction = z.object({
+    data: z.array(z.object({
+        billId: z.int().gte(0).optional(),
+        hotelId: z.int().gte(0).optional(),
+        id: z.int().gte(0).optional(),
+        inventoryItemId: z.int().gte(0).optional(),
+        isExternal: z.boolean().optional(),
+        itemName: z.string().optional(),
+        notes: z.string().optional(),
+        quantity: z.number().optional(),
+        totalPrice: z.number().optional(),
+        unitPrice: z.number().optional()
+    })).optional(),
+    limit: z.int().optional(),
+    page: z.int().optional(),
+    total: z.coerce.bigint().min(BigInt('-9223372036854775808'), { error: 'Invalid value: Expected int64 to be >= -9223372036854775808' }).max(BigInt('9223372036854775807'), { error: 'Invalid value: Expected int64 to be <= 9223372036854775807' }).optional(),
+    totalPages: z.int().optional()
+});
+
+/**
  * PaginatedResponse_models.ParkingLot schema
  */
 export const zPaginatedResponseModelsParkingLot = z.object({
@@ -950,6 +1026,35 @@ export const zPaginatedResponseModelsReservation = z.object({
         })).optional(),
         userCheckIn: z.string().optional(),
         userCheckOut: z.string().optional()
+    })).optional(),
+    limit: z.int().optional(),
+    page: z.int().optional(),
+    total: z.coerce.bigint().min(BigInt('-9223372036854775808'), { error: 'Invalid value: Expected int64 to be >= -9223372036854775808' }).max(BigInt('9223372036854775807'), { error: 'Invalid value: Expected int64 to be <= 9223372036854775807' }).optional(),
+    totalPages: z.int().optional()
+});
+
+/**
+ * PaginatedResponse_models.RestaurantBill schema
+ */
+export const zPaginatedResponseModelsRestaurantBill = z.object({
+    data: z.array(z.object({
+        billDate: z.iso.datetime({ offset: true }).optional(),
+        discountAmount: z.number().optional(),
+        externalRestaurant: z.string().optional(),
+        guestId: z.int().gte(0).optional(),
+        hotelId: z.int().gte(0).optional(),
+        id: z.int().gte(0).optional(),
+        isExternal: z.boolean().optional(),
+        notes: z.string().optional(),
+        reservationId: z.int().gte(0).optional(),
+        roomId: z.int().gte(0).optional(),
+        settled: z.boolean().optional(),
+        settledAt: z.iso.datetime({ offset: true }).optional(),
+        settledBy: z.int().gte(0).optional(),
+        status: z.string().optional(),
+        subtotal: z.number().optional(),
+        taxAmount: z.number().optional(),
+        totalAmount: z.number().optional()
     })).optional(),
     limit: z.int().optional(),
     page: z.int().optional(),
@@ -1193,6 +1298,40 @@ export const zReservation = z.object({
     })).optional(),
     userCheckIn: z.string().optional(),
     userCheckOut: z.string().optional()
+});
+
+/**
+ * RestaurantBill schema
+ */
+export const zRestaurantBill = z.object({
+    billDate: z.iso.datetime({ offset: true }).optional(),
+    discountAmount: z.number().optional(),
+    externalRestaurant: z.string().optional(),
+    guestId: z.int().gte(0).optional(),
+    hotelId: z.int().gte(0).optional(),
+    id: z.int().gte(0).optional(),
+    isExternal: z.boolean().optional(),
+    notes: z.string().optional(),
+    reservationId: z.int().gte(0).optional(),
+    roomId: z.int().gte(0).optional(),
+    settled: z.boolean().optional(),
+    settledAt: z.iso.datetime({ offset: true }).optional(),
+    settledBy: z.int().gte(0).optional(),
+    status: z.string().optional(),
+    subtotal: z.number().optional(),
+    taxAmount: z.number().optional(),
+    totalAmount: z.number().optional()
+});
+
+/**
+ * RestaurantStats schema
+ */
+export const zRestaurantStats = z.object({
+    externalRevenue: z.number().optional(),
+    internalRevenue: z.number().optional(),
+    totalBills: z.coerce.bigint().min(BigInt('-9223372036854775808'), { error: 'Invalid value: Expected int64 to be >= -9223372036854775808' }).max(BigInt('9223372036854775807'), { error: 'Invalid value: Expected int64 to be <= 9223372036854775807' }).optional(),
+    totalMeals: z.coerce.bigint().min(BigInt('-9223372036854775808'), { error: 'Invalid value: Expected int64 to be >= -9223372036854775808' }).max(BigInt('9223372036854775807'), { error: 'Invalid value: Expected int64 to be <= 9223372036854775807' }).optional(),
+    totalRevenue: z.number().optional()
 });
 
 /**
@@ -2214,6 +2353,244 @@ export const zPostApiReservationIdCheckOutPath = z.object({
  * OK
  */
 export const zPostApiReservationIdCheckOutResponse = zOkResponse;
+
+export const zGetApiRestaurantBillsHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zGetApiRestaurantBillsQuery = z.object({
+    limit: z.int().optional(),
+    page: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetApiRestaurantBillsResponse = zPaginatedResponseModelsRestaurantBill;
+
+/**
+ * Request body for models.RestaurantBill
+ */
+export const zPostApiRestaurantBillsBody = zRestaurantBill;
+
+export const zPostApiRestaurantBillsHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zPostApiRestaurantBillsResponse = zRestaurantBill;
+
+export const zDeleteApiRestaurantBillsIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zDeleteApiRestaurantBillsIdPath = z.object({
+    id: z.string()
+});
+
+/**
+ * OK
+ */
+export const zDeleteApiRestaurantBillsIdResponse = zOkResponse;
+
+export const zGetApiRestaurantBillsIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zGetApiRestaurantBillsIdPath = z.object({
+    id: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetApiRestaurantBillsIdResponse = zRestaurantBill;
+
+/**
+ * Request body for models.RestaurantBill
+ */
+export const zPutApiRestaurantBillsIdBody = zRestaurantBill;
+
+export const zPutApiRestaurantBillsIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zPutApiRestaurantBillsIdPath = z.object({
+    id: z.string()
+});
+
+/**
+ * OK
+ */
+export const zPutApiRestaurantBillsIdResponse = zRestaurantBill;
+
+export const zPostApiRestaurantBillsIdSettleHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zPostApiRestaurantBillsIdSettlePath = z.object({
+    id: z.string()
+});
+
+/**
+ * OK
+ */
+export const zPostApiRestaurantBillsIdSettleResponse = zBool;
+
+export const zGetApiRestaurantInventoryHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zGetApiRestaurantInventoryQuery = z.object({
+    limit: z.int().optional(),
+    page: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetApiRestaurantInventoryResponse = zPaginatedResponseModelsInventoryItem;
+
+/**
+ * Request body for models.InventoryItem
+ */
+export const zPostApiRestaurantInventoryBody = zInventoryItem;
+
+export const zPostApiRestaurantInventoryHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zPostApiRestaurantInventoryResponse = zInventoryItem;
+
+export const zDeleteApiRestaurantInventoryIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zDeleteApiRestaurantInventoryIdPath = z.object({
+    id: z.string()
+});
+
+/**
+ * OK
+ */
+export const zDeleteApiRestaurantInventoryIdResponse = zOkResponse;
+
+export const zGetApiRestaurantInventoryIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zGetApiRestaurantInventoryIdPath = z.object({
+    id: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetApiRestaurantInventoryIdResponse = zInventoryItem;
+
+/**
+ * Request body for models.InventoryItem
+ */
+export const zPutApiRestaurantInventoryIdBody = zInventoryItem;
+
+export const zPutApiRestaurantInventoryIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zPutApiRestaurantInventoryIdPath = z.object({
+    id: z.string()
+});
+
+/**
+ * OK
+ */
+export const zPutApiRestaurantInventoryIdResponse = zInventoryItem;
+
+export const zGetApiRestaurantStatsHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetApiRestaurantStatsResponse = zRestaurantStats;
+
+export const zGetApiRestaurantTransactionsHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zGetApiRestaurantTransactionsQuery = z.object({
+    limit: z.int().optional(),
+    page: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetApiRestaurantTransactionsResponse = zPaginatedResponseModelsMealTransaction;
+
+/**
+ * Request body for models.MealTransaction
+ */
+export const zPostApiRestaurantTransactionsBody = zMealTransaction;
+
+export const zPostApiRestaurantTransactionsHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zPostApiRestaurantTransactionsResponse = zMealTransaction;
+
+export const zDeleteApiRestaurantTransactionsIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zDeleteApiRestaurantTransactionsIdPath = z.object({
+    id: z.string()
+});
+
+/**
+ * OK
+ */
+export const zDeleteApiRestaurantTransactionsIdResponse = zOkResponse;
+
+export const zGetApiRestaurantTransactionsIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zGetApiRestaurantTransactionsIdPath = z.object({
+    id: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetApiRestaurantTransactionsIdResponse = zMealTransaction;
+
+/**
+ * Request body for models.MealTransaction
+ */
+export const zPutApiRestaurantTransactionsIdBody = zMealTransaction;
+
+export const zPutApiRestaurantTransactionsIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zPutApiRestaurantTransactionsIdPath = z.object({
+    id: z.string()
+});
+
+/**
+ * OK
+ */
+export const zPutApiRestaurantTransactionsIdResponse = zMealTransaction;
 
 export const zGetApiRoomsHeaders = z.object({
     Accept: z.string().optional()

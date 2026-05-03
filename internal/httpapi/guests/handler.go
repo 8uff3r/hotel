@@ -220,13 +220,14 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 				IncomeDate:    time.Now().UTC(),
 				Description:   "Room payment - Reservation " + res.ReservationCode,
 				Amount:        body.Amount * (res.RoomPrice / (res.RoomPrice + 1)),
-				Category:      "room_revenue",
 				Source:        guest.FirstName + " " + guest.LastName,
 				PaymentMethod: body.PaymentMethod,
-				PaymentStatus: "received",
-				ReservationID: &resID,
 				Notes:         body.Notes,
 			}
+			income.CategoryID = resolveIncomeCategory(tx, "room_revenue")
+			income.PaymentStatusID = resolvePaymentStatus(tx, "received")
+			income.AccountID = resolveAccount(tx, "1000")
+			income.ReservationID = &resID
 			if err := tx.Create(&income).Error; err != nil {
 				return err
 			}
@@ -250,12 +251,13 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 				IncomeDate:    time.Now().UTC(),
 				Description:   "Parking payment - " + pt.LicensePlate,
 				Amount:        pt.AmountDue,
-				Category:      "parking",
 				Source:        guest.FirstName + " " + guest.LastName,
 				PaymentMethod: body.PaymentMethod,
-				PaymentStatus: "received",
 				Notes:         body.Notes,
 			}
+			income.CategoryID = resolveIncomeCategory(tx, "parking")
+			income.PaymentStatusID = resolvePaymentStatus(tx, "received")
+			income.AccountID = resolveAccount(tx, "1000")
 			if err := tx.Create(&income).Error; err != nil {
 				return err
 			}
@@ -351,4 +353,28 @@ func (gm *GuestsModule) getGuestSettlementHandler(c fuego.ContextNoBody) (GuestS
 		return GuestSettlementResponse{}, fuego.BadRequestError{Title: "invalid_id"}
 	}
 	return gm.getGuestSettlement(id)
+}
+
+func resolveIncomeCategory(db *gorm.DB, slug string) uint {
+	var cat models.IncomeCategory
+	if err := db.Where("slug = ?", slug).First(&cat).Error; err != nil {
+		return 1
+	}
+	return cat.ID
+}
+
+func resolvePaymentStatus(db *gorm.DB, slug string) uint {
+	var status models.PaymentStatus
+	if err := db.Where("slug = ?", slug).First(&status).Error; err != nil {
+		return 1
+	}
+	return status.ID
+}
+
+func resolveAccount(db *gorm.DB, code string) *uint {
+	var account models.Account
+	if err := db.Where("account_code = ?", code).First(&account).Error; err != nil {
+		return nil
+	}
+	return &account.ID
 }

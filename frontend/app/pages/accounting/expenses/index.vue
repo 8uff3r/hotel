@@ -126,22 +126,15 @@
 
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
+import type { PaginatedResponseModelsExpense } from "~/utils/client";
 
 definePageMeta({
   requiresRole: ["admin", "manager"],
 });
 
-interface ExpenseRow {
-  id: number;
-  description: string;
-  amount: string | number;
-  category: string;
-  expenseDate: string;
-  paymentStatus: string;
-  vendor: string | null;
-}
+type Expense = NonNullable<PaginatedResponseModelsExpense["data"]>[0];
 
-const columns: TableColumn<ExpenseRow>[] = [
+const columns: TableColumn<Expense>[] = [
   { accessorKey: "id", header: "ID" },
   { accessorKey: "description", header: "Description" },
   { accessorKey: "amount", header: "Amount" },
@@ -172,7 +165,7 @@ const paymentStatusOptions = [
   { value: "cancelled", label: "Cancelled" },
 ];
 
-const expensesList = ref<ExpenseRow[]>([]);
+const expensesList = ref<Expense[]>([]);
 const { t } = useI18n();
 const loading = ref(false);
 const page = ref(1);
@@ -216,10 +209,16 @@ const fetchExpenses = async () => {
     if (filters.dateFrom) params.append("dateFrom", filters.dateFrom);
     if (filters.dateTo) params.append("dateTo", filters.dateTo);
 
-    const response = await $fetch(`/api/expenses?${params.toString()}`);
-    expensesList.value = response.data;
-    pagination.total = response.pagination.total;
-    pagination.totalPages = response.pagination.totalPages;
+    //TODO: Add other filter to backend
+    const response = await getApiAccountingExpenses({
+      query: {
+        limit: pagination.limit,
+        page: pagination.page,
+      },
+    });
+    expensesList.value = response.data ?? [];
+    pagination.total = response.total ?? 0;
+    pagination.totalPages = response.totalPages ?? 1;
   } catch (error) {
     console.error("Failed to fetch expenses:", error);
   } finally {
@@ -237,15 +236,19 @@ const clearFilters = () => {
   fetchExpenses();
 };
 
-const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString("en-US", {
+const { locale } = useI18n();
+
+const formatDate = (date: string | undefined) => {
+  if (!date) return "";
+  return new Date(date).toLocaleDateString(locale.value, {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
 };
 
-const formatCategory = (category: string): string => {
+const formatCategory = (category: string | undefined): string => {
+  if (!category) return "";
   const categories: Record<string, string> = {
     food_beverage: "Food & Beverage",
     housekeeping: "Housekeeping",
@@ -262,7 +265,10 @@ const formatCategory = (category: string): string => {
   return categories[category] || category;
 };
 
-const getStatusColor = (status: string): "success" | "warning" | "error" => {
+const getStatusColor = (
+  status: string | undefined
+): "success" | "warning" | "error" | "neutral" => {
+  if (!status) return "neutral";
   const colors: Record<string, "success" | "warning" | "error"> = {
     paid: "success",
     pending: "warning",

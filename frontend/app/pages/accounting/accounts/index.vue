@@ -5,8 +5,9 @@
         {{ t("accounting.chart_of_accounts") }}
       </h1>
       <UButton to="/accounting/accounts/create" color="primary">
-        <UIcon name="i-lucide-plus" class="mr-2" />{{ t("accounting.add_account") }}</UButton
-      >
+        <UIcon name="i-lucide-plus" class="mr-2" />
+        {{ t("accounting.add_account") }}
+      </UButton>
     </div>
 
     <!-- Filters -->
@@ -100,8 +101,8 @@
 </template>
 
 <script setup lang="ts">
-import type { TableColumn } from "@nuxt/ui";
 import type { PaginatedResponseModelsAccount } from "~/utils/client";
+import type { TableColumn } from "@nuxt/ui";
 
 definePageMeta({
   requiresPermission: ["admin", "manager"],

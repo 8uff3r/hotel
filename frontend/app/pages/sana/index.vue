@@ -16,12 +16,12 @@
         </template>
         <template #footer>
           <div class="flex justify-end gap-3">
-            <UButton variant="outline" @click="syncAllModalOpen = false">{{
-              t("actions.cancel")
-            }}</UButton>
-            <UButton color="primary" :loading="syncingAll" @click="syncAll">{{
-              t("sana.syncAll")
-            }}</UButton>
+            <UButton variant="outline" @click="syncAllModalOpen = false">
+              {{ t("actions.cancel") }}
+            </UButton>
+            <UButton color="primary" :loading="syncingAll" @click="syncAll">
+              {{ t("sana.syncAll") }}
+            </UButton>
           </div>
         </template>
       </UModal>

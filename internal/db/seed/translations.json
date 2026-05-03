@@ -112,7 +112,18 @@
       "fa": "خروجی تراکنش‌های پارکینگ",
       "en": "Export Parking Transactions"
     },
-    "parking-transactions-check-in:read": { "fa": "ورود خودرو", "en": "Parking Check-In" }
+    "parking-transactions-check-in:read": { "fa": "ورود خودرو", "en": "Parking Check-In" },
+
+    "restaurant:read": { "fa": "مشاهده رستوران", "en": "View Restaurant" },
+    "restaurant-inventory:read": { "fa": "مشاهده انبار", "en": "View Inventory" },
+    "restaurant-inventory:create": { "fa": "ایجاد کالا", "en": "Create Item" },
+    "restaurant-inventory:update": { "fa": "ویرایش کالا", "en": "Update Item" },
+    "restaurant-inventory:delete": { "fa": "حذف کالا", "en": "Delete Item" },
+    "restaurant-serving:read": { "fa": "سرو غذا", "en": "View Service" },
+    "restaurant-serving:create": { "fa": "ثبت سفارش", "en": "Create Order" },
+    "restaurant-serving:update": { "fa": "ویرایش سفارش", "en": "Update Order" },
+    "restaurant-serving:delete": { "fa": "حذف سفارش", "en": "Delete Order" },
+    "restaurant-reports:read": { "fa": "مشاهده گزارشات", "en": "View Reports" }
   },
 
   "permission-category": {
@@ -122,7 +133,8 @@
     "reservations": { "fa": "رزروها", "en": "Reservations" },
     "users": { "fa": "کاربران", "en": "Users" },
     "accounting": { "fa": "حسابداری", "en": "Accounting" },
-    "parking": { "fa": "پارکینگ", "en": "Parking" }
+    "parking": { "fa": "پارکینگ", "en": "Parking" },
+    "restaurant": { "fa": "رستوران", "en": "Restaurant" }
   },
 
   "permission-template": {
@@ -131,5 +143,78 @@
     "receptionist": { "fa": "پذیرش", "en": "Receptionist" },
     "staff": { "fa": "کارمند", "en": "Staff" },
     "housekeeper": { "fa": "خانه‌دار", "en": "Housekeeper" }
+  },
+
+  "inventory-item-category": {
+    "food": { "fa": "غذا", "en": "Food" },
+    "beverage": { "fa": "نوشیدنی", "en": "Beverage" },
+    "dessert": { "fa": "دسر", "en": "Dessert" },
+    "other": { "fa": "سایر", "en": "Other" }
+  },
+
+  "inventory-item-unit": {
+    "piece": { "fa": "عدد", "en": "Piece" },
+    "gram": { "fa": "گرم", "en": "Gram" },
+    "kilogram": { "fa": "کیلوگرم", "en": "Kilogram" },
+    "liter": { "fa": "لیتر", "en": "Liter" },
+    "pack": { "fa": "بسته", "en": "Pack" }
+  },
+
+  "inventory-item-status": {
+    "active": { "fa": "فعال", "en": "Active" },
+    "inactive": { "fa": "غیرفعال", "en": "Inactive" },
+    "discontinued": { "fa": "توقف تولید", "en": "Discontinued" }
+  },
+
+  "restaurant-bill-status": {
+    "open": { "fa": "باز", "en": "Open" },
+    "settled": { "fa": "تسویه شده", "en": "Settled" },
+    "cancelled": { "fa": "لغو شده", "en": "Cancelled" }
+  },
+
+  "parking-lot-status": {
+    "active": { "fa": "فعال", "en": "Active" },
+    "full": { "fa": "پر", "en": "Full" },
+    "closed": { "fa": "بسته", "en": "Closed" }
+  },
+
+  "expense-category": {
+    "rooms": { "fa": "اتاق‌ها", "en": "Rooms" },
+    "food": { "fa": "غذا", "en": "Food" },
+    "maintenance": { "fa": "نگهداری", "en": "Maintenance" },
+    "utilities": { "fa": "خدمات", "en": "Utilities" },
+    "salaries": { "fa": "حقوق", "en": "Salaries" },
+    "marketing": { "fa": "بازاریابی", "en": "Marketing" },
+    "other": { "fa": "سایر", "en": "Other" }
+  },
+
+  "income-category": {
+    "room_revenue": { "fa": "درآمد اتاق", "en": "Room Revenue" },
+    "parking": { "fa": "پارکینگ", "en": "Parking" },
+    "restaurant": { "fa": "رستوران", "en": "Restaurant" },
+    "other": { "fa": "سایر", "en": "Other" }
+  },
+
+  "payment-status": {
+    "pending": { "fa": "در انتظار", "en": "Pending" },
+    "received": { "fa": "دریافت شده", "en": "Received" },
+    "cancelled": { "fa": "لغو شده", "en": "Cancelled" },
+    "refunded": { "fa": "بازگردانده شده", "en": "Refunded" }
+  },
+
+  "payment-method": {
+    "cash": { "fa": "نقدی", "en": "Cash" },
+    "card": { "fa": "کارت", "en": "Card" },
+    "bank_transfer": { "fa": "انتقال بانکی", "en": "Bank Transfer" },
+    "cheque": { "fa": "چک", "en": "Cheque" },
+    "other": { "fa": "سایر", "en": "Other" }
+  },
+
+  "vehicle-type": {
+    "car": { "fa": "خودرو", "en": "Car" },
+    "motorcycle": { "fa": "موتورسیکلت", "en": "Motorcycle" },
+    "truck": { "fa": "کامیون", "en": "Truck" },
+    "van": { "fa": "ون", "en": "Van" },
+    "other": { "fa": "سایر", "en": "Other" }
   }
 }

@@ -547,6 +547,22 @@ export type Income = {
 };
 
 /**
+ * InventoryItem schema
+ */
+export type InventoryItem = {
+    category?: string;
+    description?: string;
+    hotelId?: number;
+    id?: number;
+    isActive?: boolean;
+    name?: string;
+    quantity?: number;
+    reorderLevel?: number;
+    unit?: string;
+    unitCost?: number;
+};
+
+/**
  * MeResponse schema
  */
 export type MeResponse = {
@@ -568,6 +584,22 @@ export type MeResponse = {
             hotelId?: string;
         }>;
     };
+};
+
+/**
+ * MealTransaction schema
+ */
+export type MealTransaction = {
+    billId?: number;
+    hotelId?: number;
+    id?: number;
+    inventoryItemId?: number;
+    isExternal?: boolean;
+    itemName?: string;
+    notes?: string;
+    quantity?: number;
+    totalPrice?: number;
+    unitPrice?: number;
 };
 
 /**
@@ -791,6 +823,50 @@ export type PaginatedResponseModelsIncome = {
 };
 
 /**
+ * PaginatedResponse_models.InventoryItem schema
+ */
+export type PaginatedResponseModelsInventoryItem = {
+    data?: Array<{
+        category?: string;
+        description?: string;
+        hotelId?: number;
+        id?: number;
+        isActive?: boolean;
+        name?: string;
+        quantity?: number;
+        reorderLevel?: number;
+        unit?: string;
+        unitCost?: number;
+    }>;
+    limit?: number;
+    page?: number;
+    total?: number;
+    totalPages?: number;
+};
+
+/**
+ * PaginatedResponse_models.MealTransaction schema
+ */
+export type PaginatedResponseModelsMealTransaction = {
+    data?: Array<{
+        billId?: number;
+        hotelId?: number;
+        id?: number;
+        inventoryItemId?: number;
+        isExternal?: boolean;
+        itemName?: string;
+        notes?: string;
+        quantity?: number;
+        totalPrice?: number;
+        unitPrice?: number;
+    }>;
+    limit?: number;
+    page?: number;
+    total?: number;
+    totalPages?: number;
+};
+
+/**
  * PaginatedResponse_models.ParkingLot schema
  */
 export type PaginatedResponseModelsParkingLot = {
@@ -975,6 +1051,35 @@ export type PaginatedResponseModelsReservation = {
         }>;
         userCheckIn?: string;
         userCheckOut?: string;
+    }>;
+    limit?: number;
+    page?: number;
+    total?: number;
+    totalPages?: number;
+};
+
+/**
+ * PaginatedResponse_models.RestaurantBill schema
+ */
+export type PaginatedResponseModelsRestaurantBill = {
+    data?: Array<{
+        billDate?: string;
+        discountAmount?: number;
+        externalRestaurant?: string;
+        guestId?: number;
+        hotelId?: number;
+        id?: number;
+        isExternal?: boolean;
+        notes?: string;
+        reservationId?: number;
+        roomId?: number;
+        settled?: boolean;
+        settledAt?: string;
+        settledBy?: number;
+        status?: string;
+        subtotal?: number;
+        taxAmount?: number;
+        totalAmount?: number;
     }>;
     limit?: number;
     page?: number;
@@ -1218,6 +1323,40 @@ export type Reservation = {
     }>;
     userCheckIn?: string;
     userCheckOut?: string;
+};
+
+/**
+ * RestaurantBill schema
+ */
+export type RestaurantBill = {
+    billDate?: string;
+    discountAmount?: number;
+    externalRestaurant?: string;
+    guestId?: number;
+    hotelId?: number;
+    id?: number;
+    isExternal?: boolean;
+    notes?: string;
+    reservationId?: number;
+    roomId?: number;
+    settled?: boolean;
+    settledAt?: string;
+    settledBy?: number;
+    status?: string;
+    subtotal?: number;
+    taxAmount?: number;
+    totalAmount?: number;
+};
+
+/**
+ * RestaurantStats schema
+ */
+export type RestaurantStats = {
+    externalRevenue?: number;
+    internalRevenue?: number;
+    totalBills?: number;
+    totalMeals?: number;
+    totalRevenue?: number;
 };
 
 /**
@@ -3491,6 +3630,614 @@ export type PostApiReservationIdCheckOutResponses = {
 };
 
 export type PostApiReservationIdCheckOutResponse = PostApiReservationIdCheckOutResponses[keyof PostApiReservationIdCheckOutResponses];
+
+export type GetApiRestaurantBillsData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: {
+        limit?: number;
+        page?: number;
+    };
+    url: '/api/restaurant/bills/';
+};
+
+export type GetApiRestaurantBillsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiRestaurantBillsError = GetApiRestaurantBillsErrors[keyof GetApiRestaurantBillsErrors];
+
+export type GetApiRestaurantBillsResponses = {
+    /**
+     * OK
+     */
+    200: PaginatedResponseModelsRestaurantBill;
+};
+
+export type GetApiRestaurantBillsResponse = GetApiRestaurantBillsResponses[keyof GetApiRestaurantBillsResponses];
+
+export type PostApiRestaurantBillsData = {
+    /**
+     * Request body for models.RestaurantBill
+     */
+    body: RestaurantBill;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/restaurant/bills/';
+};
+
+export type PostApiRestaurantBillsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PostApiRestaurantBillsError = PostApiRestaurantBillsErrors[keyof PostApiRestaurantBillsErrors];
+
+export type PostApiRestaurantBillsResponses = {
+    /**
+     * OK
+     */
+    200: RestaurantBill;
+};
+
+export type PostApiRestaurantBillsResponse = PostApiRestaurantBillsResponses[keyof PostApiRestaurantBillsResponses];
+
+export type DeleteApiRestaurantBillsIdData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/restaurant/bills/{id}';
+};
+
+export type DeleteApiRestaurantBillsIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type DeleteApiRestaurantBillsIdError = DeleteApiRestaurantBillsIdErrors[keyof DeleteApiRestaurantBillsIdErrors];
+
+export type DeleteApiRestaurantBillsIdResponses = {
+    /**
+     * OK
+     */
+    200: OkResponse;
+};
+
+export type DeleteApiRestaurantBillsIdResponse = DeleteApiRestaurantBillsIdResponses[keyof DeleteApiRestaurantBillsIdResponses];
+
+export type GetApiRestaurantBillsIdData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/restaurant/bills/{id}';
+};
+
+export type GetApiRestaurantBillsIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiRestaurantBillsIdError = GetApiRestaurantBillsIdErrors[keyof GetApiRestaurantBillsIdErrors];
+
+export type GetApiRestaurantBillsIdResponses = {
+    /**
+     * OK
+     */
+    200: RestaurantBill;
+};
+
+export type GetApiRestaurantBillsIdResponse = GetApiRestaurantBillsIdResponses[keyof GetApiRestaurantBillsIdResponses];
+
+export type PutApiRestaurantBillsIdData = {
+    /**
+     * Request body for models.RestaurantBill
+     */
+    body: RestaurantBill;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/restaurant/bills/{id}';
+};
+
+export type PutApiRestaurantBillsIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PutApiRestaurantBillsIdError = PutApiRestaurantBillsIdErrors[keyof PutApiRestaurantBillsIdErrors];
+
+export type PutApiRestaurantBillsIdResponses = {
+    /**
+     * OK
+     */
+    200: RestaurantBill;
+};
+
+export type PutApiRestaurantBillsIdResponse = PutApiRestaurantBillsIdResponses[keyof PutApiRestaurantBillsIdResponses];
+
+export type PostApiRestaurantBillsIdSettleData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/restaurant/bills/{id}/settle';
+};
+
+export type PostApiRestaurantBillsIdSettleErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PostApiRestaurantBillsIdSettleError = PostApiRestaurantBillsIdSettleErrors[keyof PostApiRestaurantBillsIdSettleErrors];
+
+export type PostApiRestaurantBillsIdSettleResponses = {
+    /**
+     * OK
+     */
+    200: Bool;
+};
+
+export type PostApiRestaurantBillsIdSettleResponse = PostApiRestaurantBillsIdSettleResponses[keyof PostApiRestaurantBillsIdSettleResponses];
+
+export type GetApiRestaurantInventoryData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: {
+        limit?: number;
+        page?: number;
+    };
+    url: '/api/restaurant/inventory/';
+};
+
+export type GetApiRestaurantInventoryErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiRestaurantInventoryError = GetApiRestaurantInventoryErrors[keyof GetApiRestaurantInventoryErrors];
+
+export type GetApiRestaurantInventoryResponses = {
+    /**
+     * OK
+     */
+    200: PaginatedResponseModelsInventoryItem;
+};
+
+export type GetApiRestaurantInventoryResponse = GetApiRestaurantInventoryResponses[keyof GetApiRestaurantInventoryResponses];
+
+export type PostApiRestaurantInventoryData = {
+    /**
+     * Request body for models.InventoryItem
+     */
+    body: InventoryItem;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/restaurant/inventory/';
+};
+
+export type PostApiRestaurantInventoryErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PostApiRestaurantInventoryError = PostApiRestaurantInventoryErrors[keyof PostApiRestaurantInventoryErrors];
+
+export type PostApiRestaurantInventoryResponses = {
+    /**
+     * OK
+     */
+    200: InventoryItem;
+};
+
+export type PostApiRestaurantInventoryResponse = PostApiRestaurantInventoryResponses[keyof PostApiRestaurantInventoryResponses];
+
+export type DeleteApiRestaurantInventoryIdData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/restaurant/inventory/{id}';
+};
+
+export type DeleteApiRestaurantInventoryIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type DeleteApiRestaurantInventoryIdError = DeleteApiRestaurantInventoryIdErrors[keyof DeleteApiRestaurantInventoryIdErrors];
+
+export type DeleteApiRestaurantInventoryIdResponses = {
+    /**
+     * OK
+     */
+    200: OkResponse;
+};
+
+export type DeleteApiRestaurantInventoryIdResponse = DeleteApiRestaurantInventoryIdResponses[keyof DeleteApiRestaurantInventoryIdResponses];
+
+export type GetApiRestaurantInventoryIdData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/restaurant/inventory/{id}';
+};
+
+export type GetApiRestaurantInventoryIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiRestaurantInventoryIdError = GetApiRestaurantInventoryIdErrors[keyof GetApiRestaurantInventoryIdErrors];
+
+export type GetApiRestaurantInventoryIdResponses = {
+    /**
+     * OK
+     */
+    200: InventoryItem;
+};
+
+export type GetApiRestaurantInventoryIdResponse = GetApiRestaurantInventoryIdResponses[keyof GetApiRestaurantInventoryIdResponses];
+
+export type PutApiRestaurantInventoryIdData = {
+    /**
+     * Request body for models.InventoryItem
+     */
+    body: InventoryItem;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/restaurant/inventory/{id}';
+};
+
+export type PutApiRestaurantInventoryIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PutApiRestaurantInventoryIdError = PutApiRestaurantInventoryIdErrors[keyof PutApiRestaurantInventoryIdErrors];
+
+export type PutApiRestaurantInventoryIdResponses = {
+    /**
+     * OK
+     */
+    200: InventoryItem;
+};
+
+export type PutApiRestaurantInventoryIdResponse = PutApiRestaurantInventoryIdResponses[keyof PutApiRestaurantInventoryIdResponses];
+
+export type GetApiRestaurantStatsData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/restaurant/stats';
+};
+
+export type GetApiRestaurantStatsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiRestaurantStatsError = GetApiRestaurantStatsErrors[keyof GetApiRestaurantStatsErrors];
+
+export type GetApiRestaurantStatsResponses = {
+    /**
+     * OK
+     */
+    200: RestaurantStats;
+};
+
+export type GetApiRestaurantStatsResponse = GetApiRestaurantStatsResponses[keyof GetApiRestaurantStatsResponses];
+
+export type GetApiRestaurantTransactionsData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: {
+        limit?: number;
+        page?: number;
+    };
+    url: '/api/restaurant/transactions/';
+};
+
+export type GetApiRestaurantTransactionsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiRestaurantTransactionsError = GetApiRestaurantTransactionsErrors[keyof GetApiRestaurantTransactionsErrors];
+
+export type GetApiRestaurantTransactionsResponses = {
+    /**
+     * OK
+     */
+    200: PaginatedResponseModelsMealTransaction;
+};
+
+export type GetApiRestaurantTransactionsResponse = GetApiRestaurantTransactionsResponses[keyof GetApiRestaurantTransactionsResponses];
+
+export type PostApiRestaurantTransactionsData = {
+    /**
+     * Request body for models.MealTransaction
+     */
+    body: MealTransaction;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/restaurant/transactions/';
+};
+
+export type PostApiRestaurantTransactionsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PostApiRestaurantTransactionsError = PostApiRestaurantTransactionsErrors[keyof PostApiRestaurantTransactionsErrors];
+
+export type PostApiRestaurantTransactionsResponses = {
+    /**
+     * OK
+     */
+    200: MealTransaction;
+};
+
+export type PostApiRestaurantTransactionsResponse = PostApiRestaurantTransactionsResponses[keyof PostApiRestaurantTransactionsResponses];
+
+export type DeleteApiRestaurantTransactionsIdData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/restaurant/transactions/{id}';
+};
+
+export type DeleteApiRestaurantTransactionsIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type DeleteApiRestaurantTransactionsIdError = DeleteApiRestaurantTransactionsIdErrors[keyof DeleteApiRestaurantTransactionsIdErrors];
+
+export type DeleteApiRestaurantTransactionsIdResponses = {
+    /**
+     * OK
+     */
+    200: OkResponse;
+};
+
+export type DeleteApiRestaurantTransactionsIdResponse = DeleteApiRestaurantTransactionsIdResponses[keyof DeleteApiRestaurantTransactionsIdResponses];
+
+export type GetApiRestaurantTransactionsIdData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/restaurant/transactions/{id}';
+};
+
+export type GetApiRestaurantTransactionsIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiRestaurantTransactionsIdError = GetApiRestaurantTransactionsIdErrors[keyof GetApiRestaurantTransactionsIdErrors];
+
+export type GetApiRestaurantTransactionsIdResponses = {
+    /**
+     * OK
+     */
+    200: MealTransaction;
+};
+
+export type GetApiRestaurantTransactionsIdResponse = GetApiRestaurantTransactionsIdResponses[keyof GetApiRestaurantTransactionsIdResponses];
+
+export type PutApiRestaurantTransactionsIdData = {
+    /**
+     * Request body for models.MealTransaction
+     */
+    body: MealTransaction;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/restaurant/transactions/{id}';
+};
+
+export type PutApiRestaurantTransactionsIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PutApiRestaurantTransactionsIdError = PutApiRestaurantTransactionsIdErrors[keyof PutApiRestaurantTransactionsIdErrors];
+
+export type PutApiRestaurantTransactionsIdResponses = {
+    /**
+     * OK
+     */
+    200: MealTransaction;
+};
+
+export type PutApiRestaurantTransactionsIdResponse = PutApiRestaurantTransactionsIdResponses[keyof PutApiRestaurantTransactionsIdResponses];
 
 export type GetApiRoomsData = {
     body?: never;

@@ -38,9 +38,6 @@ export default defineNuxtRouteMiddleware((to) => {
     return navigateTo("/login");
   }
 
-  console.log(authStore.$id, authStore.loading, authStore.availableRoles);
-  console.log(authStore.permissions);
-
   if (!authStore.isAuthenticated) {
     return navigateTo("/login");
   }

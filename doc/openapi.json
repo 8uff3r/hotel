@@ -1663,6 +1663,48 @@
 				},
 				"type": "object"
 			},
+			"InventoryItem": {
+				"description": "InventoryItem schema",
+				"properties": {
+					"category": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"hotelId": {
+						"minimum": 0,
+						"nullable": true,
+						"type": "integer"
+					},
+					"id": {
+						"minimum": 0,
+						"type": "integer"
+					},
+					"isActive": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					},
+					"quantity": {
+						"format": "double",
+						"type": "number"
+					},
+					"reorderLevel": {
+						"format": "double",
+						"type": "number"
+					},
+					"unit": {
+						"type": "string"
+					},
+					"unitCost": {
+						"format": "double",
+						"type": "number"
+					}
+				},
+				"type": "object"
+			},
 			"MeResponse": {
 				"description": "MeResponse schema",
 				"properties": {
@@ -1723,6 +1765,51 @@
 							}
 						},
 						"type": "object"
+					}
+				},
+				"type": "object"
+			},
+			"MealTransaction": {
+				"description": "MealTransaction schema",
+				"properties": {
+					"billId": {
+						"minimum": 0,
+						"type": "integer"
+					},
+					"hotelId": {
+						"minimum": 0,
+						"nullable": true,
+						"type": "integer"
+					},
+					"id": {
+						"minimum": 0,
+						"type": "integer"
+					},
+					"inventoryItemId": {
+						"minimum": 0,
+						"nullable": true,
+						"type": "integer"
+					},
+					"isExternal": {
+						"type": "boolean"
+					},
+					"itemName": {
+						"type": "string"
+					},
+					"notes": {
+						"type": "string"
+					},
+					"quantity": {
+						"format": "double",
+						"type": "number"
+					},
+					"totalPrice": {
+						"format": "double",
+						"type": "number"
+					},
+					"unitPrice": {
+						"format": "double",
+						"type": "number"
 					}
 				},
 				"type": "object"
@@ -2380,6 +2467,135 @@
 				},
 				"type": "object"
 			},
+			"PaginatedResponse_models.InventoryItem": {
+				"description": "PaginatedResponse_models.InventoryItem schema",
+				"properties": {
+					"data": {
+						"items": {
+							"properties": {
+								"category": {
+									"type": "string"
+								},
+								"description": {
+									"type": "string"
+								},
+								"hotelId": {
+									"minimum": 0,
+									"nullable": true,
+									"type": "integer"
+								},
+								"id": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"isActive": {
+									"type": "boolean"
+								},
+								"name": {
+									"type": "string"
+								},
+								"quantity": {
+									"format": "double",
+									"type": "number"
+								},
+								"reorderLevel": {
+									"format": "double",
+									"type": "number"
+								},
+								"unit": {
+									"type": "string"
+								},
+								"unitCost": {
+									"format": "double",
+									"type": "number"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"limit": {
+						"type": "integer"
+					},
+					"page": {
+						"type": "integer"
+					},
+					"total": {
+						"format": "int64",
+						"type": "integer"
+					},
+					"totalPages": {
+						"type": "integer"
+					}
+				},
+				"type": "object"
+			},
+			"PaginatedResponse_models.MealTransaction": {
+				"description": "PaginatedResponse_models.MealTransaction schema",
+				"properties": {
+					"data": {
+						"items": {
+							"properties": {
+								"billId": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"hotelId": {
+									"minimum": 0,
+									"nullable": true,
+									"type": "integer"
+								},
+								"id": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"inventoryItemId": {
+									"minimum": 0,
+									"nullable": true,
+									"type": "integer"
+								},
+								"isExternal": {
+									"type": "boolean"
+								},
+								"itemName": {
+									"type": "string"
+								},
+								"notes": {
+									"type": "string"
+								},
+								"quantity": {
+									"format": "double",
+									"type": "number"
+								},
+								"totalPrice": {
+									"format": "double",
+									"type": "number"
+								},
+								"unitPrice": {
+									"format": "double",
+									"type": "number"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"limit": {
+						"type": "integer"
+					},
+					"page": {
+						"type": "integer"
+					},
+					"total": {
+						"format": "int64",
+						"type": "integer"
+					},
+					"totalPages": {
+						"type": "integer"
+					}
+				},
+				"type": "object"
+			},
 			"PaginatedResponse_models.ParkingLot": {
 				"description": "PaginatedResponse_models.ParkingLot schema",
 				"properties": {
@@ -2928,6 +3144,102 @@
 								},
 								"userCheckOut": {
 									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"limit": {
+						"type": "integer"
+					},
+					"page": {
+						"type": "integer"
+					},
+					"total": {
+						"format": "int64",
+						"type": "integer"
+					},
+					"totalPages": {
+						"type": "integer"
+					}
+				},
+				"type": "object"
+			},
+			"PaginatedResponse_models.RestaurantBill": {
+				"description": "PaginatedResponse_models.RestaurantBill schema",
+				"properties": {
+					"data": {
+						"items": {
+							"properties": {
+								"billDate": {
+									"format": "date-time",
+									"type": "string"
+								},
+								"discountAmount": {
+									"format": "double",
+									"type": "number"
+								},
+								"externalRestaurant": {
+									"type": "string"
+								},
+								"guestId": {
+									"minimum": 0,
+									"nullable": true,
+									"type": "integer"
+								},
+								"hotelId": {
+									"minimum": 0,
+									"nullable": true,
+									"type": "integer"
+								},
+								"id": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"isExternal": {
+									"type": "boolean"
+								},
+								"notes": {
+									"type": "string"
+								},
+								"reservationId": {
+									"minimum": 0,
+									"nullable": true,
+									"type": "integer"
+								},
+								"roomId": {
+									"minimum": 0,
+									"nullable": true,
+									"type": "integer"
+								},
+								"settled": {
+									"type": "boolean"
+								},
+								"settledAt": {
+									"format": "date-time",
+									"nullable": true,
+									"type": "string"
+								},
+								"settledBy": {
+									"minimum": 0,
+									"nullable": true,
+									"type": "integer"
+								},
+								"status": {
+									"type": "string"
+								},
+								"subtotal": {
+									"format": "double",
+									"type": "number"
+								},
+								"taxAmount": {
+									"format": "double",
+									"type": "number"
+								},
+								"totalAmount": {
+									"format": "double",
+									"type": "number"
 								}
 							},
 							"type": "object"
@@ -3632,6 +3944,107 @@
 					},
 					"userCheckOut": {
 						"type": "string"
+					}
+				},
+				"type": "object"
+			},
+			"RestaurantBill": {
+				"description": "RestaurantBill schema",
+				"properties": {
+					"billDate": {
+						"format": "date-time",
+						"type": "string"
+					},
+					"discountAmount": {
+						"format": "double",
+						"type": "number"
+					},
+					"externalRestaurant": {
+						"type": "string"
+					},
+					"guestId": {
+						"minimum": 0,
+						"nullable": true,
+						"type": "integer"
+					},
+					"hotelId": {
+						"minimum": 0,
+						"nullable": true,
+						"type": "integer"
+					},
+					"id": {
+						"minimum": 0,
+						"type": "integer"
+					},
+					"isExternal": {
+						"type": "boolean"
+					},
+					"notes": {
+						"type": "string"
+					},
+					"reservationId": {
+						"minimum": 0,
+						"nullable": true,
+						"type": "integer"
+					},
+					"roomId": {
+						"minimum": 0,
+						"nullable": true,
+						"type": "integer"
+					},
+					"settled": {
+						"type": "boolean"
+					},
+					"settledAt": {
+						"format": "date-time",
+						"nullable": true,
+						"type": "string"
+					},
+					"settledBy": {
+						"minimum": 0,
+						"nullable": true,
+						"type": "integer"
+					},
+					"status": {
+						"type": "string"
+					},
+					"subtotal": {
+						"format": "double",
+						"type": "number"
+					},
+					"taxAmount": {
+						"format": "double",
+						"type": "number"
+					},
+					"totalAmount": {
+						"format": "double",
+						"type": "number"
+					}
+				},
+				"type": "object"
+			},
+			"RestaurantStats": {
+				"description": "RestaurantStats schema",
+				"properties": {
+					"externalRevenue": {
+						"format": "double",
+						"type": "number"
+					},
+					"internalRevenue": {
+						"format": "double",
+						"type": "number"
+					},
+					"totalBills": {
+						"format": "int64",
+						"type": "integer"
+					},
+					"totalMeals": {
+						"format": "int64",
+						"type": "integer"
+					},
+					"totalRevenue": {
+						"format": "double",
+						"type": "number"
 					}
 				},
 				"type": "object"
@@ -8713,6 +9126,1349 @@
 				]
 			}
 		},
+		"/api/restaurant/bills/": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi.ListModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/restaurant/bills/",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"schema": {
+							"type": "integer"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"schema": {
+							"type": "integer"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PaginatedResponse_models.RestaurantBill"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/PaginatedResponse_models.RestaurantBill"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func1",
+				"tags": [
+					"/RESTAURANT"
+				]
+			},
+			"post": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.CreateModel[...].func4`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "POST_/api/restaurant/bills/",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"*/*": {
+							"schema": {
+								"$ref": "#/components/schemas/RestaurantBill"
+							}
+						}
+					},
+					"description": "Request body for models.RestaurantBill",
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RestaurantBill"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/RestaurantBill"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func4",
+				"tags": [
+					"/RESTAURANT"
+				]
+			}
+		},
+		"/api/restaurant/bills/{id}": {
+			"delete": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.DeleteModel.func6`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "DELETE_/api/restaurant/bills/:id",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/okResponse"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/okResponse"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func6",
+				"tags": [
+					"/RESTAURANT"
+				]
+			},
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi.GetModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/restaurant/bills/:id",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RestaurantBill"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/RestaurantBill"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func1",
+				"tags": [
+					"/RESTAURANT"
+				]
+			},
+			"put": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.UpdateModel[...].func5`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "PUT_/api/restaurant/bills/:id",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"*/*": {
+							"schema": {
+								"$ref": "#/components/schemas/RestaurantBill"
+							}
+						}
+					},
+					"description": "Request body for models.RestaurantBill",
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RestaurantBill"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/RestaurantBill"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func5",
+				"tags": [
+					"/RESTAURANT"
+				]
+			}
+		},
+		"/api/restaurant/bills/{id}/settle": {
+			"post": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/restaurant.(*RestaurantModule).settleBill`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "POST_/api/restaurant/bills/:id/settle",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/bool"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/bool"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "settle bill",
+				"tags": [
+					"/RESTAURANT"
+				]
+			}
+		},
+		"/api/restaurant/inventory/": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi.ListModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/restaurant/inventory/",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"schema": {
+							"type": "integer"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"schema": {
+							"type": "integer"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PaginatedResponse_models.InventoryItem"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/PaginatedResponse_models.InventoryItem"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func1",
+				"tags": [
+					"/RESTAURANT"
+				]
+			},
+			"post": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.CreateModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "POST_/api/restaurant/inventory/",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"*/*": {
+							"schema": {
+								"$ref": "#/components/schemas/InventoryItem"
+							}
+						}
+					},
+					"description": "Request body for models.InventoryItem",
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InventoryItem"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/InventoryItem"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func1",
+				"tags": [
+					"/RESTAURANT"
+				]
+			}
+		},
+		"/api/restaurant/inventory/{id}": {
+			"delete": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.DeleteModel.func3`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "DELETE_/api/restaurant/inventory/:id",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/okResponse"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/okResponse"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func3",
+				"tags": [
+					"/RESTAURANT"
+				]
+			},
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi.GetModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/restaurant/inventory/:id",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InventoryItem"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/InventoryItem"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func1",
+				"tags": [
+					"/RESTAURANT"
+				]
+			},
+			"put": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.UpdateModel[...].func2`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "PUT_/api/restaurant/inventory/:id",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"*/*": {
+							"schema": {
+								"$ref": "#/components/schemas/InventoryItem"
+							}
+						}
+					},
+					"description": "Request body for models.InventoryItem",
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InventoryItem"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/InventoryItem"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func2",
+				"tags": [
+					"/RESTAURANT"
+				]
+			}
+		},
+		"/api/restaurant/stats": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/restaurant.(*RestaurantModule).restaurantStats`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/restaurant/stats",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RestaurantStats"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/RestaurantStats"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "restaurant stats",
+				"tags": [
+					"/RESTAURANT"
+				]
+			}
+		},
+		"/api/restaurant/transactions/": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi.ListModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/restaurant/transactions/",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"schema": {
+							"type": "integer"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"schema": {
+							"type": "integer"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PaginatedResponse_models.MealTransaction"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/PaginatedResponse_models.MealTransaction"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func1",
+				"tags": [
+					"/RESTAURANT"
+				]
+			},
+			"post": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.CreateModel[...].func7`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "POST_/api/restaurant/transactions/",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"*/*": {
+							"schema": {
+								"$ref": "#/components/schemas/MealTransaction"
+							}
+						}
+					},
+					"description": "Request body for models.MealTransaction",
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MealTransaction"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/MealTransaction"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func7",
+				"tags": [
+					"/RESTAURANT"
+				]
+			}
+		},
+		"/api/restaurant/transactions/{id}": {
+			"delete": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.DeleteModel.func9`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "DELETE_/api/restaurant/transactions/:id",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/okResponse"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/okResponse"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func9",
+				"tags": [
+					"/RESTAURANT"
+				]
+			},
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi.GetModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/restaurant/transactions/:id",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MealTransaction"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/MealTransaction"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func1",
+				"tags": [
+					"/RESTAURANT"
+				]
+			},
+			"put": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.UpdateModel[...].func8`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "PUT_/api/restaurant/transactions/:id",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"*/*": {
+							"schema": {
+								"$ref": "#/components/schemas/MealTransaction"
+							}
+						}
+					},
+					"description": "Request body for models.MealTransaction",
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MealTransaction"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/MealTransaction"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func8",
+				"tags": [
+					"/RESTAURANT"
+				]
+			}
+		},
 		"/api/rooms/": {
 			"get": {
 				"description": "#### Controller: \n\n`hotel/internal/httpapi.ListModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
@@ -10434,6 +12190,9 @@
 		},
 		{
 			"name": "/RESERVATION"
+		},
+		{
+			"name": "/RESTAURANT"
 		},
 		{
 			"name": "/ROOMS"

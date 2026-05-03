@@ -2,10 +2,9 @@
   <div>
     <div class="mb-6">
       <UButton variant="ghost" to="/accounting/income" class="mb-4">
-        <UIcon name="i-lucide-arrow-left" class="mr-2" />{{
-          t("accounting.back_to_income")
-        }}</UButton
-      >
+        <UIcon name="i-lucide-arrow-left" class="mr-2" />
+        {{ t("accounting.back_to_income") }}
+      </UButton>
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
         {{ t("accounting.record_income") }}
       </h1>
@@ -107,12 +106,12 @@
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <UButton variant="outline" to="/accounting/income" :disabled="loading">{{
-            t("common.cancel")
-          }}</UButton>
-          <UButton type="submit" color="success" :loading="loading">{{
-            t("accounting.record_income")
-          }}</UButton>
+          <UButton variant="outline" to="/accounting/income" :disabled="loading">
+            {{ t("common.cancel") }}
+          </UButton>
+          <UButton type="submit" color="success" :loading="loading">
+            {{ t("accounting.record_income") }}
+          </UButton>
         </div>
       </form>
     </UCard>

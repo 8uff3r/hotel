@@ -91,16 +91,6 @@ type Amenity struct {
 	TranslateBase
 }
 
-type ParkingSpotType struct {
-	Base
-	TranslateBase
-}
-
-type ParkingSpotStatus struct {
-	Base
-	TranslateBase
-}
-
 type Guest struct {
 	ID           uint      `gorm:"primaryKey" json:"id"`
 	HotelID      *uint     `json:"hotelId"`
@@ -185,72 +175,148 @@ type Account struct {
 	NormalBalance  string `gorm:"not null;default:debit" json:"normalBalance"`
 }
 
+type PaymentMethod struct {
+	Base
+	TranslateBase
+}
+
+type PaymentStatus struct {
+	Base
+	TranslateBase
+	ColorHex string `gorm:"type:char(6);default:null" json:"colorHex,omitempty"`
+}
+type ExpenseCategory struct {
+	Base
+	TranslateBase
+}
+
 type Expense struct {
 	Base
-	HotelID       *uint     `json:"hotelId"`
-	ExpenseDate   time.Time `gorm:"not null" json:"expenseDate"`
-	Description   string    `gorm:"not null" json:"description"`
-	Amount        float64   `gorm:"not null" json:"amount"`
-	Category      string    `gorm:"not null" json:"category"`
-	Vendor        string    `json:"vendor"`
-	Reference     string    `json:"reference"`
-	PaymentMethod string    `json:"paymentMethod"`
-	PaymentStatus string    `gorm:"not null;default:pending" json:"paymentStatus"`
-	AccountID     *uint     `json:"accountId"`
-	Notes         string    `json:"notes"`
-	CreatedBy     *uint     `json:"createdBy"`
+	ExpenseDate time.Time `gorm:"not null" json:"expenseDate"`
+	Description string    `gorm:"not null" json:"description"`
+	Amount      float64   `gorm:"not null" json:"amount"`
+	Vendor      string    `json:"vendor"`
+	Reference   string    `json:"reference"`
+	Notes       string    `json:"notes"`
+	CreatedBy   *uint     `json:"createdBy"`
+
+	HotelID *uint `gorm:"not null" json:"hotelId"`
+	Hotel   Hotel `gorm:"foreignKey:HotelID" json:"hotel"`
+
+	AccountID *uint   `gorm:"not null" json:"accountId"`
+	Account   Account `gorm:"foreignKey:AccountID" json:"account,omitzero"`
+
+	CategoryID uint            `gorm:"not null" json:"categoryId"`
+	Category   ExpenseCategory `gorm:"foreignKey:CategoryID" json:"category,omitzero" translate:"true"`
+
+	PaymentStatusID uint          `gorm:"not null" json:"paymentStatusId"`
+	PaymentStatus   PaymentStatus `gorm:"foreignKey:PaymentStatusID" json:"paymentStatus,omitzero"`
+
+	PaymentMethodID uint   `gorm:"not null" json:"paymentMethodId"`
+	PaymentMethod   string `gorm:"foreignKey:PaymentMethodID" json:"paymentMethod,omitzero" translate:"true"`
+}
+
+type IncomeCategory struct {
+	Base
+	TranslateBase
 }
 
 type Income struct {
 	Base
-	HotelID       *uint     `json:"hotelId"`
-	IncomeDate    time.Time `gorm:"not null" json:"incomeDate"`
-	Description   string    `gorm:"not null" json:"description"`
-	Amount        float64   `gorm:"not null" json:"amount"`
-	Category      string    `gorm:"not null" json:"category"`
-	Source        string    `json:"source"`
-	Reference     string    `json:"reference"`
-	PaymentMethod string    `json:"paymentMethod"`
-	PaymentStatus string    `gorm:"not null;default:pending" json:"paymentStatus"`
-	AccountID     *uint     `json:"accountId"`
-	ReservationID *uint     `json:"reservationId"`
-	Notes         string    `json:"notes"`
-	CreatedBy     *uint     `json:"createdBy"`
+	IncomeDate  time.Time `gorm:"not null" json:"incomeDate"`
+	Description string    `gorm:"not null" json:"description"`
+	Amount      float64   `gorm:"not null" json:"amount"`
+	Source      string    `json:"source"`
+	Reference   string    `json:"reference"`
+	Notes       string    `json:"notes"`
+	CreatedBy   *uint     `json:"createdBy"`
+
+	HotelID *uint `gorm:"not null" json:"hotelId"`
+	Hotel   Hotel `gorm:"foreignKey:HotelID" json:"hotel"`
+
+	AccountID *uint   `gorm:"not null" json:"accountId"`
+	Account   Account `gorm:"foreignKey:AccountID" json:"account,omitzero"`
+
+	ReservationID *uint       `gorm:"not null" json:"reservationId"`
+	Reservation   Reservation `gorm:"foreignKey:ReservationID" json:"reservation"`
+
+	PaymentStatusID uint          `gorm:"not null" json:"paymentStatusId"`
+	PaymentStatus   PaymentStatus `gorm:"foreignKey:PaymentStatusID" json:"paymentStatus,omitzero"`
+
+	PaymentMethodID uint   `gorm:"not null" json:"paymentMethodId"`
+	PaymentMethod   string `gorm:"foreignKey:PaymentMethodID" json:"paymentMethod,omitzero" translate:"true"`
+
+	CategoryID uint           `gorm:"not null" json:"categoryId"`
+	Category   IncomeCategory `gorm:"foreignKey:CategoryID" json:"category,omitzero" translate:"true"`
+}
+
+type ParkingLotStatus struct {
+	Base
+	TranslateBase
 }
 
 type ParkingLot struct {
 	Base
-	HotelID     *uint   `json:"hotelId"`
 	Name        string  `gorm:"not null" json:"name"`
 	Location    string  `json:"location"`
 	TotalSpots  int     `gorm:"not null;default:0" json:"totalSpots"`
 	HourlyRate  float64 `gorm:"not null;default:0" json:"hourlyRate"`
 	DailyRate   float64 `gorm:"not null;default:0" json:"dailyRate"`
-	Status      string  `gorm:"not null;default:active" json:"status"`
 	Description string  `json:"description"`
+
+	StatusID uint             `gorm:"not null" json:"statusId"`
+	Status   ParkingLotStatus `gorm:"foreignKey:StatusID" json:"status,omitzero"`
+
+	HotelID *uint `gorm:"not null" json:"hotelId"`
+	Hotel   Hotel `gorm:"foreignKey:HotelID" json:"hotel"`
+}
+
+type ParkingSpotStatus struct {
+	Base
+	TranslateBase
+	ColorHex string `gorm:"type:char(6);default:null" json:"colorHex,omitempty"`
+}
+type ParkingSpotType struct {
+	Base
+	TranslateBase
 }
 
 type ParkingSpot struct {
 	Base
-	LotID       *uint  `json:"lotId"`
 	SpotNumber  string `gorm:"not null" json:"spotNumber"`
 	Floor       string `json:"floor"`
-	SpotType    string `gorm:"not null;default:standard" json:"spotType"`
-	Status      string `gorm:"not null;default:available" json:"status"`
 	IsCovered   bool   `gorm:"not null;default:false" json:"isCovered"`
 	Description string `json:"description"`
+
+	LotID *uint      `gorm:"not null" json:"lotId"`
+	Lot   ParkingLot `gorm:"foreignKey:LotID" json:"lot,omitzero"`
+
+	SpotTypeID uint            `gorm:"not null" json:"spotTypeId"`
+	SpotType   ParkingSpotType `gorm:"foreignKey:SpotTypeID" json:"spotType,omitzero"`
+
+	StatusID uint              `gorm:"not null" json:"statusId"`
+	Status   ParkingSpotStatus `gorm:"foreignKey:StatusID" json:"status,omitzero"`
+}
+
+type VehicleType struct {
+	Base
+	TranslateBase
 }
 
 type Vehicle struct {
 	Base
-	GuestID      *uint  `json:"guestId"`
 	LicensePlate string `gorm:"not null" json:"licensePlate"`
-	VehicleType  string `gorm:"not null;default:car" json:"vehicleType"`
 	Make         string `json:"make"`
 	Model        string `json:"model"`
 	Color        string `json:"color"`
 	IsRegistered bool   `gorm:"not null;default:true" json:"isRegistered"`
 	Notes        string `json:"notes"`
+
+	VehicleTypeID uint        `gorm:"not null" json:"vehicleType"`
+	VehicleType   VehicleType `gorm:"not null;foreignKey:VehicleTypeID" json:"vehicle"`
+
+	GuestID uint  `gorm:"not null" json:"guestId"`
+	Guest   Guest `gorm:"foreignKey:GuestID" json:"guest,omitzero"`
 }
 
 type ParkingTransaction struct {
@@ -282,9 +348,11 @@ func AllForDb() []any {
 	return []any{
 		&User{}, &Session{}, &Hotel{}, &Room{}, &Guest{}, &Reservation{}, &Payment{}, &Account{},
 		&Expense{}, &Income{}, &ParkingLot{}, &ParkingSpot{}, &Vehicle{}, &ParkingTransaction{}, &Amenity{},
-		&ParkingSpotType{}, &ParkingSpotStatus{}, &UserHotel{}, &Permission{}, &PermissionTemplate{},
-		&UserPermission{}, &UserTemplate{}, &SanaGuest{}, &SanaRoomRack{},
+		&ParkingLotStatus{}, &ParkingSpotType{}, &ParkingSpotStatus{}, &UserHotel{}, &Permission{}, &PermissionTemplate{}, &UserPermission{}, &UserTemplate{}, &SanaGuest{}, &SanaRoomRack{},
 		&TravelReason{}, &FamilyRelationship{}, &Nationality{}, &Country{}, &Occupation{},
+		&InventoryItem{}, &RestaurantBill{}, &MealTransaction{}, &VehicleType{},
+		&IncomeCategory{}, &ExpenseCategory{}, &PaymentStatus{}, &PaymentMethod{},
+		&InventoryItemCategory{}, &InventoryItemUnit{}, &InventoryItemStatus{}, &RestaurantBillStatus{},
 	}
 }
 
@@ -307,6 +375,7 @@ func AllForTypeGen() []any {
 		Expense{}, Income{}, ParkingLot{}, ParkingSpot{}, Vehicle{}, ParkingTransaction{}, Amenity{}, ParkingSpotType{}, ParkingSpotStatus{}, ParkingStats{}, SanitizedUser{}, UserHotelInfo{},
 		Permission{}, PermissionTemplate{}, UserPermission{}, UserTemplate{},
 		TravelReason{}, FamilyRelationship{}, Nationality{}, Country{}, Occupation{},
+		InventoryItem{}, RestaurantBill{}, MealTransaction{}, RestaurantStats{},
 	}
 }
 
@@ -332,4 +401,105 @@ type UserTemplateInfo struct {
 	TranslateBase
 	TemplateID  uint   `json:"templateId"`
 	Description string `json:"description"`
+}
+
+type InventoryItemUnit struct {
+	Base
+	TranslateBase
+}
+
+type InventoryItemStatus struct {
+	Base
+	TranslateBase
+	ColorHex string `gorm:"type:char(6);default:null" json:"colorHex,omitempty"`
+}
+
+type InventoryItemCategory struct {
+	Base
+	TranslateBase
+}
+
+type InventoryItem struct {
+	Base
+	Name         string  `gorm:"not null" json:"name"`
+	Quantity     float64 `gorm:"not null;default:0" json:"quantity"`
+	UnitCost     float64 `gorm:"not null;default:0" json:"unitCost"`
+	ReorderLevel float64 `gorm:"not null;default:0" json:"reorderLevel"`
+	IsActive     bool    `gorm:"not null;default:true" json:"isActive"`
+	Description  string  `json:"description"`
+
+	UnitID uint              `gorm:"not null" json:"unitId"`
+	Unit   InventoryItemUnit `gorm:"foreignKey:UnitID" json:"unit,omitzero"`
+
+	CategoryID uint                  `gorm:"not null" json:"categoryId"`
+	Category   InventoryItemCategory `gorm:"foreignKey:CategoryID" json:"category,omitzero"`
+
+	StatusID uint                `gorm:"not null" json:"statusId"`
+	Status   InventoryItemStatus `gorm:"foreignKey:StatusID" json:"status,omitzero"`
+
+	HotelID *uint `gorm:"not null" json:"hotelId"`
+	Hotel   Hotel `gorm:"foreignKey:HotelID" json:",omitzero"`
+}
+
+type RestaurantBillStatus struct {
+	Base
+	TranslateBase
+	ColorHex string `gorm:"type:char(6);default:null" json:"colorHex,omitempty"`
+}
+
+type RestaurantBill struct {
+	Base
+	BillDate           time.Time  `gorm:"not null" json:"billDate"`
+	Subtotal           float64    `gorm:"not null;default:0" json:"subtotal"`
+	TaxAmount          float64    `gorm:"not null;default:0" json:"taxAmount"`
+	DiscountAmount     float64    `gorm:"not null;default:0" json:"discountAmount"`
+	TotalAmount        float64    `gorm:"not null;default:0" json:"totalAmount"`
+	IsExternal         bool       `gorm:"not null;default:false" json:"isExternal"`
+	ExternalRestaurant string     `json:"externalRestaurant"`
+	Notes              string     `json:"notes"`
+	Settled            bool       `gorm:"not null;default:false" json:"settled"`
+	SettledAt          *time.Time `json:"settledAt"`
+	SettledBy          *uint      `json:"settledBy"`
+
+	HotelID *uint `gorm:"not null" json:"hotelId"`
+	Hotel   Hotel `gorm:"foreignKey:HotelID" json:",omitzero"`
+
+	ReservationID *uint       `gorm:"index" json:"reservationId"`
+	Reservation   Reservation `gorm:"foreignKey:ReservationID" json:"reservation,omitzero"`
+
+	GuestID *uint `gorm:"index" json:"guestId"`
+	Guest   Guest `gorm:"foreignKey:GuestID" json:"guest,omitzero"`
+
+	RoomID *uint `json:"roomId"`
+	Room   Room  `gorm:"foreignKey:RoomID" json:"room,omitzero"`
+
+	StatusID uint                 `gorm:"not null" json:"statusId"`
+	Status   RestaurantBillStatus `gorm:"foreignKey:StatusID" json:"status,omitzero"`
+}
+
+type RestaurantStats struct {
+	TotalBills      int64   `json:"totalBills"`
+	TotalRevenue    float64 `json:"totalRevenue"`
+	InternalRevenue float64 `json:"internalRevenue"`
+	ExternalRevenue float64 `json:"externalRevenue"`
+	TotalMeals      int64   `json:"totalMeals"`
+}
+
+type MealTransaction struct {
+	Base
+	ItemName   string  `gorm:"not null" json:"itemName"`
+	Quantity   float64 `gorm:"not null" json:"quantity"`
+	UnitPrice  float64 `gorm:"not null" json:"unitPrice"`
+	TotalPrice float64 `gorm:"not null" json:"totalPrice"`
+	IsExternal bool    `gorm:"not null;default:false" json:"isExternal"`
+	Notes      string  `json:"notes"`
+
+	InventoryItemID *uint         `json:"inventoryItemId"`
+	InventoryItem   InventoryItem `gorm:"foreignKey:InventoryItemID" json:"inventoryItem"`
+
+	BillID uint           `gorm:"not null;index" json:"billId"`
+	Bill   RestaurantBill `gorm:"foreignKey:BillID" json:"-"`
+
+	HotelID *uint `gorm:"not null" json:"hotelId"`
+	Hotel   Hotel `gorm:"foreignKey:HotelID" json:"hotel"`
 }

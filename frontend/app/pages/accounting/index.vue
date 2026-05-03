@@ -76,10 +76,9 @@
         <UIcon name="i-lucide-minus" class="mr-2" />{{ t("accounting.record_expense") }}</UButton
       >
       <UButton to="/accounting/accounts" color="info" variant="outline" block size="lg">
-        <UIcon name="i-lucide-book-open" class="mr-2" />{{
-          t("accounting.chart_of_accounts")
-        }}</UButton
-      >
+        <UIcon name="i-lucide-book-open" class="mr-2" />
+        {{ t("accounting.chart_of_accounts") }}
+      </UButton>
     </div>
 
     <!-- Recent Transactions -->
@@ -89,9 +88,9 @@
         <template #header>
           <div class="flex items-center justify-between">
             <h3 class="text-lg font-semibold">{{ t("accounting.recent_income") }}</h3>
-            <UButton variant="ghost" size="sm" to="/accounting/income">{{
-              t("accounting.view_all")
-            }}</UButton>
+            <UButton variant="ghost" size="sm" to="/accounting/income">
+              {{ t("accounting.view_all") }}
+            </UButton>
           </div>
         </template>
 

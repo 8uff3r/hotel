@@ -32,9 +32,16 @@ func Seed(db *gorm.DB, cfg config.Config) {
 	seedParkingSpotTypes(db)
 	seedRoomStatuses(db)
 	seedRoomTypes(db)
+	seedParkingLotStatuses(db)
+	seedExpenseCategories(db)
+	seedIncomeCategories(db)
+	seedPaymentStatuses(db)
+	seedPaymentMethods(db)
+	seedVehicleTypes(db)
 	seedPermissions(db)
 	seedPermissionTemplates(db)
 	seedSanaReferenceData(db, cfg)
+	seedRestaurantReferenceData(db)
 }
 
 func seed[T any](db *gorm.DB, defaultValues []T) error {

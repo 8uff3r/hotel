@@ -2,10 +2,9 @@
   <div>
     <div class="mb-6">
       <UButton variant="ghost" to="/accounting/expenses" class="mb-4">
-        <UIcon name="i-lucide-arrow-left" class="mr-2" />{{
-          t("accounting.back_to_expenses")
-        }}</UButton
-      >
+        <UIcon name="i-lucide-arrow-left" class="mr-2" />
+        {{ t("accounting.back_to_expenses") }}
+      </UButton>
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
         {{ t("accounting.record_expense") }}
       </h1>
@@ -109,9 +108,9 @@
           <UButton variant="outline" to="/accounting/expenses" :disabled="loading">{{
             t("common.cancel")
           }}</UButton>
-          <UButton type="submit" color="error" :loading="loading">{{
-            t("accounting.record_expense")
-          }}</UButton>
+          <UButton type="submit" color="error" :loading="loading">
+            {{ t("accounting.record_expense") }}
+          </UButton>
         </div>
       </form>
     </UCard>

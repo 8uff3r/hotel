@@ -31,11 +31,6 @@ export const useAuthStore = defineStore(
       return userHotels.value ?? [];
     });
 
-    const availableRoles = computed(() => {
-      const hotel = availableHotels.value.find((h: any) => h.hotelId === currentHotelId.value);
-      return hotel?.role ? [hotel.role] : [];
-    });
-
     const currentHotelName = computed(() => {
       const hotel = availableHotels.value.find((h: any) => h.hotelId === currentHotelId.value);
       return hotel?.hotel?.name ?? "";
@@ -68,9 +63,6 @@ export const useAuthStore = defineStore(
         userHotels.value = (u.userHotels as UserHotelInfo[]) ?? [];
         currentHotelId.value = hotelId ?? "";
         permissions.value = perms ?? [];
-
-        const hotel = userHotels.value?.find((h: any) => h.hotelId === hotelId);
-        currentRole.value = hotel?.role;
 
         isAuthenticated.value = true;
 
@@ -128,18 +120,10 @@ export const useAuthStore = defineStore(
       }
     }
 
-    function switchRole(roleId: number) {
-      const role = availableRoles.value.find((v: any) => v.id === roleId);
-      if (role) {
-        currentRole.value = role;
-      }
-    }
-
     async function switchHotel(hotelId: string) {
       const hotel = availableHotels.value.find((h: any) => h.hotelId === hotelId);
       if (hotel) {
         currentHotelId.value = hotelId;
-        currentRole.value = hotel.role;
         setHotelCookie(hotelId);
       }
     }
@@ -171,13 +155,11 @@ export const useAuthStore = defineStore(
       canDelete,
       canExport,
       canAccess,
-      availableRoles,
       availableHotels,
       currentHotelName,
       login,
       logout,
       fetchUser,
-      switchRole,
       switchHotel,
     };
   },

@@ -4,8 +4,9 @@ hotel/app/pages/accounting/income/index.vue ``` ```vue
     <div class="mb-6 flex items-center justify-between">
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t("accounting.income") }}</h1>
       <UButton to="/accounting/income/create" color="success">
-        <UIcon name="i-lucide-plus" class="mr-2" />{{ t("accounting.record_income") }}</UButton
-      >
+        <UIcon name="i-lucide-plus" class="mr-2" />
+        {{ t("accounting.record_income") }}
+      </UButton>
     </div>
 
     <!-- Filters -->
@@ -124,22 +125,15 @@ hotel/app/pages/accounting/income/index.vue ``` ```vue
 
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
+import type { PaginatedResponseModelsIncome } from "~/utils/client";
 
 definePageMeta({
   requiresRole: ["admin", "manager"],
 });
 
-interface IncomeRow {
-  id: number;
-  description: string;
-  amount: string | number;
-  category: string;
-  incomeDate: string;
-  paymentStatus: string;
-  source: string | null;
-}
+type Income = NonNullable<PaginatedResponseModelsIncome["data"]>[0];
 
-const columns: TableColumn<IncomeRow>[] = [
+const columns: TableColumn<Income>[] = [
   { accessorKey: "id", header: "ID" },
   { accessorKey: "description", header: "Description" },
   { accessorKey: "amount", header: "Amount" },
@@ -165,7 +159,7 @@ const paymentStatusOptions = [
   { value: "refunded", label: "Refunded" },
 ];
 
-const incomeList = ref<IncomeRow[]>([]);
+const incomeList = ref<Income[]>([]);
 const { t } = useI18n();
 const loading = ref(false);
 const page = ref(1);
@@ -209,10 +203,15 @@ const fetchIncome = async () => {
     if (filters.dateFrom) params.append("dateFrom", filters.dateFrom);
     if (filters.dateTo) params.append("dateTo", filters.dateTo);
 
-    const response = await $fetch(`/api/income?${params.toString()}`);
-    incomeList.value = response.data;
-    pagination.total = response.pagination.total;
-    pagination.totalPages = response.pagination.totalPages;
+    const response = await getApiAccountingIncome({
+      query: {
+        limit: pagination.limit,
+        page: pagination.page,
+      },
+    });
+    incomeList.value = response.data ?? [];
+    pagination.total = response.total ?? 0;
+    pagination.totalPages = response.totalPages ?? 1;
   } catch (error) {
     console.error("Failed to fetch income:", error);
   } finally {
@@ -230,15 +229,19 @@ const clearFilters = () => {
   fetchIncome();
 };
 
-const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString("en-US", {
+const { locale } = useI18n();
+
+const formatDate = (date: string | undefined) => {
+  if (!date) return "";
+  return new Date(date).toLocaleDateString(locale.value, {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
 };
 
-const formatCategory = (category: string): string => {
+const formatCategory = (category: string | undefined): string => {
+  if (!category) return "";
   const categories: Record<string, string> = {
     room_revenue: "Room Revenue",
     food_beverage: "Food & Beverage",
@@ -250,7 +253,10 @@ const formatCategory = (category: string): string => {
   return categories[category] || category;
 };
 
-const getStatusColor = (status: string): "success" | "warning" | "error" => {
+const getStatusColor = (
+  status: string | undefined
+): "success" | "warning" | "error" | "neutral" => {
+  if (!status) return "neutral";
   const colors: Record<string, "success" | "warning" | "error"> = {
     received: "success",
     pending: "warning",
