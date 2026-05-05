@@ -24,6 +24,10 @@ type Permission struct {
 	Category    PermissionCategory `gorm:"not null;foreignKey:CategoryID" json:"category"`
 }
 
+func (t Permission) UniqueCondition() any {
+	return map[string]any{"resource": t.Resource, "action": t.Action}
+}
+
 type PermissionTemplate struct {
 	Base
 	TranslateBase

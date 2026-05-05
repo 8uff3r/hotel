@@ -44,22 +44,33 @@ func Seed(db *gorm.DB, cfg config.Config) {
 	seedRestaurantReferenceData(db)
 }
 
-func seed[T any](db *gorm.DB, defaultValues []T) error {
-	var count int64
+type Seedable interface {
+	UniqueCondition() any
+}
+
+func seed[T Seedable](db *gorm.DB, values []T) error {
+	if len(values) == 0 {
+		return nil
+	}
+
 	var model T
-
-	if len(defaultValues) == 0 {
-		return nil
-	}
-
+	var count int64
 	if err := db.Model(&model).Count(&count).Error; err != nil {
-		return fmt.Errorf("error while seeding the db: %w", err)
+		return fmt.Errorf("error counting %T: %w", model, err)
 	}
-	if count > 0 {
-		return nil
-	}
-	db.CreateInBatches(defaultValues, 100)
 
+	// Table is empty — bulk insert is much faster
+	if count == 0 {
+		return db.CreateInBatches(values, 100).Error
+	}
+
+	// Table already has data — use FirstOrCreate to fill any gaps
+	for i := range values {
+		result := db.Where(values[i].UniqueCondition()).FirstOrCreate(&values[i])
+		if result.Error != nil {
+			return fmt.Errorf("error seeding %T: %w", values[i], result.Error)
+		}
+	}
 	return nil
 }
 

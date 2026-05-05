@@ -16,6 +16,10 @@ type TranslateBase struct {
 	Translation Translation `gorm:"type:jsonb" json:"-"`
 }
 
+func (t TranslateBase) UniqueCondition() any {
+	return map[string]any{"slug": t.Slug}
+}
+
 type Translatable interface {
 	GetTranslation() Translation
 	SetLabel(string)
