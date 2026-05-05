@@ -11,7 +11,7 @@ backend-dev:
 	air
 
 frontend-dev:
-	cd wails/frontend && bun run dev
+	cd frontend && bun run dev
 
 
 build: frontend-build backend-build
@@ -20,7 +20,7 @@ backend-build:
     go build ./cmd/server
 
 frontend-build:
-    cd wails/frontend && bun run build
+    cd frontend && bun run build
 
 gen-routes:
     go run "cmd/codegen/route-types/main.go" && cd frontend && bun run fmt
