@@ -19,8 +19,9 @@
         class="w-full sm:w-64"
         @input="debouncedSearch"
       />
-      <USelect
+      <HSelectMenu
         v-model="filters.category"
+        clear
         :items="categoryOptions"
         :placeholder="t('restaurant.allCategories')"
         class="w-full sm:w-40"
@@ -44,7 +45,11 @@
       </template>
 
       <template #quantity-cell="{ row }">
-        <span :class="{ 'text-red-500': row.original.quantity <= row.original.reorderLevel }">
+        <span
+          :class="{
+            'text-red-500': (row.original.quantity ?? 0) <= (row.original.reorderLevel ?? 0),
+          }"
+        >
           {{ row.original.quantity }} {{ row.original.unit }}
         </span>
       </template>
@@ -89,39 +94,39 @@
 
     <template #body>
       <UForm :state="form" class="space-y-4">
-        <UFormGroup :label="t('restaurant.itemName')" required>
+        <UFormField :label="t('restaurant.itemName')" required>
           <UInput v-model="form.name" />
-        </UFormGroup>
+        </UFormField>
 
-        <UFormGroup :label="t('restaurant.category')" required>
-          <USelect v-model="form.category" :items="categorySelectOptions" />
-        </UFormGroup>
+        <UFormField :label="t('restaurant.category')" required>
+          <HSelect v-model="form.category" :items="categoryOptions" />
+        </UFormField>
 
-        <UFormGroup :label="t('restaurant.unit')" required>
-          <USelect v-model="form.unit" :items="unitOptions" />
-        </UFormGroup>
+        <UFormField :label="t('restaurant.unit')" required>
+          <HSelect v-model="form.unit" :items="unitOptions" />
+        </UFormField>
 
         <div class="grid grid-cols-2 gap-4">
-          <UFormGroup :label="t('restaurant.quantity')" required>
+          <UFormField :label="t('restaurant.quantity')" required>
             <UInput v-model="form.quantity" type="number" min="0" />
-          </UFormGroup>
+          </UFormField>
 
-          <UFormGroup :label="t('restaurant.unitCost')" required>
+          <UFormField :label="t('restaurant.unitCost')" required>
             <UInput v-model="form.unitCost" type="number" min="0" step="0.01" />
-          </UFormGroup>
+          </UFormField>
         </div>
 
-        <UFormGroup :label="t('restaurant.reorderLevel')">
+        <UFormField :label="t('restaurant.reorderLevel')">
           <UInput v-model="form.reorderLevel" type="number" min="0" />
-        </UFormGroup>
+        </UFormField>
 
-        <UFormGroup :label="t('restaurant.description')">
+        <UFormField :label="t('restaurant.description')">
           <UTextarea v-model="form.description" :rows="3" />
-        </UFormGroup>
+        </UFormField>
 
-        <UFormGroup :label="t('common.status')">
+        <UFormField :label="t('common.status')">
           <UCheckbox v-model="form.isActive">{{ t("restaurant.active") }}</UCheckbox>
-        </UFormGroup>
+        </UFormField>
       </UForm>
     </template>
 
@@ -158,13 +163,16 @@
 
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
+import { useAuthStore } from "~/stores/auth";
 import type { PaginatedResponseModelsInventoryItem, InventoryItem } from "~/utils/client";
 
 definePageMeta({
   requiresPermission: PERMISSIONS.restaurant.restaurantInventory.read,
 });
 
-const canCreate = useAuthStore().can(PERMISSIONS.restaurant.restaurantInventory.create);
+const authStore = useAuthStore();
+
+const canCreate = authStore.can(PERMISSIONS.restaurant.restaurantInventory.create);
 
 const { t } = useI18n();
 const columns = computed<TableColumn<InventoryItem>[]>(() => [
@@ -176,28 +184,13 @@ const columns = computed<TableColumn<InventoryItem>[]>(() => [
   { accessorKey: "actions", header: t("restaurant.columns.actions") },
 ]);
 
-const categoryOptions = computed(() => [
-  { value: "", label: t("restaurant.allCategories") },
-  { value: "food", label: t("restaurant.categories.food") },
-  { value: "beverage", label: t("restaurant.categories.beverage") },
-  { value: "dessert", label: t("restaurant.categories.dessert") },
-  { value: "other", label: t("restaurant.categories.other") },
-]);
+const { data: categoryOptions } = useAsyncData(() => getApiRestaurantInventoryCategories({}), {
+  transform: (response) => response.data,
+});
 
-const categorySelectOptions = computed(() => [
-  { value: "food", label: t("restaurant.categories.food") },
-  { value: "beverage", label: t("restaurant.categories.beverage") },
-  { value: "dessert", label: t("restaurant.categories.dessert") },
-  { value: "other", label: t("restaurant.categories.other") },
-]);
-
-const unitOptions = computed(() => [
-  { value: "piece", label: t("restaurant.units.piece") },
-  { value: "gram", label: t("restaurant.units.gram") },
-  { value: "kilogram", label: t("restaurant.units.kilogram") },
-  { value: "liter", label: t("restaurant.units.liter") },
-  { value: "pack", label: t("restaurant.units.pack") },
-]);
+const { data: unitOptions } = useAsyncData(() => getApiRestaurantInventoryUnits({}), {
+  transform: (response) => response.data,
+});
 
 const pagination = reactive({ page: 1, limit: 20, total: 0, totalPages: 0 });
 const page = computed({
@@ -208,7 +201,10 @@ const page = computed({
   },
 });
 
-const filters = reactive({ search: "", category: "" });
+const filters = reactive<{ search: string | undefined; category: string | undefined }>({
+  search: undefined,
+  category: undefined,
+});
 let searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const debouncedSearch = () => {

@@ -98,8 +98,13 @@
                   {{ t("restaurant.internal") }}
                 </UBadge>
               </div>
-              <UBadge :color="getStatusColor(bill.status)" variant="soft">
-                {{ bill.status }}
+              <UBadge
+                :style="{
+                  backgroundColor: bill.status?.colorHex,
+                }"
+                variant="soft"
+              >
+                {{ bill.status?.label }}
               </UBadge>
             </div>
           </template>
@@ -365,11 +370,8 @@ const {
 
 const bills = computed(() => billsData.value ?? []);
 
-const { data: guestsData } = useAsyncData<Guest[]>("guests-select", async () => {
-  const response = await $fetch<PaginatedResponseModelsGuest>("/api/guests", {
-    query: { limit: 100 },
-  });
-  return response.data;
+const { data: guestsData } = useAsyncData("guests-select", () => getApiGuests({}), {
+  transform: (response) => response.data,
 });
 
 const guestOptions = computed(() =>
@@ -379,11 +381,8 @@ const guestOptions = computed(() =>
   }))
 );
 
-const { data: roomsData } = useAsyncData<Room[]>("rooms-select", async () => {
-  const response = await $fetch<PaginatedResponseModelsRoom>("/api/rooms", {
-    query: { limit: 100 },
-  });
-  return response.data;
+const { data: roomsData } = useAsyncData("rooms-select", () => getApiRooms({}), {
+  transform: (response) => response.data,
 });
 
 const roomOptions = computed(() =>
@@ -393,12 +392,13 @@ const roomOptions = computed(() =>
   }))
 );
 
-const { data: inventoryData } = useAsyncData<InventoryItem[]>("inventory-select", async () => {
-  const response = await $fetch<PaginatedResponseModelsInventoryItem>("/api/restaurant/inventory", {
-    query: { limit: 100 },
-  });
-  return response.data;
-});
+const { data: inventoryData } = useAsyncData(
+  "inventory-select",
+  () => getApiRestaurantInventory({}),
+  {
+    transform: (response) => response.data,
+  }
+);
 
 const inventoryOptions = computed(() =>
   (inventoryData.value ?? [])
@@ -411,8 +411,8 @@ const inventoryOptions = computed(() =>
 );
 
 const billForm = reactive({
-  guestId: null as number | null,
-  roomId: null as number | null,
+  guestId: undefined as number | undefined,
+  roomId: undefined as number | undefined,
   isExternal: false,
   externalRestaurant: "",
 });
@@ -429,8 +429,8 @@ const createBill = async () => {
         externalRestaurant: billForm.externalRestaurant,
       },
     });
-    billForm.guestId = null;
-    billForm.roomId = null;
+    billForm.guestId = undefined;
+    billForm.roomId = undefined;
     billForm.isExternal = false;
     billForm.externalRestaurant = "";
     await fetchBills();
@@ -456,7 +456,7 @@ const settleBill = async (bill: RestaurantBill) => {
 const mealModalOpen = ref(false);
 const savingMeal = ref(false);
 const mealForm = reactive({
-  inventoryItemId: null as number | null,
+  inventoryItemId: undefined as number | undefined,
   itemName: "",
   quantity: 1,
   unitPrice: 0,
@@ -467,7 +467,7 @@ const mealTotal = computed(() => mealForm.quantity * mealForm.unitPrice);
 
 const openMealModal = () => {
   if (!selectedBill.value) return;
-  mealForm.inventoryItemId = null;
+  mealForm.inventoryItemId = undefined;
   mealForm.itemName = "";
   mealForm.quantity = 1;
   mealForm.unitPrice = 0;
@@ -545,7 +545,7 @@ const deleteTransaction = async (transaction: MealTransaction) => {
   }
 };
 
-const formatDate = (date: string | Date) => {
+const formatDate = (date: string | Date | undefined) => {
   if (!date) return "-";
   return new Date(date).toLocaleDateString();
 };

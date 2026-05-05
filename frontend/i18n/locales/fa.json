@@ -72,19 +72,6 @@
       "price": "قیمت",
       "status": "وضعیت",
       "actions": "عملیات"
-    },
-    "categories": {
-      "food": "غذا",
-      "beverage": "نوشیدنی",
-      "dessert": "دسر",
-      "other": "سایر"
-    },
-    "units": {
-      "piece": "عدد",
-      "gram": "گرم",
-      "kilogram": "کیلوگرم",
-      "liter": "لیتر",
-      "pack": "بسته"
     }
   },
   "forms": {

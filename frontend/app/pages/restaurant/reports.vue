@@ -139,8 +139,13 @@
         </template>
 
         <template #status-cell="{ row }">
-          <UBadge :color="getStatusColor(row.original.status)" variant="soft">
-            {{ row.original.status }}
+          <UBadge
+            :style="{
+              backgroundColor: row.original.status?.colorHex,
+            }"
+            variant="soft"
+          >
+            {{ row.original.status?.label }}
           </UBadge>
         </template>
 
@@ -189,8 +194,13 @@
             </div>
             <div>
               <div class="text-sm text-gray-500">{{ t("common.status") }}</div>
-              <UBadge :color="getStatusColor(selectedBill.status)" variant="soft">
-                {{ selectedBill.status }}
+              <UBadge
+                :style="{
+                  backgroundColor: selectedBill.status?.colorHex,
+                }"
+                variant="soft"
+              >
+                {{ selectedBill.status?.label }}
               </UBadge>
             </div>
           </div>
@@ -288,12 +298,9 @@ const columns = computed<TableColumn<RestaurantBill>[]>(() => [
   { accessorKey: "actions", header: t("restaurant.columns.actions") },
 ]);
 
-const statusOptions = computed(() => [
-  { value: "", label: t("common.all_statuses") },
-  { value: "open", label: t("common.status") },
-  { value: "settled", label: t("accounting.settle") },
-  { value: "cancelled", label: t("parking.status_cancelled") },
-]);
+const { data: statusOptions } = useAsyncData(() => getApiRestaurantBillsStatuses({}), {
+  transform: (response) => response.data,
+});
 
 const pagination = reactive({ page: 1, limit: 20, total: 0, totalPages: 0 });
 const page = computed({
@@ -345,13 +352,13 @@ const {
 
 const bills = computed(() => billsData.value ?? []);
 
-const { data: stats } = useAsyncData<RestaurantStats>("restaurant-stats", async () => {
-  return await $fetch("/api/restaurant/stats");
-});
+const { data: stats } = useAsyncData<RestaurantStats>("restaurant-stats", () =>
+  getApiRestaurantStats({})
+);
 
 const internalPercentage = computed(() => {
   if (!stats.value || stats.value.totalRevenue === 0) return 0;
-  return Math.round((stats.value.internalRevenue / stats.value.totalRevenue) * 100);
+  return Math.round(((stats.value.internalRevenue ?? 0) / (stats.value.totalRevenue ?? 1)) * 100);
 });
 
 const detailModalOpen = ref(false);
@@ -382,7 +389,7 @@ const settleBill = async (bill: RestaurantBill) => {
   await confirmSettle();
 };
 
-const formatDate = (date: string | Date) => {
+const formatDate = (date: string | Date | undefined) => {
   if (!date) return "-";
   return new Date(date).toLocaleDateString();
 };

@@ -72,19 +72,6 @@
       "price": "Price",
       "status": "Status",
       "actions": "Actions"
-    },
-    "categories": {
-      "food": "Food",
-      "beverage": "Beverage",
-      "dessert": "Dessert",
-      "other": "Other"
-    },
-    "units": {
-      "piece": "Piece",
-      "gram": "Gram",
-      "kilogram": "Kilogram",
-      "liter": "Liter",
-      "pack": "Pack"
     }
   },
   "forms": {

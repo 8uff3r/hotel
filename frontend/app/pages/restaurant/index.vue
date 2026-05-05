@@ -6,24 +6,24 @@
 
     <!-- Sub Navigation -->
     <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <UCard
-        v-for="item in navItems"
-        :key="item.to"
-        :to="item.to"
-        class="cursor-pointer transition-all hover:ring-2 hover:ring-primary-500"
-      >
-        <div class="flex items-center gap-4">
-          <div class="flex h-12 w-12 items-center justify-center rounded-lg" :class="item.bgColor">
-            <UIcon :name="item.icon" class="h-6 w-6 text-white" />
+      <NuxtLink v-for="item in navItems" :key="item.to" :to="item.to">
+        <UCard class="cursor-pointer transition-all hover:ring-2 hover:ring-primary-500">
+          <div class="flex items-center gap-4">
+            <div
+              class="flex h-12 w-12 items-center justify-center rounded-lg"
+              :class="item.bgColor"
+            >
+              <UIcon :name="item.icon" class="h-6 w-6 text-white" />
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900 dark:text-white">
+                {{ t(item.label) }}
+              </h3>
+              <p class="text-sm text-gray-500">{{ item.description }}</p>
+            </div>
           </div>
-          <div>
-            <h3 class="font-semibold text-gray-900 dark:text-white">
-              {{ t(item.label) }}
-            </h3>
-            <p class="text-sm text-gray-500">{{ item.description }}</p>
-          </div>
-        </div>
-      </UCard>
+        </UCard>
+      </NuxtLink>
     </div>
 
     <!-- Stats Overview -->
@@ -75,6 +75,7 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from "~/stores/auth";
 import type { RestaurantStats } from "~/utils/client";
 
 definePageMeta({
@@ -83,6 +84,7 @@ definePageMeta({
 
 const { t } = useI18n();
 
+const authStore = useAuthStore();
 const navItems = computed(() =>
   [
     {
@@ -109,13 +111,13 @@ const navItems = computed(() =>
       permission: PERMISSIONS.restaurant.restaurantReports.read,
       bgColor: "bg-purple-500",
     },
-  ].filter((item) => useAuthStore().can(item.permission))
+  ].filter((item) => authStore.can(item.permission))
 );
 
 const { data: stats, pending: statsPending } = useAsyncData<RestaurantStats>(
   "restaurant-stats",
   async () => {
-    return await $fetch("/api/restaurant/stats");
+    return await getApiRestaurantStats({});
   }
 );
 </script>

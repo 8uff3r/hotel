@@ -24,8 +24,13 @@ func (m RestaurantModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Put(inventoryGroup, "/{id}", h.UpdateModel(api.Db, models.InventoryItem{}))
 	fuego.Delete(inventoryGroup, "/{id}", h.DeleteModel(api.Db, models.InventoryItem{}))
 
+	fuego.Get(inventoryGroup, "/categories", h.ListModel(api.Db, models.InventoryItemCategory{}, h.WithTranslation()))
+	fuego.Get(inventoryGroup, "/units", h.ListModel(api.Db, models.InventoryItemUnit{}, h.WithTranslation()))
+	fuego.Get(inventoryGroup, "/statuses", h.ListModel(api.Db, models.InventoryItemStatus{}, h.WithTranslation()))
+
 	billsGroup := fuego.Group(s, "/bills")
 	fuego.Get(billsGroup, "/", h.ListModel(api.Db, models.RestaurantBill{}))
+	fuego.Get(billsGroup, "/statuses", h.ListModel(api.Db, models.RestaurantBillStatus{}))
 	fuego.Post(billsGroup, "/", h.CreateModel(api.Db, models.RestaurantBill{}))
 	fuego.Get(billsGroup, "/{id}", h.GetModel(api.Db, models.RestaurantBill{}))
 	fuego.Put(billsGroup, "/{id}", h.UpdateModel(api.Db, models.RestaurantBill{}))

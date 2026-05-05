@@ -37,17 +37,49 @@ export type Country = {
  * Expense schema
  */
 export type Expense = {
+    account?: {
+        accountCode?: string;
+        accountName?: string;
+        accountSubType?: string;
+        accountType?: string;
+        description?: string;
+        hotelId?: number;
+        id?: number;
+        isActive?: boolean;
+        isSystem?: boolean;
+        normalBalance?: string;
+        parentId?: number;
+    };
     accountId?: number;
     amount?: number;
-    category?: string;
+    category?: {
+        id?: number;
+        label?: string;
+        slug?: string;
+    };
+    categoryId?: number;
     createdBy?: number;
     description?: string;
     expenseDate?: string;
+    hotel?: {
+        address?: string;
+        email?: string;
+        id?: string;
+        name?: string;
+        phone?: string;
+    };
     hotelId?: number;
     id?: number;
     notes?: string;
     paymentMethod?: string;
-    paymentStatus?: string;
+    paymentMethodId?: number;
+    paymentStatus?: {
+        colorHex?: string;
+        id?: number;
+        label?: string;
+        slug?: string;
+    };
+    paymentStatusId?: number;
     reference?: string;
     vendor?: string;
 };
@@ -530,18 +562,106 @@ export type Hotel = {
  * Income schema
  */
 export type Income = {
+    account?: {
+        accountCode?: string;
+        accountName?: string;
+        accountSubType?: string;
+        accountType?: string;
+        description?: string;
+        hotelId?: number;
+        id?: number;
+        isActive?: boolean;
+        isSystem?: boolean;
+        normalBalance?: string;
+        parentId?: number;
+    };
     accountId?: number;
     amount?: number;
-    category?: string;
+    category?: {
+        id?: number;
+        label?: string;
+        slug?: string;
+    };
+    categoryId?: number;
     createdBy?: number;
     description?: string;
+    hotel?: {
+        address?: string;
+        email?: string;
+        id?: string;
+        name?: string;
+        phone?: string;
+    };
     hotelId?: number;
     id?: number;
     incomeDate?: string;
     notes?: string;
     paymentMethod?: string;
-    paymentStatus?: string;
+    paymentMethodId?: number;
+    paymentStatus?: {
+        colorHex?: string;
+        id?: number;
+        label?: string;
+        slug?: string;
+    };
+    paymentStatusId?: number;
     reference?: string;
+    reservation?: {
+        breakfast?: boolean;
+        departureDate?: string;
+        destination?: string;
+        durationOfStay?: number;
+        entryDate?: string;
+        guestId?: number;
+        guide?: boolean;
+        hotelId?: string;
+        id?: number;
+        notes?: string;
+        numberOfPeople?: number;
+        origin?: string;
+        payment?: {
+            agency?: boolean;
+            contractType?: string;
+            id?: number;
+            isCash?: boolean;
+            referrer?: string;
+            reservationId?: number;
+        };
+        purposeOfTravel?: string;
+        reservationCode?: string;
+        roomPrice?: number;
+        rooms?: Array<{
+            amenities?: Array<{
+                id?: number;
+                label?: string;
+                slug?: string;
+            }>;
+            basePrice?: number;
+            capacity?: number;
+            description?: string;
+            floor?: number;
+            hotelId?: number;
+            id?: number;
+            name?: string;
+            roomNumber: string;
+            roomType?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            roomTypeId?: number;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
+        }>;
+        userCheckIn?: string;
+        userCheckOut?: string;
+    };
     reservationId?: number;
     source?: string;
 };
@@ -550,7 +670,19 @@ export type Income = {
  * InventoryItem schema
  */
 export type InventoryItem = {
-    category?: string;
+    Hotel?: {
+        address?: string;
+        email?: string;
+        id?: string;
+        name?: string;
+        phone?: string;
+    };
+    category?: {
+        id?: number;
+        label?: string;
+        slug?: string;
+    };
+    categoryId?: number;
     description?: string;
     hotelId?: number;
     id?: number;
@@ -558,8 +690,20 @@ export type InventoryItem = {
     name?: string;
     quantity?: number;
     reorderLevel?: number;
-    unit?: string;
+    status?: {
+        colorHex?: string;
+        id?: number;
+        label?: string;
+        slug?: string;
+    };
+    statusId?: number;
+    unit?: {
+        id?: number;
+        label?: string;
+        slug?: string;
+    };
     unitCost?: number;
+    unitId?: number;
 };
 
 /**
@@ -591,8 +735,51 @@ export type MeResponse = {
  */
 export type MealTransaction = {
     billId?: number;
+    hotel?: {
+        address?: string;
+        email?: string;
+        id?: string;
+        name?: string;
+        phone?: string;
+    };
     hotelId?: number;
     id?: number;
+    inventoryItem?: {
+        Hotel?: {
+            address?: string;
+            email?: string;
+            id?: string;
+            name?: string;
+            phone?: string;
+        };
+        category?: {
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        categoryId?: number;
+        description?: string;
+        hotelId?: number;
+        id?: number;
+        isActive?: boolean;
+        name?: string;
+        quantity?: number;
+        reorderLevel?: number;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
+        unit?: {
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        unitCost?: number;
+        unitId?: number;
+    };
     inventoryItemId?: number;
     isExternal?: boolean;
     itemName?: string;
@@ -667,17 +854,49 @@ export type PaginatedResponseModelsAmenity = {
  */
 export type PaginatedResponseModelsExpense = {
     data?: Array<{
+        account?: {
+            accountCode?: string;
+            accountName?: string;
+            accountSubType?: string;
+            accountType?: string;
+            description?: string;
+            hotelId?: number;
+            id?: number;
+            isActive?: boolean;
+            isSystem?: boolean;
+            normalBalance?: string;
+            parentId?: number;
+        };
         accountId?: number;
         amount?: number;
-        category?: string;
+        category?: {
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        categoryId?: number;
         createdBy?: number;
         description?: string;
         expenseDate?: string;
+        hotel?: {
+            address?: string;
+            email?: string;
+            id?: string;
+            name?: string;
+            phone?: string;
+        };
         hotelId?: number;
         id?: number;
         notes?: string;
         paymentMethod?: string;
-        paymentStatus?: string;
+        paymentMethodId?: number;
+        paymentStatus?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        paymentStatusId?: number;
         reference?: string;
         vendor?: string;
     }>;
@@ -801,18 +1020,106 @@ export type PaginatedResponseModelsHotel = {
  */
 export type PaginatedResponseModelsIncome = {
     data?: Array<{
+        account?: {
+            accountCode?: string;
+            accountName?: string;
+            accountSubType?: string;
+            accountType?: string;
+            description?: string;
+            hotelId?: number;
+            id?: number;
+            isActive?: boolean;
+            isSystem?: boolean;
+            normalBalance?: string;
+            parentId?: number;
+        };
         accountId?: number;
         amount?: number;
-        category?: string;
+        category?: {
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        categoryId?: number;
         createdBy?: number;
         description?: string;
+        hotel?: {
+            address?: string;
+            email?: string;
+            id?: string;
+            name?: string;
+            phone?: string;
+        };
         hotelId?: number;
         id?: number;
         incomeDate?: string;
         notes?: string;
         paymentMethod?: string;
-        paymentStatus?: string;
+        paymentMethodId?: number;
+        paymentStatus?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        paymentStatusId?: number;
         reference?: string;
+        reservation?: {
+            breakfast?: boolean;
+            departureDate?: string;
+            destination?: string;
+            durationOfStay?: number;
+            entryDate?: string;
+            guestId?: number;
+            guide?: boolean;
+            hotelId?: string;
+            id?: number;
+            notes?: string;
+            numberOfPeople?: number;
+            origin?: string;
+            payment?: {
+                agency?: boolean;
+                contractType?: string;
+                id?: number;
+                isCash?: boolean;
+                referrer?: string;
+                reservationId?: number;
+            };
+            purposeOfTravel?: string;
+            reservationCode?: string;
+            roomPrice?: number;
+            rooms?: Array<{
+                amenities?: Array<{
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                }>;
+                basePrice?: number;
+                capacity?: number;
+                description?: string;
+                floor?: number;
+                hotelId?: number;
+                id?: number;
+                name?: string;
+                roomNumber: string;
+                roomType?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                roomTypeId?: number;
+                status?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                statusId?: number;
+            }>;
+            userCheckIn?: string;
+            userCheckOut?: string;
+        };
         reservationId?: number;
         source?: string;
     }>;
@@ -827,7 +1134,19 @@ export type PaginatedResponseModelsIncome = {
  */
 export type PaginatedResponseModelsInventoryItem = {
     data?: Array<{
-        category?: string;
+        Hotel?: {
+            address?: string;
+            email?: string;
+            id?: string;
+            name?: string;
+            phone?: string;
+        };
+        category?: {
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        categoryId?: number;
         description?: string;
         hotelId?: number;
         id?: number;
@@ -835,8 +1154,66 @@ export type PaginatedResponseModelsInventoryItem = {
         name?: string;
         quantity?: number;
         reorderLevel?: number;
-        unit?: string;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
+        unit?: {
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
         unitCost?: number;
+        unitId?: number;
+    }>;
+    limit?: number;
+    page?: number;
+    total?: number;
+    totalPages?: number;
+};
+
+/**
+ * PaginatedResponse_models.InventoryItemCategory schema
+ */
+export type PaginatedResponseModelsInventoryItemCategory = {
+    data?: Array<{
+        id?: number;
+        label?: string;
+        slug?: string;
+    }>;
+    limit?: number;
+    page?: number;
+    total?: number;
+    totalPages?: number;
+};
+
+/**
+ * PaginatedResponse_models.InventoryItemStatus schema
+ */
+export type PaginatedResponseModelsInventoryItemStatus = {
+    data?: Array<{
+        colorHex?: string;
+        id?: number;
+        label?: string;
+        slug?: string;
+    }>;
+    limit?: number;
+    page?: number;
+    total?: number;
+    totalPages?: number;
+};
+
+/**
+ * PaginatedResponse_models.InventoryItemUnit schema
+ */
+export type PaginatedResponseModelsInventoryItemUnit = {
+    data?: Array<{
+        id?: number;
+        label?: string;
+        slug?: string;
     }>;
     limit?: number;
     page?: number;
@@ -850,8 +1227,51 @@ export type PaginatedResponseModelsInventoryItem = {
 export type PaginatedResponseModelsMealTransaction = {
     data?: Array<{
         billId?: number;
+        hotel?: {
+            address?: string;
+            email?: string;
+            id?: string;
+            name?: string;
+            phone?: string;
+        };
         hotelId?: number;
         id?: number;
+        inventoryItem?: {
+            Hotel?: {
+                address?: string;
+                email?: string;
+                id?: string;
+                name?: string;
+                phone?: string;
+            };
+            category?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            categoryId?: number;
+            description?: string;
+            hotelId?: number;
+            id?: number;
+            isActive?: boolean;
+            name?: string;
+            quantity?: number;
+            reorderLevel?: number;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
+            unit?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            unitCost?: number;
+            unitId?: number;
+        };
         inventoryItemId?: number;
         isExternal?: boolean;
         itemName?: string;
@@ -873,12 +1293,24 @@ export type PaginatedResponseModelsParkingLot = {
     data?: Array<{
         dailyRate?: number;
         description?: string;
+        hotel?: {
+            address?: string;
+            email?: string;
+            id?: string;
+            name?: string;
+            phone?: string;
+        };
         hotelId?: number;
         hourlyRate?: number;
         id?: number;
         location?: string;
         name?: string;
-        status?: string;
+        status?: {
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
         totalSpots?: number;
     }>;
     limit?: number;
@@ -896,10 +1328,44 @@ export type PaginatedResponseModelsParkingSpot = {
         floor?: string;
         id?: number;
         isCovered?: boolean;
+        lot?: {
+            dailyRate?: number;
+            description?: string;
+            hotel?: {
+                address?: string;
+                email?: string;
+                id?: string;
+                name?: string;
+                phone?: string;
+            };
+            hotelId?: number;
+            hourlyRate?: number;
+            id?: number;
+            location?: string;
+            name?: string;
+            status?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
+            totalSpots?: number;
+        };
         lotId?: number;
         spotNumber?: string;
-        spotType?: string;
-        status?: string;
+        spotType?: {
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        spotTypeId?: number;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
     }>;
     limit?: number;
     page?: number;
@@ -912,6 +1378,7 @@ export type PaginatedResponseModelsParkingSpot = {
  */
 export type PaginatedResponseModelsParkingSpotStatus = {
     data?: Array<{
+        colorHex?: string;
         id?: number;
         label?: string;
         slug?: string;
@@ -1063,23 +1530,219 @@ export type PaginatedResponseModelsReservation = {
  */
 export type PaginatedResponseModelsRestaurantBill = {
     data?: Array<{
+        Hotel?: {
+            address?: string;
+            email?: string;
+            id?: string;
+            name?: string;
+            phone?: string;
+        };
         billDate?: string;
         discountAmount?: number;
         externalRestaurant?: string;
+        guest?: {
+            address?: string;
+            companions?: Array<{
+                firstName?: string;
+                guestId?: number;
+                id?: number;
+                idNumber?: string;
+                lastName?: string;
+                nationalId?: string;
+                relation?: string;
+            }>;
+            dateOfBirth?: string;
+            fatherName?: string;
+            firstName: string;
+            gender?: string;
+            hotelId?: number;
+            id?: number;
+            idNumber?: string;
+            lastName?: string;
+            nationalId?: string;
+            nationality?: string;
+            occupation?: string;
+            phone?: string;
+            placeOfBirth?: string;
+            postalCode?: string;
+            reservations?: Array<{
+                breakfast?: boolean;
+                departureDate?: string;
+                destination?: string;
+                durationOfStay?: number;
+                entryDate?: string;
+                guestId?: number;
+                guide?: boolean;
+                hotelId?: string;
+                id?: number;
+                notes?: string;
+                numberOfPeople?: number;
+                origin?: string;
+                payment?: {
+                    agency?: boolean;
+                    contractType?: string;
+                    id?: number;
+                    isCash?: boolean;
+                    referrer?: string;
+                    reservationId?: number;
+                };
+                purposeOfTravel?: string;
+                reservationCode?: string;
+                roomPrice?: number;
+                rooms?: Array<{
+                    amenities?: Array<{
+                        id?: number;
+                        label?: string;
+                        slug?: string;
+                    }>;
+                    basePrice?: number;
+                    capacity?: number;
+                    description?: string;
+                    floor?: number;
+                    hotelId?: number;
+                    id?: number;
+                    name?: string;
+                    roomNumber: string;
+                    roomType?: {
+                        colorHex?: string;
+                        id?: number;
+                        label?: string;
+                        slug?: string;
+                    };
+                    roomTypeId?: number;
+                    status?: {
+                        colorHex?: string;
+                        id?: number;
+                        label?: string;
+                        slug?: string;
+                    };
+                    statusId?: number;
+                }>;
+                userCheckIn?: string;
+                userCheckOut?: string;
+            }>;
+        };
         guestId?: number;
         hotelId?: number;
         id?: number;
         isExternal?: boolean;
         notes?: string;
+        reservation?: {
+            breakfast?: boolean;
+            departureDate?: string;
+            destination?: string;
+            durationOfStay?: number;
+            entryDate?: string;
+            guestId?: number;
+            guide?: boolean;
+            hotelId?: string;
+            id?: number;
+            notes?: string;
+            numberOfPeople?: number;
+            origin?: string;
+            payment?: {
+                agency?: boolean;
+                contractType?: string;
+                id?: number;
+                isCash?: boolean;
+                referrer?: string;
+                reservationId?: number;
+            };
+            purposeOfTravel?: string;
+            reservationCode?: string;
+            roomPrice?: number;
+            rooms?: Array<{
+                amenities?: Array<{
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                }>;
+                basePrice?: number;
+                capacity?: number;
+                description?: string;
+                floor?: number;
+                hotelId?: number;
+                id?: number;
+                name?: string;
+                roomNumber: string;
+                roomType?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                roomTypeId?: number;
+                status?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                statusId?: number;
+            }>;
+            userCheckIn?: string;
+            userCheckOut?: string;
+        };
         reservationId?: number;
+        room?: {
+            amenities?: Array<{
+                id?: number;
+                label?: string;
+                slug?: string;
+            }>;
+            basePrice?: number;
+            capacity?: number;
+            description?: string;
+            floor?: number;
+            hotelId?: number;
+            id?: number;
+            name?: string;
+            roomNumber: string;
+            roomType?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            roomTypeId?: number;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
+        };
         roomId?: number;
         settled?: boolean;
         settledAt?: string;
         settledBy?: number;
-        status?: string;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
         subtotal?: number;
         taxAmount?: number;
         totalAmount?: number;
+    }>;
+    limit?: number;
+    page?: number;
+    total?: number;
+    totalPages?: number;
+};
+
+/**
+ * PaginatedResponse_models.RestaurantBillStatus schema
+ */
+export type PaginatedResponseModelsRestaurantBillStatus = {
+    data?: Array<{
+        colorHex?: string;
+        id?: number;
+        label?: string;
+        slug?: string;
     }>;
     limit?: number;
     page?: number;
@@ -1190,6 +1853,88 @@ export type PaginatedResponseModelsSanitizedUser = {
 export type PaginatedResponseModelsVehicle = {
     data?: Array<{
         color?: string;
+        guest?: {
+            address?: string;
+            companions?: Array<{
+                firstName?: string;
+                guestId?: number;
+                id?: number;
+                idNumber?: string;
+                lastName?: string;
+                nationalId?: string;
+                relation?: string;
+            }>;
+            dateOfBirth?: string;
+            fatherName?: string;
+            firstName: string;
+            gender?: string;
+            hotelId?: number;
+            id?: number;
+            idNumber?: string;
+            lastName?: string;
+            nationalId?: string;
+            nationality?: string;
+            occupation?: string;
+            phone?: string;
+            placeOfBirth?: string;
+            postalCode?: string;
+            reservations?: Array<{
+                breakfast?: boolean;
+                departureDate?: string;
+                destination?: string;
+                durationOfStay?: number;
+                entryDate?: string;
+                guestId?: number;
+                guide?: boolean;
+                hotelId?: string;
+                id?: number;
+                notes?: string;
+                numberOfPeople?: number;
+                origin?: string;
+                payment?: {
+                    agency?: boolean;
+                    contractType?: string;
+                    id?: number;
+                    isCash?: boolean;
+                    referrer?: string;
+                    reservationId?: number;
+                };
+                purposeOfTravel?: string;
+                reservationCode?: string;
+                roomPrice?: number;
+                rooms?: Array<{
+                    amenities?: Array<{
+                        id?: number;
+                        label?: string;
+                        slug?: string;
+                    }>;
+                    basePrice?: number;
+                    capacity?: number;
+                    description?: string;
+                    floor?: number;
+                    hotelId?: number;
+                    id?: number;
+                    name?: string;
+                    roomNumber: string;
+                    roomType?: {
+                        colorHex?: string;
+                        id?: number;
+                        label?: string;
+                        slug?: string;
+                    };
+                    roomTypeId?: number;
+                    status?: {
+                        colorHex?: string;
+                        id?: number;
+                        label?: string;
+                        slug?: string;
+                    };
+                    statusId?: number;
+                }>;
+                userCheckIn?: string;
+                userCheckOut?: string;
+            }>;
+        };
         guestId?: number;
         id?: number;
         isRegistered?: boolean;
@@ -1197,7 +1942,12 @@ export type PaginatedResponseModelsVehicle = {
         make?: string;
         model?: string;
         notes?: string;
-        vehicleType?: string;
+        vehicle?: {
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        vehicleType?: number;
     }>;
     limit?: number;
     page?: number;
@@ -1211,12 +1961,24 @@ export type PaginatedResponseModelsVehicle = {
 export type ParkingLot = {
     dailyRate?: number;
     description?: string;
+    hotel?: {
+        address?: string;
+        email?: string;
+        id?: string;
+        name?: string;
+        phone?: string;
+    };
     hotelId?: number;
     hourlyRate?: number;
     id?: number;
     location?: string;
     name?: string;
-    status?: string;
+    status?: {
+        id?: number;
+        label?: string;
+        slug?: string;
+    };
+    statusId?: number;
     totalSpots?: number;
 };
 
@@ -1228,10 +1990,44 @@ export type ParkingSpot = {
     floor?: string;
     id?: number;
     isCovered?: boolean;
+    lot?: {
+        dailyRate?: number;
+        description?: string;
+        hotel?: {
+            address?: string;
+            email?: string;
+            id?: string;
+            name?: string;
+            phone?: string;
+        };
+        hotelId?: number;
+        hourlyRate?: number;
+        id?: number;
+        location?: string;
+        name?: string;
+        status?: {
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
+        totalSpots?: number;
+    };
     lotId?: number;
     spotNumber?: string;
-    spotType?: string;
-    status?: string;
+    spotType?: {
+        id?: number;
+        label?: string;
+        slug?: string;
+    };
+    spotTypeId?: number;
+    status?: {
+        colorHex?: string;
+        id?: number;
+        label?: string;
+        slug?: string;
+    };
+    statusId?: number;
 };
 
 /**
@@ -1329,20 +2125,200 @@ export type Reservation = {
  * RestaurantBill schema
  */
 export type RestaurantBill = {
+    Hotel?: {
+        address?: string;
+        email?: string;
+        id?: string;
+        name?: string;
+        phone?: string;
+    };
     billDate?: string;
     discountAmount?: number;
     externalRestaurant?: string;
+    guest?: {
+        address?: string;
+        companions?: Array<{
+            firstName?: string;
+            guestId?: number;
+            id?: number;
+            idNumber?: string;
+            lastName?: string;
+            nationalId?: string;
+            relation?: string;
+        }>;
+        dateOfBirth?: string;
+        fatherName?: string;
+        firstName: string;
+        gender?: string;
+        hotelId?: number;
+        id?: number;
+        idNumber?: string;
+        lastName?: string;
+        nationalId?: string;
+        nationality?: string;
+        occupation?: string;
+        phone?: string;
+        placeOfBirth?: string;
+        postalCode?: string;
+        reservations?: Array<{
+            breakfast?: boolean;
+            departureDate?: string;
+            destination?: string;
+            durationOfStay?: number;
+            entryDate?: string;
+            guestId?: number;
+            guide?: boolean;
+            hotelId?: string;
+            id?: number;
+            notes?: string;
+            numberOfPeople?: number;
+            origin?: string;
+            payment?: {
+                agency?: boolean;
+                contractType?: string;
+                id?: number;
+                isCash?: boolean;
+                referrer?: string;
+                reservationId?: number;
+            };
+            purposeOfTravel?: string;
+            reservationCode?: string;
+            roomPrice?: number;
+            rooms?: Array<{
+                amenities?: Array<{
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                }>;
+                basePrice?: number;
+                capacity?: number;
+                description?: string;
+                floor?: number;
+                hotelId?: number;
+                id?: number;
+                name?: string;
+                roomNumber: string;
+                roomType?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                roomTypeId?: number;
+                status?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                statusId?: number;
+            }>;
+            userCheckIn?: string;
+            userCheckOut?: string;
+        }>;
+    };
     guestId?: number;
     hotelId?: number;
     id?: number;
     isExternal?: boolean;
     notes?: string;
+    reservation?: {
+        breakfast?: boolean;
+        departureDate?: string;
+        destination?: string;
+        durationOfStay?: number;
+        entryDate?: string;
+        guestId?: number;
+        guide?: boolean;
+        hotelId?: string;
+        id?: number;
+        notes?: string;
+        numberOfPeople?: number;
+        origin?: string;
+        payment?: {
+            agency?: boolean;
+            contractType?: string;
+            id?: number;
+            isCash?: boolean;
+            referrer?: string;
+            reservationId?: number;
+        };
+        purposeOfTravel?: string;
+        reservationCode?: string;
+        roomPrice?: number;
+        rooms?: Array<{
+            amenities?: Array<{
+                id?: number;
+                label?: string;
+                slug?: string;
+            }>;
+            basePrice?: number;
+            capacity?: number;
+            description?: string;
+            floor?: number;
+            hotelId?: number;
+            id?: number;
+            name?: string;
+            roomNumber: string;
+            roomType?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            roomTypeId?: number;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
+        }>;
+        userCheckIn?: string;
+        userCheckOut?: string;
+    };
     reservationId?: number;
+    room?: {
+        amenities?: Array<{
+            id?: number;
+            label?: string;
+            slug?: string;
+        }>;
+        basePrice?: number;
+        capacity?: number;
+        description?: string;
+        floor?: number;
+        hotelId?: number;
+        id?: number;
+        name?: string;
+        roomNumber: string;
+        roomType?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        roomTypeId?: number;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
+    };
     roomId?: number;
     settled?: boolean;
     settledAt?: string;
     settledBy?: number;
-    status?: string;
+    status?: {
+        colorHex?: string;
+        id?: number;
+        label?: string;
+        slug?: string;
+    };
+    statusId?: number;
     subtotal?: number;
     taxAmount?: number;
     totalAmount?: number;
@@ -1473,6 +2449,88 @@ export type TravelReason = {
  */
 export type Vehicle = {
     color?: string;
+    guest?: {
+        address?: string;
+        companions?: Array<{
+            firstName?: string;
+            guestId?: number;
+            id?: number;
+            idNumber?: string;
+            lastName?: string;
+            nationalId?: string;
+            relation?: string;
+        }>;
+        dateOfBirth?: string;
+        fatherName?: string;
+        firstName: string;
+        gender?: string;
+        hotelId?: number;
+        id?: number;
+        idNumber?: string;
+        lastName?: string;
+        nationalId?: string;
+        nationality?: string;
+        occupation?: string;
+        phone?: string;
+        placeOfBirth?: string;
+        postalCode?: string;
+        reservations?: Array<{
+            breakfast?: boolean;
+            departureDate?: string;
+            destination?: string;
+            durationOfStay?: number;
+            entryDate?: string;
+            guestId?: number;
+            guide?: boolean;
+            hotelId?: string;
+            id?: number;
+            notes?: string;
+            numberOfPeople?: number;
+            origin?: string;
+            payment?: {
+                agency?: boolean;
+                contractType?: string;
+                id?: number;
+                isCash?: boolean;
+                referrer?: string;
+                reservationId?: number;
+            };
+            purposeOfTravel?: string;
+            reservationCode?: string;
+            roomPrice?: number;
+            rooms?: Array<{
+                amenities?: Array<{
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                }>;
+                basePrice?: number;
+                capacity?: number;
+                description?: string;
+                floor?: number;
+                hotelId?: number;
+                id?: number;
+                name?: string;
+                roomNumber: string;
+                roomType?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                roomTypeId?: number;
+                status?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                statusId?: number;
+            }>;
+            userCheckIn?: string;
+            userCheckOut?: string;
+        }>;
+    };
     guestId?: number;
     id?: number;
     isRegistered?: boolean;
@@ -1480,7 +2538,12 @@ export type Vehicle = {
     make?: string;
     model?: string;
     notes?: string;
-    vehicleType?: string;
+    vehicle?: {
+        id?: number;
+        label?: string;
+        slug?: string;
+    };
+    vehicleType?: number;
 };
 
 /**
@@ -1523,9 +2586,7 @@ export type LoginResponse = {
 /**
  * okResponse schema
  */
-export type OkResponse = {
-    ok?: boolean;
-};
+export type OkResponse = unknown;
 
 /**
  * permissionsResponse schema
@@ -3703,6 +4764,42 @@ export type PostApiRestaurantBillsResponses = {
 
 export type PostApiRestaurantBillsResponse = PostApiRestaurantBillsResponses[keyof PostApiRestaurantBillsResponses];
 
+export type GetApiRestaurantBillsStatusesData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: {
+        limit?: number;
+        page?: number;
+    };
+    url: '/api/restaurant/bills/statuses';
+};
+
+export type GetApiRestaurantBillsStatusesErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiRestaurantBillsStatusesError = GetApiRestaurantBillsStatusesErrors[keyof GetApiRestaurantBillsStatusesErrors];
+
+export type GetApiRestaurantBillsStatusesResponses = {
+    /**
+     * OK
+     */
+    200: PaginatedResponseModelsRestaurantBillStatus;
+};
+
+export type GetApiRestaurantBillsStatusesResponse = GetApiRestaurantBillsStatusesResponses[keyof GetApiRestaurantBillsStatusesResponses];
+
 export type DeleteApiRestaurantBillsIdData = {
     body?: never;
     headers?: {
@@ -3917,6 +5014,114 @@ export type PostApiRestaurantInventoryResponses = {
 };
 
 export type PostApiRestaurantInventoryResponse = PostApiRestaurantInventoryResponses[keyof PostApiRestaurantInventoryResponses];
+
+export type GetApiRestaurantInventoryCategoriesData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: {
+        limit?: number;
+        page?: number;
+    };
+    url: '/api/restaurant/inventory/categories';
+};
+
+export type GetApiRestaurantInventoryCategoriesErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiRestaurantInventoryCategoriesError = GetApiRestaurantInventoryCategoriesErrors[keyof GetApiRestaurantInventoryCategoriesErrors];
+
+export type GetApiRestaurantInventoryCategoriesResponses = {
+    /**
+     * OK
+     */
+    200: PaginatedResponseModelsInventoryItemCategory;
+};
+
+export type GetApiRestaurantInventoryCategoriesResponse = GetApiRestaurantInventoryCategoriesResponses[keyof GetApiRestaurantInventoryCategoriesResponses];
+
+export type GetApiRestaurantInventoryStatusesData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: {
+        limit?: number;
+        page?: number;
+    };
+    url: '/api/restaurant/inventory/statuses';
+};
+
+export type GetApiRestaurantInventoryStatusesErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiRestaurantInventoryStatusesError = GetApiRestaurantInventoryStatusesErrors[keyof GetApiRestaurantInventoryStatusesErrors];
+
+export type GetApiRestaurantInventoryStatusesResponses = {
+    /**
+     * OK
+     */
+    200: PaginatedResponseModelsInventoryItemStatus;
+};
+
+export type GetApiRestaurantInventoryStatusesResponse = GetApiRestaurantInventoryStatusesResponses[keyof GetApiRestaurantInventoryStatusesResponses];
+
+export type GetApiRestaurantInventoryUnitsData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: {
+        limit?: number;
+        page?: number;
+    };
+    url: '/api/restaurant/inventory/units';
+};
+
+export type GetApiRestaurantInventoryUnitsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiRestaurantInventoryUnitsError = GetApiRestaurantInventoryUnitsErrors[keyof GetApiRestaurantInventoryUnitsErrors];
+
+export type GetApiRestaurantInventoryUnitsResponses = {
+    /**
+     * OK
+     */
+    200: PaginatedResponseModelsInventoryItemUnit;
+};
+
+export type GetApiRestaurantInventoryUnitsResponse = GetApiRestaurantInventoryUnitsResponses[keyof GetApiRestaurantInventoryUnitsResponses];
 
 export type DeleteApiRestaurantInventoryIdData = {
     body?: never;

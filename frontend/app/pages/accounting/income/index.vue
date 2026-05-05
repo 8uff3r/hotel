@@ -76,7 +76,7 @@ hotel/app/pages/accounting/income/index.vue ``` ```vue
           <div>
             <p class="font-medium">{{ row.original.description }}</p>
             <p class="text-sm text-gray-500 capitalize">
-              {{ formatCategory(row.original.category) }}
+              {{ row.original.category?.label }}
             </p>
           </div>
         </template>
@@ -92,7 +92,12 @@ hotel/app/pages/accounting/income/index.vue ``` ```vue
         </template>
 
         <template #paymentStatus-cell="{ row }">
-          <UBadge :color="getStatusColor(row.original.paymentStatus)" variant="soft">
+          <UBadge
+            :style="{
+              backgroundColor: row.original.paymentStatus?.colorHex,
+            }"
+            variant="soft"
+          >
             {{ row.original.paymentStatus }}
           </UBadge>
         </template>
