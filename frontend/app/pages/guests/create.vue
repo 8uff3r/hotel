@@ -41,7 +41,7 @@
                 </UFormField>
 
                 <UFormField :label="t('guest.nationality')" name="guest.nationality">
-                  <UInput v-model="form.guest.nationality" :disabled="loading" />
+                  <UInput v-model="form.guest.nationality" :disabled="loading" :placeholder="t('guest.defaultNationality')" />
                 </UFormField>
 
                 <UFormField :label="t('guest.gender')" name="guest.gender">
@@ -49,8 +49,8 @@
                     v-model="form.guest.gender"
                     class="w-full"
                     :items="[
-                      { value: 'male', label: 'مرد' },
-                      { value: 'female', label: 'زن' },
+                      { value: 'male', label: t('guest.male') },
+                      { value: 'female', label: t('guest.female') },
                     ]"
                     :disabled="loading"
                   />
@@ -73,7 +73,7 @@
                 </UFormField>
 
                 <UFormField :label="t('guest.occupation')" name="guest.occupation">
-                  <UInput v-model="form.guest.occupation" :disabled="loading" />
+                  <UInput v-model="form.guest.occupation" :disabled="loading" :placeholder="t('guest.defaultOccupation')" />
                 </UFormField>
 
                 <UFormField :label="t('guest.phone')" name="guest.phone">
@@ -107,8 +107,8 @@
               <div
                 class="mt-2 grid grid-cols-1 gap-6 rounded-md p-4 ring ring-accented/40 ring-inset md:grid-cols-3"
               >
-                <UFormField :label="t('guest.reservationCode')" name="reservation.reservationCode">
-                  <UInput v-model="form.reservation.reservationCode" :disabled="loading" />
+                <UFormField :label="t('guest.reservationCode')" name="reservation.reservationCode" class="md:col-span-3">
+                  <UInput v-model="form.reservation.reservationCode" :disabled="true" />
                 </UFormField>
 
                 <UFormField :label="t('guest.entryDate')" name="reservation.entryDate" required>
@@ -142,11 +142,11 @@
                 </UFormField>
 
                 <UFormField :label="t('guest.destination')" name="reservation.destination">
-                  <UInput v-model="form.reservation.destination" :disabled="loading" />
+                  <UInput v-model="form.reservation.destination" :disabled="loading" :placeholder="t('guest.defaultDestination')" />
                 </UFormField>
 
                 <UFormField :label="t('guest.purposeOfTravel')" name="reservation.purposeOfTravel">
-                  <UInput v-model="form.reservation.purposeOfTravel" :disabled="loading" />
+                  <UInput v-model="form.reservation.purposeOfTravel" :disabled="loading" :placeholder="t('guest.defaultPurposeOfTravel')" />
                 </UFormField>
 
                 <UFormField :label="t('guest.roomPrice')" name="reservation.roomPrice">
@@ -159,7 +159,7 @@
                 </UFormField>
 
                 <UFormField
-                  :label="t('rooms.plural')"
+                  :label="t('guest.selectRoom')"
                   name="reservation.rooms"
                   class="md:col-span-3"
                 >
@@ -375,13 +375,33 @@ const { t } = useI18n();
 
 const loading = ref(false);
 
+const generateRegisterNumber = () => {
+  const now = new Date();
+  const y = now.getFullYear().toString().slice(-2);
+  const m = String(now.getMonth() + 1).padStart(2, "0");
+  const d = String(now.getDate()).padStart(2, "0");
+  const h = String(now.getHours()).padStart(2, "0");
+  const min = String(now.getMinutes()).padStart(2, "0");
+  const s = String(now.getSeconds()).padStart(2, "0");
+  return `${y}${m}${d}-${h}${min}${s}`;
+};
+
 const schema = zGuestWithReservationRequest;
 type Schema = z.output<typeof schema>;
 
 const form = ref<Required<Schema> & { roomIds: number[] }>({
   roomIds: [],
-  reservation: { rooms: [] },
-  guest: {} as any,
+  reservation: {
+    rooms: [],
+    reservationCode: generateRegisterNumber(),
+    destination: t("guest.defaultDestination"),
+    purposeOfTravel: t("guest.defaultPurposeOfTravel"),
+  },
+  guest: {
+    gender: "male",
+    nationality: t("guest.defaultNationality"),
+    occupation: t("guest.defaultOccupation"),
+  } as any,
   payment: {},
 });
 

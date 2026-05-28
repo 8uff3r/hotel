@@ -7,40 +7,29 @@
       :side="localeProperties.dir === 'rtl' ? 'right' : 'left'"
       :ui="{
         container: 'h-full',
-        inner: 'bg-gray-900 text-white divide-gray-800',
-        header: 'border-b border-gray-800',
-        footer: 'border-t border-gray-800',
       }"
     >
       <!-- Header: Hotel Name / Logo -->
       <template #header>
-        <div class="flex flex-col gap-1">
-          <h1 class="truncate text-xl font-bold text-white">
-            {{ config.public.hotelName }}
-          </h1>
-        </div>
+        <!-- <div class="flex flex-col gap-1"> -->
+        <h1 class="truncate text-xl font-bold">
+          {{ config.public.hotelName }}
+        </h1>
+        <!-- </div> -->
       </template>
 
       <!-- Navigation -->
       <template #default="{ state }">
-        <UNavigationMenu
-          :items="navMenuItems(state)"
-          orientation="vertical"
-          :ui="{ link: 'p-1.5 overflow-hidden text-gray-300 hover:text-white hover:bg-gray-800' }"
-        />
+        <UNavigationMenu :items="navMenuItems(state)" orientation="vertical" />
 
         <div class="mt-4">
           <p
             v-if="state !== 'collapsed'"
-            class="mb-2 px-3 text-xs font-semibold tracking-wider text-gray-500 uppercase"
+            class="mb-2 px-3 text-xs font-semibold tracking-wider uppercase"
           >
             {{ t("layout.administration") }}
           </p>
-          <UNavigationMenu
-            :items="adminMenuItems(state)"
-            orientation="vertical"
-            :ui="{ link: 'p-1.5 overflow-hidden text-gray-300 hover:text-white hover:bg-gray-800' }"
-          />
+          <UNavigationMenu :items="adminMenuItems(state)" orientation="vertical" />
         </div>
       </template>
 
@@ -56,7 +45,7 @@
             class="w-full"
             @change="handleHotelSwitch"
           />
-          <div v-else-if="authStore.currentHotelName" class="truncate px-1 text-xs text-gray-400">
+          <div v-else-if="authStore.currentHotelName" class="truncate px-1 text-xs">
             {{ authStore.currentHotelName }}
           </div>
 
@@ -64,20 +53,19 @@
           <UDropdownMenu
             :items="userMenuItems"
             :content="{ align: 'start', collisionPadding: 12 }"
-            :ui="{ content: 'min-w-48' }"
+            :ui="{ content: 'w-(--reka-dropdown-menu-trigger-width) min-w-48' }"
           >
-            <UButton color="neutral" variant="ghost" square class="w-full overflow-hidden">
-              <div class="flex min-w-0 items-center gap-3">
-                <div
-                  class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-700"
-                >
-                  <UIcon name="i-lucide-user" class="h-4 w-4 text-white" />
-                </div>
-                <div class="flex min-w-0 flex-col text-left">
-                  <span class="truncate text-sm font-medium text-white">{{ userName }}</span>
-                </div>
-              </div>
-            </UButton>
+            <UButton
+              :label="userName"
+              trailing-icon="i-lucide-chevrons-up-down"
+              color="neutral"
+              variant="ghost"
+              square
+              class="w-full overflow-hidden py-3 data-[state=open]:bg-elevated"
+              :ui="{
+                trailingIcon: 'text-dimmed ms-auto',
+              }"
+            />
           </UDropdownMenu>
         </div>
       </template>
@@ -153,6 +141,18 @@ const items = computed(() =>
         permission: PERMISSIONS.dashboard.index.read,
       },
       {
+        label: t("layout.nav.roomRack"),
+        icon: "i-lucide-layout-grid",
+        to: "/rooms/rack",
+        permission: PERMISSIONS.rooms.roomsRack.read,
+      },
+      {
+        label: t("layout.nav.addGuest"),
+        icon: "i-lucide-user-plus",
+        to: "/guests/create",
+        permission: PERMISSIONS.guests.guests.create,
+      },
+      {
         label: t("layout.nav.reservations"),
         icon: "i-lucide-calendar-days",
         to: "/reservations",
@@ -163,12 +163,6 @@ const items = computed(() =>
         icon: "i-lucide-bed",
         to: "/rooms",
         permission: PERMISSIONS.rooms.rooms.read,
-      },
-      {
-        label: t("layout.nav.roomRack"),
-        icon: "i-lucide-layout-grid",
-        to: "/rooms/rack",
-        permission: PERMISSIONS.rooms.roomsRack.read,
       },
       {
         label: t("layout.nav.guests"),
@@ -188,13 +182,6 @@ const items = computed(() =>
         to: "/restaurant",
         permission: PERMISSIONS.restaurant.restaurant.read,
       },
-      {
-        label: t("layout.nav.sana"),
-        icon: "i-lucide-cloud-sync",
-        to: "/sana",
-        permission: PERMISSIONS.dashboard.index.read,
-      },
-      // { label: t("layout.nav.attendance"), icon: "i-lucide-clock", to: "/attendance" },
       {
         label: t("layout.nav.users"),
         icon: "i-lucide-users",
@@ -218,6 +205,7 @@ const adminMenuItems = (state: "collapsed" | "expanded"): NavigationMenuItem[] =
   items.push(
     { label: t("layout.admin.accounting"), icon: "i-lucide-wallet", to: "/accounting" },
     { label: t("layout.admin.reports"), icon: "i-lucide-bar-chart-3", to: "/reports" },
+    { label: t("layout.nav.sana"), icon: "i-lucide-cloud-sync", to: "/sana" },
     { label: t("layout.admin.settings"), icon: "i-lucide-settings", to: "/settings" }
   );
 
@@ -231,8 +219,45 @@ const userName = computed(() =>
     : t("layout.userFallback")
 );
 
+const colorMode = useColorMode();
 // User dropdown menu
 const userMenuItems = computed<DropdownMenuItem[][]>(() => [
+  [
+    {
+      label: t("layout.appearance"),
+      icon: "i-lucide-sun-moon",
+      children: [
+        {
+          label: t("common.light"),
+          icon: "i-lucide-sun",
+          type: "checkbox",
+          checked: colorMode.value === "light",
+          onUpdateChecked(checked: boolean) {
+            if (checked) {
+              colorMode.preference = "light";
+            }
+          },
+          onSelect(e: Event) {
+            e.preventDefault();
+          },
+        },
+        {
+          label: t("common.dark"),
+          icon: "i-lucide-moon",
+          type: "checkbox",
+          checked: colorMode.value === "dark",
+          onUpdateChecked(checked: boolean) {
+            if (checked) {
+              colorMode.preference = "dark";
+            }
+          },
+          onSelect(e: Event) {
+            e.preventDefault();
+          },
+        },
+      ],
+    },
+  ],
   [
     {
       label: t("layout.logout"),

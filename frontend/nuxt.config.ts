@@ -112,7 +112,7 @@ export default defineNuxtConfig({
 
     // Public runtime config
     public: {
-      hotelName: process.env.NUXT_PUBLIC_HOTEL_NAME || "HMS",
+      hotelName: process.env.NUXT_PUBLIC_HOTEL_NAME || "Gisa",
       backendUrl: process.env.BACKEND_URL || "http://127.0.0.1:8080",
     },
   },

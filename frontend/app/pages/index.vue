@@ -95,13 +95,13 @@
           </div>
         </template>
         <div class="grid grid-cols-2 gap-4">
-          <UButton to="/reservations/create" block size="lg" color="primary">
-            <UIcon name="i-lucide-plus" class="mr-2" />
-            {{ t("dashboard.newReservation") }}
+          <UButton to="/guests/create" block size="lg" color="primary" variant="solid">
+            <UIcon name="i-lucide-user-plus" class="mr-2" />
+            {{ t("dashboard.newGuestCheckIn") }}
           </UButton>
-          <UButton to="/reservations/check-in" block size="lg" color="neutral">
-            <UIcon name="i-lucide-log-in" class="mr-2" />
-            {{ t("dashboard.checkInGuest") }}
+          <UButton to="/reservations/create" block size="lg" color="neutral">
+            <UIcon name="i-lucide-calendar-plus" class="mr-2" />
+            {{ t("dashboard.newReservation") }}
           </UButton>
           <UButton to="/rooms" block size="lg" color="neutral">
             <UIcon name="i-lucide-bed" class="mr-2" />
