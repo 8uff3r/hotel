@@ -107,6 +107,8 @@ type Guest struct {
 	Address      string    `json:"address"`
 	PostalCode   string    `json:"postalCode"`
 	Occupation   string    `json:"occupation"`
+	Email        string    `json:"email"`
+	Landline     string    `json:"landline"`
 
 	Reservations []Reservation    `gorm:"foreignKey:GuestID" json:"reservations,omitempty"`
 	Companions   []GuestCompanion `gorm:"foreignKey:GuestID" json:"companions,omitempty"`

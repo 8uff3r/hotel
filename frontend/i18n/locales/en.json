@@ -90,7 +90,8 @@
     "countryPlaceholder": "Country",
     "notesPlaceholder": "Additional notes...",
     "email": "Email",
-    "password": "Password"
+    "password": "Password",
+    "landline": "Landline"
   },
   "login": {
     "subtitle": "Sign in to your account",

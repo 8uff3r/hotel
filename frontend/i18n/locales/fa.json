@@ -90,7 +90,8 @@
     "countryPlaceholder": "کشور",
     "notesPlaceholder": "یادداشت‌های اضافی...",
     "email": "ایمیل",
-    "password": "رمز عبور"
+    "password": "رمز عبور",
+    "landline": "تلفن ثابت"
   },
   "login": {
     "subtitle": "به حساب کاربری خود وارد شوید",

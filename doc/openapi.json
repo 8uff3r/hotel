@@ -292,6 +292,9 @@
 						"format": "date-time",
 						"type": "string"
 					},
+					"email": {
+						"type": "string"
+					},
 					"fatherName": {
 						"type": "string"
 					},
@@ -312,6 +315,9 @@
 						"type": "integer"
 					},
 					"idNumber": {
+						"type": "string"
+					},
+					"landline": {
 						"type": "string"
 					},
 					"lastName": {
@@ -703,6 +709,9 @@
 								"format": "date-time",
 								"type": "string"
 							},
+							"email": {
+								"type": "string"
+							},
 							"fatherName": {
 								"type": "string"
 							},
@@ -723,6 +732,9 @@
 								"type": "integer"
 							},
 							"idNumber": {
+								"type": "string"
+							},
+							"landline": {
 								"type": "string"
 							},
 							"lastName": {
@@ -1161,6 +1173,9 @@
 								"format": "date-time",
 								"type": "string"
 							},
+							"email": {
+								"type": "string"
+							},
 							"fatherName": {
 								"type": "string"
 							},
@@ -1181,6 +1196,9 @@
 								"type": "integer"
 							},
 							"idNumber": {
+								"type": "string"
+							},
+							"landline": {
 								"type": "string"
 							},
 							"lastName": {
@@ -2789,6 +2807,9 @@
 									"format": "date-time",
 									"type": "string"
 								},
+								"email": {
+									"type": "string"
+								},
 								"fatherName": {
 									"type": "string"
 								},
@@ -2809,6 +2830,9 @@
 									"type": "integer"
 								},
 								"idNumber": {
+									"type": "string"
+								},
+								"landline": {
 									"type": "string"
 								},
 								"lastName": {
@@ -4721,6 +4745,9 @@
 											"format": "date-time",
 											"type": "string"
 										},
+										"email": {
+											"type": "string"
+										},
 										"fatherName": {
 											"type": "string"
 										},
@@ -4741,6 +4768,9 @@
 											"type": "integer"
 										},
 										"idNumber": {
+											"type": "string"
+										},
+										"landline": {
 											"type": "string"
 										},
 										"lastName": {
@@ -5725,6 +5755,9 @@
 											"format": "date-time",
 											"type": "string"
 										},
+										"email": {
+											"type": "string"
+										},
 										"fatherName": {
 											"type": "string"
 										},
@@ -5745,6 +5778,9 @@
 											"type": "integer"
 										},
 										"idNumber": {
+											"type": "string"
+										},
+										"landline": {
 											"type": "string"
 										},
 										"lastName": {
@@ -6607,6 +6643,9 @@
 								"format": "date-time",
 								"type": "string"
 							},
+							"email": {
+								"type": "string"
+							},
 							"fatherName": {
 								"type": "string"
 							},
@@ -6627,6 +6666,9 @@
 								"type": "integer"
 							},
 							"idNumber": {
+								"type": "string"
+							},
+							"landline": {
 								"type": "string"
 							},
 							"lastName": {
@@ -7588,6 +7630,9 @@
 								"format": "date-time",
 								"type": "string"
 							},
+							"email": {
+								"type": "string"
+							},
 							"fatherName": {
 								"type": "string"
 							},
@@ -7608,6 +7653,9 @@
 								"type": "integer"
 							},
 							"idNumber": {
+								"type": "string"
+							},
+							"landline": {
 								"type": "string"
 							},
 							"lastName": {

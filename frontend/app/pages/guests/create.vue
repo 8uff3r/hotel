@@ -41,7 +41,11 @@
                 </UFormField>
 
                 <UFormField :label="t('guest.nationality')" name="guest.nationality">
-                  <UInput v-model="form.guest.nationality" :disabled="loading" :placeholder="t('guest.defaultNationality')" />
+                  <UInput
+                    v-model="form.guest.nationality"
+                    :disabled="loading"
+                    :placeholder="t('guest.defaultNationality')"
+                  />
                 </UFormField>
 
                 <UFormField :label="t('guest.gender')" name="guest.gender">
@@ -73,7 +77,11 @@
                 </UFormField>
 
                 <UFormField :label="t('guest.occupation')" name="guest.occupation">
-                  <UInput v-model="form.guest.occupation" :disabled="loading" :placeholder="t('guest.defaultOccupation')" />
+                  <UInput
+                    v-model="form.guest.occupation"
+                    :disabled="loading"
+                    :placeholder="t('guest.defaultOccupation')"
+                  />
                 </UFormField>
 
                 <UFormField :label="t('guest.phone')" name="guest.phone">
@@ -86,6 +94,18 @@
 
                 <UFormField :label="t('forms.address')" name="guest.address" class="md:col-span-3">
                   <UInput class="w-full" v-model="form.guest.address" :disabled="loading" />
+                </UFormField>
+
+                <UFormField :label="t('forms.email')" name="guest.email" class="md:col-span-3">
+                  <UInput class="w-full" v-model="form.guest.email" :disabled="loading" />
+                </UFormField>
+
+                <UFormField
+                  :label="t('forms.landline')"
+                  name="guest.landline"
+                  class="md:col-span-3"
+                >
+                  <UInput class="w-full" v-model="form.guest.landline" :disabled="loading" />
                 </UFormField>
               </div>
             </template>
@@ -107,7 +127,11 @@
               <div
                 class="mt-2 grid grid-cols-1 gap-6 rounded-md p-4 ring ring-accented/40 ring-inset md:grid-cols-3"
               >
-                <UFormField :label="t('guest.reservationCode')" name="reservation.reservationCode" class="md:col-span-3">
+                <UFormField
+                  :label="t('guest.reservationCode')"
+                  name="reservation.reservationCode"
+                  class="md:col-span-3"
+                >
                   <UInput v-model="form.reservation.reservationCode" :disabled="true" />
                 </UFormField>
 
@@ -142,11 +166,19 @@
                 </UFormField>
 
                 <UFormField :label="t('guest.destination')" name="reservation.destination">
-                  <UInput v-model="form.reservation.destination" :disabled="loading" :placeholder="t('guest.defaultDestination')" />
+                  <UInput
+                    v-model="form.reservation.destination"
+                    :disabled="loading"
+                    :placeholder="t('guest.defaultDestination')"
+                  />
                 </UFormField>
 
                 <UFormField :label="t('guest.purposeOfTravel')" name="reservation.purposeOfTravel">
-                  <UInput v-model="form.reservation.purposeOfTravel" :disabled="loading" :placeholder="t('guest.defaultPurposeOfTravel')" />
+                  <UInput
+                    v-model="form.reservation.purposeOfTravel"
+                    :disabled="loading"
+                    :placeholder="t('guest.defaultPurposeOfTravel')"
+                  />
                 </UFormField>
 
                 <UFormField :label="t('guest.roomPrice')" name="reservation.roomPrice">
@@ -403,6 +435,7 @@ const form = ref<Required<Schema> & { roomIds: number[] }>({
     occupation: t("guest.defaultOccupation"),
   } as any,
   payment: {},
+  companions: [],
 });
 
 const companions = ref<
