@@ -5,7 +5,7 @@ import * as z from 'zod';
 import type { Client, Composable, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
 import type { DeleteApiHotelsIdData, DeleteApiHotelsIdError, DeleteApiHotelsIdResponse, DeleteApiParkingLotsIdData, DeleteApiParkingLotsIdError, DeleteApiParkingLotsIdResponse, DeleteApiParkingSpotsIdData, DeleteApiParkingSpotsIdError, DeleteApiParkingSpotsIdResponse, DeleteApiParkingVehiclesIdData, DeleteApiParkingVehiclesIdError, DeleteApiParkingVehiclesIdResponse, DeleteApiPermissionsUserUserIdPermissionIdData, DeleteApiPermissionsUserUserIdPermissionIdError, DeleteApiPermissionsUserUserIdPermissionIdResponse, DeleteApiRestaurantBillsIdData, DeleteApiRestaurantBillsIdError, DeleteApiRestaurantBillsIdResponse, DeleteApiRestaurantInventoryIdData, DeleteApiRestaurantInventoryIdError, DeleteApiRestaurantInventoryIdResponse, DeleteApiRestaurantTransactionsIdData, DeleteApiRestaurantTransactionsIdError, DeleteApiRestaurantTransactionsIdResponse, DeleteApiRoomsIdData, DeleteApiRoomsIdError, DeleteApiRoomsIdResponse, GetApiAccountingAccountsData, GetApiAccountingAccountsError, GetApiAccountingAccountsResponse, GetApiAccountingExpensesData, GetApiAccountingExpensesError, GetApiAccountingExpensesResponse, GetApiAccountingIncomeData, GetApiAccountingIncomeError, GetApiAccountingIncomeResponse, GetApiAuthMeData, GetApiAuthMeError, GetApiAuthMeResponse, GetApiGuestsData, GetApiGuestsError, GetApiGuestsIdData, GetApiGuestsIdError, GetApiGuestsIdResponse, GetApiGuestsIdSettleData, GetApiGuestsIdSettleError, GetApiGuestsIdSettleResponse, GetApiGuestsResponse, GetApiHealthzData, GetApiHealthzError, GetApiHealthzResponse, GetApiHotelsData, GetApiHotelsError, GetApiHotelsIdData, GetApiHotelsIdError, GetApiHotelsIdResponse, GetApiHotelsResponse, GetApiParkingLotsData, GetApiParkingLotsError, GetApiParkingLotsIdData, GetApiParkingLotsIdError, GetApiParkingLotsIdResponse, GetApiParkingLotsResponse, GetApiParkingSpotsData, GetApiParkingSpotsError, GetApiParkingSpotsIdData, GetApiParkingSpotsIdError, GetApiParkingSpotsIdResponse, GetApiParkingSpotsResponse, GetApiParkingSpotsStatusesData, GetApiParkingSpotsStatusesError, GetApiParkingSpotsStatusesResponse, GetApiParkingSpotsTypesData, GetApiParkingSpotsTypesError, GetApiParkingSpotsTypesResponse, GetApiParkingStatsData, GetApiParkingStatsError, GetApiParkingStatsResponse, GetApiParkingTransactionsData, GetApiParkingTransactionsError, GetApiParkingTransactionsIdData, GetApiParkingTransactionsIdError, GetApiParkingTransactionsIdResponse, GetApiParkingTransactionsResponse, GetApiParkingVehiclesData, GetApiParkingVehiclesError, GetApiParkingVehiclesIdData, GetApiParkingVehiclesIdError, GetApiParkingVehiclesIdResponse, GetApiParkingVehiclesResponse, GetApiPermissionsData, GetApiPermissionsError, GetApiPermissionsResponse, GetApiPermissionsTemplatesData, GetApiPermissionsTemplatesError, GetApiPermissionsTemplatesResponse, GetApiPermissionsUserUserIdData, GetApiPermissionsUserUserIdError, GetApiPermissionsUserUserIdResponse, GetApiReadyzData, GetApiReadyzError, GetApiReadyzResponse, GetApiReservationData, GetApiReservationError, GetApiReservationIdData, GetApiReservationIdError, GetApiReservationIdResponse, GetApiReservationResponse, GetApiRestaurantBillsData, GetApiRestaurantBillsError, GetApiRestaurantBillsIdData, GetApiRestaurantBillsIdError, GetApiRestaurantBillsIdResponse, GetApiRestaurantBillsResponse, GetApiRestaurantBillsStatusesData, GetApiRestaurantBillsStatusesError, GetApiRestaurantBillsStatusesResponse, GetApiRestaurantInventoryCategoriesData, GetApiRestaurantInventoryCategoriesError, GetApiRestaurantInventoryCategoriesResponse, GetApiRestaurantInventoryData, GetApiRestaurantInventoryError, GetApiRestaurantInventoryIdData, GetApiRestaurantInventoryIdError, GetApiRestaurantInventoryIdResponse, GetApiRestaurantInventoryResponse, GetApiRestaurantInventoryStatusesData, GetApiRestaurantInventoryStatusesError, GetApiRestaurantInventoryStatusesResponse, GetApiRestaurantInventoryUnitsData, GetApiRestaurantInventoryUnitsError, GetApiRestaurantInventoryUnitsResponse, GetApiRestaurantStatsData, GetApiRestaurantStatsError, GetApiRestaurantStatsResponse, GetApiRestaurantTransactionsData, GetApiRestaurantTransactionsError, GetApiRestaurantTransactionsIdData, GetApiRestaurantTransactionsIdError, GetApiRestaurantTransactionsIdResponse, GetApiRestaurantTransactionsResponse, GetApiRoomsAmenitiesData, GetApiRoomsAmenitiesError, GetApiRoomsAmenitiesResponse, GetApiRoomsData, GetApiRoomsError, GetApiRoomsIdData, GetApiRoomsIdError, GetApiRoomsIdResponse, GetApiRoomsResponse, GetApiRoomsStatusesData, GetApiRoomsStatusesError, GetApiRoomsStatusesResponse, GetApiRoomsTypesData, GetApiRoomsTypesError, GetApiRoomsTypesResponse, GetApiSanaCountriesData, GetApiSanaCountriesError, GetApiSanaCountriesResponse, GetApiSanaFamilyRelationshipsData, GetApiSanaFamilyRelationshipsError, GetApiSanaFamilyRelationshipsResponse, GetApiSanaGuestsData, GetApiSanaGuestsError, GetApiSanaGuestsResponse, GetApiSanaNationalitiesData, GetApiSanaNationalitiesError, GetApiSanaNationalitiesResponse, GetApiSanaOccupationsData, GetApiSanaOccupationsError, GetApiSanaOccupationsResponse, GetApiSanaRoomsData, GetApiSanaRoomsError, GetApiSanaRoomsResponse, GetApiSanaTravelReasonsData, GetApiSanaTravelReasonsError, GetApiSanaTravelReasonsResponse, GetApiUsersData, GetApiUsersError, GetApiUsersIdData, GetApiUsersIdError, GetApiUsersIdResponse, GetApiUsersResponse, PostApiAccountingAccountsData, PostApiAccountingAccountsError, PostApiAccountingAccountsResponse, PostApiAccountingExpensesData, PostApiAccountingExpensesError, PostApiAccountingExpensesResponse, PostApiAccountingIncomeData, PostApiAccountingIncomeError, PostApiAccountingIncomeResponse, PostApiAuthLoginData, PostApiAuthLoginError, PostApiAuthLoginResponse, PostApiAuthLogoutData, PostApiAuthLogoutError, PostApiAuthLogoutResponse, PostApiGuestsData, PostApiGuestsError, PostApiGuestsIdSettleData, PostApiGuestsIdSettleError, PostApiGuestsIdSettleResponse, PostApiGuestsResponse, PostApiGuestsWithReservationData, PostApiGuestsWithReservationError, PostApiGuestsWithReservationResponse, PostApiHotelsData, PostApiHotelsError, PostApiHotelsResponse, PostApiParkingLotsData, PostApiParkingLotsError, PostApiParkingLotsResponse, PostApiParkingSpotsData, PostApiParkingSpotsError, PostApiParkingSpotsResponse, PostApiParkingTransactionsData, PostApiParkingTransactionsError, PostApiParkingTransactionsIdCheckOutData, PostApiParkingTransactionsIdCheckOutError, PostApiParkingTransactionsIdCheckOutResponse, PostApiParkingTransactionsResponse, PostApiParkingVehiclesData, PostApiParkingVehiclesError, PostApiParkingVehiclesResponse, PostApiPermissionsUserUserIdPermissionIdData, PostApiPermissionsUserUserIdPermissionIdError, PostApiPermissionsUserUserIdPermissionIdResponse, PostApiPermissionsUserUserIdTemplateTemplateIdData, PostApiPermissionsUserUserIdTemplateTemplateIdError, PostApiPermissionsUserUserIdTemplateTemplateIdResponse, PostApiReservationData, PostApiReservationError, PostApiReservationIdCheckInData, PostApiReservationIdCheckInError, PostApiReservationIdCheckInResponse, PostApiReservationIdCheckOutData, PostApiReservationIdCheckOutError, PostApiReservationIdCheckOutResponse, PostApiReservationResponse, PostApiRestaurantBillsData, PostApiRestaurantBillsError, PostApiRestaurantBillsIdSettleData, PostApiRestaurantBillsIdSettleError, PostApiRestaurantBillsIdSettleResponse, PostApiRestaurantBillsResponse, PostApiRestaurantInventoryData, PostApiRestaurantInventoryError, PostApiRestaurantInventoryResponse, PostApiRestaurantTransactionsData, PostApiRestaurantTransactionsError, PostApiRestaurantTransactionsResponse, PostApiRoomsData, PostApiRoomsError, PostApiRoomsResponse, PostApiSanaGuestsIdSyncData, PostApiSanaGuestsIdSyncError, PostApiSanaGuestsIdSyncResponse, PostApiSanaRoomsIdSyncData, PostApiSanaRoomsIdSyncError, PostApiSanaRoomsIdSyncResponse, PostApiSanaSyncAllData, PostApiSanaSyncAllError, PostApiSanaSyncAllResponse, PostApiUsersData, PostApiUsersError, PostApiUsersResponse, PutApiGuestsIdData, PutApiGuestsIdError, PutApiGuestsIdResponse, PutApiHotelsIdData, PutApiHotelsIdError, PutApiHotelsIdResponse, PutApiParkingLotsIdData, PutApiParkingLotsIdError, PutApiParkingLotsIdResponse, PutApiParkingSpotsIdData, PutApiParkingSpotsIdError, PutApiParkingSpotsIdResponse, PutApiParkingVehiclesIdData, PutApiParkingVehiclesIdError, PutApiParkingVehiclesIdResponse, PutApiReservationIdData, PutApiReservationIdError, PutApiReservationIdResponse, PutApiRestaurantBillsIdData, PutApiRestaurantBillsIdError, PutApiRestaurantBillsIdResponse, PutApiRestaurantInventoryIdData, PutApiRestaurantInventoryIdError, PutApiRestaurantInventoryIdResponse, PutApiRestaurantTransactionsIdData, PutApiRestaurantTransactionsIdError, PutApiRestaurantTransactionsIdResponse, PutApiRoomsIdData, PutApiRoomsIdError, PutApiRoomsIdResponse, PutApiUsersIdData, PutApiUsersIdError, PutApiUsersIdResponse } from './types.gen';
-import { zDeleteApiHotelsIdHeaders, zDeleteApiHotelsIdPath, zDeleteApiHotelsIdResponse, zDeleteApiParkingLotsIdHeaders, zDeleteApiParkingLotsIdPath, zDeleteApiParkingLotsIdResponse, zDeleteApiParkingSpotsIdHeaders, zDeleteApiParkingSpotsIdPath, zDeleteApiParkingSpotsIdResponse, zDeleteApiParkingVehiclesIdHeaders, zDeleteApiParkingVehiclesIdPath, zDeleteApiParkingVehiclesIdResponse, zDeleteApiPermissionsUserUserIdPermissionIdHeaders, zDeleteApiPermissionsUserUserIdPermissionIdPath, zDeleteApiPermissionsUserUserIdPermissionIdResponse, zDeleteApiRestaurantBillsIdHeaders, zDeleteApiRestaurantBillsIdPath, zDeleteApiRestaurantBillsIdResponse, zDeleteApiRestaurantInventoryIdHeaders, zDeleteApiRestaurantInventoryIdPath, zDeleteApiRestaurantInventoryIdResponse, zDeleteApiRestaurantTransactionsIdHeaders, zDeleteApiRestaurantTransactionsIdPath, zDeleteApiRestaurantTransactionsIdResponse, zDeleteApiRoomsIdHeaders, zDeleteApiRoomsIdPath, zDeleteApiRoomsIdResponse, zGetApiAccountingAccountsHeaders, zGetApiAccountingAccountsQuery, zGetApiAccountingAccountsResponse, zGetApiAccountingExpensesHeaders, zGetApiAccountingExpensesQuery, zGetApiAccountingExpensesResponse, zGetApiAccountingIncomeHeaders, zGetApiAccountingIncomeQuery, zGetApiAccountingIncomeResponse, zGetApiAuthMeHeaders, zGetApiAuthMeResponse, zGetApiGuestsHeaders, zGetApiGuestsIdHeaders, zGetApiGuestsIdPath, zGetApiGuestsIdResponse, zGetApiGuestsIdSettleHeaders, zGetApiGuestsIdSettlePath, zGetApiGuestsIdSettleResponse, zGetApiGuestsQuery, zGetApiGuestsResponse, zGetApiHealthzHeaders, zGetApiHealthzResponse, zGetApiHotelsHeaders, zGetApiHotelsIdHeaders, zGetApiHotelsIdPath, zGetApiHotelsIdResponse, zGetApiHotelsQuery, zGetApiHotelsResponse, zGetApiParkingLotsHeaders, zGetApiParkingLotsIdHeaders, zGetApiParkingLotsIdPath, zGetApiParkingLotsIdResponse, zGetApiParkingLotsQuery, zGetApiParkingLotsResponse, zGetApiParkingSpotsHeaders, zGetApiParkingSpotsIdHeaders, zGetApiParkingSpotsIdPath, zGetApiParkingSpotsIdResponse, zGetApiParkingSpotsQuery, zGetApiParkingSpotsResponse, zGetApiParkingSpotsStatusesHeaders, zGetApiParkingSpotsStatusesQuery, zGetApiParkingSpotsStatusesResponse, zGetApiParkingSpotsTypesHeaders, zGetApiParkingSpotsTypesQuery, zGetApiParkingSpotsTypesResponse, zGetApiParkingStatsHeaders, zGetApiParkingStatsResponse, zGetApiParkingTransactionsHeaders, zGetApiParkingTransactionsIdHeaders, zGetApiParkingTransactionsIdPath, zGetApiParkingTransactionsIdResponse, zGetApiParkingTransactionsQuery, zGetApiParkingTransactionsResponse, zGetApiParkingVehiclesHeaders, zGetApiParkingVehiclesIdHeaders, zGetApiParkingVehiclesIdPath, zGetApiParkingVehiclesIdResponse, zGetApiParkingVehiclesQuery, zGetApiParkingVehiclesResponse, zGetApiPermissionsHeaders, zGetApiPermissionsResponse, zGetApiPermissionsTemplatesHeaders, zGetApiPermissionsTemplatesQuery, zGetApiPermissionsTemplatesResponse, zGetApiPermissionsUserUserIdHeaders, zGetApiPermissionsUserUserIdPath, zGetApiPermissionsUserUserIdResponse, zGetApiReadyzHeaders, zGetApiReadyzResponse, zGetApiReservationHeaders, zGetApiReservationIdHeaders, zGetApiReservationIdPath, zGetApiReservationIdResponse, zGetApiReservationQuery, zGetApiReservationResponse, zGetApiRestaurantBillsHeaders, zGetApiRestaurantBillsIdHeaders, zGetApiRestaurantBillsIdPath, zGetApiRestaurantBillsIdResponse, zGetApiRestaurantBillsQuery, zGetApiRestaurantBillsResponse, zGetApiRestaurantBillsStatusesHeaders, zGetApiRestaurantBillsStatusesQuery, zGetApiRestaurantBillsStatusesResponse, zGetApiRestaurantInventoryCategoriesHeaders, zGetApiRestaurantInventoryCategoriesQuery, zGetApiRestaurantInventoryCategoriesResponse, zGetApiRestaurantInventoryHeaders, zGetApiRestaurantInventoryIdHeaders, zGetApiRestaurantInventoryIdPath, zGetApiRestaurantInventoryIdResponse, zGetApiRestaurantInventoryQuery, zGetApiRestaurantInventoryResponse, zGetApiRestaurantInventoryStatusesHeaders, zGetApiRestaurantInventoryStatusesQuery, zGetApiRestaurantInventoryStatusesResponse, zGetApiRestaurantInventoryUnitsHeaders, zGetApiRestaurantInventoryUnitsQuery, zGetApiRestaurantInventoryUnitsResponse, zGetApiRestaurantStatsHeaders, zGetApiRestaurantStatsResponse, zGetApiRestaurantTransactionsHeaders, zGetApiRestaurantTransactionsIdHeaders, zGetApiRestaurantTransactionsIdPath, zGetApiRestaurantTransactionsIdResponse, zGetApiRestaurantTransactionsQuery, zGetApiRestaurantTransactionsResponse, zGetApiRoomsAmenitiesHeaders, zGetApiRoomsAmenitiesQuery, zGetApiRoomsAmenitiesResponse, zGetApiRoomsHeaders, zGetApiRoomsIdHeaders, zGetApiRoomsIdPath, zGetApiRoomsIdResponse, zGetApiRoomsQuery, zGetApiRoomsResponse, zGetApiRoomsStatusesHeaders, zGetApiRoomsStatusesQuery, zGetApiRoomsStatusesResponse, zGetApiRoomsTypesHeaders, zGetApiRoomsTypesQuery, zGetApiRoomsTypesResponse, zGetApiSanaCountriesHeaders, zGetApiSanaCountriesResponse, zGetApiSanaFamilyRelationshipsHeaders, zGetApiSanaFamilyRelationshipsResponse, zGetApiSanaGuestsHeaders, zGetApiSanaGuestsResponse, zGetApiSanaNationalitiesHeaders, zGetApiSanaNationalitiesResponse, zGetApiSanaOccupationsHeaders, zGetApiSanaOccupationsResponse, zGetApiSanaRoomsHeaders, zGetApiSanaRoomsResponse, zGetApiSanaTravelReasonsHeaders, zGetApiSanaTravelReasonsResponse, zGetApiUsersHeaders, zGetApiUsersIdHeaders, zGetApiUsersIdPath, zGetApiUsersIdResponse, zGetApiUsersResponse, zPostApiAccountingAccountsBody, zPostApiAccountingAccountsHeaders, zPostApiAccountingAccountsResponse, zPostApiAccountingExpensesBody, zPostApiAccountingExpensesHeaders, zPostApiAccountingExpensesResponse, zPostApiAccountingIncomeBody, zPostApiAccountingIncomeHeaders, zPostApiAccountingIncomeResponse, zPostApiAuthLoginBody, zPostApiAuthLoginHeaders, zPostApiAuthLoginResponse, zPostApiAuthLogoutHeaders, zPostApiAuthLogoutResponse, zPostApiGuestsBody, zPostApiGuestsHeaders, zPostApiGuestsIdSettleBody, zPostApiGuestsIdSettleHeaders, zPostApiGuestsIdSettlePath, zPostApiGuestsIdSettleResponse, zPostApiGuestsResponse, zPostApiGuestsWithReservationBody, zPostApiGuestsWithReservationHeaders, zPostApiGuestsWithReservationResponse, zPostApiHotelsBody, zPostApiHotelsHeaders, zPostApiHotelsResponse, zPostApiParkingLotsBody, zPostApiParkingLotsHeaders, zPostApiParkingLotsResponse, zPostApiParkingSpotsBody, zPostApiParkingSpotsHeaders, zPostApiParkingSpotsResponse, zPostApiParkingTransactionsBody, zPostApiParkingTransactionsHeaders, zPostApiParkingTransactionsIdCheckOutHeaders, zPostApiParkingTransactionsIdCheckOutPath, zPostApiParkingTransactionsIdCheckOutResponse, zPostApiParkingTransactionsResponse, zPostApiParkingVehiclesBody, zPostApiParkingVehiclesHeaders, zPostApiParkingVehiclesResponse, zPostApiPermissionsUserUserIdPermissionIdHeaders, zPostApiPermissionsUserUserIdPermissionIdPath, zPostApiPermissionsUserUserIdPermissionIdResponse, zPostApiPermissionsUserUserIdTemplateTemplateIdHeaders, zPostApiPermissionsUserUserIdTemplateTemplateIdPath, zPostApiPermissionsUserUserIdTemplateTemplateIdResponse, zPostApiReservationBody, zPostApiReservationHeaders, zPostApiReservationIdCheckInHeaders, zPostApiReservationIdCheckInPath, zPostApiReservationIdCheckInResponse, zPostApiReservationIdCheckOutHeaders, zPostApiReservationIdCheckOutPath, zPostApiReservationIdCheckOutResponse, zPostApiReservationResponse, zPostApiRestaurantBillsBody, zPostApiRestaurantBillsHeaders, zPostApiRestaurantBillsIdSettleHeaders, zPostApiRestaurantBillsIdSettlePath, zPostApiRestaurantBillsIdSettleResponse, zPostApiRestaurantBillsResponse, zPostApiRestaurantInventoryBody, zPostApiRestaurantInventoryHeaders, zPostApiRestaurantInventoryResponse, zPostApiRestaurantTransactionsBody, zPostApiRestaurantTransactionsHeaders, zPostApiRestaurantTransactionsResponse, zPostApiRoomsBody, zPostApiRoomsHeaders, zPostApiRoomsResponse, zPostApiSanaGuestsIdSyncHeaders, zPostApiSanaGuestsIdSyncResponse, zPostApiSanaRoomsIdSyncHeaders, zPostApiSanaRoomsIdSyncResponse, zPostApiSanaSyncAllHeaders, zPostApiSanaSyncAllResponse, zPostApiUsersBody, zPostApiUsersHeaders, zPostApiUsersResponse, zPutApiGuestsIdBody, zPutApiGuestsIdHeaders, zPutApiGuestsIdPath, zPutApiGuestsIdResponse, zPutApiHotelsIdBody, zPutApiHotelsIdHeaders, zPutApiHotelsIdPath, zPutApiHotelsIdResponse, zPutApiParkingLotsIdBody, zPutApiParkingLotsIdHeaders, zPutApiParkingLotsIdPath, zPutApiParkingLotsIdResponse, zPutApiParkingSpotsIdBody, zPutApiParkingSpotsIdHeaders, zPutApiParkingSpotsIdPath, zPutApiParkingSpotsIdResponse, zPutApiParkingVehiclesIdBody, zPutApiParkingVehiclesIdHeaders, zPutApiParkingVehiclesIdPath, zPutApiParkingVehiclesIdResponse, zPutApiReservationIdBody, zPutApiReservationIdHeaders, zPutApiReservationIdPath, zPutApiReservationIdResponse, zPutApiRestaurantBillsIdBody, zPutApiRestaurantBillsIdHeaders, zPutApiRestaurantBillsIdPath, zPutApiRestaurantBillsIdResponse, zPutApiRestaurantInventoryIdBody, zPutApiRestaurantInventoryIdHeaders, zPutApiRestaurantInventoryIdPath, zPutApiRestaurantInventoryIdResponse, zPutApiRestaurantTransactionsIdBody, zPutApiRestaurantTransactionsIdHeaders, zPutApiRestaurantTransactionsIdPath, zPutApiRestaurantTransactionsIdResponse, zPutApiRoomsIdBody, zPutApiRoomsIdHeaders, zPutApiRoomsIdPath, zPutApiRoomsIdResponse, zPutApiUsersIdBody, zPutApiUsersIdHeaders, zPutApiUsersIdPath, zPutApiUsersIdResponse } from './zod.gen';
+import { zDeleteApiHotelsIdHeaders, zDeleteApiHotelsIdPath, zDeleteApiParkingLotsIdHeaders, zDeleteApiParkingLotsIdPath, zDeleteApiParkingSpotsIdHeaders, zDeleteApiParkingSpotsIdPath, zDeleteApiParkingVehiclesIdHeaders, zDeleteApiParkingVehiclesIdPath, zDeleteApiPermissionsUserUserIdPermissionIdHeaders, zDeleteApiPermissionsUserUserIdPermissionIdPath, zDeleteApiRestaurantBillsIdHeaders, zDeleteApiRestaurantBillsIdPath, zDeleteApiRestaurantInventoryIdHeaders, zDeleteApiRestaurantInventoryIdPath, zDeleteApiRestaurantTransactionsIdHeaders, zDeleteApiRestaurantTransactionsIdPath, zDeleteApiRoomsIdHeaders, zDeleteApiRoomsIdPath, zGetApiAccountingAccountsHeaders, zGetApiAccountingAccountsQuery, zGetApiAccountingExpensesHeaders, zGetApiAccountingExpensesQuery, zGetApiAccountingIncomeHeaders, zGetApiAccountingIncomeQuery, zGetApiAuthMeHeaders, zGetApiGuestsHeaders, zGetApiGuestsIdHeaders, zGetApiGuestsIdPath, zGetApiGuestsIdSettleHeaders, zGetApiGuestsIdSettlePath, zGetApiGuestsQuery, zGetApiHealthzHeaders, zGetApiHotelsHeaders, zGetApiHotelsIdHeaders, zGetApiHotelsIdPath, zGetApiHotelsQuery, zGetApiParkingLotsHeaders, zGetApiParkingLotsIdHeaders, zGetApiParkingLotsIdPath, zGetApiParkingLotsQuery, zGetApiParkingSpotsHeaders, zGetApiParkingSpotsIdHeaders, zGetApiParkingSpotsIdPath, zGetApiParkingSpotsQuery, zGetApiParkingSpotsStatusesHeaders, zGetApiParkingSpotsStatusesQuery, zGetApiParkingSpotsTypesHeaders, zGetApiParkingSpotsTypesQuery, zGetApiParkingStatsHeaders, zGetApiParkingTransactionsHeaders, zGetApiParkingTransactionsIdHeaders, zGetApiParkingTransactionsIdPath, zGetApiParkingTransactionsQuery, zGetApiParkingVehiclesHeaders, zGetApiParkingVehiclesIdHeaders, zGetApiParkingVehiclesIdPath, zGetApiParkingVehiclesQuery, zGetApiPermissionsHeaders, zGetApiPermissionsTemplatesHeaders, zGetApiPermissionsTemplatesQuery, zGetApiPermissionsUserUserIdHeaders, zGetApiPermissionsUserUserIdPath, zGetApiReadyzHeaders, zGetApiReservationHeaders, zGetApiReservationIdHeaders, zGetApiReservationIdPath, zGetApiReservationQuery, zGetApiRestaurantBillsHeaders, zGetApiRestaurantBillsIdHeaders, zGetApiRestaurantBillsIdPath, zGetApiRestaurantBillsQuery, zGetApiRestaurantBillsStatusesHeaders, zGetApiRestaurantBillsStatusesQuery, zGetApiRestaurantInventoryCategoriesHeaders, zGetApiRestaurantInventoryCategoriesQuery, zGetApiRestaurantInventoryHeaders, zGetApiRestaurantInventoryIdHeaders, zGetApiRestaurantInventoryIdPath, zGetApiRestaurantInventoryQuery, zGetApiRestaurantInventoryStatusesHeaders, zGetApiRestaurantInventoryStatusesQuery, zGetApiRestaurantInventoryUnitsHeaders, zGetApiRestaurantInventoryUnitsQuery, zGetApiRestaurantStatsHeaders, zGetApiRestaurantTransactionsHeaders, zGetApiRestaurantTransactionsIdHeaders, zGetApiRestaurantTransactionsIdPath, zGetApiRestaurantTransactionsQuery, zGetApiRoomsAmenitiesHeaders, zGetApiRoomsAmenitiesQuery, zGetApiRoomsHeaders, zGetApiRoomsIdHeaders, zGetApiRoomsIdPath, zGetApiRoomsQuery, zGetApiRoomsStatusesHeaders, zGetApiRoomsStatusesQuery, zGetApiRoomsTypesHeaders, zGetApiRoomsTypesQuery, zGetApiSanaCountriesHeaders, zGetApiSanaFamilyRelationshipsHeaders, zGetApiSanaGuestsHeaders, zGetApiSanaNationalitiesHeaders, zGetApiSanaOccupationsHeaders, zGetApiSanaRoomsHeaders, zGetApiSanaTravelReasonsHeaders, zGetApiUsersHeaders, zGetApiUsersIdHeaders, zGetApiUsersIdPath, zPostApiAccountingAccountsBody, zPostApiAccountingAccountsHeaders, zPostApiAccountingExpensesBody, zPostApiAccountingExpensesHeaders, zPostApiAccountingIncomeBody, zPostApiAccountingIncomeHeaders, zPostApiAuthLoginBody, zPostApiAuthLoginHeaders, zPostApiAuthLogoutHeaders, zPostApiGuestsBody, zPostApiGuestsHeaders, zPostApiGuestsIdSettleBody, zPostApiGuestsIdSettleHeaders, zPostApiGuestsIdSettlePath, zPostApiGuestsWithReservationBody, zPostApiGuestsWithReservationHeaders, zPostApiHotelsBody, zPostApiHotelsHeaders, zPostApiParkingLotsBody, zPostApiParkingLotsHeaders, zPostApiParkingSpotsBody, zPostApiParkingSpotsHeaders, zPostApiParkingTransactionsBody, zPostApiParkingTransactionsHeaders, zPostApiParkingTransactionsIdCheckOutHeaders, zPostApiParkingTransactionsIdCheckOutPath, zPostApiParkingVehiclesBody, zPostApiParkingVehiclesHeaders, zPostApiPermissionsUserUserIdPermissionIdHeaders, zPostApiPermissionsUserUserIdPermissionIdPath, zPostApiPermissionsUserUserIdTemplateTemplateIdHeaders, zPostApiPermissionsUserUserIdTemplateTemplateIdPath, zPostApiReservationBody, zPostApiReservationHeaders, zPostApiReservationIdCheckInHeaders, zPostApiReservationIdCheckInPath, zPostApiReservationIdCheckOutHeaders, zPostApiReservationIdCheckOutPath, zPostApiRestaurantBillsBody, zPostApiRestaurantBillsHeaders, zPostApiRestaurantBillsIdSettleHeaders, zPostApiRestaurantBillsIdSettlePath, zPostApiRestaurantInventoryBody, zPostApiRestaurantInventoryHeaders, zPostApiRestaurantTransactionsBody, zPostApiRestaurantTransactionsHeaders, zPostApiRoomsBody, zPostApiRoomsHeaders, zPostApiSanaGuestsIdSyncHeaders, zPostApiSanaRoomsIdSyncHeaders, zPostApiSanaSyncAllHeaders, zPostApiUsersBody, zPostApiUsersHeaders, zPutApiGuestsIdBody, zPutApiGuestsIdHeaders, zPutApiGuestsIdPath, zPutApiHotelsIdBody, zPutApiHotelsIdHeaders, zPutApiHotelsIdPath, zPutApiParkingLotsIdBody, zPutApiParkingLotsIdHeaders, zPutApiParkingLotsIdPath, zPutApiParkingSpotsIdBody, zPutApiParkingSpotsIdHeaders, zPutApiParkingSpotsIdPath, zPutApiParkingVehiclesIdBody, zPutApiParkingVehiclesIdHeaders, zPutApiParkingVehiclesIdPath, zPutApiReservationIdBody, zPutApiReservationIdHeaders, zPutApiReservationIdPath, zPutApiRestaurantBillsIdBody, zPutApiRestaurantBillsIdHeaders, zPutApiRestaurantBillsIdPath, zPutApiRestaurantInventoryIdBody, zPutApiRestaurantInventoryIdHeaders, zPutApiRestaurantInventoryIdPath, zPutApiRestaurantTransactionsIdBody, zPutApiRestaurantTransactionsIdHeaders, zPutApiRestaurantTransactionsIdPath, zPutApiRoomsIdBody, zPutApiRoomsIdHeaders, zPutApiRoomsIdPath, zPutApiUsersIdBody, zPutApiUsersIdHeaders, zPutApiUsersIdPath } from './zod.gen';
 
 export type Options<TComposable extends Composable = '$fetch', TData extends TDataShape = TDataShape, ResT = unknown, DefaultT = undefined> = Options2<TComposable, TData, ResT, DefaultT> & {
     /**
@@ -44,7 +44,6 @@ export const getApiAccountingAccounts = <TComposable extends Composable = '$fetc
         path: z.never().optional(),
         query: zGetApiAccountingAccountsQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiAccountingAccountsResponse.parseAsync(data),
     url: '/api/accounting/accounts/',
     ...options
 });
@@ -72,7 +71,6 @@ export const postApiAccountingAccounts = <TComposable extends Composable = '$fet
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiAccountingAccountsResponse.parseAsync(data),
     url: '/api/accounting/accounts/',
     ...options,
     headers: {
@@ -104,7 +102,6 @@ export const getApiAccountingExpenses = <TComposable extends Composable = '$fetc
         path: z.never().optional(),
         query: zGetApiAccountingExpensesQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiAccountingExpensesResponse.parseAsync(data),
     url: '/api/accounting/expenses/',
     ...options
 });
@@ -132,7 +129,6 @@ export const postApiAccountingExpenses = <TComposable extends Composable = '$fet
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiAccountingExpensesResponse.parseAsync(data),
     url: '/api/accounting/expenses/',
     ...options,
     headers: {
@@ -164,7 +160,6 @@ export const getApiAccountingIncome = <TComposable extends Composable = '$fetch'
         path: z.never().optional(),
         query: zGetApiAccountingIncomeQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiAccountingIncomeResponse.parseAsync(data),
     url: '/api/accounting/income/',
     ...options
 });
@@ -192,7 +187,6 @@ export const postApiAccountingIncome = <TComposable extends Composable = '$fetch
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiAccountingIncomeResponse.parseAsync(data),
     url: '/api/accounting/income/',
     ...options,
     headers: {
@@ -223,7 +217,6 @@ export const postApiAuthLogin = <TComposable extends Composable = '$fetch', Defa
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiAuthLoginResponse.parseAsync(data),
     url: '/api/auth/login',
     ...options,
     headers: {
@@ -255,7 +248,6 @@ export const postApiAuthLogout = <TComposable extends Composable = '$fetch', Def
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiAuthLogoutResponse.parseAsync(data),
     url: '/api/auth/logout',
     ...options
 });
@@ -283,7 +275,6 @@ export const getApiAuthMe = <TComposable extends Composable = '$fetch', DefaultT
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiAuthMeResponse.parseAsync(data),
     url: '/api/auth/me',
     ...options
 });
@@ -311,7 +302,6 @@ export const getApiGuests = <TComposable extends Composable = '$fetch', DefaultT
         path: z.never().optional(),
         query: zGetApiGuestsQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiGuestsResponse.parseAsync(data),
     url: '/api/guests/',
     ...options
 });
@@ -339,7 +329,6 @@ export const postApiGuests = <TComposable extends Composable = '$fetch', Default
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiGuestsResponse.parseAsync(data),
     url: '/api/guests/',
     ...options,
     headers: {
@@ -371,7 +360,6 @@ export const postApiGuestsWithReservation = <TComposable extends Composable = '$
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiGuestsWithReservationResponse.parseAsync(data),
     url: '/api/guests/with-reservation',
     ...options,
     headers: {
@@ -403,7 +391,6 @@ export const getApiGuestsId = <TComposable extends Composable = '$fetch', Defaul
         path: zGetApiGuestsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiGuestsIdResponse.parseAsync(data),
     url: '/api/guests/{id}',
     ...options
 });
@@ -431,7 +418,6 @@ export const putApiGuestsId = <TComposable extends Composable = '$fetch', Defaul
         path: zPutApiGuestsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPutApiGuestsIdResponse.parseAsync(data),
     url: '/api/guests/{id}',
     ...options,
     headers: {
@@ -463,7 +449,6 @@ export const getApiGuestsIdSettle = <TComposable extends Composable = '$fetch', 
         path: zGetApiGuestsIdSettlePath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiGuestsIdSettleResponse.parseAsync(data),
     url: '/api/guests/{id}/settle',
     ...options
 });
@@ -491,7 +476,6 @@ export const postApiGuestsIdSettle = <TComposable extends Composable = '$fetch',
         path: zPostApiGuestsIdSettlePath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiGuestsIdSettleResponse.parseAsync(data),
     url: '/api/guests/{id}/settle',
     ...options,
     headers: {
@@ -522,7 +506,6 @@ export const getApiHealthz = <TComposable extends Composable = '$fetch', Default
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiHealthzResponse.parseAsync(data),
     url: '/api/healthz',
     ...options
 });
@@ -550,7 +533,6 @@ export const getApiHotels = <TComposable extends Composable = '$fetch', DefaultT
         path: z.never().optional(),
         query: zGetApiHotelsQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiHotelsResponse.parseAsync(data),
     url: '/api/hotels/',
     ...options
 });
@@ -578,7 +560,6 @@ export const postApiHotels = <TComposable extends Composable = '$fetch', Default
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiHotelsResponse.parseAsync(data),
     url: '/api/hotels/',
     ...options,
     headers: {
@@ -610,7 +591,6 @@ export const deleteApiHotelsId = <TComposable extends Composable = '$fetch', Def
         path: zDeleteApiHotelsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zDeleteApiHotelsIdResponse.parseAsync(data),
     url: '/api/hotels/{id}',
     ...options
 });
@@ -638,7 +618,6 @@ export const getApiHotelsId = <TComposable extends Composable = '$fetch', Defaul
         path: zGetApiHotelsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiHotelsIdResponse.parseAsync(data),
     url: '/api/hotels/{id}',
     ...options
 });
@@ -666,7 +645,6 @@ export const putApiHotelsId = <TComposable extends Composable = '$fetch', Defaul
         path: zPutApiHotelsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPutApiHotelsIdResponse.parseAsync(data),
     url: '/api/hotels/{id}',
     ...options,
     headers: {
@@ -698,7 +676,6 @@ export const getApiParkingLots = <TComposable extends Composable = '$fetch', Def
         path: z.never().optional(),
         query: zGetApiParkingLotsQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiParkingLotsResponse.parseAsync(data),
     url: '/api/parking/lots/',
     ...options
 });
@@ -726,7 +703,6 @@ export const postApiParkingLots = <TComposable extends Composable = '$fetch', De
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiParkingLotsResponse.parseAsync(data),
     url: '/api/parking/lots/',
     ...options,
     headers: {
@@ -758,7 +734,6 @@ export const deleteApiParkingLotsId = <TComposable extends Composable = '$fetch'
         path: zDeleteApiParkingLotsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zDeleteApiParkingLotsIdResponse.parseAsync(data),
     url: '/api/parking/lots/{id}',
     ...options
 });
@@ -786,7 +761,6 @@ export const getApiParkingLotsId = <TComposable extends Composable = '$fetch', D
         path: zGetApiParkingLotsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiParkingLotsIdResponse.parseAsync(data),
     url: '/api/parking/lots/{id}',
     ...options
 });
@@ -814,7 +788,6 @@ export const putApiParkingLotsId = <TComposable extends Composable = '$fetch', D
         path: zPutApiParkingLotsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPutApiParkingLotsIdResponse.parseAsync(data),
     url: '/api/parking/lots/{id}',
     ...options,
     headers: {
@@ -846,7 +819,6 @@ export const getApiParkingSpots = <TComposable extends Composable = '$fetch', De
         path: z.never().optional(),
         query: zGetApiParkingSpotsQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiParkingSpotsResponse.parseAsync(data),
     url: '/api/parking/spots/',
     ...options
 });
@@ -874,7 +846,6 @@ export const postApiParkingSpots = <TComposable extends Composable = '$fetch', D
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiParkingSpotsResponse.parseAsync(data),
     url: '/api/parking/spots/',
     ...options,
     headers: {
@@ -906,7 +877,6 @@ export const getApiParkingSpotsStatuses = <TComposable extends Composable = '$fe
         path: z.never().optional(),
         query: zGetApiParkingSpotsStatusesQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiParkingSpotsStatusesResponse.parseAsync(data),
     url: '/api/parking/spots/statuses',
     ...options
 });
@@ -934,7 +904,6 @@ export const getApiParkingSpotsTypes = <TComposable extends Composable = '$fetch
         path: z.never().optional(),
         query: zGetApiParkingSpotsTypesQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiParkingSpotsTypesResponse.parseAsync(data),
     url: '/api/parking/spots/types',
     ...options
 });
@@ -962,7 +931,6 @@ export const deleteApiParkingSpotsId = <TComposable extends Composable = '$fetch
         path: zDeleteApiParkingSpotsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zDeleteApiParkingSpotsIdResponse.parseAsync(data),
     url: '/api/parking/spots/{id}',
     ...options
 });
@@ -990,7 +958,6 @@ export const getApiParkingSpotsId = <TComposable extends Composable = '$fetch', 
         path: zGetApiParkingSpotsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiParkingSpotsIdResponse.parseAsync(data),
     url: '/api/parking/spots/{id}',
     ...options
 });
@@ -1018,7 +985,6 @@ export const putApiParkingSpotsId = <TComposable extends Composable = '$fetch', 
         path: zPutApiParkingSpotsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPutApiParkingSpotsIdResponse.parseAsync(data),
     url: '/api/parking/spots/{id}',
     ...options,
     headers: {
@@ -1050,7 +1016,6 @@ export const getApiParkingStats = <TComposable extends Composable = '$fetch', De
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiParkingStatsResponse.parseAsync(data),
     url: '/api/parking/stats',
     ...options
 });
@@ -1078,7 +1043,6 @@ export const getApiParkingTransactions = <TComposable extends Composable = '$fet
         path: z.never().optional(),
         query: zGetApiParkingTransactionsQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiParkingTransactionsResponse.parseAsync(data),
     url: '/api/parking/transactions/',
     ...options
 });
@@ -1106,7 +1070,6 @@ export const postApiParkingTransactions = <TComposable extends Composable = '$fe
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiParkingTransactionsResponse.parseAsync(data),
     url: '/api/parking/transactions/',
     ...options,
     headers: {
@@ -1138,7 +1101,6 @@ export const getApiParkingTransactionsId = <TComposable extends Composable = '$f
         path: zGetApiParkingTransactionsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiParkingTransactionsIdResponse.parseAsync(data),
     url: '/api/parking/transactions/{id}',
     ...options
 });
@@ -1166,7 +1128,6 @@ export const postApiParkingTransactionsIdCheckOut = <TComposable extends Composa
         path: zPostApiParkingTransactionsIdCheckOutPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiParkingTransactionsIdCheckOutResponse.parseAsync(data),
     url: '/api/parking/transactions/{id}/check-out',
     ...options
 });
@@ -1194,7 +1155,6 @@ export const getApiParkingVehicles = <TComposable extends Composable = '$fetch',
         path: z.never().optional(),
         query: zGetApiParkingVehiclesQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiParkingVehiclesResponse.parseAsync(data),
     url: '/api/parking/vehicles/',
     ...options
 });
@@ -1222,7 +1182,6 @@ export const postApiParkingVehicles = <TComposable extends Composable = '$fetch'
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiParkingVehiclesResponse.parseAsync(data),
     url: '/api/parking/vehicles/',
     ...options,
     headers: {
@@ -1254,7 +1213,6 @@ export const deleteApiParkingVehiclesId = <TComposable extends Composable = '$fe
         path: zDeleteApiParkingVehiclesIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zDeleteApiParkingVehiclesIdResponse.parseAsync(data),
     url: '/api/parking/vehicles/{id}',
     ...options
 });
@@ -1282,7 +1240,6 @@ export const getApiParkingVehiclesId = <TComposable extends Composable = '$fetch
         path: zGetApiParkingVehiclesIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiParkingVehiclesIdResponse.parseAsync(data),
     url: '/api/parking/vehicles/{id}',
     ...options
 });
@@ -1310,7 +1267,6 @@ export const putApiParkingVehiclesId = <TComposable extends Composable = '$fetch
         path: zPutApiParkingVehiclesIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPutApiParkingVehiclesIdResponse.parseAsync(data),
     url: '/api/parking/vehicles/{id}',
     ...options,
     headers: {
@@ -1342,7 +1298,6 @@ export const getApiPermissions = <TComposable extends Composable = '$fetch', Def
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiPermissionsResponse.parseAsync(data),
     url: '/api/permissions/',
     ...options
 });
@@ -1370,7 +1325,6 @@ export const getApiPermissionsTemplates = <TComposable extends Composable = '$fe
         path: z.never().optional(),
         query: zGetApiPermissionsTemplatesQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiPermissionsTemplatesResponse.parseAsync(data),
     url: '/api/permissions/templates',
     ...options
 });
@@ -1398,7 +1352,6 @@ export const getApiPermissionsUserUserId = <TComposable extends Composable = '$f
         path: zGetApiPermissionsUserUserIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiPermissionsUserUserIdResponse.parseAsync(data),
     url: '/api/permissions/user/{userId}',
     ...options
 });
@@ -1426,7 +1379,6 @@ export const postApiPermissionsUserUserIdTemplateTemplateId = <TComposable exten
         path: zPostApiPermissionsUserUserIdTemplateTemplateIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiPermissionsUserUserIdTemplateTemplateIdResponse.parseAsync(data),
     url: '/api/permissions/user/{userId}/template/{templateId}',
     ...options
 });
@@ -1454,7 +1406,6 @@ export const deleteApiPermissionsUserUserIdPermissionId = <TComposable extends C
         path: zDeleteApiPermissionsUserUserIdPermissionIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zDeleteApiPermissionsUserUserIdPermissionIdResponse.parseAsync(data),
     url: '/api/permissions/user/{userId}/{permissionId}',
     ...options
 });
@@ -1482,7 +1433,6 @@ export const postApiPermissionsUserUserIdPermissionId = <TComposable extends Com
         path: zPostApiPermissionsUserUserIdPermissionIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiPermissionsUserUserIdPermissionIdResponse.parseAsync(data),
     url: '/api/permissions/user/{userId}/{permissionId}',
     ...options
 });
@@ -1509,7 +1459,6 @@ export const getApiReadyz = <TComposable extends Composable = '$fetch', DefaultT
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiReadyzResponse.parseAsync(data),
     url: '/api/readyz',
     ...options
 });
@@ -1537,7 +1486,6 @@ export const getApiReservation = <TComposable extends Composable = '$fetch', Def
         path: z.never().optional(),
         query: zGetApiReservationQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiReservationResponse.parseAsync(data),
     url: '/api/reservation/',
     ...options
 });
@@ -1565,7 +1513,6 @@ export const postApiReservation = <TComposable extends Composable = '$fetch', De
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiReservationResponse.parseAsync(data),
     url: '/api/reservation/',
     ...options,
     headers: {
@@ -1597,7 +1544,6 @@ export const getApiReservationId = <TComposable extends Composable = '$fetch', D
         path: zGetApiReservationIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiReservationIdResponse.parseAsync(data),
     url: '/api/reservation/{id}',
     ...options
 });
@@ -1625,7 +1571,6 @@ export const putApiReservationId = <TComposable extends Composable = '$fetch', D
         path: zPutApiReservationIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPutApiReservationIdResponse.parseAsync(data),
     url: '/api/reservation/{id}',
     ...options,
     headers: {
@@ -1657,7 +1602,6 @@ export const postApiReservationIdCheckIn = <TComposable extends Composable = '$f
         path: zPostApiReservationIdCheckInPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiReservationIdCheckInResponse.parseAsync(data),
     url: '/api/reservation/{id}/check-in',
     ...options
 });
@@ -1685,7 +1629,6 @@ export const postApiReservationIdCheckOut = <TComposable extends Composable = '$
         path: zPostApiReservationIdCheckOutPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiReservationIdCheckOutResponse.parseAsync(data),
     url: '/api/reservation/{id}/check-out',
     ...options
 });
@@ -1713,7 +1656,6 @@ export const getApiRestaurantBills = <TComposable extends Composable = '$fetch',
         path: z.never().optional(),
         query: zGetApiRestaurantBillsQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiRestaurantBillsResponse.parseAsync(data),
     url: '/api/restaurant/bills/',
     ...options
 });
@@ -1741,7 +1683,6 @@ export const postApiRestaurantBills = <TComposable extends Composable = '$fetch'
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiRestaurantBillsResponse.parseAsync(data),
     url: '/api/restaurant/bills/',
     ...options,
     headers: {
@@ -1773,7 +1714,6 @@ export const getApiRestaurantBillsStatuses = <TComposable extends Composable = '
         path: z.never().optional(),
         query: zGetApiRestaurantBillsStatusesQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiRestaurantBillsStatusesResponse.parseAsync(data),
     url: '/api/restaurant/bills/statuses',
     ...options
 });
@@ -1801,7 +1741,6 @@ export const deleteApiRestaurantBillsId = <TComposable extends Composable = '$fe
         path: zDeleteApiRestaurantBillsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zDeleteApiRestaurantBillsIdResponse.parseAsync(data),
     url: '/api/restaurant/bills/{id}',
     ...options
 });
@@ -1829,7 +1768,6 @@ export const getApiRestaurantBillsId = <TComposable extends Composable = '$fetch
         path: zGetApiRestaurantBillsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiRestaurantBillsIdResponse.parseAsync(data),
     url: '/api/restaurant/bills/{id}',
     ...options
 });
@@ -1857,7 +1795,6 @@ export const putApiRestaurantBillsId = <TComposable extends Composable = '$fetch
         path: zPutApiRestaurantBillsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPutApiRestaurantBillsIdResponse.parseAsync(data),
     url: '/api/restaurant/bills/{id}',
     ...options,
     headers: {
@@ -1889,7 +1826,6 @@ export const postApiRestaurantBillsIdSettle = <TComposable extends Composable = 
         path: zPostApiRestaurantBillsIdSettlePath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiRestaurantBillsIdSettleResponse.parseAsync(data),
     url: '/api/restaurant/bills/{id}/settle',
     ...options
 });
@@ -1917,7 +1853,6 @@ export const getApiRestaurantInventory = <TComposable extends Composable = '$fet
         path: z.never().optional(),
         query: zGetApiRestaurantInventoryQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiRestaurantInventoryResponse.parseAsync(data),
     url: '/api/restaurant/inventory/',
     ...options
 });
@@ -1945,7 +1880,6 @@ export const postApiRestaurantInventory = <TComposable extends Composable = '$fe
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiRestaurantInventoryResponse.parseAsync(data),
     url: '/api/restaurant/inventory/',
     ...options,
     headers: {
@@ -1977,7 +1911,6 @@ export const getApiRestaurantInventoryCategories = <TComposable extends Composab
         path: z.never().optional(),
         query: zGetApiRestaurantInventoryCategoriesQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiRestaurantInventoryCategoriesResponse.parseAsync(data),
     url: '/api/restaurant/inventory/categories',
     ...options
 });
@@ -2005,7 +1938,6 @@ export const getApiRestaurantInventoryStatuses = <TComposable extends Composable
         path: z.never().optional(),
         query: zGetApiRestaurantInventoryStatusesQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiRestaurantInventoryStatusesResponse.parseAsync(data),
     url: '/api/restaurant/inventory/statuses',
     ...options
 });
@@ -2033,7 +1965,6 @@ export const getApiRestaurantInventoryUnits = <TComposable extends Composable = 
         path: z.never().optional(),
         query: zGetApiRestaurantInventoryUnitsQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiRestaurantInventoryUnitsResponse.parseAsync(data),
     url: '/api/restaurant/inventory/units',
     ...options
 });
@@ -2061,7 +1992,6 @@ export const deleteApiRestaurantInventoryId = <TComposable extends Composable = 
         path: zDeleteApiRestaurantInventoryIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zDeleteApiRestaurantInventoryIdResponse.parseAsync(data),
     url: '/api/restaurant/inventory/{id}',
     ...options
 });
@@ -2089,7 +2019,6 @@ export const getApiRestaurantInventoryId = <TComposable extends Composable = '$f
         path: zGetApiRestaurantInventoryIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiRestaurantInventoryIdResponse.parseAsync(data),
     url: '/api/restaurant/inventory/{id}',
     ...options
 });
@@ -2117,7 +2046,6 @@ export const putApiRestaurantInventoryId = <TComposable extends Composable = '$f
         path: zPutApiRestaurantInventoryIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPutApiRestaurantInventoryIdResponse.parseAsync(data),
     url: '/api/restaurant/inventory/{id}',
     ...options,
     headers: {
@@ -2149,7 +2077,6 @@ export const getApiRestaurantStats = <TComposable extends Composable = '$fetch',
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiRestaurantStatsResponse.parseAsync(data),
     url: '/api/restaurant/stats',
     ...options
 });
@@ -2177,7 +2104,6 @@ export const getApiRestaurantTransactions = <TComposable extends Composable = '$
         path: z.never().optional(),
         query: zGetApiRestaurantTransactionsQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiRestaurantTransactionsResponse.parseAsync(data),
     url: '/api/restaurant/transactions/',
     ...options
 });
@@ -2205,7 +2131,6 @@ export const postApiRestaurantTransactions = <TComposable extends Composable = '
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiRestaurantTransactionsResponse.parseAsync(data),
     url: '/api/restaurant/transactions/',
     ...options,
     headers: {
@@ -2237,7 +2162,6 @@ export const deleteApiRestaurantTransactionsId = <TComposable extends Composable
         path: zDeleteApiRestaurantTransactionsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zDeleteApiRestaurantTransactionsIdResponse.parseAsync(data),
     url: '/api/restaurant/transactions/{id}',
     ...options
 });
@@ -2265,7 +2189,6 @@ export const getApiRestaurantTransactionsId = <TComposable extends Composable = 
         path: zGetApiRestaurantTransactionsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiRestaurantTransactionsIdResponse.parseAsync(data),
     url: '/api/restaurant/transactions/{id}',
     ...options
 });
@@ -2293,7 +2216,6 @@ export const putApiRestaurantTransactionsId = <TComposable extends Composable = 
         path: zPutApiRestaurantTransactionsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPutApiRestaurantTransactionsIdResponse.parseAsync(data),
     url: '/api/restaurant/transactions/{id}',
     ...options,
     headers: {
@@ -2325,7 +2247,6 @@ export const getApiRooms = <TComposable extends Composable = '$fetch', DefaultT 
         path: z.never().optional(),
         query: zGetApiRoomsQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiRoomsResponse.parseAsync(data),
     url: '/api/rooms/',
     ...options
 });
@@ -2353,7 +2274,6 @@ export const postApiRooms = <TComposable extends Composable = '$fetch', DefaultT
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiRoomsResponse.parseAsync(data),
     url: '/api/rooms/',
     ...options,
     headers: {
@@ -2385,7 +2305,6 @@ export const getApiRoomsAmenities = <TComposable extends Composable = '$fetch', 
         path: z.never().optional(),
         query: zGetApiRoomsAmenitiesQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiRoomsAmenitiesResponse.parseAsync(data),
     url: '/api/rooms/amenities',
     ...options
 });
@@ -2413,7 +2332,6 @@ export const getApiRoomsStatuses = <TComposable extends Composable = '$fetch', D
         path: z.never().optional(),
         query: zGetApiRoomsStatusesQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiRoomsStatusesResponse.parseAsync(data),
     url: '/api/rooms/statuses',
     ...options
 });
@@ -2441,7 +2359,6 @@ export const getApiRoomsTypes = <TComposable extends Composable = '$fetch', Defa
         path: z.never().optional(),
         query: zGetApiRoomsTypesQuery.optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiRoomsTypesResponse.parseAsync(data),
     url: '/api/rooms/types',
     ...options
 });
@@ -2469,7 +2386,6 @@ export const deleteApiRoomsId = <TComposable extends Composable = '$fetch', Defa
         path: zDeleteApiRoomsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zDeleteApiRoomsIdResponse.parseAsync(data),
     url: '/api/rooms/{id}',
     ...options
 });
@@ -2497,7 +2413,6 @@ export const getApiRoomsId = <TComposable extends Composable = '$fetch', Default
         path: zGetApiRoomsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiRoomsIdResponse.parseAsync(data),
     url: '/api/rooms/{id}',
     ...options
 });
@@ -2525,7 +2440,6 @@ export const putApiRoomsId = <TComposable extends Composable = '$fetch', Default
         path: zPutApiRoomsIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPutApiRoomsIdResponse.parseAsync(data),
     url: '/api/rooms/{id}',
     ...options,
     headers: {
@@ -2557,7 +2471,6 @@ export const getApiSanaCountries = <TComposable extends Composable = '$fetch', D
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiSanaCountriesResponse.parseAsync(data),
     url: '/api/sana/countries',
     ...options
 });
@@ -2585,7 +2498,6 @@ export const getApiSanaFamilyRelationships = <TComposable extends Composable = '
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiSanaFamilyRelationshipsResponse.parseAsync(data),
     url: '/api/sana/family-relationships',
     ...options
 });
@@ -2613,7 +2525,6 @@ export const getApiSanaGuests = <TComposable extends Composable = '$fetch', Defa
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiSanaGuestsResponse.parseAsync(data),
     url: '/api/sana/guests',
     ...options
 });
@@ -2641,7 +2552,6 @@ export const postApiSanaGuestsIdSync = <TComposable extends Composable = '$fetch
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiSanaGuestsIdSyncResponse.parseAsync(data),
     url: '/api/sana/guests/:id/sync',
     ...options
 });
@@ -2669,7 +2579,6 @@ export const getApiSanaNationalities = <TComposable extends Composable = '$fetch
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiSanaNationalitiesResponse.parseAsync(data),
     url: '/api/sana/nationalities',
     ...options
 });
@@ -2697,7 +2606,6 @@ export const getApiSanaOccupations = <TComposable extends Composable = '$fetch',
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiSanaOccupationsResponse.parseAsync(data),
     url: '/api/sana/occupations',
     ...options
 });
@@ -2725,7 +2633,6 @@ export const getApiSanaRooms = <TComposable extends Composable = '$fetch', Defau
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiSanaRoomsResponse.parseAsync(data),
     url: '/api/sana/rooms',
     ...options
 });
@@ -2753,7 +2660,6 @@ export const postApiSanaRoomsIdSync = <TComposable extends Composable = '$fetch'
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiSanaRoomsIdSyncResponse.parseAsync(data),
     url: '/api/sana/rooms/:id/sync',
     ...options
 });
@@ -2781,7 +2687,6 @@ export const postApiSanaSyncAll = <TComposable extends Composable = '$fetch', De
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiSanaSyncAllResponse.parseAsync(data),
     url: '/api/sana/sync-all',
     ...options
 });
@@ -2809,7 +2714,6 @@ export const getApiSanaTravelReasons = <TComposable extends Composable = '$fetch
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiSanaTravelReasonsResponse.parseAsync(data),
     url: '/api/sana/travel-reasons',
     ...options
 });
@@ -2837,7 +2741,6 @@ export const getApiUsers = <TComposable extends Composable = '$fetch', DefaultT 
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiUsersResponse.parseAsync(data),
     url: '/api/users/',
     ...options
 });
@@ -2865,7 +2768,6 @@ export const postApiUsers = <TComposable extends Composable = '$fetch', DefaultT
         path: z.never().optional(),
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPostApiUsersResponse.parseAsync(data),
     url: '/api/users/',
     ...options,
     headers: {
@@ -2897,7 +2799,6 @@ export const getApiUsersId = <TComposable extends Composable = '$fetch', Default
         path: zGetApiUsersIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zGetApiUsersIdResponse.parseAsync(data),
     url: '/api/users/{id}',
     ...options
 });
@@ -2925,7 +2826,6 @@ export const putApiUsersId = <TComposable extends Composable = '$fetch', Default
         path: zPutApiUsersIdPath,
         query: z.never().optional()
     }).parseAsync(data),
-    responseValidator: async (data) => await zPutApiUsersIdResponse.parseAsync(data),
     url: '/api/users/{id}',
     ...options,
     headers: {

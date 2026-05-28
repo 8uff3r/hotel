@@ -113,7 +113,7 @@ export type Guest = {
     fatherName?: string;
     firstName: string;
     gender?: string;
-    hotelId?: number;
+    hotelId?: string;
     id?: number;
     idNumber?: string;
     lastName?: string;
@@ -238,7 +238,7 @@ export type GuestWithReservationRequest = {
         fatherName?: string;
         firstName: string;
         gender?: string;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         idNumber?: string;
         lastName?: string;
@@ -375,7 +375,7 @@ export type GuestWithReservationResponse = {
         fatherName?: string;
         firstName: string;
         gender?: string;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         idNumber?: string;
         lastName?: string;
@@ -925,7 +925,7 @@ export type PaginatedResponseModelsGuest = {
         fatherName?: string;
         firstName: string;
         gender?: string;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         idNumber?: string;
         lastName?: string;
@@ -1555,7 +1555,7 @@ export type PaginatedResponseModelsRestaurantBill = {
             fatherName?: string;
             firstName: string;
             gender?: string;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             idNumber?: string;
             lastName?: string;
@@ -1868,7 +1868,7 @@ export type PaginatedResponseModelsVehicle = {
             fatherName?: string;
             firstName: string;
             gender?: string;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             idNumber?: string;
             lastName?: string;
@@ -2150,7 +2150,7 @@ export type RestaurantBill = {
         fatherName?: string;
         firstName: string;
         gender?: string;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         idNumber?: string;
         lastName?: string;
@@ -2464,7 +2464,7 @@ export type Vehicle = {
         fatherName?: string;
         firstName: string;
         gender?: string;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         idNumber?: string;
         lastName?: string;
@@ -2586,7 +2586,9 @@ export type LoginResponse = {
 /**
  * okResponse schema
  */
-export type OkResponse = unknown;
+export type OkResponse = {
+    ok?: boolean;
+};
 
 /**
  * permissionsResponse schema

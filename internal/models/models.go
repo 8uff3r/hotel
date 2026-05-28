@@ -93,7 +93,7 @@ type Amenity struct {
 
 type Guest struct {
 	ID           uint      `gorm:"primaryKey" json:"id"`
-	HotelID      *uint     `json:"hotelId"`
+	HotelID      *string   `json:"hotelId"`
 	FirstName    string    `gorm:"not null" json:"firstName" validate:"required,min=2,max=50"`
 	LastName     string    `gorm:"not null" json:"lastName"`
 	FatherName   string    `json:"fatherName"`
@@ -371,11 +371,39 @@ type UserHotelInfo struct {
 
 func AllForTypeGen() []any {
 	return []any{
-		User{}, Session{}, Hotel{}, Room{}, Guest{}, GuestCompanion{}, Reservation{}, Account{},
-		Expense{}, Income{}, ParkingLot{}, ParkingSpot{}, Vehicle{}, ParkingTransaction{}, Amenity{}, ParkingSpotType{}, ParkingSpotStatus{}, ParkingStats{}, SanitizedUser{}, UserHotelInfo{},
-		Permission{}, PermissionTemplate{}, UserPermission{}, UserTemplate{},
-		TravelReason{}, FamilyRelationship{}, Nationality{}, Country{}, Occupation{},
-		InventoryItem{}, RestaurantBill{}, MealTransaction{}, RestaurantStats{},
+		User{},
+		Session{},
+		Hotel{},
+		Room{},
+		Guest{},
+		GuestCompanion{},
+		Reservation{},
+		Account{},
+		Expense{},
+		Income{},
+		ParkingLot{},
+		ParkingSpot{},
+		Vehicle{},
+		ParkingTransaction{},
+		Amenity{},
+		ParkingSpotType{},
+		ParkingSpotStatus{},
+		ParkingStats{},
+		SanitizedUser{},
+		UserHotelInfo{},
+		Permission{},
+		PermissionTemplate{},
+		UserPermission{},
+		UserTemplate{},
+		TravelReason{},
+		FamilyRelationship{},
+		Nationality{},
+		Country{},
+		Occupation{},
+		InventoryItem{},
+		RestaurantBill{},
+		MealTransaction{},
+		RestaurantStats{},
 	}
 }
 

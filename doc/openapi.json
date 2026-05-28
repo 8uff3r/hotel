@@ -304,9 +304,8 @@
 						"type": "string"
 					},
 					"hotelId": {
-						"minimum": 0,
 						"nullable": true,
-						"type": "integer"
+						"type": "string"
 					},
 					"id": {
 						"minimum": 0,
@@ -716,9 +715,8 @@
 								"type": "string"
 							},
 							"hotelId": {
-								"minimum": 0,
 								"nullable": true,
-								"type": "integer"
+								"type": "string"
 							},
 							"id": {
 								"minimum": 0,
@@ -1175,9 +1173,8 @@
 								"type": "string"
 							},
 							"hotelId": {
-								"minimum": 0,
 								"nullable": true,
-								"type": "integer"
+								"type": "string"
 							},
 							"id": {
 								"minimum": 0,
@@ -2804,9 +2801,8 @@
 									"type": "string"
 								},
 								"hotelId": {
-									"minimum": 0,
 									"nullable": true,
-									"type": "integer"
+									"type": "string"
 								},
 								"id": {
 									"minimum": 0,
@@ -4737,9 +4733,8 @@
 											"type": "string"
 										},
 										"hotelId": {
-											"minimum": 0,
 											"nullable": true,
-											"type": "integer"
+											"type": "string"
 										},
 										"id": {
 											"minimum": 0,
@@ -5742,9 +5737,8 @@
 											"type": "string"
 										},
 										"hotelId": {
-											"minimum": 0,
 											"nullable": true,
-											"type": "integer"
+											"type": "string"
 										},
 										"id": {
 											"minimum": 0,
@@ -6625,9 +6619,8 @@
 								"type": "string"
 							},
 							"hotelId": {
-								"minimum": 0,
 								"nullable": true,
-								"type": "integer"
+								"type": "string"
 							},
 							"id": {
 								"minimum": 0,
@@ -7607,9 +7600,8 @@
 								"type": "string"
 							},
 							"hotelId": {
-								"minimum": 0,
 								"nullable": true,
-								"type": "integer"
+								"type": "string"
 							},
 							"id": {
 								"minimum": 0,

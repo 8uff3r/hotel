@@ -24,6 +24,7 @@ export default defineNuxtConfig({
       plugins: [
         {
           name: "zod",
+          responses: false,
           dates: {
             offset: true,
           },

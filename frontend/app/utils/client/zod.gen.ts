@@ -111,7 +111,7 @@ export const zGuest = z.object({
     fatherName: z.string().optional(),
     firstName: z.string().min(2).max(50),
     gender: z.string().optional(),
-    hotelId: z.int().gte(0).optional(),
+    hotelId: z.string().optional(),
     id: z.int().gte(0).optional(),
     idNumber: z.string().optional(),
     lastName: z.string().optional(),
@@ -236,7 +236,7 @@ export const zGuestWithReservationRequest = z.object({
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
         gender: z.string().optional(),
-        hotelId: z.int().gte(0).optional(),
+        hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         idNumber: z.string().optional(),
         lastName: z.string().optional(),
@@ -373,7 +373,7 @@ export const zGuestWithReservationResponse = z.object({
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
         gender: z.string().optional(),
-        hotelId: z.int().gte(0).optional(),
+        hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         idNumber: z.string().optional(),
         lastName: z.string().optional(),
@@ -900,7 +900,7 @@ export const zPaginatedResponseModelsGuest = z.object({
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
         gender: z.string().optional(),
-        hotelId: z.int().gte(0).optional(),
+        hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         idNumber: z.string().optional(),
         lastName: z.string().optional(),
@@ -1530,7 +1530,7 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
             fatherName: z.string().optional(),
             firstName: z.string().min(2).max(50),
             gender: z.string().optional(),
-            hotelId: z.int().gte(0).optional(),
+            hotelId: z.string().optional(),
             id: z.int().gte(0).optional(),
             idNumber: z.string().optional(),
             lastName: z.string().optional(),
@@ -1843,7 +1843,7 @@ export const zPaginatedResponseModelsVehicle = z.object({
             fatherName: z.string().optional(),
             firstName: z.string().min(2).max(50),
             gender: z.string().optional(),
-            hotelId: z.int().gte(0).optional(),
+            hotelId: z.string().optional(),
             id: z.int().gte(0).optional(),
             idNumber: z.string().optional(),
             lastName: z.string().optional(),
@@ -2125,7 +2125,7 @@ export const zRestaurantBill = z.object({
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
         gender: z.string().optional(),
-        hotelId: z.int().gte(0).optional(),
+        hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         idNumber: z.string().optional(),
         lastName: z.string().optional(),
@@ -2439,7 +2439,7 @@ export const zVehicle = z.object({
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
         gender: z.string().optional(),
-        hotelId: z.int().gte(0).optional(),
+        hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         idNumber: z.string().optional(),
         lastName: z.string().optional(),
@@ -2561,7 +2561,9 @@ export const zLoginResponse = z.object({
 /**
  * okResponse schema
  */
-export const zOkResponse = z.unknown();
+export const zOkResponse = z.object({
+    ok: z.boolean().optional()
+});
 
 /**
  * permissionsResponse schema
@@ -2645,11 +2647,6 @@ export const zGetApiAccountingAccountsQuery = z.object({
 });
 
 /**
- * OK
- */
-export const zGetApiAccountingAccountsResponse = zPaginatedResponseModelsAccount;
-
-/**
  * Request body for models.Account
  */
 export const zPostApiAccountingAccountsBody = zAccount;
@@ -2657,11 +2654,6 @@ export const zPostApiAccountingAccountsBody = zAccount;
 export const zPostApiAccountingAccountsHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zPostApiAccountingAccountsResponse = zAccount;
 
 export const zGetApiAccountingExpensesHeaders = z.object({
     Accept: z.string().optional()
@@ -2673,11 +2665,6 @@ export const zGetApiAccountingExpensesQuery = z.object({
 });
 
 /**
- * OK
- */
-export const zGetApiAccountingExpensesResponse = zPaginatedResponseModelsExpense;
-
-/**
  * Request body for models.Expense
  */
 export const zPostApiAccountingExpensesBody = zExpense;
@@ -2685,11 +2672,6 @@ export const zPostApiAccountingExpensesBody = zExpense;
 export const zPostApiAccountingExpensesHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zPostApiAccountingExpensesResponse = zExpense;
 
 export const zGetApiAccountingIncomeHeaders = z.object({
     Accept: z.string().optional()
@@ -2701,11 +2683,6 @@ export const zGetApiAccountingIncomeQuery = z.object({
 });
 
 /**
- * OK
- */
-export const zGetApiAccountingIncomeResponse = zPaginatedResponseModelsIncome;
-
-/**
  * Request body for models.Income
  */
 export const zPostApiAccountingIncomeBody = zIncome;
@@ -2713,11 +2690,6 @@ export const zPostApiAccountingIncomeBody = zIncome;
 export const zPostApiAccountingIncomeHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zPostApiAccountingIncomeResponse = zIncome;
 
 /**
  * Request body for auth.loginDto
@@ -2728,28 +2700,13 @@ export const zPostApiAuthLoginHeaders = z.object({
     Accept: z.string().optional()
 });
 
-/**
- * OK
- */
-export const zPostApiAuthLoginResponse = zLoginResponse;
-
 export const zPostApiAuthLogoutHeaders = z.object({
     Accept: z.string().optional()
 });
 
-/**
- * OK
- */
-export const zPostApiAuthLogoutResponse = zBool;
-
 export const zGetApiAuthMeHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zGetApiAuthMeResponse = zMeResponse;
 
 export const zGetApiGuestsHeaders = z.object({
     Accept: z.string().optional()
@@ -2761,11 +2718,6 @@ export const zGetApiGuestsQuery = z.object({
 });
 
 /**
- * OK
- */
-export const zGetApiGuestsResponse = zPaginatedResponseModelsGuest;
-
-/**
  * Request body for models.Guest
  */
 export const zPostApiGuestsBody = zGuest;
@@ -2773,11 +2725,6 @@ export const zPostApiGuestsBody = zGuest;
 export const zPostApiGuestsHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zPostApiGuestsResponse = zGuest;
 
 /**
  * Request body for guests.GuestWithReservationRequest
@@ -2788,11 +2735,6 @@ export const zPostApiGuestsWithReservationHeaders = z.object({
     Accept: z.string().optional()
 });
 
-/**
- * OK
- */
-export const zPostApiGuestsWithReservationResponse = zGuestWithReservationResponse;
-
 export const zGetApiGuestsIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -2800,11 +2742,6 @@ export const zGetApiGuestsIdHeaders = z.object({
 export const zGetApiGuestsIdPath = z.object({
     id: z.string()
 });
-
-/**
- * OK
- */
-export const zGetApiGuestsIdResponse = zGuest;
 
 /**
  * Request body for models.Guest
@@ -2819,11 +2756,6 @@ export const zPutApiGuestsIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zPutApiGuestsIdResponse = zGuest;
-
 export const zGetApiGuestsIdSettleHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -2831,11 +2763,6 @@ export const zGetApiGuestsIdSettleHeaders = z.object({
 export const zGetApiGuestsIdSettlePath = z.object({
     id: z.string()
 });
-
-/**
- * OK
- */
-export const zGetApiGuestsIdSettleResponse = zGuestSettlementResponse;
 
 /**
  * Request body for guests.SettleGuestRequest
@@ -2850,19 +2777,9 @@ export const zPostApiGuestsIdSettlePath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zPostApiGuestsIdSettleResponse = zOkResponse;
-
 export const zGetApiHealthzHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zGetApiHealthzResponse = zString;
 
 export const zGetApiHotelsHeaders = z.object({
     Accept: z.string().optional()
@@ -2874,11 +2791,6 @@ export const zGetApiHotelsQuery = z.object({
 });
 
 /**
- * OK
- */
-export const zGetApiHotelsResponse = zPaginatedResponseModelsHotel;
-
-/**
  * Request body for models.Hotel
  */
 export const zPostApiHotelsBody = zHotel;
@@ -2886,11 +2798,6 @@ export const zPostApiHotelsBody = zHotel;
 export const zPostApiHotelsHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zPostApiHotelsResponse = zHotel;
 
 export const zDeleteApiHotelsIdHeaders = z.object({
     Accept: z.string().optional()
@@ -2900,11 +2807,6 @@ export const zDeleteApiHotelsIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zDeleteApiHotelsIdResponse = zOkResponse;
-
 export const zGetApiHotelsIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -2912,11 +2814,6 @@ export const zGetApiHotelsIdHeaders = z.object({
 export const zGetApiHotelsIdPath = z.object({
     id: z.string()
 });
-
-/**
- * OK
- */
-export const zGetApiHotelsIdResponse = zHotel;
 
 /**
  * Request body for models.Hotel
@@ -2931,11 +2828,6 @@ export const zPutApiHotelsIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zPutApiHotelsIdResponse = zHotel;
-
 export const zGetApiParkingLotsHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -2946,11 +2838,6 @@ export const zGetApiParkingLotsQuery = z.object({
 });
 
 /**
- * OK
- */
-export const zGetApiParkingLotsResponse = zPaginatedResponseModelsParkingLot;
-
-/**
  * Request body for models.ParkingLot
  */
 export const zPostApiParkingLotsBody = zParkingLot;
@@ -2958,11 +2845,6 @@ export const zPostApiParkingLotsBody = zParkingLot;
 export const zPostApiParkingLotsHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zPostApiParkingLotsResponse = zParkingLot;
 
 export const zDeleteApiParkingLotsIdHeaders = z.object({
     Accept: z.string().optional()
@@ -2972,11 +2854,6 @@ export const zDeleteApiParkingLotsIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zDeleteApiParkingLotsIdResponse = zOkResponse;
-
 export const zGetApiParkingLotsIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -2984,11 +2861,6 @@ export const zGetApiParkingLotsIdHeaders = z.object({
 export const zGetApiParkingLotsIdPath = z.object({
     id: z.string()
 });
-
-/**
- * OK
- */
-export const zGetApiParkingLotsIdResponse = zParkingLot;
 
 /**
  * Request body for models.ParkingLot
@@ -3003,11 +2875,6 @@ export const zPutApiParkingLotsIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zPutApiParkingLotsIdResponse = zParkingLot;
-
 export const zGetApiParkingSpotsHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3018,11 +2885,6 @@ export const zGetApiParkingSpotsQuery = z.object({
 });
 
 /**
- * OK
- */
-export const zGetApiParkingSpotsResponse = zPaginatedResponseModelsParkingSpot;
-
-/**
  * Request body for models.ParkingSpot
  */
 export const zPostApiParkingSpotsBody = zParkingSpot;
@@ -3030,11 +2892,6 @@ export const zPostApiParkingSpotsBody = zParkingSpot;
 export const zPostApiParkingSpotsHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zPostApiParkingSpotsResponse = zParkingSpot;
 
 export const zGetApiParkingSpotsStatusesHeaders = z.object({
     Accept: z.string().optional()
@@ -3045,11 +2902,6 @@ export const zGetApiParkingSpotsStatusesQuery = z.object({
     page: z.int().optional()
 });
 
-/**
- * OK
- */
-export const zGetApiParkingSpotsStatusesResponse = zPaginatedResponseModelsParkingSpotStatus;
-
 export const zGetApiParkingSpotsTypesHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3059,11 +2911,6 @@ export const zGetApiParkingSpotsTypesQuery = z.object({
     page: z.int().optional()
 });
 
-/**
- * OK
- */
-export const zGetApiParkingSpotsTypesResponse = zPaginatedResponseModelsParkingSpotType;
-
 export const zDeleteApiParkingSpotsIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3072,11 +2919,6 @@ export const zDeleteApiParkingSpotsIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zDeleteApiParkingSpotsIdResponse = zOkResponse;
-
 export const zGetApiParkingSpotsIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3084,11 +2926,6 @@ export const zGetApiParkingSpotsIdHeaders = z.object({
 export const zGetApiParkingSpotsIdPath = z.object({
     id: z.string()
 });
-
-/**
- * OK
- */
-export const zGetApiParkingSpotsIdResponse = zParkingSpot;
 
 /**
  * Request body for models.ParkingSpot
@@ -3103,19 +2940,9 @@ export const zPutApiParkingSpotsIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zPutApiParkingSpotsIdResponse = zParkingSpot;
-
 export const zGetApiParkingStatsHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zGetApiParkingStatsResponse = zParkingStats;
 
 export const zGetApiParkingTransactionsHeaders = z.object({
     Accept: z.string().optional()
@@ -3127,11 +2954,6 @@ export const zGetApiParkingTransactionsQuery = z.object({
 });
 
 /**
- * OK
- */
-export const zGetApiParkingTransactionsResponse = zPaginatedResponseModelsParkingTransaction;
-
-/**
  * Request body for models.ParkingTransaction
  */
 export const zPostApiParkingTransactionsBody = zParkingTransaction;
@@ -3139,11 +2961,6 @@ export const zPostApiParkingTransactionsBody = zParkingTransaction;
 export const zPostApiParkingTransactionsHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zPostApiParkingTransactionsResponse = zParkingTransaction;
 
 export const zGetApiParkingTransactionsIdHeaders = z.object({
     Accept: z.string().optional()
@@ -3153,11 +2970,6 @@ export const zGetApiParkingTransactionsIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zGetApiParkingTransactionsIdResponse = zParkingTransaction;
-
 export const zPostApiParkingTransactionsIdCheckOutHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3165,11 +2977,6 @@ export const zPostApiParkingTransactionsIdCheckOutHeaders = z.object({
 export const zPostApiParkingTransactionsIdCheckOutPath = z.object({
     id: z.string()
 });
-
-/**
- * OK
- */
-export const zPostApiParkingTransactionsIdCheckOutResponse = zBool;
 
 export const zGetApiParkingVehiclesHeaders = z.object({
     Accept: z.string().optional()
@@ -3181,11 +2988,6 @@ export const zGetApiParkingVehiclesQuery = z.object({
 });
 
 /**
- * OK
- */
-export const zGetApiParkingVehiclesResponse = zPaginatedResponseModelsVehicle;
-
-/**
  * Request body for models.Vehicle
  */
 export const zPostApiParkingVehiclesBody = zVehicle;
@@ -3193,11 +2995,6 @@ export const zPostApiParkingVehiclesBody = zVehicle;
 export const zPostApiParkingVehiclesHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zPostApiParkingVehiclesResponse = zVehicle;
 
 export const zDeleteApiParkingVehiclesIdHeaders = z.object({
     Accept: z.string().optional()
@@ -3207,11 +3004,6 @@ export const zDeleteApiParkingVehiclesIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zDeleteApiParkingVehiclesIdResponse = zOkResponse;
-
 export const zGetApiParkingVehiclesIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3219,11 +3011,6 @@ export const zGetApiParkingVehiclesIdHeaders = z.object({
 export const zGetApiParkingVehiclesIdPath = z.object({
     id: z.string()
 });
-
-/**
- * OK
- */
-export const zGetApiParkingVehiclesIdResponse = zVehicle;
 
 /**
  * Request body for models.Vehicle
@@ -3238,19 +3025,9 @@ export const zPutApiParkingVehiclesIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zPutApiParkingVehiclesIdResponse = zVehicle;
-
 export const zGetApiPermissionsHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zGetApiPermissionsResponse = zPermissionsResponse;
 
 export const zGetApiPermissionsTemplatesHeaders = z.object({
     Accept: z.string().optional()
@@ -3261,11 +3038,6 @@ export const zGetApiPermissionsTemplatesQuery = z.object({
     page: z.int().optional()
 });
 
-/**
- * OK
- */
-export const zGetApiPermissionsTemplatesResponse = zPaginatedResponseModelsPermissionTemplate;
-
 export const zGetApiPermissionsUserUserIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3273,11 +3045,6 @@ export const zGetApiPermissionsUserUserIdHeaders = z.object({
 export const zGetApiPermissionsUserUserIdPath = z.object({
     userId: z.string()
 });
-
-/**
- * OK
- */
-export const zGetApiPermissionsUserUserIdResponse = zUserPermissionsResponse;
 
 export const zPostApiPermissionsUserUserIdTemplateTemplateIdHeaders = z.object({
     Accept: z.string().optional()
@@ -3288,11 +3055,6 @@ export const zPostApiPermissionsUserUserIdTemplateTemplateIdPath = z.object({
     templateId: z.string()
 });
 
-/**
- * OK
- */
-export const zPostApiPermissionsUserUserIdTemplateTemplateIdResponse = zOkResponse;
-
 export const zDeleteApiPermissionsUserUserIdPermissionIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3301,11 +3063,6 @@ export const zDeleteApiPermissionsUserUserIdPermissionIdPath = z.object({
     userId: z.string(),
     permissionId: z.string()
 });
-
-/**
- * OK
- */
-export const zDeleteApiPermissionsUserUserIdPermissionIdResponse = zOkResponse;
 
 export const zPostApiPermissionsUserUserIdPermissionIdHeaders = z.object({
     Accept: z.string().optional()
@@ -3316,19 +3073,9 @@ export const zPostApiPermissionsUserUserIdPermissionIdPath = z.object({
     permissionId: z.string()
 });
 
-/**
- * OK
- */
-export const zPostApiPermissionsUserUserIdPermissionIdResponse = zOkResponse;
-
 export const zGetApiReadyzHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zGetApiReadyzResponse = zString;
 
 export const zGetApiReservationHeaders = z.object({
     Accept: z.string().optional()
@@ -3340,11 +3087,6 @@ export const zGetApiReservationQuery = z.object({
 });
 
 /**
- * OK
- */
-export const zGetApiReservationResponse = zPaginatedResponseModelsReservation;
-
-/**
  * Request body for models.Reservation
  */
 export const zPostApiReservationBody = zReservation;
@@ -3353,11 +3095,6 @@ export const zPostApiReservationHeaders = z.object({
     Accept: z.string().optional()
 });
 
-/**
- * OK
- */
-export const zPostApiReservationResponse = zReservation;
-
 export const zGetApiReservationIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3365,11 +3102,6 @@ export const zGetApiReservationIdHeaders = z.object({
 export const zGetApiReservationIdPath = z.object({
     id: z.string()
 });
-
-/**
- * OK
- */
-export const zGetApiReservationIdResponse = zReservation;
 
 /**
  * Request body for models.Reservation
@@ -3384,11 +3116,6 @@ export const zPutApiReservationIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zPutApiReservationIdResponse = zReservation;
-
 export const zPostApiReservationIdCheckInHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3397,11 +3124,6 @@ export const zPostApiReservationIdCheckInPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zPostApiReservationIdCheckInResponse = zOkResponse;
-
 export const zPostApiReservationIdCheckOutHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3409,11 +3131,6 @@ export const zPostApiReservationIdCheckOutHeaders = z.object({
 export const zPostApiReservationIdCheckOutPath = z.object({
     id: z.string()
 });
-
-/**
- * OK
- */
-export const zPostApiReservationIdCheckOutResponse = zOkResponse;
 
 export const zGetApiRestaurantBillsHeaders = z.object({
     Accept: z.string().optional()
@@ -3425,11 +3142,6 @@ export const zGetApiRestaurantBillsQuery = z.object({
 });
 
 /**
- * OK
- */
-export const zGetApiRestaurantBillsResponse = zPaginatedResponseModelsRestaurantBill;
-
-/**
  * Request body for models.RestaurantBill
  */
 export const zPostApiRestaurantBillsBody = zRestaurantBill;
@@ -3437,11 +3149,6 @@ export const zPostApiRestaurantBillsBody = zRestaurantBill;
 export const zPostApiRestaurantBillsHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zPostApiRestaurantBillsResponse = zRestaurantBill;
 
 export const zGetApiRestaurantBillsStatusesHeaders = z.object({
     Accept: z.string().optional()
@@ -3452,11 +3159,6 @@ export const zGetApiRestaurantBillsStatusesQuery = z.object({
     page: z.int().optional()
 });
 
-/**
- * OK
- */
-export const zGetApiRestaurantBillsStatusesResponse = zPaginatedResponseModelsRestaurantBillStatus;
-
 export const zDeleteApiRestaurantBillsIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3465,11 +3167,6 @@ export const zDeleteApiRestaurantBillsIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zDeleteApiRestaurantBillsIdResponse = zOkResponse;
-
 export const zGetApiRestaurantBillsIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3477,11 +3174,6 @@ export const zGetApiRestaurantBillsIdHeaders = z.object({
 export const zGetApiRestaurantBillsIdPath = z.object({
     id: z.string()
 });
-
-/**
- * OK
- */
-export const zGetApiRestaurantBillsIdResponse = zRestaurantBill;
 
 /**
  * Request body for models.RestaurantBill
@@ -3496,11 +3188,6 @@ export const zPutApiRestaurantBillsIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zPutApiRestaurantBillsIdResponse = zRestaurantBill;
-
 export const zPostApiRestaurantBillsIdSettleHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3508,11 +3195,6 @@ export const zPostApiRestaurantBillsIdSettleHeaders = z.object({
 export const zPostApiRestaurantBillsIdSettlePath = z.object({
     id: z.string()
 });
-
-/**
- * OK
- */
-export const zPostApiRestaurantBillsIdSettleResponse = zBool;
 
 export const zGetApiRestaurantInventoryHeaders = z.object({
     Accept: z.string().optional()
@@ -3524,11 +3206,6 @@ export const zGetApiRestaurantInventoryQuery = z.object({
 });
 
 /**
- * OK
- */
-export const zGetApiRestaurantInventoryResponse = zPaginatedResponseModelsInventoryItem;
-
-/**
  * Request body for models.InventoryItem
  */
 export const zPostApiRestaurantInventoryBody = zInventoryItem;
@@ -3536,11 +3213,6 @@ export const zPostApiRestaurantInventoryBody = zInventoryItem;
 export const zPostApiRestaurantInventoryHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zPostApiRestaurantInventoryResponse = zInventoryItem;
 
 export const zGetApiRestaurantInventoryCategoriesHeaders = z.object({
     Accept: z.string().optional()
@@ -3551,11 +3223,6 @@ export const zGetApiRestaurantInventoryCategoriesQuery = z.object({
     page: z.int().optional()
 });
 
-/**
- * OK
- */
-export const zGetApiRestaurantInventoryCategoriesResponse = zPaginatedResponseModelsInventoryItemCategory;
-
 export const zGetApiRestaurantInventoryStatusesHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3564,11 +3231,6 @@ export const zGetApiRestaurantInventoryStatusesQuery = z.object({
     limit: z.int().optional(),
     page: z.int().optional()
 });
-
-/**
- * OK
- */
-export const zGetApiRestaurantInventoryStatusesResponse = zPaginatedResponseModelsInventoryItemStatus;
 
 export const zGetApiRestaurantInventoryUnitsHeaders = z.object({
     Accept: z.string().optional()
@@ -3579,11 +3241,6 @@ export const zGetApiRestaurantInventoryUnitsQuery = z.object({
     page: z.int().optional()
 });
 
-/**
- * OK
- */
-export const zGetApiRestaurantInventoryUnitsResponse = zPaginatedResponseModelsInventoryItemUnit;
-
 export const zDeleteApiRestaurantInventoryIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3592,11 +3249,6 @@ export const zDeleteApiRestaurantInventoryIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zDeleteApiRestaurantInventoryIdResponse = zOkResponse;
-
 export const zGetApiRestaurantInventoryIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3604,11 +3256,6 @@ export const zGetApiRestaurantInventoryIdHeaders = z.object({
 export const zGetApiRestaurantInventoryIdPath = z.object({
     id: z.string()
 });
-
-/**
- * OK
- */
-export const zGetApiRestaurantInventoryIdResponse = zInventoryItem;
 
 /**
  * Request body for models.InventoryItem
@@ -3623,19 +3270,9 @@ export const zPutApiRestaurantInventoryIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zPutApiRestaurantInventoryIdResponse = zInventoryItem;
-
 export const zGetApiRestaurantStatsHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zGetApiRestaurantStatsResponse = zRestaurantStats;
 
 export const zGetApiRestaurantTransactionsHeaders = z.object({
     Accept: z.string().optional()
@@ -3647,11 +3284,6 @@ export const zGetApiRestaurantTransactionsQuery = z.object({
 });
 
 /**
- * OK
- */
-export const zGetApiRestaurantTransactionsResponse = zPaginatedResponseModelsMealTransaction;
-
-/**
  * Request body for models.MealTransaction
  */
 export const zPostApiRestaurantTransactionsBody = zMealTransaction;
@@ -3659,11 +3291,6 @@ export const zPostApiRestaurantTransactionsBody = zMealTransaction;
 export const zPostApiRestaurantTransactionsHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zPostApiRestaurantTransactionsResponse = zMealTransaction;
 
 export const zDeleteApiRestaurantTransactionsIdHeaders = z.object({
     Accept: z.string().optional()
@@ -3673,11 +3300,6 @@ export const zDeleteApiRestaurantTransactionsIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zDeleteApiRestaurantTransactionsIdResponse = zOkResponse;
-
 export const zGetApiRestaurantTransactionsIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3685,11 +3307,6 @@ export const zGetApiRestaurantTransactionsIdHeaders = z.object({
 export const zGetApiRestaurantTransactionsIdPath = z.object({
     id: z.string()
 });
-
-/**
- * OK
- */
-export const zGetApiRestaurantTransactionsIdResponse = zMealTransaction;
 
 /**
  * Request body for models.MealTransaction
@@ -3704,11 +3321,6 @@ export const zPutApiRestaurantTransactionsIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zPutApiRestaurantTransactionsIdResponse = zMealTransaction;
-
 export const zGetApiRoomsHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3719,11 +3331,6 @@ export const zGetApiRoomsQuery = z.object({
 });
 
 /**
- * OK
- */
-export const zGetApiRoomsResponse = zPaginatedResponseModelsRoom;
-
-/**
  * Request body for models.Room
  */
 export const zPostApiRoomsBody = zRoom;
@@ -3731,11 +3338,6 @@ export const zPostApiRoomsBody = zRoom;
 export const zPostApiRoomsHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zPostApiRoomsResponse = zRoom;
 
 export const zGetApiRoomsAmenitiesHeaders = z.object({
     Accept: z.string().optional()
@@ -3746,11 +3348,6 @@ export const zGetApiRoomsAmenitiesQuery = z.object({
     page: z.int().optional()
 });
 
-/**
- * OK
- */
-export const zGetApiRoomsAmenitiesResponse = zPaginatedResponseModelsAmenity;
-
 export const zGetApiRoomsStatusesHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3759,11 +3356,6 @@ export const zGetApiRoomsStatusesQuery = z.object({
     limit: z.int().optional(),
     page: z.int().optional()
 });
-
-/**
- * OK
- */
-export const zGetApiRoomsStatusesResponse = zPaginatedResponseModelsRoomStatus;
 
 export const zGetApiRoomsTypesHeaders = z.object({
     Accept: z.string().optional()
@@ -3774,11 +3366,6 @@ export const zGetApiRoomsTypesQuery = z.object({
     page: z.int().optional()
 });
 
-/**
- * OK
- */
-export const zGetApiRoomsTypesResponse = zPaginatedResponseModelsRoomType;
-
 export const zDeleteApiRoomsIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3787,11 +3374,6 @@ export const zDeleteApiRoomsIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zDeleteApiRoomsIdResponse = zOkResponse;
-
 export const zGetApiRoomsIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3799,11 +3381,6 @@ export const zGetApiRoomsIdHeaders = z.object({
 export const zGetApiRoomsIdPath = z.object({
     id: z.string()
 });
-
-/**
- * OK
- */
-export const zGetApiRoomsIdResponse = zRoom;
 
 /**
  * Request body for models.Room
@@ -3818,109 +3395,49 @@ export const zPutApiRoomsIdPath = z.object({
     id: z.string()
 });
 
-/**
- * OK
- */
-export const zPutApiRoomsIdResponse = zRoom;
-
 export const zGetApiSanaCountriesHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zGetApiSanaCountriesResponse = z.array(zCountry);
 
 export const zGetApiSanaFamilyRelationshipsHeaders = z.object({
     Accept: z.string().optional()
 });
 
-/**
- * OK
- */
-export const zGetApiSanaFamilyRelationshipsResponse = z.array(zFamilyRelationship);
-
 export const zGetApiSanaGuestsHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zGetApiSanaGuestsResponse = z.array(zSanaGuestResponse);
 
 export const zPostApiSanaGuestsIdSyncHeaders = z.object({
     Accept: z.string().optional()
 });
 
-/**
- * OK
- */
-export const zPostApiSanaGuestsIdSyncResponse = zSanaGuestResponse;
-
 export const zGetApiSanaNationalitiesHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zGetApiSanaNationalitiesResponse = z.array(zNationality);
 
 export const zGetApiSanaOccupationsHeaders = z.object({
     Accept: z.string().optional()
 });
 
-/**
- * OK
- */
-export const zGetApiSanaOccupationsResponse = z.array(zOccupation);
-
 export const zGetApiSanaRoomsHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zGetApiSanaRoomsResponse = z.array(zSanaRoomResponse);
 
 export const zPostApiSanaRoomsIdSyncHeaders = z.object({
     Accept: z.string().optional()
 });
 
-/**
- * OK
- */
-export const zPostApiSanaRoomsIdSyncResponse = zSanaRoomResponse;
-
 export const zPostApiSanaSyncAllHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zPostApiSanaSyncAllResponse = zString;
 
 export const zGetApiSanaTravelReasonsHeaders = z.object({
     Accept: z.string().optional()
 });
 
-/**
- * OK
- */
-export const zGetApiSanaTravelReasonsResponse = z.array(zTravelReason);
-
 export const zGetApiUsersHeaders = z.object({
     Accept: z.string().optional()
 });
-
-/**
- * OK
- */
-export const zGetApiUsersResponse = zPaginatedResponseModelsSanitizedUser;
 
 /**
  * Request body for users.userCreateDto
@@ -3931,11 +3448,6 @@ export const zPostApiUsersHeaders = z.object({
     Accept: z.string().optional()
 });
 
-/**
- * OK
- */
-export const zPostApiUsersResponse = zUserCreateResponse;
-
 export const zGetApiUsersIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -3943,11 +3455,6 @@ export const zGetApiUsersIdHeaders = z.object({
 export const zGetApiUsersIdPath = z.object({
     id: z.string()
 });
-
-/**
- * OK
- */
-export const zGetApiUsersIdResponse = zSanitizedUser;
 
 /**
  * Request body for users.userUpdateDto
@@ -3961,8 +3468,3 @@ export const zPutApiUsersIdHeaders = z.object({
 export const zPutApiUsersIdPath = z.object({
     id: z.string()
 });
-
-/**
- * OK
- */
-export const zPutApiUsersIdResponse = zSanitizedUser;

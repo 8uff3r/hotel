@@ -364,6 +364,7 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from "@nuxt/ui";
 import type z from "zod";
+import { useAuthStore } from "~/stores/auth";
 import { zGuestWithReservationRequest } from "~/utils/client/zod.gen";
 
 definePageMeta({
@@ -452,6 +453,7 @@ const { data: rooms } = useAsyncData(async () => {
 });
 
 const selectedRooms = ref<number>();
+const authStore = useAuthStore();
 
 const handleSubmit = async (event: FormSubmitEvent<Schema>) => {
   loading.value = true;
@@ -459,6 +461,7 @@ const handleSubmit = async (event: FormSubmitEvent<Schema>) => {
     const body: Schema = {
       guest: {
         ...event.data.guest,
+        hotelId: authStore.currentHotelId ?? "default",
         dateOfBirth: event.data.guest?.dateOfBirth
           ? new Date(event.data.guest.dateOfBirth).toISOString()
           : undefined,
