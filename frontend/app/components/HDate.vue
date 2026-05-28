@@ -8,9 +8,9 @@ import {
   toCalendar,
   toCalendarDate,
   today,
-  toZoned,
-  ZonedDateTime,
 } from "@internationalized/date";
+import { useDateFormatter } from "reka-ui";
+import { createYear, createDecade, toDate } from "reka-ui/date";
 
 const props = defineProps<{
   modelValue: string | undefined;
@@ -34,6 +34,10 @@ const emit = defineEmits<{
 watch(value, (nv) => {
   emit("update:modelValue", nv?.toDate("UTC").toISOString());
 });
+const updatePlaceholder = (month: number, year: number) => {
+  value.value = toCalendarDate(new CalendarDate(calendar, year, month, 1));
+};
+const formatter = useDateFormatter("fa");
 </script>
 
 <template>
@@ -48,7 +52,47 @@ watch(value, (nv) => {
     </UButton>
 
     <template #content>
-      <UCalendar v-model="value" class="p-2" />
+      <div class="flex flex-col p-2">
+        <div class="flex w-full flex-row justify-between gap-3" v-if="value">
+          <USelect
+            class="w-1/2"
+            :items="
+              createDecade({
+                dateObj: value as CalendarDate,
+                startIndex: -15,
+                endIndex: 15,
+              }).map((d) => d.year)
+            "
+            :model-value="value!.year"
+            @update:model-value="
+              (v) => {
+                updatePlaceholder(value!.month, v);
+              }
+            "
+          />
+          <USelect
+            class="w-1/2"
+            label-key="label"
+            value-key="key"
+            :items="
+              createYear({
+                dateObj: value as CalendarDate,
+                numberOfMonths: 12,
+              }).map((d) => ({
+                label: formatter.custom(toDate(d), { month: 'long' }),
+                key: d.month,
+              }))
+            "
+            :model-value="value.month"
+            @update:model-value="
+              (v) => {
+                updatePlaceholder(v, value!.year);
+              }
+            "
+          />
+        </div>
+        <UCalendar v-model="value" class="p-2" />
+      </div>
     </template>
   </UPopover>
 </template>
