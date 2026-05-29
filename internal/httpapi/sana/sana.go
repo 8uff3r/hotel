@@ -25,6 +25,7 @@ func (m SanaModule) RegisterRoutes(api *httpapi.API, s *fuego.Server) {
 	h.Get(s, "/family-relationships", m.getFamilyRelationships)
 	h.Get(s, "/nationalities", m.getNationalities)
 	h.Get(s, "/countries", m.getCountries)
+	h.Get(s, "/cities", m.getSanaCities)
 	h.Get(s, "/occupations", m.getOccupations)
 
 	h.Get(s, "/guests", m.getSanaGuests)
@@ -57,8 +58,31 @@ func (m SanaModule) getNationalities(c h.ContextNoBody) ([]models.Nationality, e
 func (m SanaModule) getCountries(c h.ContextNoBody) ([]models.Country, error) {
 	var countries []models.Country
 	err := m.db.Find(&countries).Error
-	return countries, err
+	if err != nil {
+		return nil, err
+	}
+	lang := c.Header("Accept-Language")
+	if lang == "" {
+		lang = "fa"
+	}
+	models.ApplyTranslations(&countries, lang)
+	return countries, nil
 }
+
+func (m SanaModule) getSanaCities(c h.ContextNoBody) ([]models.SanaCity, error) {
+	var cities []models.SanaCity
+	err := m.db.Find(&cities).Error
+	if err != nil {
+		return nil, err
+	}
+	lang := c.Header("Accept-Language")
+	if lang == "" {
+		lang = "fa"
+	}
+	models.ApplyTranslations(&cities, lang)
+	return cities, nil
+}
+
 
 func (m SanaModule) getOccupations(c h.ContextNoBody) ([]models.Occupation, error) {
 	var occupations []models.Occupation

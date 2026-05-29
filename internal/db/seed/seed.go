@@ -16,6 +16,9 @@ import (
 //go:embed translations.json
 var translationsFile []byte
 
+//go:embed countries.json
+var countriesFile []byte
+
 var Translations map[string]map[string]models.Translation
 
 func init() {
@@ -42,6 +45,7 @@ func Seed(db *gorm.DB, cfg config.Config) {
 	seedVehicleTypes(db)
 	seedPermissions(db)
 	seedPermissionTemplates(db)
+	seedCountries(db)
 	seedSanaReferenceData(db, cfg)
 	seedRestaurantReferenceData(db)
 }
@@ -146,4 +150,29 @@ func seedRoomTypes(db *gorm.DB) {
 	}
 
 	seed(db, statuses)
+}
+
+type jsonCountry struct {
+	Slug        string             `json:"slug"`
+	Translation models.Translation `json:"translation"`
+}
+
+func seedCountries(db *gorm.DB) {
+	var jsonCountries []jsonCountry
+	if err := json.Unmarshal(countriesFile, &jsonCountries); err != nil {
+		fmt.Printf("Failed to parse countries: %v\n", err)
+		return
+	}
+
+	var countries []models.Country
+	for _, jc := range jsonCountries {
+		countries = append(countries, models.Country{
+			TranslateBase: models.TranslateBase{
+				Slug:        jc.Slug,
+				Translation: jc.Translation,
+			},
+		})
+	}
+
+	seed(db, countries)
 }

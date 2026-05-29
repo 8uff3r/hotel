@@ -1,0 +1,1045 @@
+[
+  {
+    "slug": "india",
+    "translation": {
+      "fa": "هند",
+      "en": "India"
+    }
+  },
+  {
+    "slug": "china",
+    "translation": {
+      "fa": "چین",
+      "en": "China"
+    }
+  },
+  {
+    "slug": "united-states",
+    "translation": {
+      "fa": "ایالات متحده",
+      "en": "United States"
+    }
+  },
+  {
+    "slug": "indonesia",
+    "translation": {
+      "fa": "اندونزی",
+      "en": "Indonesia"
+    }
+  },
+  {
+    "slug": "pakistan",
+    "translation": {
+      "fa": "پاکستان",
+      "en": "Pakistan"
+    }
+  },
+  {
+    "slug": "nigeria",
+    "translation": {
+      "fa": "نیجریه",
+      "en": "Nigeria"
+    }
+  },
+  {
+    "slug": "brazil",
+    "translation": {
+      "fa": "برزیل",
+      "en": "Brazil"
+    }
+  },
+  {
+    "slug": "bangladesh",
+    "translation": {
+      "fa": "بنگلادش",
+      "en": "Bangladesh"
+    }
+  },
+  {
+    "slug": "russia",
+    "translation": {
+      "fa": "روسیه",
+      "en": "Russia"
+    }
+  },
+  {
+    "slug": "mexico",
+    "translation": {
+      "fa": "مکزیک",
+      "en": "Mexico"
+    }
+  },
+  {
+    "slug": "japan",
+    "translation": {
+      "fa": "ژاپن",
+      "en": "Japan"
+    }
+  },
+  {
+    "slug": "ethiopia",
+    "translation": {
+      "fa": "اتیوپی",
+      "en": "Ethiopia"
+    }
+  },
+  {
+    "slug": "philippines",
+    "translation": {
+      "fa": "فیلیپین",
+      "en": "Philippines"
+    }
+  },
+  {
+    "slug": "egypt",
+    "translation": {
+      "fa": "مصر",
+      "en": "Egypt"
+    }
+  },
+  {
+    "slug": "vietnam",
+    "translation": {
+      "fa": "ویتنام",
+      "en": "Vietnam"
+    }
+  },
+  {
+    "slug": "dr-congo",
+    "translation": {
+      "fa": "کنگو",
+      "en": "DR Congo"
+    }
+  },
+  {
+    "slug": "turkey",
+    "translation": {
+      "fa": "ترکیه",
+      "en": "Turkey"
+    }
+  },
+  {
+    "slug": "iran",
+    "translation": {
+      "fa": "ایران",
+      "en": "Iran"
+    }
+  },
+  {
+    "slug": "germany",
+    "translation": {
+      "fa": "آلمان",
+      "en": "Germany"
+    }
+  },
+  {
+    "slug": "thailand",
+    "translation": {
+      "fa": "تایلند",
+      "en": "Thailand"
+    }
+  },
+  {
+    "slug": "united-kingdom",
+    "translation": {
+      "fa": "بریتانیا",
+      "en": "United Kingdom"
+    }
+  },
+  {
+    "slug": "france",
+    "translation": {
+      "fa": "فرانسه",
+      "en": "France"
+    }
+  },
+  {
+    "slug": "italy",
+    "translation": {
+      "fa": "ایتالیا",
+      "en": "Italy"
+    }
+  },
+  {
+    "slug": "tanzania",
+    "translation": {
+      "fa": "تانزانیا",
+      "en": "Tanzania"
+    }
+  },
+  {
+    "slug": "south-africa",
+    "translation": {
+      "fa": "آفریقای جنوبی",
+      "en": "South Africa"
+    }
+  },
+  {
+    "slug": "kenya",
+    "translation": {
+      "fa": "کنیا",
+      "en": "Kenya"
+    }
+  },
+  {
+    "slug": "myanmar",
+    "translation": {
+      "fa": "میانمار",
+      "en": "Myanmar"
+    }
+  },
+  {
+    "slug": "colombia",
+    "translation": {
+      "fa": "کلمبیا",
+      "en": "Colombia"
+    }
+  },
+  {
+    "slug": "south-korea",
+    "translation": {
+      "fa": "کره جنوبی",
+      "en": "South Korea"
+    }
+  },
+  {
+    "slug": "uganda",
+    "translation": {
+      "fa": "اوگاندا",
+      "en": "Uganda"
+    }
+  },
+  {
+    "slug": "sudan",
+    "translation": {
+      "fa": "سودان",
+      "en": "Sudan"
+    }
+  },
+  {
+    "slug": "spain",
+    "translation": {
+      "fa": "اسپانیا",
+      "en": "Spain"
+    }
+  },
+  {
+    "slug": "algeria",
+    "translation": {
+      "fa": "الجزایر",
+      "en": "Algeria"
+    }
+  },
+  {
+    "slug": "iraq",
+    "translation": {
+      "fa": "عراق",
+      "en": "Iraq"
+    }
+  },
+  {
+    "slug": "argentina",
+    "translation": {
+      "fa": "آرژانتین",
+      "en": "Argentina"
+    }
+  },
+  {
+    "slug": "afghanistan",
+    "translation": {
+      "fa": "افغانستان",
+      "en": "Afghanistan"
+    }
+  },
+  {
+    "slug": "yemen",
+    "translation": {
+      "fa": "یمن",
+      "en": "Yemen"
+    }
+  },
+  {
+    "slug": "canada",
+    "translation": {
+      "fa": "کانادا",
+      "en": "Canada"
+    }
+  },
+  {
+    "slug": "poland",
+    "translation": {
+      "fa": "لهستان",
+      "en": "Poland"
+    }
+  },
+  {
+    "slug": "morocco",
+    "translation": {
+      "fa": "مراکش",
+      "en": "Morocco"
+    }
+  },
+  {
+    "slug": "angola",
+    "translation": {
+      "fa": "آنگولا",
+      "en": "Angola"
+    }
+  },
+  {
+    "slug": "ukraine",
+    "translation": {
+      "fa": "اوکراین",
+      "en": "Ukraine"
+    }
+  },
+  {
+    "slug": "uzbekistan",
+    "translation": {
+      "fa": "ازبکستان",
+      "en": "Uzbekistan"
+    }
+  },
+  {
+    "slug": "malaysia",
+    "translation": {
+      "fa": "مالزی",
+      "en": "Malaysia"
+    }
+  },
+  {
+    "slug": "mozambique",
+    "translation": {
+      "fa": "موزامبیک",
+      "en": "Mozambique"
+    }
+  },
+  {
+    "slug": "ghana",
+    "translation": {
+      "fa": "غنا",
+      "en": "Ghana"
+    }
+  },
+  {
+    "slug": "peru",
+    "translation": {
+      "fa": "پرو",
+      "en": "Peru"
+    }
+  },
+  {
+    "slug": "saudi-arabia",
+    "translation": {
+      "fa": "عربستان سعودی",
+      "en": "Saudi Arabia"
+    }
+  },
+  {
+    "slug": "madagascar",
+    "translation": {
+      "fa": "ماداگاسکار",
+      "en": "Madagascar"
+    }
+  },
+  {
+    "slug": "ivory-coast",
+    "translation": {
+      "fa": "ساحل عاج",
+      "en": "Ivory Coast"
+    }
+  },
+  {
+    "slug": "nepal",
+    "translation": {
+      "fa": "نپال",
+      "en": "Nepal"
+    }
+  },
+  {
+    "slug": "cameroon",
+    "translation": {
+      "fa": "کامرون",
+      "en": "Cameroon"
+    }
+  },
+  {
+    "slug": "venezuela",
+    "translation": {
+      "fa": "ونزوئلا",
+      "en": "Venezuela"
+    }
+  },
+  {
+    "slug": "niger",
+    "translation": {
+      "fa": "نیجر",
+      "en": "Niger"
+    }
+  },
+  {
+    "slug": "australia",
+    "translation": {
+      "fa": "استرالیا",
+      "en": "Australia"
+    }
+  },
+  {
+    "slug": "north-korea",
+    "translation": {
+      "fa": "کره شمالی",
+      "en": "North Korea"
+    }
+  },
+  {
+    "slug": "syria",
+    "translation": {
+      "fa": "سوریه",
+      "en": "Syria"
+    }
+  },
+  {
+    "slug": "mali",
+    "translation": {
+      "fa": "مالی",
+      "en": "Mali"
+    }
+  },
+  {
+    "slug": "burkina-faso",
+    "translation": {
+      "fa": "بورکینافاسو",
+      "en": "Burkina Faso"
+    }
+  },
+  {
+    "slug": "sri-lanka",
+    "translation": {
+      "fa": "سریلانکا",
+      "en": "Sri Lanka"
+    }
+  },
+  {
+    "slug": "malawi",
+    "translation": {
+      "fa": "مالاوی",
+      "en": "Malawi"
+    }
+  },
+  {
+    "slug": "zambia",
+    "translation": {
+      "fa": "زامبیا",
+      "en": "Zambia"
+    }
+  },
+  {
+    "slug": "romania",
+    "translation": {
+      "fa": "رومانی",
+      "en": "Romania"
+    }
+  },
+  {
+    "slug": "chad",
+    "translation": {
+      "fa": "چاد",
+      "en": "Chad"
+    }
+  },
+  {
+    "slug": "chile",
+    "translation": {
+      "fa": "شیلی",
+      "en": "Chile"
+    }
+  },
+  {
+    "slug": "somalia",
+    "translation": {
+      "fa": "سومالی",
+      "en": "Somalia"
+    }
+  },
+  {
+    "slug": "senegal",
+    "translation": {
+      "fa": "سنگال",
+      "en": "Senegal"
+    }
+  },
+  {
+    "slug": "guatemala",
+    "translation": {
+      "fa": "گواتمالا",
+      "en": "Guatemala"
+    }
+  },
+  {
+    "slug": "netherlands",
+    "translation": {
+      "fa": "هلند",
+      "en": "Netherlands"
+    }
+  },
+  {
+    "slug": "cambodia",
+    "translation": {
+      "fa": "کامبوج",
+      "en": "Cambodia"
+    }
+  },
+  {
+    "slug": "ecuador",
+    "translation": {
+      "fa": "اکوادور",
+      "en": "Ecuador"
+    }
+  },
+  {
+    "slug": "zimbabwe",
+    "translation": {
+      "fa": "زیمبابوه",
+      "en": "Zimbabwe"
+    }
+  },
+  {
+    "slug": "south-sudan",
+    "translation": {
+      "fa": "سودان جنوبی",
+      "en": "South Sudan"
+    }
+  },
+  {
+    "slug": "rwanda",
+    "translation": {
+      "fa": "رواندا",
+      "en": "Rwanda"
+    }
+  },
+  {
+    "slug": "guinea",
+    "translation": {
+      "fa": "گینه",
+      "en": "Guinea"
+    }
+  },
+  {
+    "slug": "benin",
+    "translation": {
+      "fa": "بنین",
+      "en": "Benin"
+    }
+  },
+  {
+    "slug": "burundi",
+    "translation": {
+      "fa": "بوروندی",
+      "en": "Burundi"
+    }
+  },
+  {
+    "slug": "tunisia",
+    "translation": {
+      "fa": "تونس",
+      "en": "Tunisia"
+    }
+  },
+  {
+    "slug": "bolivia",
+    "translation": {
+      "fa": "بولیوی",
+      "en": "Bolivia"
+    }
+  },
+  {
+    "slug": "belgium",
+    "translation": {
+      "fa": "بلژیک",
+      "en": "Belgium"
+    }
+  },
+  {
+    "slug": "haiti",
+    "translation": {
+      "fa": "هائیتی",
+      "en": "Haiti"
+    }
+  },
+  {
+    "slug": "jordan",
+    "translation": {
+      "fa": "اردن",
+      "en": "Jordan"
+    }
+  },
+  {
+    "slug": "dominican-republic",
+    "translation": {
+      "fa": "جمهوری دومینیکن",
+      "en": "Dominican Republic"
+    }
+  },
+  {
+    "slug": "czech-republic",
+    "translation": {
+      "fa": "جمهوری چک",
+      "en": "Czech Republic"
+    }
+  },
+  {
+    "slug": "sweden",
+    "translation": {
+      "fa": "سوئد",
+      "en": "Sweden"
+    }
+  },
+  {
+    "slug": "honduras",
+    "translation": {
+      "fa": "هندوراس",
+      "en": "Honduras"
+    }
+  },
+  {
+    "slug": "azerbaijan",
+    "translation": {
+      "fa": "آذربایجان",
+      "en": "Azerbaijan"
+    }
+  },
+  {
+    "slug": "greece",
+    "translation": {
+      "fa": "یونان",
+      "en": "Greece"
+    }
+  },
+  {
+    "slug": "portugal",
+    "translation": {
+      "fa": "پرتغال",
+      "en": "Portugal"
+    }
+  },
+  {
+    "slug": "hungary",
+    "translation": {
+      "fa": "مجارستان",
+      "en": "Hungary"
+    }
+  },
+  {
+    "slug": "tajikistan",
+    "translation": {
+      "fa": "تاجیکستان",
+      "en": "Tajikistan"
+    }
+  },
+  {
+    "slug": "belarus",
+    "translation": {
+      "fa": "بلاروس",
+      "en": "Belarus"
+    }
+  },
+  {
+    "slug": "united-arab-emirates",
+    "translation": {
+      "fa": "امارات متحده عربی",
+      "en": "United Arab Emirates"
+    }
+  },
+  {
+    "slug": "papua-new-guinea",
+    "translation": {
+      "fa": "پاپوآ گینه نو",
+      "en": "Papua New Guinea"
+    }
+  },
+  {
+    "slug": "austria",
+    "translation": {
+      "fa": "اتریش",
+      "en": "Austria"
+    }
+  },
+  {
+    "slug": "switzerland",
+    "translation": {
+      "fa": "سوئیس",
+      "en": "Switzerland"
+    }
+  },
+  {
+    "slug": "togo",
+    "translation": {
+      "fa": "توگو",
+      "en": "Togo"
+    }
+  },
+  {
+    "slug": "sierra-leone",
+    "translation": {
+      "fa": "سیرالئون",
+      "en": "Sierra Leone"
+    }
+  },
+  {
+    "slug": "laos",
+    "translation": {
+      "fa": "لائوس",
+      "en": "Laos"
+    }
+  },
+  {
+    "slug": "paraguay",
+    "translation": {
+      "fa": "پاراگوئه",
+      "en": "Paraguay"
+    }
+  },
+  {
+    "slug": "libya",
+    "translation": {
+      "fa": "لیبی",
+      "en": "Libya"
+    }
+  },
+  {
+    "slug": "bulgaria",
+    "translation": {
+      "fa": "بلغارستان",
+      "en": "Bulgaria"
+    }
+  },
+  {
+    "slug": "serbia",
+    "translation": {
+      "fa": "صربستان",
+      "en": "Serbia"
+    }
+  },
+  {
+    "slug": "lebanon",
+    "translation": {
+      "fa": "لبنان",
+      "en": "Lebanon"
+    }
+  },
+  {
+    "slug": "nicaragua",
+    "translation": {
+      "fa": "نیکاراگوئه",
+      "en": "Nicaragua"
+    }
+  },
+  {
+    "slug": "kyrgyzstan",
+    "translation": {
+      "fa": "قرقیزستان",
+      "en": "Kyrgyzstan"
+    }
+  },
+  {
+    "slug": "turkmenistan",
+    "translation": {
+      "fa": "ترکمنستان",
+      "en": "Turkmenistan"
+    }
+  },
+  {
+    "slug": "denmark",
+    "translation": {
+      "fa": "دانمارک",
+      "en": "Denmark"
+    }
+  },
+  {
+    "slug": "singapore",
+    "translation": {
+      "fa": "سنگاپور",
+      "en": "Singapore"
+    }
+  },
+  {
+    "slug": "finland",
+    "translation": {
+      "fa": "فنلاند",
+      "en": "Finland"
+    }
+  },
+  {
+    "slug": "slovakia",
+    "translation": {
+      "fa": "اسلواکی",
+      "en": "Slovakia"
+    }
+  },
+  {
+    "slug": "norway",
+    "translation": {
+      "fa": "نروژ",
+      "en": "Norway"
+    }
+  },
+  {
+    "slug": "eritrea",
+    "translation": {
+      "fa": "اریتره",
+      "en": "Eritrea"
+    }
+  },
+  {
+    "slug": "costa-rica",
+    "translation": {
+      "fa": "کاستاریکا",
+      "en": "Costa Rica"
+    }
+  },
+  {
+    "slug": "new-zealand",
+    "translation": {
+      "fa": "نیوزیلند",
+      "en": "New Zealand"
+    }
+  },
+  {
+    "slug": "ireland",
+    "translation": {
+      "fa": "ایرلند",
+      "en": "Ireland"
+    }
+  },
+  {
+    "slug": "central-african-republic",
+    "translation": {
+      "fa": "جمهوری آفریقای مرکزی",
+      "en": "Central African Republic"
+    }
+  },
+  {
+    "slug": "oman",
+    "translation": {
+      "fa": "عمان",
+      "en": "Oman"
+    }
+  },
+  {
+    "slug": "liberia",
+    "translation": {
+      "fa": "لیبریا",
+      "en": "Liberia"
+    }
+  },
+  {
+    "slug": "mauritania",
+    "translation": {
+      "fa": "موریتانی",
+      "en": "Mauritania"
+    }
+  },
+  {
+    "slug": "croatia",
+    "translation": {
+      "fa": "کرواسی",
+      "en": "Croatia"
+    }
+  },
+  {
+    "slug": "panama",
+    "translation": {
+      "fa": "پاناما",
+      "en": "Panama"
+    }
+  },
+  {
+    "slug": "georgia",
+    "translation": {
+      "fa": "گرجستان",
+      "en": "Georgia"
+    }
+  },
+  {
+    "slug": "uruguay",
+    "translation": {
+      "fa": "اروگوئه",
+      "en": "Uruguay"
+    }
+  },
+  {
+    "slug": "mongolia",
+    "translation": {
+      "fa": "مغولستان",
+      "en": "Mongolia"
+    }
+  },
+  {
+    "slug": "bosnia-and-herzegovina",
+    "translation": {
+      "fa": "بوسنی و هرزگوین",
+      "en": "Bosnia and Herzegovina"
+    }
+  },
+  {
+    "slug": "qatar",
+    "translation": {
+      "fa": "قطر",
+      "en": "Qatar"
+    }
+  },
+  {
+    "slug": "albania",
+    "translation": {
+      "fa": "آلبانی",
+      "en": "Albania"
+    }
+  },
+  {
+    "slug": "jamaica",
+    "translation": {
+      "fa": "جامائیکا",
+      "en": "Jamaica"
+    }
+  },
+  {
+    "slug": "armenia",
+    "translation": {
+      "fa": "ارمنستان",
+      "en": "Armenia"
+    }
+  },
+  {
+    "slug": "lithuania",
+    "translation": {
+      "fa": "لیتوانی",
+      "en": "Lithuania"
+    }
+  },
+  {
+    "slug": "namibia",
+    "translation": {
+      "fa": "نامیبیا",
+      "en": "Namibia"
+    }
+  },
+  {
+    "slug": "botswana",
+    "translation": {
+      "fa": "بوتسوانا",
+      "en": "Botswana"
+    }
+  },
+  {
+    "slug": "gabon",
+    "translation": {
+      "fa": "گابن",
+      "en": "Gabon"
+    }
+  },
+  {
+    "slug": "lesotho",
+    "translation": {
+      "fa": "لسوتو",
+      "en": "Lesotho"
+    }
+  },
+  {
+    "slug": "north-macedonia",
+    "translation": {
+      "fa": "مقدونیه شمالی",
+      "en": "North Macedonia"
+    }
+  },
+  {
+    "slug": "slovenia",
+    "translation": {
+      "fa": "اسلوونی",
+      "en": "Slovenia"
+    }
+  },
+  {
+    "slug": "guinea-bissau",
+    "translation": {
+      "fa": "گینه بیسائو",
+      "en": "Guinea Bissau"
+    }
+  },
+  {
+    "slug": "latvia",
+    "translation": {
+      "fa": "لتونی",
+      "en": "Latvia"
+    }
+  },
+  {
+    "slug": "bahrain",
+    "translation": {
+      "fa": "بحرین",
+      "en": "Bahrain"
+    }
+  },
+  {
+    "slug": "equatorial-guinea",
+    "translation": {
+      "fa": "گینه استوایی",
+      "en": "Equatorial Guinea"
+    }
+  },
+  {
+    "slug": "trinidad-and-tobago",
+    "translation": {
+      "fa": "ترینیداد و توباگو",
+      "en": "Trinidad and Tobago"
+    }
+  },
+  {
+    "slug": "estonia",
+    "translation": {
+      "fa": "استونی",
+      "en": "Estonia"
+    }
+  },
+  {
+    "slug": "timor-leste",
+    "translation": {
+      "fa": "تیمور شرقی",
+      "en": "Timor Leste"
+    }
+  },
+  {
+    "slug": "mauritius",
+    "translation": {
+      "fa": "موریس",
+      "en": "Mauritius"
+    }
+  },
+  {
+    "slug": "cyprus",
+    "translation": {
+      "fa": "قبرس",
+      "en": "Cyprus"
+    }
+  },
+  {
+    "slug": "eswatini",
+    "translation": {
+      "fa": "اسواتینی",
+      "en": "Eswatini"
+    }
+  },
+  {
+    "slug": "djibouti",
+    "translation": {
+      "fa": "جیبوتی",
+      "en": "Djibouti"
+    }
+  },
+  {
+    "slug": "fiji",
+    "translation": {
+      "fa": "فیجی",
+      "en": "Fiji"
+    }
+  }
+]

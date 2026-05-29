@@ -43,7 +43,7 @@ type Nationality struct {
 	SanaName string `json:"sanaName"`
 }
 
-type Country struct {
+type SanaCity struct {
 	Base
 	TranslateBase
 	SanaID   string `gorm:"uniqueIndex" json:"sanaId"`

@@ -99,9 +99,9 @@ func seedIranianCities(db *gorm.DB, client *sana.Client) {
 		return
 	}
 
-	var cities []models.Country
+	var cities []models.SanaCity
 	for _, item := range items {
-		cities = append(cities, models.Country{
+		cities = append(cities, models.SanaCity{
 			SanaID:   item.ID,
 			SanaName: item.Name,
 			IsIran:   true,
@@ -109,7 +109,7 @@ func seedIranianCities(db *gorm.DB, client *sana.Client) {
 	}
 
 	if len(cities) > 0 {
-		db.Where("is_iran = ?", true).Delete(&models.Country{})
+		db.Where("is_iran = ?", true).Delete(&models.SanaCity{})
 		db.CreateInBatches(cities, 100)
 	}
 }
@@ -121,9 +121,9 @@ func seedForeignCities(db *gorm.DB, client *sana.Client) {
 		return
 	}
 
-	var cities []models.Country
+	var cities []models.SanaCity
 	for _, item := range items {
-		cities = append(cities, models.Country{
+		cities = append(cities, models.SanaCity{
 			SanaID:   item.ID,
 			SanaName: item.Name,
 			IsIran:   false,
@@ -131,7 +131,7 @@ func seedForeignCities(db *gorm.DB, client *sana.Client) {
 	}
 
 	if len(cities) > 0 {
-		db.Where("is_iran = ?", false).Delete(&models.Country{})
+		db.Where("is_iran = ?", false).Delete(&models.SanaCity{})
 		db.CreateInBatches(cities, 100)
 	}
 }
