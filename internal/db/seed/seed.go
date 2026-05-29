@@ -48,6 +48,7 @@ func Seed(db *gorm.DB, cfg config.Config) {
 	seedCountries(db)
 	seedSanaReferenceData(db, cfg)
 	seedRestaurantReferenceData(db)
+	seedAllReferenceData(db)
 }
 
 type Seedable interface {

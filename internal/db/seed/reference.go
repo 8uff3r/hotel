@@ -7,12 +7,29 @@ import (
 )
 
 func seedAllReferenceData(db *gorm.DB) {
+	seedGuestCompanionRelations(db)
 	seedParkingLotStatuses(db)
 	seedExpenseCategories(db)
 	seedIncomeCategories(db)
 	seedPaymentStatuses(db)
 	seedPaymentMethods(db)
 	seedVehicleTypes(db)
+}
+
+func seedGuestCompanionRelations(db *gorm.DB) {
+	t := Translations["guest-companion-relations"]
+	relations := []models.GuestCompanionRelation{
+		{TranslateBase: models.TranslateBase{Slug: "spouse", Translation: t["spouse"]}},
+		{TranslateBase: models.TranslateBase{Slug: "child", Translation: t["child"]}},
+		{TranslateBase: models.TranslateBase{Slug: "parent", Translation: t["parent"]}},
+		{TranslateBase: models.TranslateBase{Slug: "sibling", Translation: t["sibling"]}},
+		{TranslateBase: models.TranslateBase{Slug: "relative", Translation: t["relative"]}},
+		{TranslateBase: models.TranslateBase{Slug: "friend", Translation: t["friend"]}},
+		{TranslateBase: models.TranslateBase{Slug: "colleague", Translation: t["colleague"]}},
+		{TranslateBase: models.TranslateBase{Slug: "other", Translation: t["other"]}},
+	}
+
+	seed(db, relations)
 }
 
 func seedParkingLotStatuses(db *gorm.DB) {
@@ -77,6 +94,8 @@ func seedPaymentMethods(db *gorm.DB) {
 		{TranslateBase: models.TranslateBase{Slug: "card", Translation: t["card"]}},
 		{TranslateBase: models.TranslateBase{Slug: "bank_transfer", Translation: t["bank_transfer"]}},
 		{TranslateBase: models.TranslateBase{Slug: "cheque", Translation: t["cheque"]}},
+		{TranslateBase: models.TranslateBase{Slug: "credit", Translation: t["credit"]}},
+		{TranslateBase: models.TranslateBase{Slug: "online", Translation: t["online"]}},
 		{TranslateBase: models.TranslateBase{Slug: "other", Translation: t["other"]}},
 	}
 

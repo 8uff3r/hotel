@@ -24,11 +24,18 @@ type GuestWithReservationRequest struct {
 }
 
 type CompanionRequest struct {
-	FirstName  string `json:"firstName"`
-	LastName   string `json:"lastName"`
-	NationalID string `json:"nationalId"`
-	IDNumber   string `json:"idNumber"`
-	Relation   string `json:"relation"`
+	FirstName   string    `json:"firstName"`
+	LastName    string    `json:"lastName"`
+	NationalID  string    `json:"nationalId"`
+	FatherName  string    `json:"fatherName"`
+	IDNumber    string    `json:"idNumber"`
+	Gender      string    `json:"gender"`
+	Relation    uint      `json:"relation"`
+	DateOfBirth time.Time `json:"dateOfBirth"`
+	Phone       string    `json:"phone"`
+
+	NationalityID uint           `json:"nationalityID"`
+	Nationality   models.Country `gorm:"foreignKey:NationalityID" json:"nationality,omitzero"`
 }
 
 type ReservationRequest struct {
@@ -42,6 +49,7 @@ type ReservationRequest struct {
 	PurposeOfTravel string        `json:"purposeOfTravel"`
 	Breakfast       bool          `json:"breakfast"`
 	Guide           bool          `json:"guide"`
+	FullBoard       bool          `json:"fullBoard"`
 	RoomPrice       float64       `json:"roomPrice"`
 	Notes           string        `json:"notes"`
 	Rooms           []models.Room `json:"rooms"`
@@ -65,6 +73,8 @@ func (m GuestsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 
 	fuego.Get(s, "/{id}/settle", gm.getGuestSettlementHandler)
 	fuego.Post(s, "/{id}/settle", gm.settleGuestAccount)
+
+	fuego.Get(s, "/relations", h.ListModel(api.Db, models.GuestCompanionRelation{}, h.WithTranslation()))
 }
 
 type GuestWithReservationResponse struct {
@@ -121,12 +131,17 @@ func (gm *GuestsModule) createGuestWithReservation(c fuego.ContextWithBody[Guest
 
 		for _, comp := range body.Companions {
 			companion := models.GuestCompanion{
-				GuestID:    body.Guest.ID,
-				FirstName:  comp.FirstName,
-				LastName:   comp.LastName,
-				NationalID: comp.NationalID,
-				IDNumber:   comp.IDNumber,
-				Relation:   comp.Relation,
+				GuestID:       body.Guest.ID,
+				FirstName:     comp.FirstName,
+				LastName:      comp.LastName,
+				NationalID:    comp.NationalID,
+				IDNumber:      comp.IDNumber,
+				RelationID:    comp.Relation,
+				FatherName:    comp.FatherName,
+				Gender:        comp.Gender,
+				DateOfBirth:   comp.DateOfBirth,
+				NationalityID: comp.NationalityID,
+				Phone:         comp.Phone,
 			}
 			if err := tx.Create(&companion).Error; err != nil {
 				return err
@@ -144,6 +159,7 @@ func (gm *GuestsModule) createGuestWithReservation(c fuego.ContextWithBody[Guest
 			Destination:     body.Reservation.Destination,
 			PurposeOfTravel: body.Reservation.PurposeOfTravel,
 			Breakfast:       body.Reservation.Breakfast,
+			FullBoard:       body.Reservation.FullBoard,
 			Guide:           body.Reservation.Guide,
 			RoomPrice:       body.Reservation.RoomPrice,
 			Notes:           body.Reservation.Notes,

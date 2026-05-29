@@ -23,6 +23,7 @@ type Reservation struct {
 
 	Breakfast bool `gorm:"not null;default:false" json:"breakfast"`
 	Guide     bool `gorm:"not null;default:false" json:"guide"`
+	FullBoard bool `gorm:"not null;default:false" json:"fullBoard"`
 
 	RoomPrice float64 `gorm:"not null;default:0" json:"roomPrice"`
 

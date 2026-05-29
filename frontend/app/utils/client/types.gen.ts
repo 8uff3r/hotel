@@ -102,13 +102,28 @@ export type FamilyRelationship = {
 export type Guest = {
     address?: string;
     companions?: Array<{
+        dateOfBirth?: string;
+        fatherName?: string;
         firstName?: string;
+        gender?: string;
         guestId?: number;
         id?: number;
         idNumber?: string;
         lastName?: string;
         nationalId?: string;
-        relation?: string;
+        nationality?: {
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        nationalityID?: number;
+        phone?: string;
+        relation?: {
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        relationId?: number;
     }>;
     dateOfBirth?: string;
     email?: string;
@@ -119,14 +134,14 @@ export type Guest = {
     id?: number;
     idNumber?: string;
     landline?: string;
-    lastName?: string;
+    lastName: string;
     nationalId?: string;
     nationality?: {
         id?: number;
         label?: string;
         slug?: string;
     };
-    nationalityID?: number;
+    nationalityID: number;
     occupation?: string;
     phone?: string;
     placeOfBirth?: string;
@@ -137,6 +152,7 @@ export type Guest = {
         destination?: string;
         durationOfStay?: number;
         entryDate?: string;
+        fullBoard?: boolean;
         guestId?: number;
         guide?: boolean;
         hotelId?: string;
@@ -225,22 +241,47 @@ export type GuestSettlementResponse = {
  */
 export type GuestWithReservationRequest = {
     companions?: Array<{
+        dateOfBirth?: string;
+        fatherName?: string;
         firstName?: string;
+        gender?: string;
         idNumber?: string;
         lastName?: string;
         nationalId?: string;
-        relation?: string;
+        nationality?: {
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        nationalityID?: number;
+        phone?: string;
+        relation?: number;
     }>;
     guest?: {
         address?: string;
         companions?: Array<{
+            dateOfBirth?: string;
+            fatherName?: string;
             firstName?: string;
+            gender?: string;
             guestId?: number;
             id?: number;
             idNumber?: string;
             lastName?: string;
             nationalId?: string;
-            relation?: string;
+            nationality?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            nationalityID?: number;
+            phone?: string;
+            relation?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            relationId?: number;
         }>;
         dateOfBirth?: string;
         email?: string;
@@ -251,14 +292,14 @@ export type GuestWithReservationRequest = {
         id?: number;
         idNumber?: string;
         landline?: string;
-        lastName?: string;
+        lastName: string;
         nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
             slug?: string;
         };
-        nationalityID?: number;
+        nationalityID: number;
         occupation?: string;
         phone?: string;
         placeOfBirth?: string;
@@ -269,6 +310,7 @@ export type GuestWithReservationRequest = {
             destination?: string;
             durationOfStay?: number;
             entryDate?: string;
+            fullBoard?: boolean;
             guestId?: number;
             guide?: boolean;
             hotelId?: string;
@@ -332,6 +374,7 @@ export type GuestWithReservationRequest = {
         destination?: string;
         durationOfStay?: number;
         entryDate?: string;
+        fullBoard?: boolean;
         guide?: boolean;
         notes?: string;
         numberOfPeople?: number;
@@ -378,13 +421,28 @@ export type GuestWithReservationResponse = {
     guest?: {
         address?: string;
         companions?: Array<{
+            dateOfBirth?: string;
+            fatherName?: string;
             firstName?: string;
+            gender?: string;
             guestId?: number;
             id?: number;
             idNumber?: string;
             lastName?: string;
             nationalId?: string;
-            relation?: string;
+            nationality?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            nationalityID?: number;
+            phone?: string;
+            relation?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            relationId?: number;
         }>;
         dateOfBirth?: string;
         email?: string;
@@ -395,14 +453,14 @@ export type GuestWithReservationResponse = {
         id?: number;
         idNumber?: string;
         landline?: string;
-        lastName?: string;
+        lastName: string;
         nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
             slug?: string;
         };
-        nationalityID?: number;
+        nationalityID: number;
         occupation?: string;
         phone?: string;
         placeOfBirth?: string;
@@ -413,6 +471,7 @@ export type GuestWithReservationResponse = {
             destination?: string;
             durationOfStay?: number;
             entryDate?: string;
+            fullBoard?: boolean;
             guestId?: number;
             guide?: boolean;
             hotelId?: string;
@@ -478,6 +537,7 @@ export type GuestWithReservationResponse = {
         destination?: string;
         durationOfStay?: number;
         entryDate?: string;
+        fullBoard?: boolean;
         guestId?: number;
         guide?: boolean;
         hotelId?: string;
@@ -638,6 +698,7 @@ export type Income = {
         destination?: string;
         durationOfStay?: number;
         entryDate?: string;
+        fullBoard?: boolean;
         guestId?: number;
         guide?: boolean;
         hotelId?: string;
@@ -958,13 +1019,28 @@ export type PaginatedResponseModelsGuest = {
     data?: Array<{
         address?: string;
         companions?: Array<{
+            dateOfBirth?: string;
+            fatherName?: string;
             firstName?: string;
+            gender?: string;
             guestId?: number;
             id?: number;
             idNumber?: string;
             lastName?: string;
             nationalId?: string;
-            relation?: string;
+            nationality?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            nationalityID?: number;
+            phone?: string;
+            relation?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            relationId?: number;
         }>;
         dateOfBirth?: string;
         email?: string;
@@ -975,14 +1051,14 @@ export type PaginatedResponseModelsGuest = {
         id?: number;
         idNumber?: string;
         landline?: string;
-        lastName?: string;
+        lastName: string;
         nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
             slug?: string;
         };
-        nationalityID?: number;
+        nationalityID: number;
         occupation?: string;
         phone?: string;
         placeOfBirth?: string;
@@ -993,6 +1069,7 @@ export type PaginatedResponseModelsGuest = {
             destination?: string;
             durationOfStay?: number;
             entryDate?: string;
+            fullBoard?: boolean;
             guestId?: number;
             guide?: boolean;
             hotelId?: string;
@@ -1043,6 +1120,21 @@ export type PaginatedResponseModelsGuest = {
             userCheckIn?: string;
             userCheckOut?: string;
         }>;
+    }>;
+    limit?: number;
+    page?: number;
+    total?: number;
+    totalPages?: number;
+};
+
+/**
+ * PaginatedResponse_models.GuestCompanionRelation schema
+ */
+export type PaginatedResponseModelsGuestCompanionRelation = {
+    data?: Array<{
+        id?: number;
+        label?: string;
+        slug?: string;
     }>;
     limit?: number;
     page?: number;
@@ -1126,6 +1218,7 @@ export type PaginatedResponseModelsIncome = {
             destination?: string;
             durationOfStay?: number;
             entryDate?: string;
+            fullBoard?: boolean;
             guestId?: number;
             guide?: boolean;
             hotelId?: string;
@@ -1472,13 +1565,28 @@ export type PaginatedResponseModelsParkingTransaction = {
         guest?: {
             address?: string;
             companions?: Array<{
+                dateOfBirth?: string;
+                fatherName?: string;
                 firstName?: string;
+                gender?: string;
                 guestId?: number;
                 id?: number;
                 idNumber?: string;
                 lastName?: string;
                 nationalId?: string;
-                relation?: string;
+                nationality?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                nationalityID?: number;
+                phone?: string;
+                relation?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                relationId?: number;
             }>;
             dateOfBirth?: string;
             email?: string;
@@ -1489,14 +1597,14 @@ export type PaginatedResponseModelsParkingTransaction = {
             id?: number;
             idNumber?: string;
             landline?: string;
-            lastName?: string;
+            lastName: string;
             nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
                 slug?: string;
             };
-            nationalityID?: number;
+            nationalityID: number;
             occupation?: string;
             phone?: string;
             placeOfBirth?: string;
@@ -1507,6 +1615,7 @@ export type PaginatedResponseModelsParkingTransaction = {
                 destination?: string;
                 durationOfStay?: number;
                 entryDate?: string;
+                fullBoard?: boolean;
                 guestId?: number;
                 guide?: boolean;
                 hotelId?: string;
@@ -1601,6 +1710,7 @@ export type PaginatedResponseModelsParkingTransaction = {
             destination?: string;
             durationOfStay?: number;
             entryDate?: string;
+            fullBoard?: boolean;
             guestId?: number;
             guide?: boolean;
             hotelId?: string;
@@ -1742,6 +1852,7 @@ export type PaginatedResponseModelsReservation = {
         destination?: string;
         durationOfStay?: number;
         entryDate?: string;
+        fullBoard?: boolean;
         guestId?: number;
         guide?: boolean;
         hotelId?: string;
@@ -1816,13 +1927,28 @@ export type PaginatedResponseModelsRestaurantBill = {
         guest?: {
             address?: string;
             companions?: Array<{
+                dateOfBirth?: string;
+                fatherName?: string;
                 firstName?: string;
+                gender?: string;
                 guestId?: number;
                 id?: number;
                 idNumber?: string;
                 lastName?: string;
                 nationalId?: string;
-                relation?: string;
+                nationality?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                nationalityID?: number;
+                phone?: string;
+                relation?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                relationId?: number;
             }>;
             dateOfBirth?: string;
             email?: string;
@@ -1833,14 +1959,14 @@ export type PaginatedResponseModelsRestaurantBill = {
             id?: number;
             idNumber?: string;
             landline?: string;
-            lastName?: string;
+            lastName: string;
             nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
                 slug?: string;
             };
-            nationalityID?: number;
+            nationalityID: number;
             occupation?: string;
             phone?: string;
             placeOfBirth?: string;
@@ -1851,6 +1977,7 @@ export type PaginatedResponseModelsRestaurantBill = {
                 destination?: string;
                 durationOfStay?: number;
                 entryDate?: string;
+                fullBoard?: boolean;
                 guestId?: number;
                 guide?: boolean;
                 hotelId?: string;
@@ -1913,6 +2040,7 @@ export type PaginatedResponseModelsRestaurantBill = {
             destination?: string;
             durationOfStay?: number;
             entryDate?: string;
+            fullBoard?: boolean;
             guestId?: number;
             guide?: boolean;
             hotelId?: string;
@@ -2136,13 +2264,28 @@ export type PaginatedResponseModelsVehicle = {
         guest?: {
             address?: string;
             companions?: Array<{
+                dateOfBirth?: string;
+                fatherName?: string;
                 firstName?: string;
+                gender?: string;
                 guestId?: number;
                 id?: number;
                 idNumber?: string;
                 lastName?: string;
                 nationalId?: string;
-                relation?: string;
+                nationality?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                nationalityID?: number;
+                phone?: string;
+                relation?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                relationId?: number;
             }>;
             dateOfBirth?: string;
             email?: string;
@@ -2153,14 +2296,14 @@ export type PaginatedResponseModelsVehicle = {
             id?: number;
             idNumber?: string;
             landline?: string;
-            lastName?: string;
+            lastName: string;
             nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
                 slug?: string;
             };
-            nationalityID?: number;
+            nationalityID: number;
             occupation?: string;
             phone?: string;
             placeOfBirth?: string;
@@ -2171,6 +2314,7 @@ export type PaginatedResponseModelsVehicle = {
                 destination?: string;
                 durationOfStay?: number;
                 entryDate?: string;
+                fullBoard?: boolean;
                 guestId?: number;
                 guide?: boolean;
                 hotelId?: string;
@@ -2337,13 +2481,28 @@ export type ParkingTransaction = {
     guest?: {
         address?: string;
         companions?: Array<{
+            dateOfBirth?: string;
+            fatherName?: string;
             firstName?: string;
+            gender?: string;
             guestId?: number;
             id?: number;
             idNumber?: string;
             lastName?: string;
             nationalId?: string;
-            relation?: string;
+            nationality?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            nationalityID?: number;
+            phone?: string;
+            relation?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            relationId?: number;
         }>;
         dateOfBirth?: string;
         email?: string;
@@ -2354,14 +2513,14 @@ export type ParkingTransaction = {
         id?: number;
         idNumber?: string;
         landline?: string;
-        lastName?: string;
+        lastName: string;
         nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
             slug?: string;
         };
-        nationalityID?: number;
+        nationalityID: number;
         occupation?: string;
         phone?: string;
         placeOfBirth?: string;
@@ -2372,6 +2531,7 @@ export type ParkingTransaction = {
             destination?: string;
             durationOfStay?: number;
             entryDate?: string;
+            fullBoard?: boolean;
             guestId?: number;
             guide?: boolean;
             hotelId?: string;
@@ -2466,6 +2626,7 @@ export type ParkingTransaction = {
         destination?: string;
         durationOfStay?: number;
         entryDate?: string;
+        fullBoard?: boolean;
         guestId?: number;
         guide?: boolean;
         hotelId?: string;
@@ -2574,6 +2735,7 @@ export type Reservation = {
     destination?: string;
     durationOfStay?: number;
     entryDate?: string;
+    fullBoard?: boolean;
     guestId?: number;
     guide?: boolean;
     hotelId?: string;
@@ -2642,13 +2804,28 @@ export type RestaurantBill = {
     guest?: {
         address?: string;
         companions?: Array<{
+            dateOfBirth?: string;
+            fatherName?: string;
             firstName?: string;
+            gender?: string;
             guestId?: number;
             id?: number;
             idNumber?: string;
             lastName?: string;
             nationalId?: string;
-            relation?: string;
+            nationality?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            nationalityID?: number;
+            phone?: string;
+            relation?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            relationId?: number;
         }>;
         dateOfBirth?: string;
         email?: string;
@@ -2659,14 +2836,14 @@ export type RestaurantBill = {
         id?: number;
         idNumber?: string;
         landline?: string;
-        lastName?: string;
+        lastName: string;
         nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
             slug?: string;
         };
-        nationalityID?: number;
+        nationalityID: number;
         occupation?: string;
         phone?: string;
         placeOfBirth?: string;
@@ -2677,6 +2854,7 @@ export type RestaurantBill = {
             destination?: string;
             durationOfStay?: number;
             entryDate?: string;
+            fullBoard?: boolean;
             guestId?: number;
             guide?: boolean;
             hotelId?: string;
@@ -2739,6 +2917,7 @@ export type RestaurantBill = {
         destination?: string;
         durationOfStay?: number;
         entryDate?: string;
+        fullBoard?: boolean;
         guestId?: number;
         guide?: boolean;
         hotelId?: string;
@@ -2975,13 +3154,28 @@ export type Vehicle = {
     guest?: {
         address?: string;
         companions?: Array<{
+            dateOfBirth?: string;
+            fatherName?: string;
             firstName?: string;
+            gender?: string;
             guestId?: number;
             id?: number;
             idNumber?: string;
             lastName?: string;
             nationalId?: string;
-            relation?: string;
+            nationality?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            nationalityID?: number;
+            phone?: string;
+            relation?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            relationId?: number;
         }>;
         dateOfBirth?: string;
         email?: string;
@@ -2992,14 +3186,14 @@ export type Vehicle = {
         id?: number;
         idNumber?: string;
         landline?: string;
-        lastName?: string;
+        lastName: string;
         nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
             slug?: string;
         };
-        nationalityID?: number;
+        nationalityID: number;
         occupation?: string;
         phone?: string;
         placeOfBirth?: string;
@@ -3010,6 +3204,7 @@ export type Vehicle = {
             destination?: string;
             durationOfStay?: number;
             entryDate?: string;
+            fullBoard?: boolean;
             guestId?: number;
             guide?: boolean;
             hotelId?: string;
@@ -3617,6 +3812,42 @@ export type PostApiGuestsResponses = {
 };
 
 export type PostApiGuestsResponse = PostApiGuestsResponses[keyof PostApiGuestsResponses];
+
+export type GetApiGuestsRelationsData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: {
+        limit?: number;
+        page?: number;
+    };
+    url: '/api/guests/relations';
+};
+
+export type GetApiGuestsRelationsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiGuestsRelationsError = GetApiGuestsRelationsErrors[keyof GetApiGuestsRelationsErrors];
+
+export type GetApiGuestsRelationsResponses = {
+    /**
+     * OK
+     */
+    200: PaginatedResponseModelsGuestCompanionRelation;
+};
+
+export type GetApiGuestsRelationsResponse = GetApiGuestsRelationsResponses[keyof GetApiGuestsRelationsResponses];
 
 export type PostApiGuestsWithReservationData = {
     /**

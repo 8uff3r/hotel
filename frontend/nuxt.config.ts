@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import type { NuxtPage } from "nuxt/schema";
 export default defineNuxtConfig({
   compatibilityDate: "2026-04-12",
   devtools: { enabled: true },
@@ -126,5 +127,29 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
     typeCheck: false,
+  },
+  hooks: {
+    "pages:extend"(pages) {
+      // Remove any routes generated from .ts files or components/ directories
+      function removeBadRoutes(pages: NuxtPage[]) {
+        return pages.filter((page) => {
+          // Exclude routes from files inside any `components` directory
+          const hasComponentsDir = page.file?.includes("/components/");
+          // Exclude routes from .ts files
+          const isTsFile = page.file?.endsWith(".ts");
+
+          if (hasComponentsDir || isTsFile) return false;
+
+          // Recurse into children
+          if (page.children) {
+            page.children = removeBadRoutes(page.children);
+          }
+
+          return true;
+        });
+      }
+
+      pages.splice(0, pages.length, ...removeBadRoutes(pages));
+    },
   },
 });

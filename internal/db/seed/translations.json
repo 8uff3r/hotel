@@ -1,4 +1,14 @@
 {
+  "guest-companion-relations": {
+    "spouse": { "fa": "همسر", "en": "Spouse" },
+    "child": { "fa": "فرزند", "en": "Child" },
+    "parent": { "fa": "والد", "en": "Parent" },
+    "sibling": { "fa": "خواهر/برادر", "en": "Sibling" },
+    "relative": { "fa": "خویشاوند", "en": "Relative" },
+    "friend": { "fa": "دوست", "en": "Friend" },
+    "colleague": { "fa": "همکار", "en": "Colleague" },
+    "other": { "fa": "سایر", "en": "Other" }
+  },
   "amenity": {
     "wifi": { "fa": "وای‌فای", "en": "WiFi" },
     "tv": { "fa": "تلویزیون", "en": "TV" },
@@ -207,6 +217,8 @@
     "card": { "fa": "کارت", "en": "Card" },
     "bank_transfer": { "fa": "انتقال بانکی", "en": "Bank Transfer" },
     "cheque": { "fa": "چک", "en": "Cheque" },
+    "credit": { "fa": "اعتباری", "en": "Credit" },
+    "online": { "fa": "اینترنتی", "en": "Online" },
     "other": { "fa": "سایر", "en": "Other" }
   },
 

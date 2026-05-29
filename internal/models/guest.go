@@ -7,7 +7,7 @@ import (
 type Guest struct {
 	ID           uint      `gorm:"primaryKey" json:"id"`
 	FirstName    string    `gorm:"not null" json:"firstName" validate:"required,min=2,max=50"`
-	LastName     string    `gorm:"not null" json:"lastName"`
+	LastName     string    `gorm:"not null" json:"lastName" validate:"required,min=2,max=50"`
 	FatherName   string    `json:"fatherName"`
 	NationalID   string    `gorm:"index" json:"nationalId"`
 	IDNumber     string    `json:"idNumber"`
@@ -24,19 +24,32 @@ type Guest struct {
 	HotelID string `json:"hotelId"`
 	Hotel   Hotel  `gorm:"foreignKey:HotelID"`
 
-	NationalityID uint    `json:"nationalityID"`
+	NationalityID uint    `json:"nationalityID" validate:"required"`
 	Nationality   Country `gorm:"foreignKey:NationalityID" json:"nationality,omitzero"`
 
 	Reservations []Reservation    `gorm:"foreignKey:GuestID" json:"reservations,omitempty"`
 	Companions   []GuestCompanion `gorm:"foreignKey:GuestID" json:"companions,omitempty"`
 }
 
+type GuestCompanionRelation struct {
+	Base
+	TranslateBase
+}
+
 type GuestCompanion struct {
 	Base
-	GuestID    uint   `gorm:"not null;index" json:"guestId"`
-	FirstName  string `gorm:"not null" json:"firstName"`
-	LastName   string `gorm:"not null" json:"lastName"`
-	NationalID string `json:"nationalId"`
-	IDNumber   string `json:"idNumber"`
-	Relation   string `json:"relation"`
+	GuestID     uint                   `gorm:"not null;index" json:"guestId"`
+	FirstName   string                 `gorm:"not null" json:"firstName"`
+	LastName    string                 `gorm:"not null" json:"lastName"`
+	FatherName  string                 `json:"fatherName"`
+	NationalID  string                 `json:"nationalId"`
+	IDNumber    string                 `json:"idNumber"`
+	Gender      string                 `json:"gender"`
+	RelationID  uint                   `gorm:"not null" json:"relationId"`
+	Relation    GuestCompanionRelation `gorm:"foreignKey:RelationID" json:"relation,omitzero"`
+	DateOfBirth time.Time              `json:"dateOfBirth"`
+	Phone       string                 `json:"phone"`
+
+	NationalityID uint    `json:"nationalityID"`
+	Nationality   Country `gorm:"foreignKey:NationalityID" json:"nationality,omitzero"`
 }

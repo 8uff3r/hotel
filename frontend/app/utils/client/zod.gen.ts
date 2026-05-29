@@ -100,13 +100,28 @@ export const zFamilyRelationship = z.object({
 export const zGuest = z.object({
     address: z.string().optional(),
     companions: z.array(z.object({
+        dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+        fatherName: z.string().optional(),
         firstName: z.string().optional(),
+        gender: z.string().optional(),
         guestId: z.int().gte(0).optional(),
         id: z.int().gte(0).optional(),
         idNumber: z.string().optional(),
         lastName: z.string().optional(),
         nationalId: z.string().optional(),
-        relation: z.string().optional()
+        nationality: z.object({
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        nationalityID: z.int().gte(0).optional(),
+        phone: z.string().optional(),
+        relation: z.object({
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        relationId: z.int().gte(0).optional()
     })).optional(),
     dateOfBirth: z.iso.datetime({ offset: true }).optional(),
     email: z.string().optional(),
@@ -117,14 +132,14 @@ export const zGuest = z.object({
     id: z.int().gte(0).optional(),
     idNumber: z.string().optional(),
     landline: z.string().optional(),
-    lastName: z.string().optional(),
+    lastName: z.string().min(2).max(50),
     nationalId: z.string().optional(),
     nationality: z.object({
         id: z.int().gte(0).optional(),
         label: z.string().optional(),
         slug: z.string().optional()
     }).optional(),
-    nationalityID: z.int().gte(0).optional(),
+    nationalityID: z.int().gte(0),
     occupation: z.string().optional(),
     phone: z.string().optional(),
     placeOfBirth: z.string().optional(),
@@ -135,6 +150,7 @@ export const zGuest = z.object({
         destination: z.string().optional(),
         durationOfStay: z.int().optional(),
         entryDate: z.iso.datetime({ offset: true }).optional(),
+        fullBoard: z.boolean().optional(),
         guestId: z.int().gte(0).optional(),
         guide: z.boolean().optional(),
         hotelId: z.string().optional(),
@@ -223,22 +239,47 @@ export const zGuestSettlementResponse = z.object({
  */
 export const zGuestWithReservationRequest = z.object({
     companions: z.array(z.object({
+        dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+        fatherName: z.string().optional(),
         firstName: z.string().optional(),
+        gender: z.string().optional(),
         idNumber: z.string().optional(),
         lastName: z.string().optional(),
         nationalId: z.string().optional(),
-        relation: z.string().optional()
+        nationality: z.object({
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        nationalityID: z.int().gte(0).optional(),
+        phone: z.string().optional(),
+        relation: z.int().gte(0).optional()
     })).optional(),
     guest: z.object({
         address: z.string().optional(),
         companions: z.array(z.object({
+            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            fatherName: z.string().optional(),
             firstName: z.string().optional(),
+            gender: z.string().optional(),
             guestId: z.int().gte(0).optional(),
             id: z.int().gte(0).optional(),
             idNumber: z.string().optional(),
             lastName: z.string().optional(),
             nationalId: z.string().optional(),
-            relation: z.string().optional()
+            nationality: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            nationalityID: z.int().gte(0).optional(),
+            phone: z.string().optional(),
+            relation: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            relationId: z.int().gte(0).optional()
         })).optional(),
         dateOfBirth: z.iso.datetime({ offset: true }).optional(),
         email: z.string().optional(),
@@ -249,14 +290,14 @@ export const zGuestWithReservationRequest = z.object({
         id: z.int().gte(0).optional(),
         idNumber: z.string().optional(),
         landline: z.string().optional(),
-        lastName: z.string().optional(),
+        lastName: z.string().min(2).max(50),
         nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
             slug: z.string().optional()
         }).optional(),
-        nationalityID: z.int().gte(0).optional(),
+        nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
@@ -267,6 +308,7 @@ export const zGuestWithReservationRequest = z.object({
             destination: z.string().optional(),
             durationOfStay: z.int().optional(),
             entryDate: z.iso.datetime({ offset: true }).optional(),
+            fullBoard: z.boolean().optional(),
             guestId: z.int().gte(0).optional(),
             guide: z.boolean().optional(),
             hotelId: z.string().optional(),
@@ -330,6 +372,7 @@ export const zGuestWithReservationRequest = z.object({
         destination: z.string().optional(),
         durationOfStay: z.int().optional(),
         entryDate: z.iso.datetime({ offset: true }).optional(),
+        fullBoard: z.boolean().optional(),
         guide: z.boolean().optional(),
         notes: z.string().optional(),
         numberOfPeople: z.int().optional(),
@@ -376,13 +419,28 @@ export const zGuestWithReservationResponse = z.object({
     guest: z.object({
         address: z.string().optional(),
         companions: z.array(z.object({
+            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            fatherName: z.string().optional(),
             firstName: z.string().optional(),
+            gender: z.string().optional(),
             guestId: z.int().gte(0).optional(),
             id: z.int().gte(0).optional(),
             idNumber: z.string().optional(),
             lastName: z.string().optional(),
             nationalId: z.string().optional(),
-            relation: z.string().optional()
+            nationality: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            nationalityID: z.int().gte(0).optional(),
+            phone: z.string().optional(),
+            relation: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            relationId: z.int().gte(0).optional()
         })).optional(),
         dateOfBirth: z.iso.datetime({ offset: true }).optional(),
         email: z.string().optional(),
@@ -393,14 +451,14 @@ export const zGuestWithReservationResponse = z.object({
         id: z.int().gte(0).optional(),
         idNumber: z.string().optional(),
         landline: z.string().optional(),
-        lastName: z.string().optional(),
+        lastName: z.string().min(2).max(50),
         nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
             slug: z.string().optional()
         }).optional(),
-        nationalityID: z.int().gte(0).optional(),
+        nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
@@ -411,6 +469,7 @@ export const zGuestWithReservationResponse = z.object({
             destination: z.string().optional(),
             durationOfStay: z.int().optional(),
             entryDate: z.iso.datetime({ offset: true }).optional(),
+            fullBoard: z.boolean().optional(),
             guestId: z.int().gte(0).optional(),
             guide: z.boolean().optional(),
             hotelId: z.string().optional(),
@@ -476,6 +535,7 @@ export const zGuestWithReservationResponse = z.object({
         destination: z.string().optional(),
         durationOfStay: z.int().optional(),
         entryDate: z.iso.datetime({ offset: true }).optional(),
+        fullBoard: z.boolean().optional(),
         guestId: z.int().gte(0).optional(),
         guide: z.boolean().optional(),
         hotelId: z.string().optional(),
@@ -613,6 +673,7 @@ export const zIncome = z.object({
         destination: z.string().optional(),
         durationOfStay: z.int().optional(),
         entryDate: z.iso.datetime({ offset: true }).optional(),
+        fullBoard: z.boolean().optional(),
         guestId: z.int().gte(0).optional(),
         guide: z.boolean().optional(),
         hotelId: z.string().optional(),
@@ -933,13 +994,28 @@ export const zPaginatedResponseModelsGuest = z.object({
     data: z.array(z.object({
         address: z.string().optional(),
         companions: z.array(z.object({
+            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            fatherName: z.string().optional(),
             firstName: z.string().optional(),
+            gender: z.string().optional(),
             guestId: z.int().gte(0).optional(),
             id: z.int().gte(0).optional(),
             idNumber: z.string().optional(),
             lastName: z.string().optional(),
             nationalId: z.string().optional(),
-            relation: z.string().optional()
+            nationality: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            nationalityID: z.int().gte(0).optional(),
+            phone: z.string().optional(),
+            relation: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            relationId: z.int().gte(0).optional()
         })).optional(),
         dateOfBirth: z.iso.datetime({ offset: true }).optional(),
         email: z.string().optional(),
@@ -950,14 +1026,14 @@ export const zPaginatedResponseModelsGuest = z.object({
         id: z.int().gte(0).optional(),
         idNumber: z.string().optional(),
         landline: z.string().optional(),
-        lastName: z.string().optional(),
+        lastName: z.string().min(2).max(50),
         nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
             slug: z.string().optional()
         }).optional(),
-        nationalityID: z.int().gte(0).optional(),
+        nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
@@ -968,6 +1044,7 @@ export const zPaginatedResponseModelsGuest = z.object({
             destination: z.string().optional(),
             durationOfStay: z.int().optional(),
             entryDate: z.iso.datetime({ offset: true }).optional(),
+            fullBoard: z.boolean().optional(),
             guestId: z.int().gte(0).optional(),
             guide: z.boolean().optional(),
             hotelId: z.string().optional(),
@@ -1018,6 +1095,21 @@ export const zPaginatedResponseModelsGuest = z.object({
             userCheckIn: z.string().optional(),
             userCheckOut: z.string().optional()
         })).optional()
+    })).optional(),
+    limit: z.int().optional(),
+    page: z.int().optional(),
+    total: z.coerce.bigint().min(BigInt('-9223372036854775808'), { error: 'Invalid value: Expected int64 to be >= -9223372036854775808' }).max(BigInt('9223372036854775807'), { error: 'Invalid value: Expected int64 to be <= 9223372036854775807' }).optional(),
+    totalPages: z.int().optional()
+});
+
+/**
+ * PaginatedResponse_models.GuestCompanionRelation schema
+ */
+export const zPaginatedResponseModelsGuestCompanionRelation = z.object({
+    data: z.array(z.object({
+        id: z.int().gte(0).optional(),
+        label: z.string().optional(),
+        slug: z.string().optional()
     })).optional(),
     limit: z.int().optional(),
     page: z.int().optional(),
@@ -1101,6 +1193,7 @@ export const zPaginatedResponseModelsIncome = z.object({
             destination: z.string().optional(),
             durationOfStay: z.int().optional(),
             entryDate: z.iso.datetime({ offset: true }).optional(),
+            fullBoard: z.boolean().optional(),
             guestId: z.int().gte(0).optional(),
             guide: z.boolean().optional(),
             hotelId: z.string().optional(),
@@ -1447,13 +1540,28 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
         guest: z.object({
             address: z.string().optional(),
             companions: z.array(z.object({
+                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                fatherName: z.string().optional(),
                 firstName: z.string().optional(),
+                gender: z.string().optional(),
                 guestId: z.int().gte(0).optional(),
                 id: z.int().gte(0).optional(),
                 idNumber: z.string().optional(),
                 lastName: z.string().optional(),
                 nationalId: z.string().optional(),
-                relation: z.string().optional()
+                nationality: z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                nationalityID: z.int().gte(0).optional(),
+                phone: z.string().optional(),
+                relation: z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                relationId: z.int().gte(0).optional()
             })).optional(),
             dateOfBirth: z.iso.datetime({ offset: true }).optional(),
             email: z.string().optional(),
@@ -1464,14 +1572,14 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
             id: z.int().gte(0).optional(),
             idNumber: z.string().optional(),
             landline: z.string().optional(),
-            lastName: z.string().optional(),
+            lastName: z.string().min(2).max(50),
             nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
                 slug: z.string().optional()
             }).optional(),
-            nationalityID: z.int().gte(0).optional(),
+            nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
@@ -1482,6 +1590,7 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
                 destination: z.string().optional(),
                 durationOfStay: z.int().optional(),
                 entryDate: z.iso.datetime({ offset: true }).optional(),
+                fullBoard: z.boolean().optional(),
                 guestId: z.int().gte(0).optional(),
                 guide: z.boolean().optional(),
                 hotelId: z.string().optional(),
@@ -1576,6 +1685,7 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
             destination: z.string().optional(),
             durationOfStay: z.int().optional(),
             entryDate: z.iso.datetime({ offset: true }).optional(),
+            fullBoard: z.boolean().optional(),
             guestId: z.int().gte(0).optional(),
             guide: z.boolean().optional(),
             hotelId: z.string().optional(),
@@ -1717,6 +1827,7 @@ export const zPaginatedResponseModelsReservation = z.object({
         destination: z.string().optional(),
         durationOfStay: z.int().optional(),
         entryDate: z.iso.datetime({ offset: true }).optional(),
+        fullBoard: z.boolean().optional(),
         guestId: z.int().gte(0).optional(),
         guide: z.boolean().optional(),
         hotelId: z.string().optional(),
@@ -1791,13 +1902,28 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
         guest: z.object({
             address: z.string().optional(),
             companions: z.array(z.object({
+                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                fatherName: z.string().optional(),
                 firstName: z.string().optional(),
+                gender: z.string().optional(),
                 guestId: z.int().gte(0).optional(),
                 id: z.int().gte(0).optional(),
                 idNumber: z.string().optional(),
                 lastName: z.string().optional(),
                 nationalId: z.string().optional(),
-                relation: z.string().optional()
+                nationality: z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                nationalityID: z.int().gte(0).optional(),
+                phone: z.string().optional(),
+                relation: z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                relationId: z.int().gte(0).optional()
             })).optional(),
             dateOfBirth: z.iso.datetime({ offset: true }).optional(),
             email: z.string().optional(),
@@ -1808,14 +1934,14 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
             id: z.int().gte(0).optional(),
             idNumber: z.string().optional(),
             landline: z.string().optional(),
-            lastName: z.string().optional(),
+            lastName: z.string().min(2).max(50),
             nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
                 slug: z.string().optional()
             }).optional(),
-            nationalityID: z.int().gte(0).optional(),
+            nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
@@ -1826,6 +1952,7 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
                 destination: z.string().optional(),
                 durationOfStay: z.int().optional(),
                 entryDate: z.iso.datetime({ offset: true }).optional(),
+                fullBoard: z.boolean().optional(),
                 guestId: z.int().gte(0).optional(),
                 guide: z.boolean().optional(),
                 hotelId: z.string().optional(),
@@ -1888,6 +2015,7 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
             destination: z.string().optional(),
             durationOfStay: z.int().optional(),
             entryDate: z.iso.datetime({ offset: true }).optional(),
+            fullBoard: z.boolean().optional(),
             guestId: z.int().gte(0).optional(),
             guide: z.boolean().optional(),
             hotelId: z.string().optional(),
@@ -2111,13 +2239,28 @@ export const zPaginatedResponseModelsVehicle = z.object({
         guest: z.object({
             address: z.string().optional(),
             companions: z.array(z.object({
+                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                fatherName: z.string().optional(),
                 firstName: z.string().optional(),
+                gender: z.string().optional(),
                 guestId: z.int().gte(0).optional(),
                 id: z.int().gte(0).optional(),
                 idNumber: z.string().optional(),
                 lastName: z.string().optional(),
                 nationalId: z.string().optional(),
-                relation: z.string().optional()
+                nationality: z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                nationalityID: z.int().gte(0).optional(),
+                phone: z.string().optional(),
+                relation: z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                relationId: z.int().gte(0).optional()
             })).optional(),
             dateOfBirth: z.iso.datetime({ offset: true }).optional(),
             email: z.string().optional(),
@@ -2128,14 +2271,14 @@ export const zPaginatedResponseModelsVehicle = z.object({
             id: z.int().gte(0).optional(),
             idNumber: z.string().optional(),
             landline: z.string().optional(),
-            lastName: z.string().optional(),
+            lastName: z.string().min(2).max(50),
             nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
                 slug: z.string().optional()
             }).optional(),
-            nationalityID: z.int().gte(0).optional(),
+            nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
@@ -2146,6 +2289,7 @@ export const zPaginatedResponseModelsVehicle = z.object({
                 destination: z.string().optional(),
                 durationOfStay: z.int().optional(),
                 entryDate: z.iso.datetime({ offset: true }).optional(),
+                fullBoard: z.boolean().optional(),
                 guestId: z.int().gte(0).optional(),
                 guide: z.boolean().optional(),
                 hotelId: z.string().optional(),
@@ -2312,13 +2456,28 @@ export const zParkingTransaction = z.object({
     guest: z.object({
         address: z.string().optional(),
         companions: z.array(z.object({
+            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            fatherName: z.string().optional(),
             firstName: z.string().optional(),
+            gender: z.string().optional(),
             guestId: z.int().gte(0).optional(),
             id: z.int().gte(0).optional(),
             idNumber: z.string().optional(),
             lastName: z.string().optional(),
             nationalId: z.string().optional(),
-            relation: z.string().optional()
+            nationality: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            nationalityID: z.int().gte(0).optional(),
+            phone: z.string().optional(),
+            relation: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            relationId: z.int().gte(0).optional()
         })).optional(),
         dateOfBirth: z.iso.datetime({ offset: true }).optional(),
         email: z.string().optional(),
@@ -2329,14 +2488,14 @@ export const zParkingTransaction = z.object({
         id: z.int().gte(0).optional(),
         idNumber: z.string().optional(),
         landline: z.string().optional(),
-        lastName: z.string().optional(),
+        lastName: z.string().min(2).max(50),
         nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
             slug: z.string().optional()
         }).optional(),
-        nationalityID: z.int().gte(0).optional(),
+        nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
@@ -2347,6 +2506,7 @@ export const zParkingTransaction = z.object({
             destination: z.string().optional(),
             durationOfStay: z.int().optional(),
             entryDate: z.iso.datetime({ offset: true }).optional(),
+            fullBoard: z.boolean().optional(),
             guestId: z.int().gte(0).optional(),
             guide: z.boolean().optional(),
             hotelId: z.string().optional(),
@@ -2441,6 +2601,7 @@ export const zParkingTransaction = z.object({
         destination: z.string().optional(),
         durationOfStay: z.int().optional(),
         entryDate: z.iso.datetime({ offset: true }).optional(),
+        fullBoard: z.boolean().optional(),
         guestId: z.int().gte(0).optional(),
         guide: z.boolean().optional(),
         hotelId: z.string().optional(),
@@ -2549,6 +2710,7 @@ export const zReservation = z.object({
     destination: z.string().optional(),
     durationOfStay: z.int().optional(),
     entryDate: z.iso.datetime({ offset: true }).optional(),
+    fullBoard: z.boolean().optional(),
     guestId: z.int().gte(0).optional(),
     guide: z.boolean().optional(),
     hotelId: z.string().optional(),
@@ -2617,13 +2779,28 @@ export const zRestaurantBill = z.object({
     guest: z.object({
         address: z.string().optional(),
         companions: z.array(z.object({
+            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            fatherName: z.string().optional(),
             firstName: z.string().optional(),
+            gender: z.string().optional(),
             guestId: z.int().gte(0).optional(),
             id: z.int().gte(0).optional(),
             idNumber: z.string().optional(),
             lastName: z.string().optional(),
             nationalId: z.string().optional(),
-            relation: z.string().optional()
+            nationality: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            nationalityID: z.int().gte(0).optional(),
+            phone: z.string().optional(),
+            relation: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            relationId: z.int().gte(0).optional()
         })).optional(),
         dateOfBirth: z.iso.datetime({ offset: true }).optional(),
         email: z.string().optional(),
@@ -2634,14 +2811,14 @@ export const zRestaurantBill = z.object({
         id: z.int().gte(0).optional(),
         idNumber: z.string().optional(),
         landline: z.string().optional(),
-        lastName: z.string().optional(),
+        lastName: z.string().min(2).max(50),
         nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
             slug: z.string().optional()
         }).optional(),
-        nationalityID: z.int().gte(0).optional(),
+        nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
@@ -2652,6 +2829,7 @@ export const zRestaurantBill = z.object({
             destination: z.string().optional(),
             durationOfStay: z.int().optional(),
             entryDate: z.iso.datetime({ offset: true }).optional(),
+            fullBoard: z.boolean().optional(),
             guestId: z.int().gte(0).optional(),
             guide: z.boolean().optional(),
             hotelId: z.string().optional(),
@@ -2714,6 +2892,7 @@ export const zRestaurantBill = z.object({
         destination: z.string().optional(),
         durationOfStay: z.int().optional(),
         entryDate: z.iso.datetime({ offset: true }).optional(),
+        fullBoard: z.boolean().optional(),
         guestId: z.int().gte(0).optional(),
         guide: z.boolean().optional(),
         hotelId: z.string().optional(),
@@ -2950,13 +3129,28 @@ export const zVehicle = z.object({
     guest: z.object({
         address: z.string().optional(),
         companions: z.array(z.object({
+            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            fatherName: z.string().optional(),
             firstName: z.string().optional(),
+            gender: z.string().optional(),
             guestId: z.int().gte(0).optional(),
             id: z.int().gte(0).optional(),
             idNumber: z.string().optional(),
             lastName: z.string().optional(),
             nationalId: z.string().optional(),
-            relation: z.string().optional()
+            nationality: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            nationalityID: z.int().gte(0).optional(),
+            phone: z.string().optional(),
+            relation: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            relationId: z.int().gte(0).optional()
         })).optional(),
         dateOfBirth: z.iso.datetime({ offset: true }).optional(),
         email: z.string().optional(),
@@ -2967,14 +3161,14 @@ export const zVehicle = z.object({
         id: z.int().gte(0).optional(),
         idNumber: z.string().optional(),
         landline: z.string().optional(),
-        lastName: z.string().optional(),
+        lastName: z.string().min(2).max(50),
         nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
             slug: z.string().optional()
         }).optional(),
-        nationalityID: z.int().gte(0).optional(),
+        nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
@@ -2985,6 +3179,7 @@ export const zVehicle = z.object({
             destination: z.string().optional(),
             durationOfStay: z.int().optional(),
             entryDate: z.iso.datetime({ offset: true }).optional(),
+            fullBoard: z.boolean().optional(),
             guestId: z.int().gte(0).optional(),
             guide: z.boolean().optional(),
             hotelId: z.string().optional(),
@@ -3263,6 +3458,15 @@ export const zPostApiGuestsBody = zGuest;
 
 export const zPostApiGuestsHeaders = z.object({
     Accept: z.string().optional()
+});
+
+export const zGetApiGuestsRelationsHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zGetApiGuestsRelationsQuery = z.object({
+    limit: z.int().optional(),
+    page: z.int().optional()
 });
 
 /**
