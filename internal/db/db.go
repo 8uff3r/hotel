@@ -33,7 +33,7 @@ func Open(path string) (*gorm.DB, error) {
 		return nil, fmt.Errorf("ping db: %w", err)
 	}
 
-	if err := db.AutoMigrate(models.AllForDb()...); err != nil {
+	if err := db.AutoMigrate(models.AllForDB()...); err != nil {
 		return nil, fmt.Errorf("auto migrate: %w", err)
 	}
 

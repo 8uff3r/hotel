@@ -1,9 +1,10 @@
 package guests
 
 import (
+	"time"
+
 	h "hotel/internal/httpapi"
 	"hotel/internal/models"
-	"time"
 
 	"github.com/go-fuego/fuego"
 	"gorm.io/gorm"
@@ -169,7 +170,6 @@ func (gm *GuestsModule) createGuestWithReservation(c fuego.ContextWithBody[Guest
 
 		return nil
 	})
-
 	if err != nil {
 		return zero, fuego.BadRequestError{Title: "create_failed"}
 	}
@@ -181,7 +181,7 @@ type SettleGuestRequest struct {
 	ReservationIDs []uint  `json:"reservationIds"`
 	ParkingTxnIDs  []uint  `json:"parkingTxnIds"`
 	Amount         float64 `json:"amount"`
-	PaymentMethod  string  `json:"paymentMethod"`
+	PaymentMethod  uint    `json:"paymentMethod"`
 	Reference      string  `json:"reference"`
 	Notes          string  `json:"notes"`
 }
@@ -217,12 +217,12 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 				continue
 			}
 			income := models.Income{
-				IncomeDate:    time.Now().UTC(),
-				Description:   "Room payment - Reservation " + res.ReservationCode,
-				Amount:        body.Amount * (res.RoomPrice / (res.RoomPrice + 1)),
-				Source:        guest.FirstName + " " + guest.LastName,
-				PaymentMethod: body.PaymentMethod,
-				Notes:         body.Notes,
+				IncomeDate:      time.Now().UTC(),
+				Description:     "Room payment - Reservation " + res.ReservationCode,
+				Amount:          body.Amount * (res.RoomPrice / (res.RoomPrice + 1)),
+				Source:          guest.FirstName + " " + guest.LastName,
+				PaymentMethodID: body.PaymentMethod,
+				Notes:           body.Notes,
 			}
 			income.CategoryID = resolveIncomeCategory(tx, "room_revenue")
 			income.PaymentStatusID = resolvePaymentStatus(tx, "received")
@@ -243,17 +243,17 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 			}
 			pt.AmountPaid = pt.AmountDue
 			pt.PaymentStatus = "paid"
-			pt.PaymentMethod = body.PaymentMethod
+			pt.PaymentMethodID = &body.PaymentMethod
 			if err := tx.Save(&pt).Error; err != nil {
 				return err
 			}
 			income := models.Income{
-				IncomeDate:    time.Now().UTC(),
-				Description:   "Parking payment - " + pt.LicensePlate,
-				Amount:        pt.AmountDue,
-				Source:        guest.FirstName + " " + guest.LastName,
-				PaymentMethod: body.PaymentMethod,
-				Notes:         body.Notes,
+				IncomeDate:      time.Now().UTC(),
+				Description:     "Parking payment - " + pt.LicensePlate,
+				Amount:          pt.AmountDue,
+				Source:          guest.FirstName + " " + guest.LastName,
+				PaymentMethodID: body.PaymentMethod,
+				Notes:           body.Notes,
 			}
 			income.CategoryID = resolveIncomeCategory(tx, "parking")
 			income.PaymentStatusID = resolvePaymentStatus(tx, "received")
@@ -265,7 +265,6 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 
 		return nil
 	})
-
 	if err != nil {
 		return zero, fuego.BadRequestError{Title: "settlement_failed"}
 	}

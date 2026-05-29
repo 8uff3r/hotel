@@ -3,9 +3,10 @@ package seed
 import (
 	"encoding/json"
 	"fmt"
+	"log"
+
 	"hotel/internal/config"
 	"hotel/internal/models"
-	"log"
 
 	_ "embed"
 
@@ -23,8 +24,9 @@ func init() {
 		log.Fatalf("failed to load translations: %v", err)
 	}
 }
+
 func Seed(db *gorm.DB, cfg config.Config) {
-	if err := db.AutoMigrate(models.AllForDb()...); err != nil {
+	if err := db.AutoMigrate(models.AllForDB()...); err != nil {
 		panic(fmt.Sprintf("auto migrate: %s", err))
 	}
 	seedAmenities(db)
