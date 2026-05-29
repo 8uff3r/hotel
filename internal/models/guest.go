@@ -6,13 +6,11 @@ import (
 
 type Guest struct {
 	ID           uint      `gorm:"primaryKey" json:"id"`
-	HotelID      *string   `json:"hotelId"`
 	FirstName    string    `gorm:"not null" json:"firstName" validate:"required,min=2,max=50"`
 	LastName     string    `gorm:"not null" json:"lastName"`
 	FatherName   string    `json:"fatherName"`
 	NationalID   string    `gorm:"index" json:"nationalId"`
 	IDNumber     string    `json:"idNumber"`
-	Nationality  string    `json:"nationality"`
 	Gender       string    `json:"gender"`
 	DateOfBirth  time.Time `json:"dateOfBirth"`
 	PlaceOfBirth string    `json:"placeOfBirth"`
@@ -22,6 +20,12 @@ type Guest struct {
 	Occupation   string    `json:"occupation"`
 	Email        string    `json:"email"`
 	Landline     string    `json:"landline"`
+
+	HotelID string `json:"hotelId"`
+	Hotel   Hotel  `gorm:"foreignKey:HotelID"`
+
+	NationalityID uint    `json:"nationalityID"`
+	Nationality   Country `gorm:"foreignKey:NationalityID" json:"nationality,omitzero"`
 
 	Reservations []Reservation    `gorm:"foreignKey:GuestID" json:"reservations,omitempty"`
 	Companions   []GuestCompanion `gorm:"foreignKey:GuestID" json:"companions,omitempty"`

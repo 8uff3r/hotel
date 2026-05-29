@@ -4,21 +4,24 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"hotel/internal/models"
 	"net/http"
 	"reflect"
+
+	"hotel/internal/models"
 
 	"github.com/go-fuego/fuego"
 	"github.com/go-playground/validator/v10"
 	"gorm.io/gorm"
 )
 
-type FuegoAnyHandler[T any] = func(fuego.Context[any, any]) (T, error)
-type FuegoHandler[T any, B any, P any] = func(fuego.Context[B, P]) (T, error)
-type Params struct {
-	Limit int `query:"limit"`
-	Page  int `query:"page"`
-}
+type (
+	FuegoAnyHandler[T any]            = func(fuego.Context[any, any]) (T, error)
+	FuegoHandler[T any, B any, P any] = func(fuego.Context[B, P]) (T, error)
+	Params                            struct {
+		Limit int `query:"limit"`
+		Page  int `query:"page"`
+	}
+)
 
 type PaginatedResponse[T any] struct {
 	Data       []T   `json:"data"`
@@ -65,16 +68,14 @@ func ListModel[T any](db *gorm.DB, model T, opts ...ListOption) FuegoHandler[Pag
 	for _, v := range opts {
 		v(&lc)
 	}
-	return listModel(db, model, lc.preload, lc.translate, lc.translateFields, lc.hotelIDFunc)
+	return listModel(db, model, lc.preload, lc.translate, lc.hotelIDFunc)
 }
-func listModel[T any](db *gorm.DB, model T, preload []string, translate bool, translateFields []string, hotelIDFunc func(ctx context.Context) uint) FuegoHandler[PaginatedResponse[T], any, Params] {
+
+func listModel[T any](db *gorm.DB, model T, preload []string, translate bool, hotelIDFunc func(ctx context.Context) uint) FuegoHandler[PaginatedResponse[T], any, Params] {
 	return func(c fuego.ContextWithParams[Params]) (PaginatedResponse[T], error) {
-		page := c.QueryParamInt("page")
-		if page < 1 {
-			page = 1
-		}
-		limit := c.QueryParamInt("limit")
-		if limit < 1 || limit > 100 {
+		page := max(c.QueryParamInt("page"), 1)
+		limit, err := c.QueryParamIntErr("limit")
+		if limit == 0 || err != nil {
 			limit = 20
 		}
 		offset := (page - 1) * limit
@@ -120,6 +121,7 @@ func listModel[T any](db *gorm.DB, model T, preload []string, translate bool, tr
 		}, nil
 	}
 }
+
 func applyTranslationsReflection[T any](items *[]T, lang string) {
 	for i := range *items {
 		item := &(*items)[i]

@@ -40,9 +40,10 @@
                   <UInput v-model="form.guest.fatherName" :disabled="loading" />
                 </UFormField>
 
-                <UFormField :label="t('guest.nationality')" name="guest.nationality">
-                  <UInput
-                    v-model="form.guest.nationality"
+                <UFormField :label="t('guest.nationality')" name="guest.nationalityID">
+                  <HSelectMenu
+                    v-model="form.guest.nationalityID"
+                    :items="countries ?? []"
                     :disabled="loading"
                     :placeholder="t('guest.defaultNationality')"
                   />
@@ -195,7 +196,7 @@
                   name="reservation.rooms"
                   class="md:col-span-3"
                 >
-                  <USelect
+                  <HSelect
                     v-model="form.roomIds"
                     :items="rooms ?? []"
                     multiple
@@ -397,6 +398,7 @@
 import type { FormSubmitEvent } from "@nuxt/ui";
 import type z from "zod";
 import { useAuthStore } from "~/stores/auth";
+import { getApiCommonCountries } from "~/utils/client";
 import { zGuestWithReservationRequest } from "~/utils/client/zod.gen";
 
 definePageMeta({
@@ -500,12 +502,16 @@ const removeCompanion = (index: number) => {
 const { data: rooms } = useAsyncData(async () => {
   const res = await getApiRooms({});
   return res.data?.map((v) => ({
-    value: v.id,
+    id: v.id,
     label: `${v.name ?? v.roomNumber}`,
   }));
 });
 
-const selectedRooms = ref<number>();
+const { data: countries } = useAsyncData(async () => {
+  const res = await getApiCommonCountries({ query: { limit: -1 } });
+  return res.data;
+});
+
 const authStore = useAuthStore();
 
 const handleSubmit = async (event: FormSubmitEvent<Schema>) => {

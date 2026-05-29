@@ -11,5 +11,10 @@ export default defineAppConfig({
         base: "w-full",
       },
     },
+    selectMenu: {
+      slots: {
+        base: "w-full",
+      },
+    },
   },
 });
