@@ -1,9 +1,10 @@
 package restaurant
 
 import (
+	"time"
+
 	h "hotel/internal/httpapi"
 	"hotel/internal/models"
-	"time"
 
 	"github.com/go-fuego/fuego"
 )
@@ -18,31 +19,45 @@ func (m RestaurantModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Get(s, "/stats", p.restaurantStats)
 
 	inventoryGroup := fuego.Group(s, "/inventory")
-	fuego.Get(inventoryGroup, "/", h.ListModel(api.Db, models.InventoryItem{}))
-	fuego.Post(inventoryGroup, "/", h.CreateModel(api.Db, models.InventoryItem{}))
-	fuego.Get(inventoryGroup, "/{id}", h.GetModel(api.Db, models.InventoryItem{}))
-	fuego.Put(inventoryGroup, "/{id}", h.UpdateModel(api.Db, models.InventoryItem{}))
-	fuego.Delete(inventoryGroup, "/{id}", h.DeleteModel(api.Db, models.InventoryItem{}))
+	fuego.Get(inventoryGroup, "/", h.ListModel[models.InventoryItem](api.Db))
+	fuego.Post(inventoryGroup, "/", h.CreateModel[models.InventoryItem](api.Db))
+	fuego.Get(inventoryGroup, "/{id}", h.GetModel[models.InventoryItem](api.Db))
+	fuego.Put(inventoryGroup, "/{id}", h.UpdateModel[models.InventoryItem](api.Db))
+	fuego.Delete(inventoryGroup, "/{id}", h.DeleteModel[models.InventoryItem](api.Db))
 
-	fuego.Get(inventoryGroup, "/categories", h.ListModel(api.Db, models.InventoryItemCategory{}, h.WithTranslation()))
-	fuego.Get(inventoryGroup, "/units", h.ListModel(api.Db, models.InventoryItemUnit{}, h.WithTranslation()))
-	fuego.Get(inventoryGroup, "/statuses", h.ListModel(api.Db, models.InventoryItemStatus{}, h.WithTranslation()))
+	fuego.Get(
+		inventoryGroup,
+		"/categories",
+		h.ListModel[models.InventoryItemCategory](api.Db, h.WithTranslation[models.InventoryItemCategory]()),
+	)
+
+	fuego.Get(
+		inventoryGroup,
+		"/units",
+		h.ListModel[models.InventoryItemUnit](api.Db, h.WithTranslation[models.InventoryItemUnit]()),
+	)
+
+	fuego.Get(
+		inventoryGroup,
+		"/statuses",
+		h.ListModel[models.InventoryItemStatus](api.Db, h.WithTranslation[models.InventoryItemStatus]()),
+	)
 
 	billsGroup := fuego.Group(s, "/bills")
-	fuego.Get(billsGroup, "/", h.ListModel(api.Db, models.RestaurantBill{}))
-	fuego.Get(billsGroup, "/statuses", h.ListModel(api.Db, models.RestaurantBillStatus{}))
-	fuego.Post(billsGroup, "/", h.CreateModel(api.Db, models.RestaurantBill{}))
-	fuego.Get(billsGroup, "/{id}", h.GetModel(api.Db, models.RestaurantBill{}))
-	fuego.Put(billsGroup, "/{id}", h.UpdateModel(api.Db, models.RestaurantBill{}))
-	fuego.Delete(billsGroup, "/{id}", h.DeleteModel(api.Db, models.RestaurantBill{}))
+	fuego.Get(billsGroup, "/", h.ListModel[models.RestaurantBill](api.Db))
+	fuego.Get(billsGroup, "/statuses", h.ListModel[models.RestaurantBillStatus](api.Db))
+	fuego.Post(billsGroup, "/", h.CreateModel[models.RestaurantBill](api.Db))
+	fuego.Get(billsGroup, "/{id}", h.GetModel[models.RestaurantBill](api.Db))
+	fuego.Put(billsGroup, "/{id}", h.UpdateModel[models.RestaurantBill](api.Db))
+	fuego.Delete(billsGroup, "/{id}", h.DeleteModel[models.RestaurantBill](api.Db))
 	fuego.Post(billsGroup, "/{id}/settle", p.settleBill)
 
 	transactionsGroup := fuego.Group(s, "/transactions")
-	fuego.Get(transactionsGroup, "/", h.ListModel(api.Db, models.MealTransaction{}))
-	fuego.Post(transactionsGroup, "/", h.CreateModel(api.Db, models.MealTransaction{}))
-	fuego.Get(transactionsGroup, "/{id}", h.GetModel(api.Db, models.MealTransaction{}))
-	fuego.Put(transactionsGroup, "/{id}", h.UpdateModel(api.Db, models.MealTransaction{}))
-	fuego.Delete(transactionsGroup, "/{id}", h.DeleteModel(api.Db, models.MealTransaction{}))
+	fuego.Get(transactionsGroup, "/", h.ListModel[models.MealTransaction](api.Db))
+	fuego.Post(transactionsGroup, "/", h.CreateModel[models.MealTransaction](api.Db))
+	fuego.Get(transactionsGroup, "/{id}", h.GetModel[models.MealTransaction](api.Db))
+	fuego.Put(transactionsGroup, "/{id}", h.UpdateModel[models.MealTransaction](api.Db))
+	fuego.Delete(transactionsGroup, "/{id}", h.DeleteModel[models.MealTransaction](api.Db))
 }
 
 func (a *RestaurantModule) restaurantStats(c fuego.ContextNoBody) (models.RestaurantStats, error) {

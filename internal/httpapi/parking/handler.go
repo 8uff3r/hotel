@@ -1,9 +1,10 @@
 package parking
 
 import (
+	"time"
+
 	h "hotel/internal/httpapi"
 	"hotel/internal/models"
-	"time"
 
 	"github.com/go-fuego/fuego"
 )
@@ -18,32 +19,40 @@ func (m ParkingModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Get(s, "/stats", p.parkingStats)
 
 	lotsGroup := fuego.Group(s, "/lots")
-	fuego.Get(lotsGroup, "/", h.ListModel(api.Db, models.ParkingLot{}))
-	fuego.Post(lotsGroup, "/", h.CreateModel(api.Db, models.ParkingLot{}))
-	fuego.Get(lotsGroup, "/{id}", h.GetModel(api.Db, models.ParkingLot{}))
-	fuego.Put(lotsGroup, "/{id}", h.UpdateModel(api.Db, models.ParkingLot{}))
-	fuego.Delete(lotsGroup, "/{id}", h.DeleteModel(api.Db, models.ParkingLot{}))
+	fuego.Get(lotsGroup, "/", h.ListModel[models.ParkingLot](api.Db))
+	fuego.Post(lotsGroup, "/", h.CreateModel[models.ParkingLot](api.Db))
+	fuego.Get(lotsGroup, "/{id}", h.GetModel[models.ParkingLot](api.Db))
+	fuego.Put(lotsGroup, "/{id}", h.UpdateModel[models.ParkingLot](api.Db))
+	fuego.Delete(lotsGroup, "/{id}", h.DeleteModel[models.ParkingLot](api.Db))
 
 	spotsGroup := fuego.Group(s, "/spots")
-	fuego.Get(spotsGroup, "/", h.ListModel(api.Db, models.ParkingSpot{}))
-	fuego.Post(spotsGroup, "/", h.CreateModel(api.Db, models.ParkingSpot{}))
-	fuego.Get(spotsGroup, "/{id}", h.GetModel(api.Db, models.ParkingSpot{}))
-	fuego.Put(spotsGroup, "/{id}", h.UpdateModel(api.Db, models.ParkingSpot{}))
-	fuego.Delete(spotsGroup, "/{id}", h.DeleteModel(api.Db, models.ParkingSpot{}))
-	fuego.Get(spotsGroup, "/statuses", h.ListModel(api.Db, models.ParkingSpotStatus{}, h.WithTranslation()))
-	fuego.Get(spotsGroup, "/types", h.ListModel(api.Db, models.ParkingSpotType{}, h.WithTranslation()))
+	fuego.Get(spotsGroup, "/", h.ListModel[models.ParkingSpot](api.Db))
+	fuego.Post(spotsGroup, "/", h.CreateModel[models.ParkingSpot](api.Db))
+	fuego.Get(spotsGroup, "/{id}", h.GetModel[models.ParkingSpot](api.Db))
+	fuego.Put(spotsGroup, "/{id}", h.UpdateModel[models.ParkingSpot](api.Db))
+	fuego.Delete(spotsGroup, "/{id}", h.DeleteModel[models.ParkingSpot](api.Db))
+	fuego.Get(
+		spotsGroup,
+		"/statuses",
+		h.ListModel[models.ParkingSpotStatus](api.Db, h.WithTranslation[models.ParkingSpotStatus]()),
+	)
+	fuego.Get(
+		spotsGroup,
+		"/types",
+		h.ListModel[models.ParkingSpotType](api.Db, h.WithTranslation[models.ParkingSpotType]()),
+	)
 
 	vehiclesGroup := fuego.Group(s, "/vehicles")
-	fuego.Get(vehiclesGroup, "/", h.ListModel(api.Db, models.Vehicle{}))
-	fuego.Post(vehiclesGroup, "/", h.CreateModel(api.Db, models.Vehicle{}))
-	fuego.Get(vehiclesGroup, "/{id}", h.GetModel(api.Db, models.Vehicle{}))
-	fuego.Put(vehiclesGroup, "/{id}", h.UpdateModel(api.Db, models.Vehicle{}))
-	fuego.Delete(vehiclesGroup, "/{id}", h.DeleteModel(api.Db, models.Vehicle{}))
+	fuego.Get(vehiclesGroup, "/", h.ListModel[models.Vehicle](api.Db))
+	fuego.Post(vehiclesGroup, "/", h.CreateModel[models.Vehicle](api.Db))
+	fuego.Get(vehiclesGroup, "/{id}", h.GetModel[models.Vehicle](api.Db))
+	fuego.Put(vehiclesGroup, "/{id}", h.UpdateModel[models.Vehicle](api.Db))
+	fuego.Delete(vehiclesGroup, "/{id}", h.DeleteModel[models.Vehicle](api.Db))
 
 	transactionsGroup := fuego.Group(s, "/transactions")
-	fuego.Get(transactionsGroup, "/", h.ListModel(api.Db, models.ParkingTransaction{}))
-	fuego.Post(transactionsGroup, "/", h.CreateModel(api.Db, models.ParkingTransaction{}))
-	fuego.Get(transactionsGroup, "/{id}", h.GetModel(api.Db, models.ParkingTransaction{}))
+	fuego.Get(transactionsGroup, "/", h.ListModel[models.ParkingTransaction](api.Db))
+	fuego.Post(transactionsGroup, "/", h.CreateModel[models.ParkingTransaction](api.Db))
+	fuego.Get(transactionsGroup, "/{id}", h.GetModel[models.ParkingTransaction](api.Db))
 	fuego.Post(transactionsGroup, "/{id}/check-out", p.transactionsCheckOut)
 }
 

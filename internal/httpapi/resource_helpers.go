@@ -1,7 +1,6 @@
 package httpapi
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -30,96 +29,105 @@ type PaginatedResponse[T any] struct {
 	Total      int64 `json:"total"`
 	TotalPages int   `json:"totalPages"`
 }
-
-type listConfig struct {
-	preload         []string
-	translate       bool
-	translateFields []string
-	hotelIDFunc     func(ctx context.Context) uint
+type Filter struct {
+	Query any
+	Args  []any
 }
-type ListOption func(*listConfig)
 
-func WithPreload(preload ...string) ListOption {
-	return func(c *listConfig) {
-		c.preload = append(c.preload, preload...)
+// QueryOption modifies the gorm query
+type QueryOption func(*gorm.DB) *gorm.DB
+
+// PostProcessOption runs after the query on the results
+type PostProcessOption[T any] func(lang string, out *[]T)
+
+func WithPreload(relations ...string) QueryOption {
+	return func(db *gorm.DB) *gorm.DB {
+		for _, r := range relations {
+			db = db.Preload(r)
+		}
+		return db
 	}
 }
 
-func WithFieldTranslation(fields ...string) ListOption {
-	return func(lc *listConfig) {
-		lc.translateFields = append(lc.translateFields, fields...)
+func WithFilter(query any, args ...any) QueryOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where(query, args...)
 	}
 }
 
-func WithTranslation() ListOption {
-	return func(lc *listConfig) {
-		lc.translate = true
+// func WithHotelScope(fn func(context.Context) uint) QueryOption {
+// 	return func(ctx context.Context, db *gorm.DB) *gorm.DB {
+// 		if id := fn(ctx); id > 0 {
+// 			return db.Where("hotel_id = ?", id)
+// 		}
+// 		return db
+// 	}
+// }
+
+func WithTranslation[T any]() PostProcessOption[T] {
+	return func(lang string, out *[]T) {
+		models.ApplyTranslations(out, lang)
+		models.ApplyFieldTranslations(out, lang)
 	}
 }
 
-func WithHotelFilter(hotelIDFunc func(ctx context.Context) uint) ListOption {
-	return func(c *listConfig) {
-		c.hotelIDFunc = hotelIDFunc
-	}
-}
-
-func ListModel[T any](db *gorm.DB, model T, opts ...ListOption) FuegoHandler[PaginatedResponse[T], any, Params] {
-	lc := listConfig{}
-	for _, v := range opts {
-		v(&lc)
-	}
-	return listModel(db, model, lc.preload, lc.translate, lc.hotelIDFunc)
-}
-
-func listModel[T any](db *gorm.DB, model T, preload []string, translate bool, hotelIDFunc func(ctx context.Context) uint) FuegoHandler[PaginatedResponse[T], any, Params] {
+func ListModel[T any](db *gorm.DB, opts ...any) FuegoHandler[PaginatedResponse[T], any, Params] {
 	return func(c fuego.ContextWithParams[Params]) (PaginatedResponse[T], error) {
-		page := max(c.QueryParamInt("page"), 1)
-		limit, err := c.QueryParamIntErr("limit")
-		if limit == 0 || err != nil {
-			limit = 20
-		}
-		offset := (page - 1) * limit
+		q := db.WithContext(c).Model(new(T))
 
-		out := []T{}
-		q := db.WithContext(c).Model(model)
-		for _, v := range preload {
-			q = q.Preload(v)
-		}
-
-		if hotelIDFunc != nil {
-			hotelID := hotelIDFunc(c.Context())
-			if hotelID > 0 {
-				q = q.Where("hotel_id = ?", hotelID)
+		var postOpts []PostProcessOption[T]
+		for _, opt := range opts {
+			switch o := opt.(type) {
+			case QueryOption:
+				q = o(q)
+			case PostProcessOption[T]:
+				postOpts = append(postOpts, o)
 			}
-		}
-
-		var total int64
-		if err := q.Count(&total).Error; err != nil {
-			return PaginatedResponse[T]{}, err
-		}
-
-		if err := q.Order("id DESC").Limit(limit).Offset(offset).Find(&out).Error; err != nil {
-			return PaginatedResponse[T]{}, err
 		}
 
 		lang := c.Header("Accept-Language")
 		if lang == "" {
 			lang = "fa"
 		}
-		if translate {
-			models.ApplyTranslations(&out, lang)
-			models.ApplyFieldTranslations(&out, lang)
+
+		result, err := Paginate[T](c, q)
+		if err != nil {
+			return result, err
 		}
 
-		totalPages := int((total + int64(limit) - 1) / int64(limit))
-		return PaginatedResponse[T]{
-			Data:       out,
-			Page:       page,
-			Limit:      limit,
-			Total:      total,
-			TotalPages: totalPages,
-		}, nil
+		for _, p := range postOpts {
+			p(lang, &result.Data)
+		}
+
+		return result, nil
 	}
+}
+
+func Paginate[T any](c fuego.ContextWithParams[Params], q *gorm.DB) (PaginatedResponse[T], error) {
+	page := max(c.QueryParamInt("page"), 1)
+	limit, err := c.QueryParamIntErr("limit")
+	if limit == 0 || err != nil {
+		limit = 20
+	}
+	offset := (page - 1) * limit
+
+	var total int64
+	if err := q.Count(&total).Error; err != nil {
+		return PaginatedResponse[T]{}, err
+	}
+
+	var out []T
+	if err := q.Order("id DESC").Limit(limit).Offset(offset).Find(&out).Error; err != nil {
+		return PaginatedResponse[T]{}, err
+	}
+
+	return PaginatedResponse[T]{
+		Data:       out,
+		Page:       page,
+		Limit:      limit,
+		Total:      total,
+		TotalPages: int((total + int64(limit) - 1) / int64(limit)),
+	}, nil
 }
 
 func applyTranslationsReflection[T any](items *[]T, lang string) {
@@ -131,7 +139,7 @@ func applyTranslationsReflection[T any](items *[]T, lang string) {
 	}
 }
 
-func CreateModel[T any](db *gorm.DB, model T) FuegoHandler[T, T, any] {
+func CreateModel[T any](db *gorm.DB) FuegoHandler[T, T, any] {
 	return func(c fuego.ContextWithBody[T]) (T, error) {
 		var zero T
 		body, err := c.Body()
@@ -145,46 +153,48 @@ func CreateModel[T any](db *gorm.DB, model T) FuegoHandler[T, T, any] {
 	}
 }
 
-func GetModel[T any](db *gorm.DB, model T, opts ...ListOption) FuegoAnyHandler[T] {
-	lc := listConfig{}
-	for _, v := range opts {
-		v(&lc)
-	}
-	return getModel(db, model, lc.preload, lc.translate)
-}
-
-func getModel[T any](db *gorm.DB, model T, preload []string, translate bool) FuegoAnyHandler[T] {
+func GetModel[T any](db *gorm.DB, opts ...any) FuegoAnyHandler[T] {
 	return func(c fuego.ContextNoBody) (T, error) {
 		var zero T
 		id, err := ParseID(c.PathParam("id"))
 		if err != nil {
 			return zero, err
 		}
-		var entity T
-		db := db.WithContext(c).Model(model)
-		for _, v := range preload {
-			db = db.Preload(v)
+
+		q := db.WithContext(c).Model(new(T))
+
+		var postOpts []PostProcessOption[T]
+		for _, opt := range opts {
+			switch o := opt.(type) {
+			case QueryOption:
+				q = o(q)
+			case PostProcessOption[T]:
+				postOpts = append(postOpts, o)
+			}
 		}
-		if err := db.First(&entity, id).Error; err != nil {
+
+		var entity T
+		if err := q.First(&entity, id).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return zero, fuego.NotFoundError{}
 			}
-			return zero, nil
+			return zero, err
 		}
+
 		lang := c.Header("Accept-Language")
 		if lang == "" {
 			lang = "fa"
 		}
+
 		slice := []T{entity}
-		if translate {
-			models.ApplyTranslations(&slice, lang)
-			models.ApplyFieldTranslations(&slice, lang)
+		for _, p := range postOpts {
+			p(lang, &slice)
 		}
 		return slice[0], nil
 	}
 }
 
-func UpdateModel[T any](db *gorm.DB, model T) FuegoHandler[T, T, any] {
+func UpdateModel[T any](db *gorm.DB) FuegoHandler[T, T, any] {
 	return func(c fuego.ContextWithBody[T]) (T, error) {
 		var zero T
 		id, err := ParseID(c.PathParam("id"))
@@ -197,7 +207,7 @@ func UpdateModel[T any](db *gorm.DB, model T) FuegoHandler[T, T, any] {
 			return zero, err
 		}
 		rv := reflect.ValueOf(body)
-		if rv.Kind() == reflect.Ptr {
+		if rv.Kind() == reflect.Pointer {
 			rv = rv.Elem() // get the struct from the pointer
 		} else {
 			rv = reflect.ValueOf(&body).Elem() // addressable struct from value
@@ -208,7 +218,7 @@ func UpdateModel[T any](db *gorm.DB, model T) FuegoHandler[T, T, any] {
 		}
 		idField.SetUint(uint64(id))
 
-		res := db.WithContext(c).Model(model).Where("id = ?", id).Updates(body)
+		res := db.WithContext(c).Model(new(T)).Where("id = ?", id).Updates(body)
 		if res.Error != nil {
 			return zero, fuego.BadRequestError{Title: "update_failed"}
 		}
@@ -225,14 +235,14 @@ type okResponse struct {
 
 type deleteDto struct{ id string }
 
-func DeleteModel(db *gorm.DB, model any) FuegoHandler[okResponse, any, deleteDto] {
+func DeleteModel[T any](db *gorm.DB) FuegoHandler[okResponse, any, deleteDto] {
 	var zero okResponse
 	return func(c fuego.ContextWithParams[deleteDto]) (okResponse, error) {
 		id, err := ParseID(c.PathParam("id"))
 		if err != nil {
 			return zero, fuego.BadRequestError{Title: "invalid_id"}
 		}
-		res := db.WithContext(c).Delete(model, id)
+		res := db.WithContext(c).Delete(new(T), id)
 		if res.Error != nil {
 			return zero, fuego.InternalServerError{Title: "delete_failed"}
 		}

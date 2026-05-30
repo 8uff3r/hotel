@@ -1,9 +1,10 @@
 package permissions
 
 import (
+	"strconv"
+
 	h "hotel/internal/httpapi"
 	"hotel/internal/models"
-	"strconv"
 
 	"github.com/go-fuego/fuego"
 	"gorm.io/gorm"
@@ -21,7 +22,7 @@ func (m PermissionsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	pm := PermissionsModule{api}
 
 	fuego.Get(s, "/", pm.permissionsList)
-	fuego.Get(s, "/templates", h.ListModel(api.Db, models.PermissionTemplate{}))
+	fuego.Get(s, "/templates", h.ListModel[models.PermissionTemplate](api.Db))
 	fuego.Get(s, "/user/{userId}", pm.userPermissions)
 	fuego.Post(s, "/user/{userId}/template/{templateId}", pm.applyTemplate)
 	fuego.Post(s, "/user/{userId}/{permissionId}", pm.setUserPermission)

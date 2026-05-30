@@ -10,5 +10,5 @@ import (
 type CommonModule struct{}
 
 func (m CommonModule) RegisterRoutes(api *h.API, s *fuego.Server) {
-	fuego.Get(s, "/countries", h.ListModel(api.Db, models.Country{}, h.WithTranslation()))
+	fuego.Get(s, "/countries", h.ListModel[models.Country](api.Db, h.WithTranslation[models.Country]()))
 }

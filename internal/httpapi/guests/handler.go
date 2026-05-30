@@ -65,16 +65,17 @@ type PaymentRequest struct {
 func (m GuestsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	gm := GuestsModule{api}
 
-	fuego.Get(s, "/", h.ListModel(api.Db, models.Guest{}))
-	fuego.Post(s, "/", h.CreateModel(api.Db, models.Guest{}))
+	fuego.Get(s, "/", h.ListModel[models.Guest](api.Db))
+	fuego.Get(s, "/archived", gm.getArchivedGuestsHandler)
+	fuego.Post(s, "/", h.CreateModel[models.Guest](api.Db))
 	fuego.Post(s, "/with-reservation", gm.createGuestWithReservation)
-	fuego.Get(s, "/{id}", h.GetModel(api.Db, models.Guest{}))
-	fuego.Put(s, "/{id}", h.UpdateModel(api.Db, models.Guest{}))
+	fuego.Get(s, "/{id}", h.GetModel[models.Guest](api.Db))
+	fuego.Put(s, "/{id}", h.UpdateModel[models.Guest](api.Db))
 
 	fuego.Get(s, "/{id}/settle", gm.getGuestSettlementHandler)
 	fuego.Post(s, "/{id}/settle", gm.settleGuestAccount)
 
-	fuego.Get(s, "/relations", h.ListModel(api.Db, models.FamilyRelationship{}, h.WithTranslation()))
+	fuego.Get(s, "/relations", h.ListModel[models.FamilyRelationship](api.Db, h.WithTranslation[models.FamilyRelationship]()))
 }
 
 type GuestWithReservationResponse struct {
@@ -98,7 +99,7 @@ type ReservationSettlement struct {
 	ReservationCode string  `json:"reservationCode"`
 	CheckInDate     string  `json:"checkInDate"`
 	CheckOutDate    string  `json:"checkOutDate"`
-	Status          string  `json:"status"`
+	CheckedOut      bool    `json:"checkedOut"`
 	RoomPrice       float64 `json:"roomPrice"`
 	PaidAmount      float64 `json:"paidAmount"`
 }
@@ -318,7 +319,7 @@ func (gm *GuestsModule) getGuestSettlement(id uint) (GuestSettlementResponse, er
 			ReservationCode: r.ReservationCode,
 			CheckInDate:     r.EntryDate.Format(time.RFC3339),
 			CheckOutDate:    r.DepartureDate.Format(time.RFC3339),
-			Status:          r.UserCheckOut,
+			CheckedOut:      r.CheckedOut,
 			RoomPrice:       r.RoomPrice,
 			PaidAmount:      paid,
 		}
@@ -368,6 +369,21 @@ func (gm *GuestsModule) getGuestSettlementHandler(c fuego.ContextNoBody) (GuestS
 		return GuestSettlementResponse{}, fuego.BadRequestError{Title: "invalid_id"}
 	}
 	return gm.getGuestSettlement(id)
+}
+
+func (gm *GuestsModule) getArchivedGuestsHandler(c fuego.ContextWithParams[h.Params]) (h.PaginatedResponse[models.Guest], error) {
+	var zeroResponse h.PaginatedResponse[models.Guest]
+
+	q := gm.Db.Joins("JOIN reservations ON reservations.guest_id = guests.id").
+		Group("guests.id").
+		Having("COUNT(*) = COUNT(CASE WHEN reservations.checked_out = true THEN 1 END)")
+
+	var total int64
+	if err := q.Count(&total).Error; err != nil {
+		return zeroResponse, err
+	}
+
+	return h.Paginate[models.Guest](c, q)
 }
 
 func resolveIncomeCategory(db *gorm.DB, slug string) uint {

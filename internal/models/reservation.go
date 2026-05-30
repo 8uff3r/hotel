@@ -27,8 +27,7 @@ type Reservation struct {
 
 	RoomPrice float64 `gorm:"not null;default:0" json:"roomPrice"`
 
-	UserCheckIn  string `json:"userCheckIn"`
-	UserCheckOut string `json:"userCheckOut"`
+	CheckedOut bool `gorm:"not null;default:false" json:"CheckedOut"`
 
 	Notes string `json:"notes"`
 

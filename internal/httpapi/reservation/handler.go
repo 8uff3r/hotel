@@ -1,9 +1,10 @@
 package reservation
 
 import (
+	"time"
+
 	h "hotel/internal/httpapi"
 	"hotel/internal/models"
-	"time"
 
 	"github.com/go-fuego/fuego"
 )
@@ -15,10 +16,10 @@ type ReservationModule struct {
 func (m ReservationModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	re := ReservationModule{api}
 
-	fuego.Get(s, "/", h.ListModel(api.Db, models.Reservation{}))
-	fuego.Post(s, "/", h.CreateModel(api.Db, models.Reservation{}))
-	fuego.Get(s, "/{id}", h.GetModel(api.Db, models.Reservation{}))
-	fuego.Put(s, "/{id}", h.UpdateModel(api.Db, models.Reservation{}))
+	fuego.Get(s, "/", h.ListModel[models.Reservation](api.Db))
+	fuego.Post(s, "/", h.CreateModel[models.Reservation](api.Db))
+	fuego.Get(s, "/{id}", h.GetModel[models.Reservation](api.Db))
+	fuego.Put(s, "/{id}", h.UpdateModel[models.Reservation](api.Db))
 
 	fuego.Post(s, "/{id}/check-in", re.reservationsCheckIn)
 	fuego.Post(s, "/{id}/check-out", re.reservationsCheckOut)
