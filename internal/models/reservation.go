@@ -14,6 +14,7 @@ type Reservation struct {
 	Base
 	HotelID *string `json:"hotelId"`
 	GuestID uint    `gorm:"not null;index" json:"guestId"`
+	Guest   Guest   `gorm:"foreignKey:GuestID" json:"guest"`
 	Rooms   []Room  `gorm:"many2many:reservation_rooms;" json:"rooms"`
 
 	ReservationCode string `gorm:"index" json:"reservationCode"`
@@ -42,10 +43,14 @@ type Reservation struct {
 }
 
 type Payment struct {
-	ID            uint   `gorm:"primaryKey" json:"id"`
-	ReservationID uint   `gorm:"uniqueIndex;not null" json:"reservationId"`
-	IsCash        bool   `gorm:"not null;default:false" json:"isCash"`
-	Agency        bool   `gorm:"not null;default:false" json:"agency"`
-	Referrer      string `json:"referrer"`
-	ContractType  string `json:"contractType"`
+	ID            uint    `gorm:"primaryKey" json:"id"`
+	ReservationID uint    `gorm:"uniqueIndex;not null" json:"reservationId"`
+	Referrer      string  `json:"referrer"`
+	Amount        float64 `gorm:"not null" json:"amount"`
+
+	StatusID uint          `json:"statusId"`
+	Status   PaymentStatus `gorm:"foreignKey:StatusID" json:"status"`
+
+	MethodID uint          `gorm:"not null" json:"methodId"`
+	Method   PaymentMethod `gorm:"foreignKey:MethodID" json:"method,omitzero" translate:"true"`
 }

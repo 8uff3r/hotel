@@ -21,8 +21,9 @@ func (m ReservationModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 		"/",
 		h.ListModel[models.Reservation](
 			api.Db,
-			h.WithPreload("Rooms", "Guest"),
+			h.WithPreload("Rooms", "Guest", "Payment", "Payment.PaymentStatus"),
 			h.WithTranslation[models.Translation](),
+			h.WithAllowedFilters("status", "payment_status", "entry_date", "departure_date"),
 		),
 	)
 	fuego.Get(
@@ -46,19 +47,14 @@ type getReservationDetailsResponse struct {
 	Guest models.Guest `json:"guest"`
 }
 
-func (re *ReservationModule) getReservationDetails(c fuego.ContextNoBody) (getReservationDetailsResponse, error) {
-	var zero getReservationDetailsResponse
+func (re *ReservationModule) getReservationDetails(c fuego.ContextNoBody) (models.Reservation, error) {
+	var zero models.Reservation
 	id, err := h.ParseID(c.PathParam("id"))
 	if err != nil {
 		return zero, err
 	}
 	var entity models.Reservation
-	if err := re.Db.WithContext(c).Model(new(models.Reservation)).Preload("Rooms").Where("id = ?", id).First(&entity).Error; err != nil {
-		return zero, err
-	}
-
-	var guest models.Guest
-	if err := re.Db.Model(new(models.Guest)).Where("id = ?", entity.GuestID).First(guest).Error; err != nil {
+	if err := re.Db.WithContext(c).Model(new(models.Reservation)).Preload("Payment", "Payment.PaymentStatus", "Guest", "Rooms").Where("id = ?", id).First(&entity).Error; err != nil {
 		return zero, err
 	}
 
@@ -68,7 +64,7 @@ func (re *ReservationModule) getReservationDetails(c fuego.ContextNoBody) (getRe
 	}
 	out := []models.Reservation{entity}
 	rooms := entity.Rooms
-	guests := []models.Guest{guest}
+	guests := []models.Guest{entity.Guest}
 	models.ApplyTranslations(&out, lang)
 	models.ApplyFieldTranslations(&out, lang)
 	models.ApplyTranslations(&rooms, lang)
@@ -76,7 +72,7 @@ func (re *ReservationModule) getReservationDetails(c fuego.ContextNoBody) (getRe
 	models.ApplyTranslations(&guests, lang)
 	models.ApplyFieldTranslations(&guests, lang)
 
-	resp := getReservationDetailsResponse{Reservation: out[0]}
+	resp := out[0]
 	resp.Rooms = rooms
 	resp.Guest = guests[0]
 

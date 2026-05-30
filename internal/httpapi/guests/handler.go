@@ -19,7 +19,7 @@ type okResponse struct{ ok bool }
 type GuestWithReservationRequest struct {
 	Guest       models.Guest       `json:"guest"`
 	Reservation ReservationRequest `json:"reservation"`
-	Payment     PaymentRequest     `json:"payment"`
+	Payment     models.Payment     `json:"payment"`
 	Companions  []CompanionRequest `json:"companions"`
 }
 
@@ -53,13 +53,6 @@ type ReservationRequest struct {
 	RoomPrice       float64       `json:"roomPrice"`
 	Notes           string        `json:"notes"`
 	Rooms           []models.Room `json:"rooms"`
-}
-
-type PaymentRequest struct {
-	IsCash       bool   `json:"isCash"`
-	Agency       bool   `json:"agency"`
-	Referrer     string `json:"referrer"`
-	ContractType string `json:"contractType"`
 }
 
 func (gm GuestsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
@@ -178,13 +171,8 @@ func (gm *GuestsModule) createGuestWithReservation(c fuego.ContextWithBody[Guest
 			return err
 		}
 
-		payment := models.Payment{
-			ReservationID: reservation.ID,
-			IsCash:        body.Payment.IsCash,
-			Agency:        body.Payment.Agency,
-			Referrer:      body.Payment.Referrer,
-			ContractType:  body.Payment.ContractType,
-		}
+		payment := body.Payment
+		payment.ID = 0
 		if err := tx.Create(&payment).Error; err != nil {
 			return err
 		}

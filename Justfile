@@ -22,9 +22,6 @@ backend-build:
 frontend-build:
     cd frontend && bun run build
 
-gen-routes:
-    go run "cmd/codegen/route-types/main.go" && cd frontend && bun run fmt
-
 gen-perms:
     go run "cmd/codegen/permissions/main.go" && cd frontend && bun run fmt
 

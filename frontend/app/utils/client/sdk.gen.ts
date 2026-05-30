@@ -1545,11 +1545,11 @@ export const getApiReadyz = <ThrowOnError extends boolean = false>(options?: Opt
 });
 
 /**
- * func3
+ * func4
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.ListModel[...].func3`
+ * `hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.ListModel[...].func4`
  *
  * #### Middlewares:
  *
@@ -1572,11 +1572,11 @@ export const getApiReservation = <ThrowOnError extends boolean = false>(options?
 });
 
 /**
- * func4
+ * func5
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.CreateModel[...].func4`
+ * `hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.CreateModel[...].func5`
  *
  * #### Middlewares:
  *
@@ -1603,11 +1603,11 @@ export const postApiReservation = <ThrowOnError extends boolean = false>(options
 });
 
 /**
- * func5
+ * func6
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.GetModel[...].func5`
+ * `hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.GetModel[...].func6`
  *
  * #### Middlewares:
  *
@@ -1630,11 +1630,11 @@ export const getApiReservationId = <ThrowOnError extends boolean = false>(option
 });
 
 /**
- * func6
+ * func7
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.UpdateModel[...].func6`
+ * `hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.UpdateModel[...].func7`
  *
  * #### Middlewares:
  *

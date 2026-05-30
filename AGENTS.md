@@ -53,7 +53,6 @@ Primary structure in `frontend/app/`:
 - `middleware/auth.global.ts`: global auth and role checks
 - `stores/auth.ts`: Pinia auth/session state
 - `assets/css/main.css`: global styles
-- `utils/route-types.gen.ts`: generated TS interfaces from Go structs
 
 Nuxt config:
 
@@ -142,7 +141,6 @@ Frontend (`frontend/nuxt.config.ts` runtime config):
 - Use `definePageMeta` for role requirements.
 - Use Pinia auth store (`useAuthStore`) for session state and role checks.
 - Consume backend via `$fetch('/api/...')`.
-- Prefer generated types from `frontend/app/utils/route-types.gen.ts` over ad-hoc interfaces.
 
 ## Notes and gotchas
 

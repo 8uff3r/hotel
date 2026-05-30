@@ -148,68 +148,6 @@ export type Guest = {
     phone?: string;
     placeOfBirth?: string;
     postalCode?: string;
-    reservations?: Array<{
-        breakfast?: boolean;
-        departureDate?: string;
-        destination?: string;
-        durationOfStay?: number;
-        entryDate?: string;
-        fullBoard?: boolean;
-        guestId?: number;
-        guide?: boolean;
-        hotelId?: string;
-        id?: number;
-        notes?: string;
-        numberOfPeople?: number;
-        origin?: string;
-        payment?: {
-            agency?: boolean;
-            contractType?: string;
-            id?: number;
-            isCash?: boolean;
-            referrer?: string;
-            reservationId?: number;
-        };
-        purposeOfTravel?: string;
-        reservationCode?: string;
-        roomPrice?: number;
-        rooms?: Array<{
-            amenities?: Array<{
-                id?: number;
-                label?: string;
-                slug?: string;
-            }>;
-            basePrice?: number;
-            capacity?: number;
-            description?: string;
-            floor?: number;
-            hotelId?: number;
-            id?: number;
-            name?: string;
-            roomNumber: string;
-            roomType?: {
-                colorHex?: string;
-                id?: number;
-                label?: string;
-                slug?: string;
-            };
-            roomTypeId?: number;
-            status?: {
-                colorHex?: string;
-                id?: number;
-                label?: string;
-                slug?: string;
-            };
-            statusId?: number;
-        }>;
-        status?: {
-            colorHex?: string;
-            id?: number;
-            label?: string;
-            slug?: string;
-        };
-        statusId?: number;
-    }>;
 };
 
 /**
@@ -318,74 +256,25 @@ export type GuestWithReservationRequest = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        reservations?: Array<{
-            breakfast?: boolean;
-            departureDate?: string;
-            destination?: string;
-            durationOfStay?: number;
-            entryDate?: string;
-            fullBoard?: boolean;
-            guestId?: number;
-            guide?: boolean;
-            hotelId?: string;
-            id?: number;
-            notes?: string;
-            numberOfPeople?: number;
-            origin?: string;
-            payment?: {
-                agency?: boolean;
-                contractType?: string;
-                id?: number;
-                isCash?: boolean;
-                referrer?: string;
-                reservationId?: number;
-            };
-            purposeOfTravel?: string;
-            reservationCode?: string;
-            roomPrice?: number;
-            rooms?: Array<{
-                amenities?: Array<{
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                }>;
-                basePrice?: number;
-                capacity?: number;
-                description?: string;
-                floor?: number;
-                hotelId?: number;
-                id?: number;
-                name?: string;
-                roomNumber: string;
-                roomType?: {
-                    colorHex?: string;
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                };
-                roomTypeId?: number;
-                status?: {
-                    colorHex?: string;
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                };
-                statusId?: number;
-            }>;
-            status?: {
-                colorHex?: string;
-                id?: number;
-                label?: string;
-                slug?: string;
-            };
-            statusId?: number;
-        }>;
     };
     payment?: {
-        agency?: boolean;
-        contractType?: string;
-        isCash?: boolean;
+        amount?: number;
+        id?: number;
+        method?: {
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        methodId?: number;
         referrer?: string;
+        reservationId?: number;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
     };
     reservation?: {
         breakfast?: boolean;
@@ -486,76 +375,25 @@ export type GuestWithReservationResponse = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        reservations?: Array<{
-            breakfast?: boolean;
-            departureDate?: string;
-            destination?: string;
-            durationOfStay?: number;
-            entryDate?: string;
-            fullBoard?: boolean;
-            guestId?: number;
-            guide?: boolean;
-            hotelId?: string;
-            id?: number;
-            notes?: string;
-            numberOfPeople?: number;
-            origin?: string;
-            payment?: {
-                agency?: boolean;
-                contractType?: string;
-                id?: number;
-                isCash?: boolean;
-                referrer?: string;
-                reservationId?: number;
-            };
-            purposeOfTravel?: string;
-            reservationCode?: string;
-            roomPrice?: number;
-            rooms?: Array<{
-                amenities?: Array<{
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                }>;
-                basePrice?: number;
-                capacity?: number;
-                description?: string;
-                floor?: number;
-                hotelId?: number;
-                id?: number;
-                name?: string;
-                roomNumber: string;
-                roomType?: {
-                    colorHex?: string;
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                };
-                roomTypeId?: number;
-                status?: {
-                    colorHex?: string;
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                };
-                statusId?: number;
-            }>;
-            status?: {
-                colorHex?: string;
-                id?: number;
-                label?: string;
-                slug?: string;
-            };
-            statusId?: number;
-        }>;
     };
     payment?: {
-        agency?: boolean;
-        contractType?: string;
+        amount?: number;
         id?: number;
-        isCash?: boolean;
+        method?: {
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        methodId?: number;
         referrer?: string;
         reservationId?: number;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
     };
     reservation?: {
         breakfast?: boolean;
@@ -564,6 +402,56 @@ export type GuestWithReservationResponse = {
         durationOfStay?: number;
         entryDate?: string;
         fullBoard?: boolean;
+        guest?: {
+            address?: string;
+            companions?: Array<{
+                dateOfBirth?: string;
+                fatherName?: string;
+                firstName?: string;
+                gender?: string;
+                guestId?: number;
+                id?: number;
+                idNumber?: string;
+                lastName?: string;
+                nationalId?: string;
+                nationality?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                nationalityID?: number;
+                phone?: string;
+                relation?: {
+                    id?: number;
+                    label?: string;
+                    sanaId?: string;
+                    sanaName?: string;
+                    slug?: string;
+                };
+                relationId?: number;
+            }>;
+            dateOfBirth?: string;
+            email?: string;
+            fatherName?: string;
+            firstName: string;
+            gender?: string;
+            hotelId?: string;
+            id?: number;
+            idNumber?: string;
+            landline?: string;
+            lastName: string;
+            nationalId?: string;
+            nationality?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            nationalityID: number;
+            occupation?: string;
+            phone?: string;
+            placeOfBirth?: string;
+            postalCode?: string;
+        };
         guestId?: number;
         guide?: boolean;
         hotelId?: string;
@@ -572,12 +460,23 @@ export type GuestWithReservationResponse = {
         numberOfPeople?: number;
         origin?: string;
         payment?: {
-            agency?: boolean;
-            contractType?: string;
+            amount?: number;
             id?: number;
-            isCash?: boolean;
+            method?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            methodId?: number;
             referrer?: string;
             reservationId?: number;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
         };
         purposeOfTravel?: string;
         reservationCode?: string;
@@ -730,6 +629,56 @@ export type Income = {
         durationOfStay?: number;
         entryDate?: string;
         fullBoard?: boolean;
+        guest?: {
+            address?: string;
+            companions?: Array<{
+                dateOfBirth?: string;
+                fatherName?: string;
+                firstName?: string;
+                gender?: string;
+                guestId?: number;
+                id?: number;
+                idNumber?: string;
+                lastName?: string;
+                nationalId?: string;
+                nationality?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                nationalityID?: number;
+                phone?: string;
+                relation?: {
+                    id?: number;
+                    label?: string;
+                    sanaId?: string;
+                    sanaName?: string;
+                    slug?: string;
+                };
+                relationId?: number;
+            }>;
+            dateOfBirth?: string;
+            email?: string;
+            fatherName?: string;
+            firstName: string;
+            gender?: string;
+            hotelId?: string;
+            id?: number;
+            idNumber?: string;
+            landline?: string;
+            lastName: string;
+            nationalId?: string;
+            nationality?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            nationalityID: number;
+            occupation?: string;
+            phone?: string;
+            placeOfBirth?: string;
+            postalCode?: string;
+        };
         guestId?: number;
         guide?: boolean;
         hotelId?: string;
@@ -738,12 +687,23 @@ export type Income = {
         numberOfPeople?: number;
         origin?: string;
         payment?: {
-            agency?: boolean;
-            contractType?: string;
+            amount?: number;
             id?: number;
-            isCash?: boolean;
+            method?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            methodId?: number;
             referrer?: string;
             reservationId?: number;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
         };
         purposeOfTravel?: string;
         reservationCode?: string;
@@ -1118,68 +1078,6 @@ export type PaginatedResponseModelsGuest = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        reservations?: Array<{
-            breakfast?: boolean;
-            departureDate?: string;
-            destination?: string;
-            durationOfStay?: number;
-            entryDate?: string;
-            fullBoard?: boolean;
-            guestId?: number;
-            guide?: boolean;
-            hotelId?: string;
-            id?: number;
-            notes?: string;
-            numberOfPeople?: number;
-            origin?: string;
-            payment?: {
-                agency?: boolean;
-                contractType?: string;
-                id?: number;
-                isCash?: boolean;
-                referrer?: string;
-                reservationId?: number;
-            };
-            purposeOfTravel?: string;
-            reservationCode?: string;
-            roomPrice?: number;
-            rooms?: Array<{
-                amenities?: Array<{
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                }>;
-                basePrice?: number;
-                capacity?: number;
-                description?: string;
-                floor?: number;
-                hotelId?: number;
-                id?: number;
-                name?: string;
-                roomNumber: string;
-                roomType?: {
-                    colorHex?: string;
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                };
-                roomTypeId?: number;
-                status?: {
-                    colorHex?: string;
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                };
-                statusId?: number;
-            }>;
-            status?: {
-                colorHex?: string;
-                id?: number;
-                label?: string;
-                slug?: string;
-            };
-            statusId?: number;
-        }>;
     }>;
     limit?: number;
     page?: number;
@@ -1264,6 +1162,56 @@ export type PaginatedResponseModelsIncome = {
             durationOfStay?: number;
             entryDate?: string;
             fullBoard?: boolean;
+            guest?: {
+                address?: string;
+                companions?: Array<{
+                    dateOfBirth?: string;
+                    fatherName?: string;
+                    firstName?: string;
+                    gender?: string;
+                    guestId?: number;
+                    id?: number;
+                    idNumber?: string;
+                    lastName?: string;
+                    nationalId?: string;
+                    nationality?: {
+                        id?: number;
+                        label?: string;
+                        slug?: string;
+                    };
+                    nationalityID?: number;
+                    phone?: string;
+                    relation?: {
+                        id?: number;
+                        label?: string;
+                        sanaId?: string;
+                        sanaName?: string;
+                        slug?: string;
+                    };
+                    relationId?: number;
+                }>;
+                dateOfBirth?: string;
+                email?: string;
+                fatherName?: string;
+                firstName: string;
+                gender?: string;
+                hotelId?: string;
+                id?: number;
+                idNumber?: string;
+                landline?: string;
+                lastName: string;
+                nationalId?: string;
+                nationality?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                nationalityID: number;
+                occupation?: string;
+                phone?: string;
+                placeOfBirth?: string;
+                postalCode?: string;
+            };
             guestId?: number;
             guide?: boolean;
             hotelId?: string;
@@ -1272,12 +1220,23 @@ export type PaginatedResponseModelsIncome = {
             numberOfPeople?: number;
             origin?: string;
             payment?: {
-                agency?: boolean;
-                contractType?: string;
+                amount?: number;
                 id?: number;
-                isCash?: boolean;
+                method?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                methodId?: number;
                 referrer?: string;
                 reservationId?: number;
+                status?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                statusId?: number;
             };
             purposeOfTravel?: string;
             reservationCode?: string;
@@ -1661,68 +1620,6 @@ export type PaginatedResponseModelsParkingTransaction = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            reservations?: Array<{
-                breakfast?: boolean;
-                departureDate?: string;
-                destination?: string;
-                durationOfStay?: number;
-                entryDate?: string;
-                fullBoard?: boolean;
-                guestId?: number;
-                guide?: boolean;
-                hotelId?: string;
-                id?: number;
-                notes?: string;
-                numberOfPeople?: number;
-                origin?: string;
-                payment?: {
-                    agency?: boolean;
-                    contractType?: string;
-                    id?: number;
-                    isCash?: boolean;
-                    referrer?: string;
-                    reservationId?: number;
-                };
-                purposeOfTravel?: string;
-                reservationCode?: string;
-                roomPrice?: number;
-                rooms?: Array<{
-                    amenities?: Array<{
-                        id?: number;
-                        label?: string;
-                        slug?: string;
-                    }>;
-                    basePrice?: number;
-                    capacity?: number;
-                    description?: string;
-                    floor?: number;
-                    hotelId?: number;
-                    id?: number;
-                    name?: string;
-                    roomNumber: string;
-                    roomType?: {
-                        colorHex?: string;
-                        id?: number;
-                        label?: string;
-                        slug?: string;
-                    };
-                    roomTypeId?: number;
-                    status?: {
-                        colorHex?: string;
-                        id?: number;
-                        label?: string;
-                        slug?: string;
-                    };
-                    statusId?: number;
-                }>;
-                status?: {
-                    colorHex?: string;
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                };
-                statusId?: number;
-            }>;
         };
         guestId?: number;
         hoursParked?: number;
@@ -1768,6 +1665,56 @@ export type PaginatedResponseModelsParkingTransaction = {
             durationOfStay?: number;
             entryDate?: string;
             fullBoard?: boolean;
+            guest?: {
+                address?: string;
+                companions?: Array<{
+                    dateOfBirth?: string;
+                    fatherName?: string;
+                    firstName?: string;
+                    gender?: string;
+                    guestId?: number;
+                    id?: number;
+                    idNumber?: string;
+                    lastName?: string;
+                    nationalId?: string;
+                    nationality?: {
+                        id?: number;
+                        label?: string;
+                        slug?: string;
+                    };
+                    nationalityID?: number;
+                    phone?: string;
+                    relation?: {
+                        id?: number;
+                        label?: string;
+                        sanaId?: string;
+                        sanaName?: string;
+                        slug?: string;
+                    };
+                    relationId?: number;
+                }>;
+                dateOfBirth?: string;
+                email?: string;
+                fatherName?: string;
+                firstName: string;
+                gender?: string;
+                hotelId?: string;
+                id?: number;
+                idNumber?: string;
+                landline?: string;
+                lastName: string;
+                nationalId?: string;
+                nationality?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                nationalityID: number;
+                occupation?: string;
+                phone?: string;
+                placeOfBirth?: string;
+                postalCode?: string;
+            };
             guestId?: number;
             guide?: boolean;
             hotelId?: string;
@@ -1776,12 +1723,23 @@ export type PaginatedResponseModelsParkingTransaction = {
             numberOfPeople?: number;
             origin?: string;
             payment?: {
-                agency?: boolean;
-                contractType?: string;
+                amount?: number;
                 id?: number;
-                isCash?: boolean;
+                method?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                methodId?: number;
                 referrer?: string;
                 reservationId?: number;
+                status?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                statusId?: number;
             };
             purposeOfTravel?: string;
             reservationCode?: string;
@@ -1915,6 +1873,56 @@ export type PaginatedResponseModelsReservation = {
         durationOfStay?: number;
         entryDate?: string;
         fullBoard?: boolean;
+        guest?: {
+            address?: string;
+            companions?: Array<{
+                dateOfBirth?: string;
+                fatherName?: string;
+                firstName?: string;
+                gender?: string;
+                guestId?: number;
+                id?: number;
+                idNumber?: string;
+                lastName?: string;
+                nationalId?: string;
+                nationality?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                nationalityID?: number;
+                phone?: string;
+                relation?: {
+                    id?: number;
+                    label?: string;
+                    sanaId?: string;
+                    sanaName?: string;
+                    slug?: string;
+                };
+                relationId?: number;
+            }>;
+            dateOfBirth?: string;
+            email?: string;
+            fatherName?: string;
+            firstName: string;
+            gender?: string;
+            hotelId?: string;
+            id?: number;
+            idNumber?: string;
+            landline?: string;
+            lastName: string;
+            nationalId?: string;
+            nationality?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            nationalityID: number;
+            occupation?: string;
+            phone?: string;
+            placeOfBirth?: string;
+            postalCode?: string;
+        };
         guestId?: number;
         guide?: boolean;
         hotelId?: string;
@@ -1923,12 +1931,23 @@ export type PaginatedResponseModelsReservation = {
         numberOfPeople?: number;
         origin?: string;
         payment?: {
-            agency?: boolean;
-            contractType?: string;
+            amount?: number;
             id?: number;
-            isCash?: boolean;
+            method?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            methodId?: number;
             referrer?: string;
             reservationId?: number;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
         };
         purposeOfTravel?: string;
         reservationCode?: string;
@@ -2040,68 +2059,6 @@ export type PaginatedResponseModelsRestaurantBill = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            reservations?: Array<{
-                breakfast?: boolean;
-                departureDate?: string;
-                destination?: string;
-                durationOfStay?: number;
-                entryDate?: string;
-                fullBoard?: boolean;
-                guestId?: number;
-                guide?: boolean;
-                hotelId?: string;
-                id?: number;
-                notes?: string;
-                numberOfPeople?: number;
-                origin?: string;
-                payment?: {
-                    agency?: boolean;
-                    contractType?: string;
-                    id?: number;
-                    isCash?: boolean;
-                    referrer?: string;
-                    reservationId?: number;
-                };
-                purposeOfTravel?: string;
-                reservationCode?: string;
-                roomPrice?: number;
-                rooms?: Array<{
-                    amenities?: Array<{
-                        id?: number;
-                        label?: string;
-                        slug?: string;
-                    }>;
-                    basePrice?: number;
-                    capacity?: number;
-                    description?: string;
-                    floor?: number;
-                    hotelId?: number;
-                    id?: number;
-                    name?: string;
-                    roomNumber: string;
-                    roomType?: {
-                        colorHex?: string;
-                        id?: number;
-                        label?: string;
-                        slug?: string;
-                    };
-                    roomTypeId?: number;
-                    status?: {
-                        colorHex?: string;
-                        id?: number;
-                        label?: string;
-                        slug?: string;
-                    };
-                    statusId?: number;
-                }>;
-                status?: {
-                    colorHex?: string;
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                };
-                statusId?: number;
-            }>;
         };
         guestId?: number;
         hotelId?: number;
@@ -2115,6 +2072,56 @@ export type PaginatedResponseModelsRestaurantBill = {
             durationOfStay?: number;
             entryDate?: string;
             fullBoard?: boolean;
+            guest?: {
+                address?: string;
+                companions?: Array<{
+                    dateOfBirth?: string;
+                    fatherName?: string;
+                    firstName?: string;
+                    gender?: string;
+                    guestId?: number;
+                    id?: number;
+                    idNumber?: string;
+                    lastName?: string;
+                    nationalId?: string;
+                    nationality?: {
+                        id?: number;
+                        label?: string;
+                        slug?: string;
+                    };
+                    nationalityID?: number;
+                    phone?: string;
+                    relation?: {
+                        id?: number;
+                        label?: string;
+                        sanaId?: string;
+                        sanaName?: string;
+                        slug?: string;
+                    };
+                    relationId?: number;
+                }>;
+                dateOfBirth?: string;
+                email?: string;
+                fatherName?: string;
+                firstName: string;
+                gender?: string;
+                hotelId?: string;
+                id?: number;
+                idNumber?: string;
+                landline?: string;
+                lastName: string;
+                nationalId?: string;
+                nationality?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                nationalityID: number;
+                occupation?: string;
+                phone?: string;
+                placeOfBirth?: string;
+                postalCode?: string;
+            };
             guestId?: number;
             guide?: boolean;
             hotelId?: string;
@@ -2123,12 +2130,23 @@ export type PaginatedResponseModelsRestaurantBill = {
             numberOfPeople?: number;
             origin?: string;
             payment?: {
-                agency?: boolean;
-                contractType?: string;
+                amount?: number;
                 id?: number;
-                isCash?: boolean;
+                method?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                methodId?: number;
                 referrer?: string;
                 reservationId?: number;
+                status?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                statusId?: number;
             };
             purposeOfTravel?: string;
             reservationCode?: string;
@@ -2389,68 +2407,6 @@ export type PaginatedResponseModelsVehicle = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            reservations?: Array<{
-                breakfast?: boolean;
-                departureDate?: string;
-                destination?: string;
-                durationOfStay?: number;
-                entryDate?: string;
-                fullBoard?: boolean;
-                guestId?: number;
-                guide?: boolean;
-                hotelId?: string;
-                id?: number;
-                notes?: string;
-                numberOfPeople?: number;
-                origin?: string;
-                payment?: {
-                    agency?: boolean;
-                    contractType?: string;
-                    id?: number;
-                    isCash?: boolean;
-                    referrer?: string;
-                    reservationId?: number;
-                };
-                purposeOfTravel?: string;
-                reservationCode?: string;
-                roomPrice?: number;
-                rooms?: Array<{
-                    amenities?: Array<{
-                        id?: number;
-                        label?: string;
-                        slug?: string;
-                    }>;
-                    basePrice?: number;
-                    capacity?: number;
-                    description?: string;
-                    floor?: number;
-                    hotelId?: number;
-                    id?: number;
-                    name?: string;
-                    roomNumber: string;
-                    roomType?: {
-                        colorHex?: string;
-                        id?: number;
-                        label?: string;
-                        slug?: string;
-                    };
-                    roomTypeId?: number;
-                    status?: {
-                        colorHex?: string;
-                        id?: number;
-                        label?: string;
-                        slug?: string;
-                    };
-                    statusId?: number;
-                }>;
-                status?: {
-                    colorHex?: string;
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                };
-                statusId?: number;
-            }>;
         };
         guestId?: number;
         id?: number;
@@ -2613,68 +2569,6 @@ export type ParkingTransaction = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        reservations?: Array<{
-            breakfast?: boolean;
-            departureDate?: string;
-            destination?: string;
-            durationOfStay?: number;
-            entryDate?: string;
-            fullBoard?: boolean;
-            guestId?: number;
-            guide?: boolean;
-            hotelId?: string;
-            id?: number;
-            notes?: string;
-            numberOfPeople?: number;
-            origin?: string;
-            payment?: {
-                agency?: boolean;
-                contractType?: string;
-                id?: number;
-                isCash?: boolean;
-                referrer?: string;
-                reservationId?: number;
-            };
-            purposeOfTravel?: string;
-            reservationCode?: string;
-            roomPrice?: number;
-            rooms?: Array<{
-                amenities?: Array<{
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                }>;
-                basePrice?: number;
-                capacity?: number;
-                description?: string;
-                floor?: number;
-                hotelId?: number;
-                id?: number;
-                name?: string;
-                roomNumber: string;
-                roomType?: {
-                    colorHex?: string;
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                };
-                roomTypeId?: number;
-                status?: {
-                    colorHex?: string;
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                };
-                statusId?: number;
-            }>;
-            status?: {
-                colorHex?: string;
-                id?: number;
-                label?: string;
-                slug?: string;
-            };
-            statusId?: number;
-        }>;
     };
     guestId?: number;
     hoursParked?: number;
@@ -2720,6 +2614,56 @@ export type ParkingTransaction = {
         durationOfStay?: number;
         entryDate?: string;
         fullBoard?: boolean;
+        guest?: {
+            address?: string;
+            companions?: Array<{
+                dateOfBirth?: string;
+                fatherName?: string;
+                firstName?: string;
+                gender?: string;
+                guestId?: number;
+                id?: number;
+                idNumber?: string;
+                lastName?: string;
+                nationalId?: string;
+                nationality?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                nationalityID?: number;
+                phone?: string;
+                relation?: {
+                    id?: number;
+                    label?: string;
+                    sanaId?: string;
+                    sanaName?: string;
+                    slug?: string;
+                };
+                relationId?: number;
+            }>;
+            dateOfBirth?: string;
+            email?: string;
+            fatherName?: string;
+            firstName: string;
+            gender?: string;
+            hotelId?: string;
+            id?: number;
+            idNumber?: string;
+            landline?: string;
+            lastName: string;
+            nationalId?: string;
+            nationality?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            nationalityID: number;
+            occupation?: string;
+            phone?: string;
+            placeOfBirth?: string;
+            postalCode?: string;
+        };
         guestId?: number;
         guide?: boolean;
         hotelId?: string;
@@ -2728,12 +2672,23 @@ export type ParkingTransaction = {
         numberOfPeople?: number;
         origin?: string;
         payment?: {
-            agency?: boolean;
-            contractType?: string;
+            amount?: number;
             id?: number;
-            isCash?: boolean;
+            method?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            methodId?: number;
             referrer?: string;
             reservationId?: number;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
         };
         purposeOfTravel?: string;
         reservationCode?: string;
@@ -2834,6 +2789,56 @@ export type Reservation = {
     durationOfStay?: number;
     entryDate?: string;
     fullBoard?: boolean;
+    guest?: {
+        address?: string;
+        companions?: Array<{
+            dateOfBirth?: string;
+            fatherName?: string;
+            firstName?: string;
+            gender?: string;
+            guestId?: number;
+            id?: number;
+            idNumber?: string;
+            lastName?: string;
+            nationalId?: string;
+            nationality?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            nationalityID?: number;
+            phone?: string;
+            relation?: {
+                id?: number;
+                label?: string;
+                sanaId?: string;
+                sanaName?: string;
+                slug?: string;
+            };
+            relationId?: number;
+        }>;
+        dateOfBirth?: string;
+        email?: string;
+        fatherName?: string;
+        firstName: string;
+        gender?: string;
+        hotelId?: string;
+        id?: number;
+        idNumber?: string;
+        landline?: string;
+        lastName: string;
+        nationalId?: string;
+        nationality?: {
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        nationalityID: number;
+        occupation?: string;
+        phone?: string;
+        placeOfBirth?: string;
+        postalCode?: string;
+    };
     guestId?: number;
     guide?: boolean;
     hotelId?: string;
@@ -2842,12 +2847,23 @@ export type Reservation = {
     numberOfPeople?: number;
     origin?: string;
     payment?: {
-        agency?: boolean;
-        contractType?: string;
+        amount?: number;
         id?: number;
-        isCash?: boolean;
+        method?: {
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        methodId?: number;
         referrer?: string;
         reservationId?: number;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
     };
     purposeOfTravel?: string;
     reservationCode?: string;
@@ -2953,68 +2969,6 @@ export type RestaurantBill = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        reservations?: Array<{
-            breakfast?: boolean;
-            departureDate?: string;
-            destination?: string;
-            durationOfStay?: number;
-            entryDate?: string;
-            fullBoard?: boolean;
-            guestId?: number;
-            guide?: boolean;
-            hotelId?: string;
-            id?: number;
-            notes?: string;
-            numberOfPeople?: number;
-            origin?: string;
-            payment?: {
-                agency?: boolean;
-                contractType?: string;
-                id?: number;
-                isCash?: boolean;
-                referrer?: string;
-                reservationId?: number;
-            };
-            purposeOfTravel?: string;
-            reservationCode?: string;
-            roomPrice?: number;
-            rooms?: Array<{
-                amenities?: Array<{
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                }>;
-                basePrice?: number;
-                capacity?: number;
-                description?: string;
-                floor?: number;
-                hotelId?: number;
-                id?: number;
-                name?: string;
-                roomNumber: string;
-                roomType?: {
-                    colorHex?: string;
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                };
-                roomTypeId?: number;
-                status?: {
-                    colorHex?: string;
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                };
-                statusId?: number;
-            }>;
-            status?: {
-                colorHex?: string;
-                id?: number;
-                label?: string;
-                slug?: string;
-            };
-            statusId?: number;
-        }>;
     };
     guestId?: number;
     hotelId?: number;
@@ -3028,6 +2982,56 @@ export type RestaurantBill = {
         durationOfStay?: number;
         entryDate?: string;
         fullBoard?: boolean;
+        guest?: {
+            address?: string;
+            companions?: Array<{
+                dateOfBirth?: string;
+                fatherName?: string;
+                firstName?: string;
+                gender?: string;
+                guestId?: number;
+                id?: number;
+                idNumber?: string;
+                lastName?: string;
+                nationalId?: string;
+                nationality?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                nationalityID?: number;
+                phone?: string;
+                relation?: {
+                    id?: number;
+                    label?: string;
+                    sanaId?: string;
+                    sanaName?: string;
+                    slug?: string;
+                };
+                relationId?: number;
+            }>;
+            dateOfBirth?: string;
+            email?: string;
+            fatherName?: string;
+            firstName: string;
+            gender?: string;
+            hotelId?: string;
+            id?: number;
+            idNumber?: string;
+            landline?: string;
+            lastName: string;
+            nationalId?: string;
+            nationality?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            nationalityID: number;
+            occupation?: string;
+            phone?: string;
+            placeOfBirth?: string;
+            postalCode?: string;
+        };
         guestId?: number;
         guide?: boolean;
         hotelId?: string;
@@ -3036,12 +3040,23 @@ export type RestaurantBill = {
         numberOfPeople?: number;
         origin?: string;
         payment?: {
-            agency?: boolean;
-            contractType?: string;
+            amount?: number;
             id?: number;
-            isCash?: boolean;
+            method?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            methodId?: number;
             referrer?: string;
             reservationId?: number;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
         };
         purposeOfTravel?: string;
         reservationCode?: string;
@@ -3315,68 +3330,6 @@ export type Vehicle = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        reservations?: Array<{
-            breakfast?: boolean;
-            departureDate?: string;
-            destination?: string;
-            durationOfStay?: number;
-            entryDate?: string;
-            fullBoard?: boolean;
-            guestId?: number;
-            guide?: boolean;
-            hotelId?: string;
-            id?: number;
-            notes?: string;
-            numberOfPeople?: number;
-            origin?: string;
-            payment?: {
-                agency?: boolean;
-                contractType?: string;
-                id?: number;
-                isCash?: boolean;
-                referrer?: string;
-                reservationId?: number;
-            };
-            purposeOfTravel?: string;
-            reservationCode?: string;
-            roomPrice?: number;
-            rooms?: Array<{
-                amenities?: Array<{
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                }>;
-                basePrice?: number;
-                capacity?: number;
-                description?: string;
-                floor?: number;
-                hotelId?: number;
-                id?: number;
-                name?: string;
-                roomNumber: string;
-                roomType?: {
-                    colorHex?: string;
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                };
-                roomTypeId?: number;
-                status?: {
-                    colorHex?: string;
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                };
-                statusId?: number;
-            }>;
-            status?: {
-                colorHex?: string;
-                id?: number;
-                label?: string;
-                slug?: string;
-            };
-            statusId?: number;
-        }>;
     };
     guestId?: number;
     id?: number;
@@ -3397,184 +3350,6 @@ export type Vehicle = {
  * bool schema
  */
 export type Bool = boolean;
-
-/**
- * getReservationDetailsResponse schema
- */
-export type GetReservationDetailsResponse = {
-    breakfast?: boolean;
-    departureDate?: string;
-    destination?: string;
-    durationOfStay?: number;
-    entryDate?: string;
-    fullBoard?: boolean;
-    guest?: {
-        address?: string;
-        companions?: Array<{
-            dateOfBirth?: string;
-            fatherName?: string;
-            firstName?: string;
-            gender?: string;
-            guestId?: number;
-            id?: number;
-            idNumber?: string;
-            lastName?: string;
-            nationalId?: string;
-            nationality?: {
-                id?: number;
-                label?: string;
-                slug?: string;
-            };
-            nationalityID?: number;
-            phone?: string;
-            relation?: {
-                id?: number;
-                label?: string;
-                sanaId?: string;
-                sanaName?: string;
-                slug?: string;
-            };
-            relationId?: number;
-        }>;
-        dateOfBirth?: string;
-        email?: string;
-        fatherName?: string;
-        firstName: string;
-        gender?: string;
-        hotelId?: string;
-        id?: number;
-        idNumber?: string;
-        landline?: string;
-        lastName: string;
-        nationalId?: string;
-        nationality?: {
-            id?: number;
-            label?: string;
-            slug?: string;
-        };
-        nationalityID: number;
-        occupation?: string;
-        phone?: string;
-        placeOfBirth?: string;
-        postalCode?: string;
-        reservations?: Array<{
-            breakfast?: boolean;
-            departureDate?: string;
-            destination?: string;
-            durationOfStay?: number;
-            entryDate?: string;
-            fullBoard?: boolean;
-            guestId?: number;
-            guide?: boolean;
-            hotelId?: string;
-            id?: number;
-            notes?: string;
-            numberOfPeople?: number;
-            origin?: string;
-            payment?: {
-                agency?: boolean;
-                contractType?: string;
-                id?: number;
-                isCash?: boolean;
-                referrer?: string;
-                reservationId?: number;
-            };
-            purposeOfTravel?: string;
-            reservationCode?: string;
-            roomPrice?: number;
-            rooms?: Array<{
-                amenities?: Array<{
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                }>;
-                basePrice?: number;
-                capacity?: number;
-                description?: string;
-                floor?: number;
-                hotelId?: number;
-                id?: number;
-                name?: string;
-                roomNumber: string;
-                roomType?: {
-                    colorHex?: string;
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                };
-                roomTypeId?: number;
-                status?: {
-                    colorHex?: string;
-                    id?: number;
-                    label?: string;
-                    slug?: string;
-                };
-                statusId?: number;
-            }>;
-            status?: {
-                colorHex?: string;
-                id?: number;
-                label?: string;
-                slug?: string;
-            };
-            statusId?: number;
-        }>;
-    };
-    guestId?: number;
-    guide?: boolean;
-    hotelId?: string;
-    id?: number;
-    notes?: string;
-    numberOfPeople?: number;
-    origin?: string;
-    payment?: {
-        agency?: boolean;
-        contractType?: string;
-        id?: number;
-        isCash?: boolean;
-        referrer?: string;
-        reservationId?: number;
-    };
-    purposeOfTravel?: string;
-    reservationCode?: string;
-    roomPrice?: number;
-    rooms?: Array<{
-        amenities?: Array<{
-            id?: number;
-            label?: string;
-            slug?: string;
-        }>;
-        basePrice?: number;
-        capacity?: number;
-        description?: string;
-        floor?: number;
-        hotelId?: number;
-        id?: number;
-        name?: string;
-        roomNumber: string;
-        roomType?: {
-            colorHex?: string;
-            id?: number;
-            label?: string;
-            slug?: string;
-        };
-        roomTypeId?: number;
-        status?: {
-            colorHex?: string;
-            id?: number;
-            label?: string;
-            slug?: string;
-        };
-        statusId?: number;
-    }>;
-    status?: {
-        colorHex?: string;
-        id?: number;
-        label?: string;
-        slug?: string;
-    };
-    statusId?: number;
-};
 
 /**
  * loginDto schema
@@ -3611,7 +3386,9 @@ export type LoginResponse = {
 /**
  * okResponse schema
  */
-export type OkResponse = unknown;
+export type OkResponse = {
+    ok?: boolean;
+};
 
 /**
  * permissionsResponse schema
@@ -5871,7 +5648,7 @@ export type GetApiReservationIdDetailedResponses = {
     /**
      * OK
      */
-    200: GetReservationDetailsResponse;
+    200: Reservation;
 };
 
 export type GetApiReservationIdDetailedResponse = GetApiReservationIdDetailedResponses[keyof GetApiReservationIdDetailedResponses];

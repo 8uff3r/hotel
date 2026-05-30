@@ -24,29 +24,25 @@
           :items="statusOptions"
           :placeholder="t('common.all_statuses')"
           class="w-full sm:w-40"
-          @change="fetchReservations"
         />
         <USelect
           v-model="filters.paymentStatus"
           :items="paymentStatusOptions"
           :placeholder="t('common.all_payments')"
           class="w-full sm:w-40"
-          @change="fetchReservations"
         />
         <div class="flex gap-2">
           <UInput
-            v-model="filters.checkInFrom"
+            v-model="filters.entryDate"
             type="date"
             :placeholder="t('reservations.check_in_from')"
             class="w-full sm:w-40"
-            @change="fetchReservations"
           />
           <UInput
-            v-model="filters.checkInTo"
+            v-model="filters.departureDate"
             type="date"
             :placeholder="t('reservations.check_in_to')"
             class="w-full sm:w-40"
-            @change="fetchReservations"
           />
         </div>
         <UButton variant="outline" @click="clearFilters">{{ t("common.clear") }}</UButton>
@@ -83,8 +79,7 @@
 
         <template #room-cell="{ row }">
           <div>
-            <p class="font-medium">{{ row.original.roomNumber }}</p>
-            <p class="text-sm text-gray-500 capitalize">{{ row.original.roomType }}</p>
+            <p class="font-medium">{{ row.original.rooms?.map((v) => v.roomNumber).join("،") }}</p>
           </div>
         </template>
 
@@ -92,29 +87,32 @@
           <div>
             <p class="text-sm">
               <UIcon name="i-lucide-log-in" class="mr-1 inline h-3 w-3" />
-              {{ formatDate(row.original.checkInDate) }}
+              {{ formatDate(row.original.entryDate) }}
             </p>
             <p class="text-sm">
               <UIcon name="i-lucide-log-out" class="mr-1 inline h-3 w-3" />
-              {{ formatDate(row.original.checkOutDate) }}
+              {{ formatDate(row.original.departureDate) }}
             </p>
           </div>
         </template>
 
         <template #status-cell="{ row }">
-          <UBadge :color="getStatusColor(row.original.status)" variant="soft">
+          <UBadge :style="{ backgroundColor: `#${row.original.status?.colorHex}` }" variant="soft">
             {{ row.original.status }}
           </UBadge>
         </template>
 
         <template #paymentStatus-cell="{ row }">
-          <UBadge :color="getPaymentColor(row.original.paymentStatus)" variant="soft">
-            {{ row.original.paymentStatus }}
+          <UBadge
+            :style="{ backgroundColor: `#${row.original.payment?.status?.colorHex}` }"
+            variant="soft"
+          >
+            {{ row.original.payment?.status?.label }}
           </UBadge>
         </template>
 
         <template #totalAmount-cell="{ row }">
-          ${{ row.original.totalAmount?.toFixed(2) }}
+          ${{ row.original.payment?.amount?.toFixed(2) }}
         </template>
 
         <template #actions-cell="{ row }">
@@ -123,7 +121,7 @@
               <UIcon name="i-lucide-eye" class="h-4 w-4" />
             </UButton>
             <UButton
-              v-if="row.original.status === 'confirmed'"
+              v-if="row.original.status?.slug === 'confirmed'"
               variant="ghost"
               size="sm"
               color="success"
@@ -132,7 +130,7 @@
               <UIcon name="i-lucide-log-in" class="h-4 w-4" />
             </UButton>
             <UButton
-              v-if="row.original.status === 'checked_in'"
+              v-if="row.original.status?.slug === 'checked_in'"
               variant="ghost"
               size="sm"
               color="warning"
@@ -141,7 +139,7 @@
               <UIcon name="i-lucide-log-out" class="h-4 w-4" />
             </UButton>
             <UButton
-              v-if="row.original.status === 'confirmed'"
+              v-if="row.original.status?.slug === 'confirmed'"
               variant="ghost"
               size="sm"
               color="error"
@@ -158,12 +156,7 @@
           <span class="text-sm text-gray-500">
             Page {{ pagination.page }} of {{ pagination.totalPages }}
           </span>
-          <UPagination
-            v-model="page"
-            :page-count="pagination.limit"
-            :total="pagination.total"
-            @change="fetchReservations"
-          />
+          <UPagination v-model="page" :page-count="pagination.limit" :total="pagination.total" />
         </div>
       </template>
     </UCard>
@@ -172,29 +165,13 @@
 
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
+import type { Reservation } from "~/utils/client";
 
 definePageMeta({
   requiresRole: ["admin", "manager", "receptionist"],
 });
 
-interface ReservationRow {
-  id: number;
-  guestId: number;
-  roomId: number;
-  roomNumber: string | null;
-  roomType: string | null;
-  checkInDate: Date | string;
-  checkOutDate: Date | string;
-  status: string;
-  totalAmount: number;
-  paidAmount: number;
-  paymentStatus: string;
-  guest?: {
-    firstName: string;
-    lastName: string;
-    email: string;
-  };
-}
+type ReservationRow = Reservation;
 
 const columns: TableColumn<ReservationRow>[] = [
   { accessorKey: "id", header: "ID" },
@@ -225,17 +202,15 @@ const paymentStatusOptions = [
   { value: "refunded", label: "Refunded" },
 ];
 
-const reservations = ref<ReservationRow[]>([]);
 const { t } = useI18n();
-const loading = ref(false);
 const page = ref(1);
 
 const filters = reactive({
   search: "",
   status: "",
   paymentStatus: "",
-  checkInFrom: "",
-  checkInTo: "",
+  entryDate: "",
+  departureDate: "",
 });
 
 const pagination = reactive({
@@ -251,47 +226,48 @@ const debouncedSearch = () => {
   if (searchTimeout) clearTimeout(searchTimeout);
   searchTimeout = setTimeout(() => {
     pagination.page = 1;
-    fetchReservations();
+    refetch();
   }, 300);
 };
 
-const fetchReservations = async () => {
-  loading.value = true;
-  try {
-    const params: Record<string, any> = {
-      page: pagination.page,
-      limit: pagination.limit,
-    };
-
-    if (filters.status) params["status"] = filters.status;
-    if (filters.paymentStatus) params["paymentStatus"] = filters.paymentStatus;
-    if (filters.checkInFrom) params["checkInFrom"] = filters.checkInFrom;
-    if (filters.checkInTo) params["checkInTo"] = filters.checkInTo;
-
-    const response = await $fetch(`/api/reservations`, {
-      query: params,
+const {
+  data: reservations,
+  isLoading: loading,
+  refetch,
+} = useQuery({
+  key: ["reservations", "list", pagination],
+  query: async () => {
+    const response = await getApiReservation({
+      query: {
+        page: pagination.page,
+        limit: pagination.limit,
+        filters: buildFilters({
+          entry_date: { op: "eq", value: filters.entryDate },
+          payment_status: { op: "eq", value: filters.paymentStatus },
+          departure_date: { op: "eq", value: filters.departureDate },
+          status: { op: "eq", value: filters.status },
+        }),
+      },
     });
     reservations.value = response.data?.data as any;
-    pagination.total = response.pagination.total;
-    pagination.totalPages = response.pagination.totalPages;
-  } catch (error) {
-    console.error("Failed to fetch reservations:", error);
-  } finally {
-    loading.value = false;
-  }
-};
+    pagination.total = response.data?.total ?? 0;
+    pagination.totalPages = response?.data?.totalPages ?? 0;
+    return response.data?.data;
+  },
+});
 
 const clearFilters = () => {
   filters.search = "";
   filters.status = "";
   filters.paymentStatus = "";
-  filters.checkInFrom = "";
-  filters.checkInTo = "";
+  filters.entryDate = "";
+  filters.departureDate = "";
   pagination.page = 1;
-  fetchReservations();
+  refetch();
 };
 
-const formatDate = (date: Date | string) => {
+const formatDate = (date: Date | string | undefined) => {
+  if (!date) return "";
   return new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
@@ -324,7 +300,7 @@ const getPaymentColor = (status: string): "success" | "warning" | "info" | "erro
 const checkIn = async (reservation: ReservationRow) => {
   try {
     await $fetch(`/api/reservations/${reservation.id}/check-in`, { method: "POST" });
-    await fetchReservations();
+    refetch();
   } catch (error) {
     console.error("Failed to check in:", error);
   }
@@ -333,7 +309,7 @@ const checkIn = async (reservation: ReservationRow) => {
 const checkOut = async (reservation: ReservationRow) => {
   try {
     await $fetch(`/api/reservations/${reservation.id}/check-out`, { method: "POST" });
-    await fetchReservations();
+    refetch();
   } catch (error) {
     console.error("Failed to check out:", error);
   }
@@ -345,11 +321,9 @@ const cancelReservation = async (reservation: ReservationRow) => {
       method: "PUT" as any,
       body: { status: "cancelled" },
     });
-    await fetchReservations();
+    refetch();
   } catch (error) {
     console.error("Failed to cancel reservation:", error);
   }
 };
-
-onMounted(fetchReservations);
 </script>

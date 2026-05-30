@@ -27,8 +27,7 @@ type Guest struct {
 	NationalityID uint    `json:"nationalityID" validate:"required"`
 	Nationality   Country `gorm:"foreignKey:NationalityID" json:"nationality,omitzero"`
 
-	Reservations []Reservation    `gorm:"foreignKey:GuestID" json:"reservations,omitempty"`
-	Companions   []GuestCompanion `gorm:"foreignKey:GuestID" json:"companions,omitempty"`
+	Companions []GuestCompanion `gorm:"foreignKey:GuestID" json:"companions,omitempty"`
 }
 
 type GuestCompanion struct {
