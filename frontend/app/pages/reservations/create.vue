@@ -352,8 +352,8 @@ const fetchGuests = async (search?: string) => {
     params.append("limit", "50");
 
     const response = await $fetch<{ data: any[] }>(`/api/guests?${params.toString()}`);
-    if (response.data) {
-      guests.value = response.data.map((g: any) => ({
+    if (response.data?.data) {
+      guests.value = response.data?.data.map((g: any) => ({
         id: g.id,
         firstName: g.firstName || "",
         lastName: g.lastName || "",
@@ -373,8 +373,8 @@ const fetchRooms = async () => {
   loadingRooms.value = true;
   try {
     const response = await $fetch("/api/rooms?status=available&limit=100");
-    if (response.data) {
-      rooms.value = response.data;
+    if (response.data?.data) {
+      rooms.value = response.data?.data;
     }
   } catch (error) {
     console.error("Failed to fetch rooms:", error);
@@ -443,8 +443,8 @@ const createGuest = async () => {
       body: newGuest,
     });
 
-    if (response.data?.id) {
-      form.guestId = response.data.id;
+    if (response.data?.data?.id) {
+      form.guestId = response.data?.data.id;
     }
     await fetchGuests();
     showGuestModal.value = false;

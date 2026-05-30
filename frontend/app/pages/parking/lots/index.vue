@@ -45,7 +45,7 @@
         <template #dailyRate-cell="{ row }"> ${{ row.original.dailyRate }}/day </template>
 
         <template #status-cell="{ row }">
-          <UBadge :color="getStatusColor(row.original.status) as any" variant="soft">
+          <UBadge :color="getStatusColor(row.original.status?.slug) as any" variant="soft">
             {{ row.original.status }}
           </UBadge>
         </template>
@@ -69,12 +69,7 @@
               t("pagination.pageOf", { page: pagination.page, totalPages: pagination.totalPages })
             }}
           </span>
-          <UPagination
-            v-model="page"
-            :page-count="pagination.limit"
-            :total="pagination.total"
-            @change="fetchParkingLots"
-          />
+          <UPagination v-model="page" :page-count="pagination.limit" :total="pagination.total" />
         </div>
       </template>
     </UCard>
@@ -102,22 +97,15 @@
 
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
+import type z from "zod";
+import type { zParkingLot } from "~/utils/client/zod.gen";
 
 definePageMeta({
   requiresRole: ["admin", "manager"],
 });
 
-interface ParkingLot {
-  id: number;
-  name: string;
-  location: string | null;
-  totalSpots: number;
-  hourlyRate: string;
-  dailyRate: string;
-  status: string;
-}
+type ParkingLot = NonNullable<z.output<typeof zParkingLot>>;
 
-const parkingLots = ref<ParkingLot[]>([]);
 const { t } = useI18n();
 const columns: TableColumn<ParkingLot>[] = [
   { accessorKey: "name", header: t("parking.name") },
@@ -128,7 +116,6 @@ const columns: TableColumn<ParkingLot>[] = [
   { accessorKey: "status", header: t("common.status") },
   { accessorKey: "actions", header: t("parking.actions") },
 ];
-const loading = ref(false);
 const deleting = ref(false);
 const deleteModalOpen = ref(false);
 const selectedLot = ref<ParkingLot | null>(null);
@@ -141,23 +128,21 @@ const pagination = reactive({
   totalPages: 0,
 });
 
-const fetchParkingLots = async () => {
-  loading.value = true;
-  try {
-    const params = new URLSearchParams();
-    params.append("page", pagination.page.toString());
-    params.append("limit", pagination.limit.toString());
-
-    const response = await $fetch(`/api/parking/lots?${params.toString()}`);
-    parkingLots.value = response.data;
-    pagination.total = response.pagination.total ?? 0;
-    pagination.totalPages = response.pagination.totalPages ?? 0;
-  } catch (error) {
-    console.error("Failed to fetch parking lots:", error);
-  } finally {
-    loading.value = false;
-  }
-};
+const {
+  isLoading: loading,
+  data: parkingLots,
+  refetch,
+} = useQuery({
+  key: () => ["parking", "lots", "list", pagination],
+  query: async () => {
+    const response = await getApiParkingLots({
+      query: pagination,
+    });
+    pagination.total = response.data?.total ?? 0;
+    pagination.totalPages = response.data?.totalPages ?? 0;
+    return response.data?.data;
+  },
+});
 
 const confirmDelete = (lot: ParkingLot) => {
   selectedLot.value = lot;
@@ -171,7 +156,7 @@ const deleteLot = async () => {
   try {
     await $fetch(`/api/parking/lots/${selectedLot.value.id}`, { method: "DELETE" });
     deleteModalOpen.value = false;
-    await fetchParkingLots();
+    refetch();
   } catch (error) {
     console.error("Failed to delete parking lot:", error);
   } finally {
@@ -179,7 +164,8 @@ const deleteLot = async () => {
   }
 };
 
-const getStatusColor = (status: string) => {
+const getStatusColor = (status: string | undefined) => {
+  if (!status) return "neutral";
   const colors: Record<string, string> = {
     active: "success",
     full: "warning",
@@ -187,6 +173,4 @@ const getStatusColor = (status: string) => {
   };
   return colors[status] || "neutral";
 };
-
-onMounted(fetchParkingLots);
 </script>

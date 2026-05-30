@@ -14,3 +14,15 @@ import type { ClientOptions as ClientOptions2 } from './types.gen';
 export type CreateClientConfig<T extends ClientOptions = ClientOptions2> = (override?: Config<ClientOptions & T>) => Config<Required<ClientOptions> & T>;
 
 export const client = createClient(createConfig<ClientOptions2>());
+
+/**
+ * The `createClientConfig()` function will be called on client initialization
+ * and the returned object will become the client's initial configuration.
+ *
+ * You may want to initialize your client this way instead of calling
+ * `setConfig()`. This is useful for example if you're using Next.js
+ * to ensure your client always has the correct values.
+ */
+export type CreateClientConfig2<T extends ClientOptions = ClientOptions2> = (override?: Config<ClientOptions & T>) => Config<Required<ClientOptions> & T>;
+
+export const client2 = createClient(createConfig<ClientOptions2>());

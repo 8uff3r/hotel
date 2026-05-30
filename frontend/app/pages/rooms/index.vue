@@ -190,13 +190,16 @@ const debouncedSearch = () => {
   }, 300);
 };
 
-const { data: rooms, pending } = useAsyncData(async () => {
-  const response = await getApiRooms({
-    query: computed(() => pagination),
-  });
-  pagination.total = response.total ?? 0;
-  pagination.totalPages = response.totalPages ?? 0;
-  return response.data;
+const { data: rooms, isPending: pending } = useQuery({
+  key: () => ["rooms", "list", pagination],
+  query: async () => {
+    const response = await getApiRooms({
+      query: pagination,
+    });
+    pagination.total = response.data?.total ?? 0;
+    pagination.totalPages = response.data?.totalPages ?? 0;
+    return response.data?.data;
+  },
 });
 
 const clearFilters = () => {

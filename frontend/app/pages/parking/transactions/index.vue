@@ -276,7 +276,7 @@ const fetchTransactions = async () => {
       params.append("paymentStatus", filters.paymentStatus);
 
     const response = await $fetch(`/api/parking/transactions?${params.toString()}`);
-    transactions.value = response.data;
+    transactions.value = response.data?.data;
     pagination.total = response.pagination.total ?? 0;
     pagination.totalPages = response.pagination.totalPages ?? 0;
   } catch (error) {

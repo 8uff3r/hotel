@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"reflect"
+	"strings"
 
 	"hotel/internal/models"
 
@@ -17,8 +18,9 @@ type (
 	FuegoAnyHandler[T any]            = func(fuego.Context[any, any]) (T, error)
 	FuegoHandler[T any, B any, P any] = func(fuego.Context[B, P]) (T, error)
 	Params                            struct {
-		Limit int `query:"limit"`
-		Page  int `query:"page"`
+		Limit   int    `query:"limit"`
+		Page    int    `query:"page"`
+		Filters string `query:"filters"`
 	}
 )
 
@@ -35,13 +37,13 @@ type Filter struct {
 }
 
 // QueryOption modifies the gorm query
-type QueryOption func(*gorm.DB) *gorm.DB
+type QueryOption func(fuego.ContextWithParams[Params], *gorm.DB) *gorm.DB
 
 // PostProcessOption runs after the query on the results
-type PostProcessOption[T any] func(lang string, out *[]T)
+type PostProcessOption[T any] func(fuego.ContextWithParams[Params], *[]T)
 
 func WithPreload(relations ...string) QueryOption {
-	return func(db *gorm.DB) *gorm.DB {
+	return func(_ctx fuego.ContextWithParams[Params], db *gorm.DB) *gorm.DB {
 		for _, r := range relations {
 			db = db.Preload(r)
 		}
@@ -49,9 +51,10 @@ func WithPreload(relations ...string) QueryOption {
 	}
 }
 
-func WithFilter(query any, args ...any) QueryOption {
-	return func(db *gorm.DB) *gorm.DB {
-		return db.Where(query, args...)
+func WithAllowedFilters(allowed ...string) QueryOption {
+	return func(ctx fuego.ContextWithParams[Params], db *gorm.DB) *gorm.DB {
+		raw := ctx.PathParam("filters")
+		return applyQueryFilters(db, raw, allowed)
 	}
 }
 
@@ -65,7 +68,11 @@ func WithFilter(query any, args ...any) QueryOption {
 // }
 
 func WithTranslation[T any]() PostProcessOption[T] {
-	return func(lang string, out *[]T) {
+	return func(ctx fuego.ContextWithParams[Params], out *[]T) {
+		lang := ctx.Header("Accept-Language")
+		if lang == "" {
+			lang = "fa"
+		}
 		models.ApplyTranslations(out, lang)
 		models.ApplyFieldTranslations(out, lang)
 	}
@@ -79,15 +86,10 @@ func ListModel[T any](db *gorm.DB, opts ...any) FuegoHandler[PaginatedResponse[T
 		for _, opt := range opts {
 			switch o := opt.(type) {
 			case QueryOption:
-				q = o(q)
+				q = o(c, q)
 			case PostProcessOption[T]:
 				postOpts = append(postOpts, o)
 			}
-		}
-
-		lang := c.Header("Accept-Language")
-		if lang == "" {
-			lang = "fa"
 		}
 
 		result, err := Paginate[T](c, q)
@@ -96,7 +98,7 @@ func ListModel[T any](db *gorm.DB, opts ...any) FuegoHandler[PaginatedResponse[T
 		}
 
 		for _, p := range postOpts {
-			p(lang, &result.Data)
+			p(c, &result.Data)
 		}
 
 		return result, nil
@@ -130,15 +132,6 @@ func Paginate[T any](c fuego.ContextWithParams[Params], q *gorm.DB) (PaginatedRe
 	}, nil
 }
 
-func applyTranslationsReflection[T any](items *[]T, lang string) {
-	for i := range *items {
-		item := &(*items)[i]
-		if translatable, ok := any(item).(models.Translatable); ok {
-			models.ApplyTranslationOnTranslatable(translatable, lang)
-		}
-	}
-}
-
 func CreateModel[T any](db *gorm.DB) FuegoHandler[T, T, any] {
 	return func(c fuego.ContextWithBody[T]) (T, error) {
 		var zero T
@@ -153,7 +146,9 @@ func CreateModel[T any](db *gorm.DB) FuegoHandler[T, T, any] {
 	}
 }
 
-func GetModel[T any](db *gorm.DB, opts ...any) FuegoAnyHandler[T] {
+type GetOption func(*gorm.DB) *gorm.DB
+
+func GetModel[T any](db *gorm.DB, preloads ...string) FuegoAnyHandler[T] {
 	return func(c fuego.ContextNoBody) (T, error) {
 		var zero T
 		id, err := ParseID(c.PathParam("id"))
@@ -163,17 +158,11 @@ func GetModel[T any](db *gorm.DB, opts ...any) FuegoAnyHandler[T] {
 
 		q := db.WithContext(c).Model(new(T))
 
-		var postOpts []PostProcessOption[T]
-		for _, opt := range opts {
-			switch o := opt.(type) {
-			case QueryOption:
-				q = o(q)
-			case PostProcessOption[T]:
-				postOpts = append(postOpts, o)
-			}
-		}
-
 		var entity T
+
+		for _, r := range preloads {
+			db = db.Preload(r)
+		}
 		if err := q.First(&entity, id).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return zero, fuego.NotFoundError{}
@@ -181,16 +170,15 @@ func GetModel[T any](db *gorm.DB, opts ...any) FuegoAnyHandler[T] {
 			return zero, err
 		}
 
+		out := []T{entity}
+
 		lang := c.Header("Accept-Language")
 		if lang == "" {
 			lang = "fa"
 		}
-
-		slice := []T{entity}
-		for _, p := range postOpts {
-			p(lang, &slice)
-		}
-		return slice[0], nil
+		models.ApplyTranslations(&out, lang)
+		models.ApplyFieldTranslations(&out, lang)
+		return out[0], nil
 	}
 }
 
@@ -265,4 +253,42 @@ func BindAndValidate[T any](model *T, w http.ResponseWriter, r *http.Request) er
 		return err
 	}
 	return nil
+}
+
+func applyQueryFilters(db *gorm.DB, raw string, allowed []string) *gorm.DB {
+	allowedSet := make(map[string]struct{}, len(allowed))
+	for _, col := range allowed {
+		allowedSet[col] = struct{}{}
+	}
+
+	ops := map[string]string{
+		"eq":   "= ?",
+		"gt":   "> ?",
+		"lt":   "< ?",
+		"gte":  ">= ?",
+		"lte":  "<= ?",
+		"like": "LIKE ?",
+		"neq":  "!= ?",
+	}
+
+	for segment := range strings.SplitSeq(raw, ";") {
+		parts := strings.SplitN(segment, ":", 3)
+		if len(parts) != 3 {
+			continue
+		}
+		col, op, val := parts[0], parts[1], parts[2]
+
+		if _, ok := allowedSet[col]; !ok {
+			continue // silently skip disallowed columns
+		}
+		clause, ok := ops[op]
+		if !ok {
+			continue
+		}
+		if op == "like" {
+			val = "%" + val + "%"
+		}
+		db = db.Where(col+" "+clause, val)
+	}
+	return db
 }

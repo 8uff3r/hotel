@@ -217,7 +217,7 @@ const fetchVehicles = async () => {
       params.append("vehicleType", filters.vehicleType);
 
     const response = await $fetch(`/api/parking/vehicles?${params.toString()}`);
-    vehicles.value = response.data;
+    vehicles.value = response.data?.data;
     pagination.total = response.pagination.total ?? 0;
     pagination.totalPages = response.pagination.totalPages ?? 0;
   } catch (error) {

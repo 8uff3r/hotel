@@ -131,15 +131,15 @@ const form = ref<Schema>({ amenities: [], hotelId: undefined } as any);
 
 const { data: availableAmenities } = useAsyncData("room-amenities", async () => {
   const res = await getApiRoomsAmenities({});
-  return res.data;
+  return res.data?.data;
 });
 const { data: statuses } = useAsyncData("room-statuses", async () => {
   const res = await getApiRoomsStatuses({});
-  return res.data;
+  return res.data?.data;
 });
 const { data: types } = useAsyncData("room-types", async () => {
   const res = await getApiRoomsTypes({});
-  return res.data;
+  return res.data?.data;
 });
 
 const toggleAmenity = (amenityId: number) => {

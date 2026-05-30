@@ -83,7 +83,7 @@
         <UTable :data="rooms" :columns="roomColumns" :loading="roomsLoading" striped>
           <template #roomNumber-cell="{ row }">
             <NuxtLink
-              :to="`/rooms/${row.original.room.id}`"
+              :to="`/rooms/${row.original.room?.id}`"
               class="font-medium text-primary hover:underline"
             >
               {{ row.original.room?.roomNumber || "-" }}

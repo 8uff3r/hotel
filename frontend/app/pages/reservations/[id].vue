@@ -13,11 +13,11 @@
         <div class="flex items-center gap-2">
           <UBadge
             v-if="reservation"
-            :color="getStatusColor(reservation.status)"
+            :style="{ backgroundColor: `#${reservation.status?.colorHex}` }"
             variant="solid"
             size="lg"
           >
-            {{ reservation.status }}
+            {{ reservation.status?.label }}
           </UBadge>
         </div>
       </div>
@@ -45,18 +45,20 @@
               <p class="text-gray-600">{{ reservation.guest?.email }}</p>
               <p class="text-gray-600">{{ reservation.guest?.phone }}</p>
               <p v-if="reservation.guest?.address" class="text-gray-600">
-                {{ reservation.guest?.address }}, {{ reservation.guest?.city }},
-                {{ reservation.guest?.country }}
+                {{ reservation.guest?.address }},
+                <!-- FIXME: -->
+                <!-- {{ reservation.guest?.city }}, -->
+                {{ reservation.guest?.nationality?.label }}
               </p>
             </div>
 
             <!-- Room Info -->
-            <div>
+            <div v-for="room in reservation.rooms ?? []">
               <p class="mb-1 text-sm text-gray-500">Room</p>
-              <p class="text-lg font-medium">{{ reservation.room?.roomNumber }}</p>
-              <p class="text-gray-600 capitalize">{{ reservation.room?.roomType }}</p>
-              <p class="text-gray-600">Floor {{ reservation.room?.floor }}</p>
-              <p class="text-gray-600">Capacity: {{ reservation.room?.capacity }} guests</p>
+              <p class="text-lg font-medium">{{ room?.roomNumber }}</p>
+              <p class="text-gray-600 capitalize">{{ room?.roomType }}</p>
+              <p class="text-gray-600">Floor {{ room?.floor }}</p>
+              <p class="text-gray-600">Capacity: {{ room?.capacity }} guests</p>
             </div>
           </div>
         </UCard>
@@ -69,61 +71,20 @@
           <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div>
               <p class="text-sm text-gray-500">Check-in Date</p>
-              <p class="font-medium">{{ formatDate(reservation.checkInDate) }}</p>
-              <p v-if="reservation.actualCheckIn" class="text-sm text-green-600">
+              <p class="font-medium">{{ formatDate(reservation.entryDate) }}</p>
+              <p v-if="reservation.entryDate" class="text-sm text-green-600">
                 <UIcon name="i-lucide-check-circle" class="mr-1 inline" />
-                Checked in: {{ formatDateTime(reservation.actualCheckIn) }}
+                Checked in: {{ formatDateTime(reservation.entryDate) }}
               </p>
             </div>
             <div>
               <p class="text-sm text-gray-500">Check-out Date</p>
-              <p class="font-medium">{{ formatDate(reservation.checkOutDate) }}</p>
-              <p v-if="reservation.actualCheckOut" class="text-sm text-green-600">
+              <p class="font-medium">{{ formatDate(reservation.entryDate) }}</p>
+              <p v-if="reservation.departureDate" class="text-sm text-green-600">
                 <UIcon name="i-lucide-check-circle" class="mr-1 inline" />
-                Checked out: {{ formatDateTime(reservation.actualCheckOut) }}
+                Checked out: {{ formatDateTime(reservation.departureDate) }}
               </p>
             </div>
-          </div>
-
-          <div class="mt-4 border-t pt-4">
-            <p class="text-sm text-gray-500">Number of Guests</p>
-            <p class="font-medium">{{ reservation.numberOfGuests }}</p>
-          </div>
-
-          <div v-if="reservation.specialRequests" class="mt-4 border-t pt-4">
-            <p class="text-sm text-gray-500">Special Requests</p>
-            <p class="mt-1">{{ reservation.specialRequests }}</p>
-          </div>
-        </UCard>
-
-        <!-- Payment Info -->
-        <UCard>
-          <template #header>
-            <div class="flex items-center justify-between">
-              <h3 class="text-lg font-semibold">Payment</h3>
-              <UBadge :color="getPaymentColor(reservation.paymentStatus)" variant="soft">
-                {{ reservation.paymentStatus }}
-              </UBadge>
-            </div>
-          </template>
-          <div class="grid grid-cols-2 gap-6">
-            <div>
-              <p class="text-sm text-gray-500">Total Amount</p>
-              <p class="text-2xl font-medium">${{ reservation.totalAmount?.toFixed(2) }}</p>
-            </div>
-            <div>
-              <p class="text-sm text-gray-500">Amount Paid</p>
-              <p class="text-2xl font-medium">${{ reservation.paidAmount?.toFixed(2) }}</p>
-            </div>
-          </div>
-          <div
-            v-if="reservation.totalAmount - reservation.paidAmount > 0"
-            class="mt-4 border-t pt-4"
-          >
-            <p class="text-sm text-gray-500">Balance Due</p>
-            <p class="text-xl font-medium text-red-600">
-              ${{ (reservation.totalAmount - reservation.paidAmount).toFixed(2) }}
-            </p>
           </div>
         </UCard>
       </div>
@@ -137,42 +98,42 @@
           </template>
           <div class="space-y-3">
             <UButton
-              v-if="reservation.status === 'confirmed'"
+              v-if="reservation.status?.slug === 'confirmed'"
               color="success"
               block
               :loading="processing"
-              @click="handleCheckIn"
+              @click="handleCheckIn()"
             >
               <UIcon name="i-lucide-log-in" class="mr-2" />
               Check In Guest
             </UButton>
             <UButton
-              v-if="reservation.status === 'checked_in'"
+              v-if="reservation.status?.slug === 'checked_in'"
               color="warning"
               block
               :loading="processing"
-              @click="handleCheckOut"
+              @click="handleCheckOut()"
             >
               <UIcon name="i-lucide-log-out" class="mr-2" />
               Check Out Guest
             </UButton>
             <UButton
-              v-if="reservation.status === 'confirmed'"
+              v-if="reservation.status?.slug === 'confirmed'"
               color="error"
               variant="outline"
               block
               :loading="processing"
-              @click="handleCancel"
+              @click="handleCancel()"
             >
               <UIcon name="i-lucide-x" class="mr-2" />
               Cancel Reservation
             </UButton>
             <UButton
-              v-if="reservation.status === 'no_show'"
+              v-if="reservation.status?.slug === 'no_show'"
               color="info"
               block
               :loading="processing"
-              @click="handleCheckIn"
+              @click="handleCheckIn()"
             >
               <UIcon name="i-lucide-user-check" class="mr-2" />
               Mark as Arrived
@@ -191,47 +152,36 @@
         </UCard>
 
         <!-- Room Preview -->
-        <UCard v-if="reservation.room">
+        <UCard v-for="room in reservation.rooms">
           <template #header>
             <h3 class="text-lg font-semibold">Room Details</h3>
           </template>
           <div class="space-y-3">
             <div>
               <p class="text-sm text-gray-500">Room Number</p>
-              <p class="font-medium">{{ reservation.room.roomNumber }}</p>
+              <p class="font-medium">{{ room.roomNumber }}</p>
             </div>
             <div>
               <p class="text-sm text-gray-500">Type</p>
-              <p class="font-medium capitalize">{{ reservation.room.roomType }}</p>
+              <p class="font-medium capitalize">{{ room.roomType }}</p>
             </div>
             <div>
               <p class="text-sm text-gray-500">Base Price</p>
-              <p class="font-medium">${{ reservation.room.basePrice }}/night</p>
+              <p class="font-medium">${{ room.basePrice }}/night</p>
             </div>
-            <div v-if="reservation.room.amenities">
+            <div v-if="room.amenities">
               <p class="text-sm text-gray-500">Amenities</p>
               <div class="mt-1 flex flex-wrap gap-1">
                 <UBadge
-                  v-for="amenity in parseAmenities(reservation.room.amenities)"
-                  :key="amenity"
+                  v-for="amenity in room.amenities"
+                  :key="amenity.id"
                   variant="soft"
                   size="sm"
                 >
-                  {{ amenity }}
+                  {{ amenity.label }}
                 </UBadge>
               </div>
             </div>
-          </div>
-        </UCard>
-
-        <!-- Meta Info -->
-        <UCard>
-          <template #header>
-            <h3 class="text-lg font-semibold">Meta Information</h3>
-          </template>
-          <div class="space-y-2 text-sm">
-            <p class="text-gray-500">Created: {{ formatDateTime(reservation.createdAt) }}</p>
-            <p class="text-gray-500">Updated: {{ formatDateTime(reservation.updatedAt) }}</p>
           </div>
         </UCard>
       </div>
@@ -279,7 +229,7 @@ interface Reservation {
   guestId: number;
   roomId: number;
   checkInDate: string;
-  checkOutDate: string;
+  entryDate: string;
   actualCheckIn: string | null;
   actualCheckOut: string | null;
   status: string;
@@ -295,26 +245,26 @@ interface Reservation {
 }
 
 const route = useRoute();
-const reservationId = Number(route.params.id);
+const reservationId = computed(() => route.params.id as string);
 
-const loading = ref(true);
-const processing = ref(false);
-const reservation = ref<Reservation | null>(null);
+const {
+  data: reservation,
+  isLoading: loading,
+  refetch,
+} = useQuery({
+  key: () => ["reservations", "get", reservationId],
+  query: async () => {
+    const response = await getApiReservationIdDetailed({
+      path: {
+        id: reservationId.value,
+      },
+    });
+    return response.data;
+  },
+});
 
-const fetchReservation = async () => {
-  loading.value = true;
-  try {
-    const response = await $fetch(`/api/reservations/${reservationId}`);
-    reservation.value = response.data;
-  } catch (error) {
-    console.error("Failed to fetch reservation:", error);
-    reservation.value = null;
-  } finally {
-    loading.value = false;
-  }
-};
-
-const formatDate = (date: string) => {
+const formatDate = (date: string | undefined) => {
+  if (!date) return "";
   return new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -363,44 +313,43 @@ const parseAmenities = (amenities: string | undefined | null) => {
   }
 };
 
-const handleCheckIn = async () => {
-  processing.value = true;
-  try {
-    await $fetch(`/api/reservations/${reservationId}/check-in`, { method: "post" });
-    await fetchReservation();
-  } catch (error) {
-    console.error("Failed to check in:", error);
-  } finally {
-    processing.value = false;
-  }
-};
-
-const handleCheckOut = async () => {
-  processing.value = true;
-  try {
-    await $fetch(`/api/reservations/${reservationId}/check-out`, { method: "post" });
-    await fetchReservation();
-  } catch (error) {
-    console.error("Failed to check out:", error);
-  } finally {
-    processing.value = false;
-  }
-};
-
-const handleCancel = async () => {
-  processing.value = true;
-  try {
-    await $fetch(`/api/reservations/${reservationId}`, {
-      method: "put",
-      body: { status: "cancelled" },
+const { mutate: handleCheckIn, isLoading: processingCheckIn } = useMutation({
+  mutation: async () => {
+    await postApiReservationIdCheckOut({
+      path: {
+        id: reservationId.value,
+      },
     });
-    await fetchReservation();
-  } catch (error) {
-    console.error("Failed to cancel:", error);
-  } finally {
-    processing.value = false;
-  }
-};
+  },
+  onSettled: () => {
+    refetch();
+  },
+});
 
-onMounted(fetchReservation);
+const { mutate: handleCheckOut, isLoading: processingCheckOut } = useMutation({
+  mutation: async () => {
+    await postApiReservationIdCheckOut({
+      path: {
+        id: reservationId.value,
+      },
+    });
+  },
+  onSettled: () => {
+    refetch();
+  },
+});
+
+const processing = computed(
+  () => processingCheckIn.value || processingCheckOut.value || processingCancel.value
+);
+
+const { mutate: handleCancel, isLoading: processingCancel } = useMutation({
+  mutation: async () => {
+    //FIXME:
+    await putApiReservationId({} as any);
+  },
+  onSettled: () => {
+    refetch();
+  },
+});
 </script>

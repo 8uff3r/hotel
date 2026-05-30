@@ -56,7 +56,7 @@ export const useAuthStore = defineStore(
     async function login(email: string, password: string) {
       try {
         const response = await postApiAuthLogin({ body: { email, password } });
-        const { user: u, hotelId, permissions: perms } = response;
+        const { user: u, hotelId, permissions: perms } = response.data ?? {};
         if (!u) throw Error("Couldn't login");
 
         user.value = u as SanitizedUser;
@@ -97,7 +97,7 @@ export const useAuthStore = defineStore(
     async function fetchUser() {
       try {
         loading.value = true;
-        const { user: u, hotelId, permissions: perms } = await getApiAuthMe({});
+        const { user: u, hotelId, permissions: perms } = (await getApiAuthMe({})).data ?? {};
 
         if (!u) throw Error("Couldn't fetch user");
 

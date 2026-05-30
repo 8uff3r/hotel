@@ -4,6 +4,12 @@ import (
 	"time"
 )
 
+type ReservationStatus struct {
+	Base
+	TranslateBase
+	ColorHex string `gorm:"type:char(6);default:null" json:"colorHex,omitempty"`
+}
+
 type Reservation struct {
 	Base
 	HotelID *string `json:"hotelId"`
@@ -27,7 +33,8 @@ type Reservation struct {
 
 	RoomPrice float64 `gorm:"not null;default:0" json:"roomPrice"`
 
-	CheckedOut bool `gorm:"not null;default:false" json:"CheckedOut"`
+	StatusID *uint             `json:"statusId"`
+	Status   ReservationStatus `gorm:"foreignKey:StatusID" json:"status"`
 
 	Notes string `json:"notes"`
 

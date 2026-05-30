@@ -1,3 +1,88 @@
+<script setup lang="ts">
+import type { TableColumn } from "@nuxt/ui";
+import type { Guest } from "~/utils/client";
+
+definePageMeta({
+  requiresRole: ["admin", "manager", "receptionist"],
+});
+
+const { t } = useI18n();
+const columns = computed<TableColumn<Guest>[]>(() => [
+  { accessorKey: "id", header: t("guests.columns.id") },
+  { accessorKey: "name", header: t("guests.columns.name") },
+  { accessorKey: "phone", header: t("guests.columns.phone") },
+  { accessorKey: "actions", header: t("guests.columns.actions") },
+]);
+
+const deleting = ref(false);
+const deleteModalOpen = ref(false);
+const selectedGuest = ref<Guest | null>(null);
+const page = ref(1);
+
+const filters = reactive({
+  search: "",
+});
+
+const pagination = reactive({
+  page: 1,
+  limit: 10,
+  total: 0,
+  totalPages: 0,
+});
+
+let searchTimeout: ReturnType<typeof setTimeout> | null = null;
+
+const debouncedSearch = () => {
+  if (searchTimeout) clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    pagination.page = 1;
+    refresh();
+  }, 300);
+};
+
+const {
+  data: guests,
+  isPending: pending,
+  refresh,
+} = useQuery({
+  key: () => ["guests", "archived", "list", page.value],
+  query: async () => {
+    const response = await getApiGuestsArchived({
+      query: {
+        page: page.value,
+      },
+    });
+    pagination.total = response.data?.total ?? 0;
+    pagination.totalPages = response.data?.totalPages ?? 0;
+    return response.data?.data;
+  },
+});
+
+const clearFilters = () => {
+  filters.search = "";
+  pagination.page = 1;
+  refresh();
+};
+
+const confirmDelete = (guest: Guest) => {
+  selectedGuest.value = guest;
+  deleteModalOpen.value = true;
+};
+
+const deleteGuest = async () => {
+  if (!selectedGuest.value) return;
+
+  deleting.value = true;
+  try {
+    await $fetch(`/api/guests/${selectedGuest.value.id}`, { method: "DELETE" });
+    deleteModalOpen.value = false;
+  } catch (error) {
+    console.error("Failed to delete guest:", error);
+  } finally {
+    deleting.value = false;
+  }
+};
+</script>
 <template>
   <div>
     <div class="mb-6 flex items-center justify-between">
@@ -33,7 +118,7 @@
         </div>
       </template>
 
-      <UTable :data="guests" :columns="columns" :loading="pending" striped>
+      <UTable :data="guests ?? []" :columns="columns" :loading="pending" striped>
         <template #id-cell="{ row }">
           <NuxtLink
             :to="`/guests/${row.original.id}`"
@@ -101,89 +186,3 @@
     </UModal>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { TableColumn } from "@nuxt/ui";
-import type { Guest } from "~/utils/client";
-
-definePageMeta({
-  requiresRole: ["admin", "manager", "receptionist"],
-});
-
-const { t } = useI18n();
-const columns = computed<TableColumn<Guest>[]>(() => [
-  { accessorKey: "id", header: t("guests.columns.id") },
-  { accessorKey: "name", header: t("guests.columns.name") },
-  { accessorKey: "phone", header: t("guests.columns.phone") },
-  { accessorKey: "actions", header: t("guests.columns.actions") },
-]);
-
-const deleting = ref(false);
-const deleteModalOpen = ref(false);
-const selectedGuest = ref<Guest | null>(null);
-const page = ref(1);
-
-const filters = reactive({
-  search: "",
-});
-
-const pagination = reactive({
-  page: 1,
-  limit: 10,
-  total: 0,
-  totalPages: 0,
-});
-
-let searchTimeout: ReturnType<typeof setTimeout> | null = null;
-
-const debouncedSearch = () => {
-  if (searchTimeout) clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    pagination.page = 1;
-    refresh();
-  }, 300);
-};
-
-const {
-  data: guests,
-  isPending: pending,
-  refresh,
-} = useQuery({
-  key: () => ["guests", "list", page.value],
-  query: async () => {
-    const response = await getApiGuests({
-      query: {
-        page: page.value,
-      },
-    });
-    pagination.total = response.data?.total ?? 0;
-    pagination.totalPages = response.data?.totalPages ?? 0;
-    return response.data?.data;
-  },
-});
-
-const clearFilters = () => {
-  filters.search = "";
-  pagination.page = 1;
-  refresh();
-};
-
-const confirmDelete = (guest: Guest) => {
-  selectedGuest.value = guest;
-  deleteModalOpen.value = true;
-};
-
-const deleteGuest = async () => {
-  if (!selectedGuest.value) return;
-
-  deleting.value = true;
-  try {
-    await $fetch(`/api/guests/${selectedGuest.value.id}`, { method: "DELETE" });
-    deleteModalOpen.value = false;
-  } catch (error) {
-    console.error("Failed to delete guest:", error);
-  } finally {
-    deleting.value = false;
-  }
-};
-</script>

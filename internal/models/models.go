@@ -11,7 +11,7 @@ func AllForDB() []any {
 		&InventoryItem{}, &RestaurantBill{}, &MealTransaction{}, &VehicleType{},
 		&IncomeCategory{}, &ExpenseCategory{}, &PaymentStatus{}, &PaymentMethod{},
 		&InventoryItemCategory{}, &InventoryItemUnit{}, &InventoryItemStatus{}, &RestaurantBillStatus{},
-		&RoomType{}, &RoomStatus{}, &GuestCompanion{}, &PermissionCategory{},
+		&RoomType{}, &RoomStatus{}, &GuestCompanion{}, &PermissionCategory{}, &ReservationStatus{},
 	}
 }
 

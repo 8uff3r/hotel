@@ -25,8 +25,7 @@ func (m RoomsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 		"/{id}",
 		h.GetModel[models.Room](
 			api.Db,
-			h.WithPreload("Amenities", "Type", "Status"),
-			h.WithTranslation[models.Room](),
+			"Amenities", "Type", "Status",
 		),
 	)
 	fuego.Put(s, "/{id}", h.UpdateModel[models.Room](api.Db))

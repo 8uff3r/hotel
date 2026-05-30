@@ -216,9 +216,9 @@ const fetchExpenses = async () => {
         page: pagination.page,
       },
     });
-    expensesList.value = response.data ?? [];
-    pagination.total = response.total ?? 0;
-    pagination.totalPages = response.totalPages ?? 1;
+    expensesList.value = response.data?.data ?? [];
+    pagination.total = response.data?.data?.total ?? 0;
+    pagination.totalPages = response.data?.data?.totalPages ?? 1;
   } catch (error) {
     console.error("Failed to fetch expenses:", error);
   } finally {

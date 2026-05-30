@@ -185,11 +185,11 @@ const columns = computed<TableColumn<InventoryItem>[]>(() => [
 ]);
 
 const { data: categoryOptions } = useAsyncData(() => getApiRestaurantInventoryCategories({}), {
-  transform: (response) => response.data,
+  transform: (response) => response.data?.data,
 });
 
 const { data: unitOptions } = useAsyncData(() => getApiRestaurantInventoryUnits({}), {
-  transform: (response) => response.data,
+  transform: (response) => response.data?.data,
 });
 
 const pagination = reactive({ page: 1, limit: 20, total: 0, totalPages: 0 });
@@ -237,9 +237,9 @@ const {
       "/api/restaurant/inventory",
       { query: params }
     );
-    pagination.total = response.total ?? 0;
-    pagination.totalPages = response.totalPages ?? 0;
-    return response.data;
+    pagination.total = response.data?.data?.total ?? 0;
+    pagination.totalPages = response.data?.data?.totalPages ?? 0;
+    return response.data?.data;
   },
   { watch: [() => pagination.page] }
 );

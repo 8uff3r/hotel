@@ -16,7 +16,21 @@ type ReservationModule struct {
 func (m ReservationModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	re := ReservationModule{api}
 
-	fuego.Get(s, "/", h.ListModel[models.Reservation](api.Db))
+	fuego.Get(
+		s,
+		"/",
+		h.ListModel[models.Reservation](
+			api.Db,
+			h.WithPreload("Rooms", "Guest"),
+			h.WithTranslation[models.Translation](),
+		),
+	)
+	fuego.Get(
+		s,
+		"/{id}/detailed",
+		re.getReservationDetails,
+	)
+
 	fuego.Post(s, "/", h.CreateModel[models.Reservation](api.Db))
 	fuego.Get(s, "/{id}", h.GetModel[models.Reservation](api.Db))
 	fuego.Put(s, "/{id}", h.UpdateModel[models.Reservation](api.Db))
@@ -26,6 +40,48 @@ func (m ReservationModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 }
 
 type okResponse struct{ ok bool }
+
+type getReservationDetailsResponse struct {
+	models.Reservation
+	Guest models.Guest `json:"guest"`
+}
+
+func (re *ReservationModule) getReservationDetails(c fuego.ContextNoBody) (getReservationDetailsResponse, error) {
+	var zero getReservationDetailsResponse
+	id, err := h.ParseID(c.PathParam("id"))
+	if err != nil {
+		return zero, err
+	}
+	var entity models.Reservation
+	if err := re.Db.WithContext(c).Model(new(models.Reservation)).Preload("Rooms").Where("id = ?", id).First(&entity).Error; err != nil {
+		return zero, err
+	}
+
+	var guest models.Guest
+	if err := re.Db.Model(new(models.Guest)).Where("id = ?", entity.GuestID).First(guest).Error; err != nil {
+		return zero, err
+	}
+
+	lang := c.Header("Accept-Language")
+	if lang == "" {
+		lang = "fa"
+	}
+	out := []models.Reservation{entity}
+	rooms := entity.Rooms
+	guests := []models.Guest{guest}
+	models.ApplyTranslations(&out, lang)
+	models.ApplyFieldTranslations(&out, lang)
+	models.ApplyTranslations(&rooms, lang)
+	models.ApplyFieldTranslations(&rooms, lang)
+	models.ApplyTranslations(&guests, lang)
+	models.ApplyFieldTranslations(&guests, lang)
+
+	resp := getReservationDetailsResponse{Reservation: out[0]}
+	resp.Rooms = rooms
+	resp.Guest = guests[0]
+
+	return resp, nil
+}
 
 func (re *ReservationModule) reservationsCheckIn(c fuego.ContextNoBody) (okResponse, error) {
 	var zero okResponse

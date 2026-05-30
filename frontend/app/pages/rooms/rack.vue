@@ -150,7 +150,7 @@
               {{ room.roomNumber }}
             </span>
             <span class="text-xs text-gray-500 dark:text-gray-400">
-              {{ room.roomType?.name }}
+              {{ room.roomType?.label }}
             </span>
           </NuxtLink>
         </div>
@@ -305,7 +305,7 @@ const scrollContainer = ref<HTMLElement | null>(null);
 const { data: statusData, pending: statusPending } = useAsyncData<RoomStatus[]>(
   async () => {
     const response = await getApiRoomsStatuses({});
-    return (response.data as RoomStatus[]) || [];
+    return (response.data?.data as RoomStatus[]) || [];
   },
   { default: () => [] as RoomStatus[] }
 );
@@ -313,7 +313,7 @@ const { data: statusData, pending: statusPending } = useAsyncData<RoomStatus[]>(
 const { data: roomsData, pending } = useAsyncData(
   async () => {
     const response = await getApiRooms({ query: { limit: 500 } });
-    return (response.data as Room[]) || [];
+    return (response.data?.data as Room[]) || [];
   },
   { default: () => [] as Room[] }
 );

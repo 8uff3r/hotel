@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "pinia-plugin-persistedstate/nuxt",
     "@hey-api/nuxt",
+    "@pinia/colada-nuxt",
   ],
 
   heyApi: {
@@ -30,7 +31,7 @@ export default defineNuxtConfig({
             offset: true,
           },
         },
-        "@hey-api/client-nuxt",
+        "@hey-api/client-ofetch",
         "@hey-api/typescript",
         {
           name: "@hey-api/sdk",
@@ -153,3 +154,4 @@ export default defineNuxtConfig({
     },
   },
 });
+

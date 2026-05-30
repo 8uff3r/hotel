@@ -2,12 +2,12 @@
 
 import * as z from 'zod';
 
-import type { Client, Composable, Options as Options2, TDataShape } from './client';
+import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { DeleteApiHotelsIdData, DeleteApiHotelsIdError, DeleteApiHotelsIdResponse, DeleteApiParkingLotsIdData, DeleteApiParkingLotsIdError, DeleteApiParkingLotsIdResponse, DeleteApiParkingSpotsIdData, DeleteApiParkingSpotsIdError, DeleteApiParkingSpotsIdResponse, DeleteApiParkingVehiclesIdData, DeleteApiParkingVehiclesIdError, DeleteApiParkingVehiclesIdResponse, DeleteApiPermissionsUserUserIdPermissionIdData, DeleteApiPermissionsUserUserIdPermissionIdError, DeleteApiPermissionsUserUserIdPermissionIdResponse, DeleteApiRestaurantBillsIdData, DeleteApiRestaurantBillsIdError, DeleteApiRestaurantBillsIdResponse, DeleteApiRestaurantInventoryIdData, DeleteApiRestaurantInventoryIdError, DeleteApiRestaurantInventoryIdResponse, DeleteApiRestaurantTransactionsIdData, DeleteApiRestaurantTransactionsIdError, DeleteApiRestaurantTransactionsIdResponse, DeleteApiRoomsIdData, DeleteApiRoomsIdError, DeleteApiRoomsIdResponse, GetApiAccountingAccountsData, GetApiAccountingAccountsError, GetApiAccountingAccountsResponse, GetApiAccountingExpensesData, GetApiAccountingExpensesError, GetApiAccountingExpensesResponse, GetApiAccountingIncomeData, GetApiAccountingIncomeError, GetApiAccountingIncomeResponse, GetApiAuthMeData, GetApiAuthMeError, GetApiAuthMeResponse, GetApiCommonCountriesData, GetApiCommonCountriesError, GetApiCommonCountriesResponse, GetApiGuestsData, GetApiGuestsError, GetApiGuestsIdData, GetApiGuestsIdError, GetApiGuestsIdResponse, GetApiGuestsIdSettleData, GetApiGuestsIdSettleError, GetApiGuestsIdSettleResponse, GetApiGuestsRelationsData, GetApiGuestsRelationsError, GetApiGuestsRelationsResponse, GetApiGuestsResponse, GetApiHealthzData, GetApiHealthzError, GetApiHealthzResponse, GetApiHotelsData, GetApiHotelsError, GetApiHotelsIdData, GetApiHotelsIdError, GetApiHotelsIdResponse, GetApiHotelsResponse, GetApiParkingLotsData, GetApiParkingLotsError, GetApiParkingLotsIdData, GetApiParkingLotsIdError, GetApiParkingLotsIdResponse, GetApiParkingLotsResponse, GetApiParkingSpotsData, GetApiParkingSpotsError, GetApiParkingSpotsIdData, GetApiParkingSpotsIdError, GetApiParkingSpotsIdResponse, GetApiParkingSpotsResponse, GetApiParkingSpotsStatusesData, GetApiParkingSpotsStatusesError, GetApiParkingSpotsStatusesResponse, GetApiParkingSpotsTypesData, GetApiParkingSpotsTypesError, GetApiParkingSpotsTypesResponse, GetApiParkingStatsData, GetApiParkingStatsError, GetApiParkingStatsResponse, GetApiParkingTransactionsData, GetApiParkingTransactionsError, GetApiParkingTransactionsIdData, GetApiParkingTransactionsIdError, GetApiParkingTransactionsIdResponse, GetApiParkingTransactionsResponse, GetApiParkingVehiclesData, GetApiParkingVehiclesError, GetApiParkingVehiclesIdData, GetApiParkingVehiclesIdError, GetApiParkingVehiclesIdResponse, GetApiParkingVehiclesResponse, GetApiPermissionsData, GetApiPermissionsError, GetApiPermissionsResponse, GetApiPermissionsTemplatesData, GetApiPermissionsTemplatesError, GetApiPermissionsTemplatesResponse, GetApiPermissionsUserUserIdData, GetApiPermissionsUserUserIdError, GetApiPermissionsUserUserIdResponse, GetApiReadyzData, GetApiReadyzError, GetApiReadyzResponse, GetApiReservationData, GetApiReservationError, GetApiReservationIdData, GetApiReservationIdError, GetApiReservationIdResponse, GetApiReservationResponse, GetApiRestaurantBillsData, GetApiRestaurantBillsError, GetApiRestaurantBillsIdData, GetApiRestaurantBillsIdError, GetApiRestaurantBillsIdResponse, GetApiRestaurantBillsResponse, GetApiRestaurantBillsStatusesData, GetApiRestaurantBillsStatusesError, GetApiRestaurantBillsStatusesResponse, GetApiRestaurantInventoryCategoriesData, GetApiRestaurantInventoryCategoriesError, GetApiRestaurantInventoryCategoriesResponse, GetApiRestaurantInventoryData, GetApiRestaurantInventoryError, GetApiRestaurantInventoryIdData, GetApiRestaurantInventoryIdError, GetApiRestaurantInventoryIdResponse, GetApiRestaurantInventoryResponse, GetApiRestaurantInventoryStatusesData, GetApiRestaurantInventoryStatusesError, GetApiRestaurantInventoryStatusesResponse, GetApiRestaurantInventoryUnitsData, GetApiRestaurantInventoryUnitsError, GetApiRestaurantInventoryUnitsResponse, GetApiRestaurantStatsData, GetApiRestaurantStatsError, GetApiRestaurantStatsResponse, GetApiRestaurantTransactionsData, GetApiRestaurantTransactionsError, GetApiRestaurantTransactionsIdData, GetApiRestaurantTransactionsIdError, GetApiRestaurantTransactionsIdResponse, GetApiRestaurantTransactionsResponse, GetApiRoomsAmenitiesData, GetApiRoomsAmenitiesError, GetApiRoomsAmenitiesResponse, GetApiRoomsData, GetApiRoomsError, GetApiRoomsIdData, GetApiRoomsIdError, GetApiRoomsIdResponse, GetApiRoomsResponse, GetApiRoomsStatusesData, GetApiRoomsStatusesError, GetApiRoomsStatusesResponse, GetApiRoomsTypesData, GetApiRoomsTypesError, GetApiRoomsTypesResponse, GetApiSanaCitiesData, GetApiSanaCitiesError, GetApiSanaCitiesResponse, GetApiSanaCountriesData, GetApiSanaCountriesError, GetApiSanaCountriesResponse, GetApiSanaFamilyRelationshipsData, GetApiSanaFamilyRelationshipsError, GetApiSanaFamilyRelationshipsResponse, GetApiSanaGuestsData, GetApiSanaGuestsError, GetApiSanaGuestsResponse, GetApiSanaNationalitiesData, GetApiSanaNationalitiesError, GetApiSanaNationalitiesResponse, GetApiSanaOccupationsData, GetApiSanaOccupationsError, GetApiSanaOccupationsResponse, GetApiSanaRoomsData, GetApiSanaRoomsError, GetApiSanaRoomsResponse, GetApiSanaTravelReasonsData, GetApiSanaTravelReasonsError, GetApiSanaTravelReasonsResponse, GetApiUsersData, GetApiUsersError, GetApiUsersIdData, GetApiUsersIdError, GetApiUsersIdResponse, GetApiUsersResponse, PostApiAccountingAccountsData, PostApiAccountingAccountsError, PostApiAccountingAccountsResponse, PostApiAccountingExpensesData, PostApiAccountingExpensesError, PostApiAccountingExpensesResponse, PostApiAccountingIncomeData, PostApiAccountingIncomeError, PostApiAccountingIncomeResponse, PostApiAuthLoginData, PostApiAuthLoginError, PostApiAuthLoginResponse, PostApiAuthLogoutData, PostApiAuthLogoutError, PostApiAuthLogoutResponse, PostApiGuestsData, PostApiGuestsError, PostApiGuestsIdSettleData, PostApiGuestsIdSettleError, PostApiGuestsIdSettleResponse, PostApiGuestsResponse, PostApiGuestsWithReservationData, PostApiGuestsWithReservationError, PostApiGuestsWithReservationResponse, PostApiHotelsData, PostApiHotelsError, PostApiHotelsResponse, PostApiParkingLotsData, PostApiParkingLotsError, PostApiParkingLotsResponse, PostApiParkingSpotsData, PostApiParkingSpotsError, PostApiParkingSpotsResponse, PostApiParkingTransactionsData, PostApiParkingTransactionsError, PostApiParkingTransactionsIdCheckOutData, PostApiParkingTransactionsIdCheckOutError, PostApiParkingTransactionsIdCheckOutResponse, PostApiParkingTransactionsResponse, PostApiParkingVehiclesData, PostApiParkingVehiclesError, PostApiParkingVehiclesResponse, PostApiPermissionsUserUserIdPermissionIdData, PostApiPermissionsUserUserIdPermissionIdError, PostApiPermissionsUserUserIdPermissionIdResponse, PostApiPermissionsUserUserIdTemplateTemplateIdData, PostApiPermissionsUserUserIdTemplateTemplateIdError, PostApiPermissionsUserUserIdTemplateTemplateIdResponse, PostApiReservationData, PostApiReservationError, PostApiReservationIdCheckInData, PostApiReservationIdCheckInError, PostApiReservationIdCheckInResponse, PostApiReservationIdCheckOutData, PostApiReservationIdCheckOutError, PostApiReservationIdCheckOutResponse, PostApiReservationResponse, PostApiRestaurantBillsData, PostApiRestaurantBillsError, PostApiRestaurantBillsIdSettleData, PostApiRestaurantBillsIdSettleError, PostApiRestaurantBillsIdSettleResponse, PostApiRestaurantBillsResponse, PostApiRestaurantInventoryData, PostApiRestaurantInventoryError, PostApiRestaurantInventoryResponse, PostApiRestaurantTransactionsData, PostApiRestaurantTransactionsError, PostApiRestaurantTransactionsResponse, PostApiRoomsData, PostApiRoomsError, PostApiRoomsResponse, PostApiSanaGuestsIdSyncData, PostApiSanaGuestsIdSyncError, PostApiSanaGuestsIdSyncResponse, PostApiSanaRoomsIdSyncData, PostApiSanaRoomsIdSyncError, PostApiSanaRoomsIdSyncResponse, PostApiSanaSyncAllData, PostApiSanaSyncAllError, PostApiSanaSyncAllResponse, PostApiUsersData, PostApiUsersError, PostApiUsersResponse, PutApiGuestsIdData, PutApiGuestsIdError, PutApiGuestsIdResponse, PutApiHotelsIdData, PutApiHotelsIdError, PutApiHotelsIdResponse, PutApiParkingLotsIdData, PutApiParkingLotsIdError, PutApiParkingLotsIdResponse, PutApiParkingSpotsIdData, PutApiParkingSpotsIdError, PutApiParkingSpotsIdResponse, PutApiParkingVehiclesIdData, PutApiParkingVehiclesIdError, PutApiParkingVehiclesIdResponse, PutApiReservationIdData, PutApiReservationIdError, PutApiReservationIdResponse, PutApiRestaurantBillsIdData, PutApiRestaurantBillsIdError, PutApiRestaurantBillsIdResponse, PutApiRestaurantInventoryIdData, PutApiRestaurantInventoryIdError, PutApiRestaurantInventoryIdResponse, PutApiRestaurantTransactionsIdData, PutApiRestaurantTransactionsIdError, PutApiRestaurantTransactionsIdResponse, PutApiRoomsIdData, PutApiRoomsIdError, PutApiRoomsIdResponse, PutApiUsersIdData, PutApiUsersIdError, PutApiUsersIdResponse } from './types.gen';
-import { zDeleteApiHotelsIdHeaders, zDeleteApiHotelsIdPath, zDeleteApiParkingLotsIdHeaders, zDeleteApiParkingLotsIdPath, zDeleteApiParkingSpotsIdHeaders, zDeleteApiParkingSpotsIdPath, zDeleteApiParkingVehiclesIdHeaders, zDeleteApiParkingVehiclesIdPath, zDeleteApiPermissionsUserUserIdPermissionIdHeaders, zDeleteApiPermissionsUserUserIdPermissionIdPath, zDeleteApiRestaurantBillsIdHeaders, zDeleteApiRestaurantBillsIdPath, zDeleteApiRestaurantInventoryIdHeaders, zDeleteApiRestaurantInventoryIdPath, zDeleteApiRestaurantTransactionsIdHeaders, zDeleteApiRestaurantTransactionsIdPath, zDeleteApiRoomsIdHeaders, zDeleteApiRoomsIdPath, zGetApiAccountingAccountsHeaders, zGetApiAccountingAccountsQuery, zGetApiAccountingExpensesHeaders, zGetApiAccountingExpensesQuery, zGetApiAccountingIncomeHeaders, zGetApiAccountingIncomeQuery, zGetApiAuthMeHeaders, zGetApiCommonCountriesHeaders, zGetApiCommonCountriesQuery, zGetApiGuestsHeaders, zGetApiGuestsIdHeaders, zGetApiGuestsIdPath, zGetApiGuestsIdSettleHeaders, zGetApiGuestsIdSettlePath, zGetApiGuestsQuery, zGetApiGuestsRelationsHeaders, zGetApiGuestsRelationsQuery, zGetApiHealthzHeaders, zGetApiHotelsHeaders, zGetApiHotelsIdHeaders, zGetApiHotelsIdPath, zGetApiHotelsQuery, zGetApiParkingLotsHeaders, zGetApiParkingLotsIdHeaders, zGetApiParkingLotsIdPath, zGetApiParkingLotsQuery, zGetApiParkingSpotsHeaders, zGetApiParkingSpotsIdHeaders, zGetApiParkingSpotsIdPath, zGetApiParkingSpotsQuery, zGetApiParkingSpotsStatusesHeaders, zGetApiParkingSpotsStatusesQuery, zGetApiParkingSpotsTypesHeaders, zGetApiParkingSpotsTypesQuery, zGetApiParkingStatsHeaders, zGetApiParkingTransactionsHeaders, zGetApiParkingTransactionsIdHeaders, zGetApiParkingTransactionsIdPath, zGetApiParkingTransactionsQuery, zGetApiParkingVehiclesHeaders, zGetApiParkingVehiclesIdHeaders, zGetApiParkingVehiclesIdPath, zGetApiParkingVehiclesQuery, zGetApiPermissionsHeaders, zGetApiPermissionsTemplatesHeaders, zGetApiPermissionsTemplatesQuery, zGetApiPermissionsUserUserIdHeaders, zGetApiPermissionsUserUserIdPath, zGetApiReadyzHeaders, zGetApiReservationHeaders, zGetApiReservationIdHeaders, zGetApiReservationIdPath, zGetApiReservationQuery, zGetApiRestaurantBillsHeaders, zGetApiRestaurantBillsIdHeaders, zGetApiRestaurantBillsIdPath, zGetApiRestaurantBillsQuery, zGetApiRestaurantBillsStatusesHeaders, zGetApiRestaurantBillsStatusesQuery, zGetApiRestaurantInventoryCategoriesHeaders, zGetApiRestaurantInventoryCategoriesQuery, zGetApiRestaurantInventoryHeaders, zGetApiRestaurantInventoryIdHeaders, zGetApiRestaurantInventoryIdPath, zGetApiRestaurantInventoryQuery, zGetApiRestaurantInventoryStatusesHeaders, zGetApiRestaurantInventoryStatusesQuery, zGetApiRestaurantInventoryUnitsHeaders, zGetApiRestaurantInventoryUnitsQuery, zGetApiRestaurantStatsHeaders, zGetApiRestaurantTransactionsHeaders, zGetApiRestaurantTransactionsIdHeaders, zGetApiRestaurantTransactionsIdPath, zGetApiRestaurantTransactionsQuery, zGetApiRoomsAmenitiesHeaders, zGetApiRoomsAmenitiesQuery, zGetApiRoomsHeaders, zGetApiRoomsIdHeaders, zGetApiRoomsIdPath, zGetApiRoomsQuery, zGetApiRoomsStatusesHeaders, zGetApiRoomsStatusesQuery, zGetApiRoomsTypesHeaders, zGetApiRoomsTypesQuery, zGetApiSanaCitiesHeaders, zGetApiSanaCountriesHeaders, zGetApiSanaFamilyRelationshipsHeaders, zGetApiSanaGuestsHeaders, zGetApiSanaNationalitiesHeaders, zGetApiSanaOccupationsHeaders, zGetApiSanaRoomsHeaders, zGetApiSanaTravelReasonsHeaders, zGetApiUsersHeaders, zGetApiUsersIdHeaders, zGetApiUsersIdPath, zPostApiAccountingAccountsBody, zPostApiAccountingAccountsHeaders, zPostApiAccountingExpensesBody, zPostApiAccountingExpensesHeaders, zPostApiAccountingIncomeBody, zPostApiAccountingIncomeHeaders, zPostApiAuthLoginBody, zPostApiAuthLoginHeaders, zPostApiAuthLogoutHeaders, zPostApiGuestsBody, zPostApiGuestsHeaders, zPostApiGuestsIdSettleBody, zPostApiGuestsIdSettleHeaders, zPostApiGuestsIdSettlePath, zPostApiGuestsWithReservationBody, zPostApiGuestsWithReservationHeaders, zPostApiHotelsBody, zPostApiHotelsHeaders, zPostApiParkingLotsBody, zPostApiParkingLotsHeaders, zPostApiParkingSpotsBody, zPostApiParkingSpotsHeaders, zPostApiParkingTransactionsBody, zPostApiParkingTransactionsHeaders, zPostApiParkingTransactionsIdCheckOutHeaders, zPostApiParkingTransactionsIdCheckOutPath, zPostApiParkingVehiclesBody, zPostApiParkingVehiclesHeaders, zPostApiPermissionsUserUserIdPermissionIdHeaders, zPostApiPermissionsUserUserIdPermissionIdPath, zPostApiPermissionsUserUserIdTemplateTemplateIdHeaders, zPostApiPermissionsUserUserIdTemplateTemplateIdPath, zPostApiReservationBody, zPostApiReservationHeaders, zPostApiReservationIdCheckInHeaders, zPostApiReservationIdCheckInPath, zPostApiReservationIdCheckOutHeaders, zPostApiReservationIdCheckOutPath, zPostApiRestaurantBillsBody, zPostApiRestaurantBillsHeaders, zPostApiRestaurantBillsIdSettleHeaders, zPostApiRestaurantBillsIdSettlePath, zPostApiRestaurantInventoryBody, zPostApiRestaurantInventoryHeaders, zPostApiRestaurantTransactionsBody, zPostApiRestaurantTransactionsHeaders, zPostApiRoomsBody, zPostApiRoomsHeaders, zPostApiSanaGuestsIdSyncHeaders, zPostApiSanaRoomsIdSyncHeaders, zPostApiSanaSyncAllHeaders, zPostApiUsersBody, zPostApiUsersHeaders, zPutApiGuestsIdBody, zPutApiGuestsIdHeaders, zPutApiGuestsIdPath, zPutApiHotelsIdBody, zPutApiHotelsIdHeaders, zPutApiHotelsIdPath, zPutApiParkingLotsIdBody, zPutApiParkingLotsIdHeaders, zPutApiParkingLotsIdPath, zPutApiParkingSpotsIdBody, zPutApiParkingSpotsIdHeaders, zPutApiParkingSpotsIdPath, zPutApiParkingVehiclesIdBody, zPutApiParkingVehiclesIdHeaders, zPutApiParkingVehiclesIdPath, zPutApiReservationIdBody, zPutApiReservationIdHeaders, zPutApiReservationIdPath, zPutApiRestaurantBillsIdBody, zPutApiRestaurantBillsIdHeaders, zPutApiRestaurantBillsIdPath, zPutApiRestaurantInventoryIdBody, zPutApiRestaurantInventoryIdHeaders, zPutApiRestaurantInventoryIdPath, zPutApiRestaurantTransactionsIdBody, zPutApiRestaurantTransactionsIdHeaders, zPutApiRestaurantTransactionsIdPath, zPutApiRoomsIdBody, zPutApiRoomsIdHeaders, zPutApiRoomsIdPath, zPutApiUsersIdBody, zPutApiUsersIdHeaders, zPutApiUsersIdPath } from './zod.gen';
+import type { DeleteApiHotelsIdData, DeleteApiHotelsIdErrors, DeleteApiHotelsIdResponses, DeleteApiParkingLotsIdData, DeleteApiParkingLotsIdErrors, DeleteApiParkingLotsIdResponses, DeleteApiParkingSpotsIdData, DeleteApiParkingSpotsIdErrors, DeleteApiParkingSpotsIdResponses, DeleteApiParkingVehiclesIdData, DeleteApiParkingVehiclesIdErrors, DeleteApiParkingVehiclesIdResponses, DeleteApiPermissionsUserUserIdPermissionIdData, DeleteApiPermissionsUserUserIdPermissionIdErrors, DeleteApiPermissionsUserUserIdPermissionIdResponses, DeleteApiRestaurantBillsIdData, DeleteApiRestaurantBillsIdErrors, DeleteApiRestaurantBillsIdResponses, DeleteApiRestaurantInventoryIdData, DeleteApiRestaurantInventoryIdErrors, DeleteApiRestaurantInventoryIdResponses, DeleteApiRestaurantTransactionsIdData, DeleteApiRestaurantTransactionsIdErrors, DeleteApiRestaurantTransactionsIdResponses, DeleteApiRoomsIdData, DeleteApiRoomsIdErrors, DeleteApiRoomsIdResponses, GetApiAccountingAccountsData, GetApiAccountingAccountsErrors, GetApiAccountingAccountsResponses, GetApiAccountingExpensesData, GetApiAccountingExpensesErrors, GetApiAccountingExpensesResponses, GetApiAccountingIncomeData, GetApiAccountingIncomeErrors, GetApiAccountingIncomeResponses, GetApiAuthMeData, GetApiAuthMeErrors, GetApiAuthMeResponses, GetApiCommonCountriesData, GetApiCommonCountriesErrors, GetApiCommonCountriesResponses, GetApiGuestsArchivedData, GetApiGuestsArchivedErrors, GetApiGuestsArchivedResponses, GetApiGuestsData, GetApiGuestsErrors, GetApiGuestsIdData, GetApiGuestsIdErrors, GetApiGuestsIdResponses, GetApiGuestsIdSettleData, GetApiGuestsIdSettleErrors, GetApiGuestsIdSettleResponses, GetApiGuestsRelationsData, GetApiGuestsRelationsErrors, GetApiGuestsRelationsResponses, GetApiGuestsResponses, GetApiHealthzData, GetApiHealthzErrors, GetApiHealthzResponses, GetApiHotelsData, GetApiHotelsErrors, GetApiHotelsIdData, GetApiHotelsIdErrors, GetApiHotelsIdResponses, GetApiHotelsResponses, GetApiParkingLotsData, GetApiParkingLotsErrors, GetApiParkingLotsIdData, GetApiParkingLotsIdErrors, GetApiParkingLotsIdResponses, GetApiParkingLotsResponses, GetApiParkingSpotsData, GetApiParkingSpotsErrors, GetApiParkingSpotsIdData, GetApiParkingSpotsIdErrors, GetApiParkingSpotsIdResponses, GetApiParkingSpotsResponses, GetApiParkingSpotsStatusesData, GetApiParkingSpotsStatusesErrors, GetApiParkingSpotsStatusesResponses, GetApiParkingSpotsTypesData, GetApiParkingSpotsTypesErrors, GetApiParkingSpotsTypesResponses, GetApiParkingStatsData, GetApiParkingStatsErrors, GetApiParkingStatsResponses, GetApiParkingTransactionsData, GetApiParkingTransactionsErrors, GetApiParkingTransactionsIdData, GetApiParkingTransactionsIdErrors, GetApiParkingTransactionsIdResponses, GetApiParkingTransactionsResponses, GetApiParkingVehiclesData, GetApiParkingVehiclesErrors, GetApiParkingVehiclesIdData, GetApiParkingVehiclesIdErrors, GetApiParkingVehiclesIdResponses, GetApiParkingVehiclesResponses, GetApiPermissionsData, GetApiPermissionsErrors, GetApiPermissionsResponses, GetApiPermissionsTemplatesData, GetApiPermissionsTemplatesErrors, GetApiPermissionsTemplatesResponses, GetApiPermissionsUserUserIdData, GetApiPermissionsUserUserIdErrors, GetApiPermissionsUserUserIdResponses, GetApiReadyzData, GetApiReadyzErrors, GetApiReadyzResponses, GetApiReservationData, GetApiReservationErrors, GetApiReservationIdData, GetApiReservationIdDetailedData, GetApiReservationIdDetailedErrors, GetApiReservationIdDetailedResponses, GetApiReservationIdErrors, GetApiReservationIdResponses, GetApiReservationResponses, GetApiRestaurantBillsData, GetApiRestaurantBillsErrors, GetApiRestaurantBillsIdData, GetApiRestaurantBillsIdErrors, GetApiRestaurantBillsIdResponses, GetApiRestaurantBillsResponses, GetApiRestaurantBillsStatusesData, GetApiRestaurantBillsStatusesErrors, GetApiRestaurantBillsStatusesResponses, GetApiRestaurantInventoryCategoriesData, GetApiRestaurantInventoryCategoriesErrors, GetApiRestaurantInventoryCategoriesResponses, GetApiRestaurantInventoryData, GetApiRestaurantInventoryErrors, GetApiRestaurantInventoryIdData, GetApiRestaurantInventoryIdErrors, GetApiRestaurantInventoryIdResponses, GetApiRestaurantInventoryResponses, GetApiRestaurantInventoryStatusesData, GetApiRestaurantInventoryStatusesErrors, GetApiRestaurantInventoryStatusesResponses, GetApiRestaurantInventoryUnitsData, GetApiRestaurantInventoryUnitsErrors, GetApiRestaurantInventoryUnitsResponses, GetApiRestaurantStatsData, GetApiRestaurantStatsErrors, GetApiRestaurantStatsResponses, GetApiRestaurantTransactionsData, GetApiRestaurantTransactionsErrors, GetApiRestaurantTransactionsIdData, GetApiRestaurantTransactionsIdErrors, GetApiRestaurantTransactionsIdResponses, GetApiRestaurantTransactionsResponses, GetApiRoomsAmenitiesData, GetApiRoomsAmenitiesErrors, GetApiRoomsAmenitiesResponses, GetApiRoomsData, GetApiRoomsErrors, GetApiRoomsIdData, GetApiRoomsIdErrors, GetApiRoomsIdResponses, GetApiRoomsResponses, GetApiRoomsStatusesData, GetApiRoomsStatusesErrors, GetApiRoomsStatusesResponses, GetApiRoomsTypesData, GetApiRoomsTypesErrors, GetApiRoomsTypesResponses, GetApiSanaCitiesData, GetApiSanaCitiesErrors, GetApiSanaCitiesResponses, GetApiSanaCountriesData, GetApiSanaCountriesErrors, GetApiSanaCountriesResponses, GetApiSanaFamilyRelationshipsData, GetApiSanaFamilyRelationshipsErrors, GetApiSanaFamilyRelationshipsResponses, GetApiSanaGuestsData, GetApiSanaGuestsErrors, GetApiSanaGuestsResponses, GetApiSanaNationalitiesData, GetApiSanaNationalitiesErrors, GetApiSanaNationalitiesResponses, GetApiSanaOccupationsData, GetApiSanaOccupationsErrors, GetApiSanaOccupationsResponses, GetApiSanaRoomsData, GetApiSanaRoomsErrors, GetApiSanaRoomsResponses, GetApiSanaTravelReasonsData, GetApiSanaTravelReasonsErrors, GetApiSanaTravelReasonsResponses, GetApiUsersData, GetApiUsersErrors, GetApiUsersIdData, GetApiUsersIdErrors, GetApiUsersIdResponses, GetApiUsersResponses, PostApiAccountingAccountsData, PostApiAccountingAccountsErrors, PostApiAccountingAccountsResponses, PostApiAccountingExpensesData, PostApiAccountingExpensesErrors, PostApiAccountingExpensesResponses, PostApiAccountingIncomeData, PostApiAccountingIncomeErrors, PostApiAccountingIncomeResponses, PostApiAuthLoginData, PostApiAuthLoginErrors, PostApiAuthLoginResponses, PostApiAuthLogoutData, PostApiAuthLogoutErrors, PostApiAuthLogoutResponses, PostApiGuestsData, PostApiGuestsErrors, PostApiGuestsIdSettleData, PostApiGuestsIdSettleErrors, PostApiGuestsIdSettleResponses, PostApiGuestsResponses, PostApiGuestsWithReservationData, PostApiGuestsWithReservationErrors, PostApiGuestsWithReservationResponses, PostApiHotelsData, PostApiHotelsErrors, PostApiHotelsResponses, PostApiParkingLotsData, PostApiParkingLotsErrors, PostApiParkingLotsResponses, PostApiParkingSpotsData, PostApiParkingSpotsErrors, PostApiParkingSpotsResponses, PostApiParkingTransactionsData, PostApiParkingTransactionsErrors, PostApiParkingTransactionsIdCheckOutData, PostApiParkingTransactionsIdCheckOutErrors, PostApiParkingTransactionsIdCheckOutResponses, PostApiParkingTransactionsResponses, PostApiParkingVehiclesData, PostApiParkingVehiclesErrors, PostApiParkingVehiclesResponses, PostApiPermissionsUserUserIdPermissionIdData, PostApiPermissionsUserUserIdPermissionIdErrors, PostApiPermissionsUserUserIdPermissionIdResponses, PostApiPermissionsUserUserIdTemplateTemplateIdData, PostApiPermissionsUserUserIdTemplateTemplateIdErrors, PostApiPermissionsUserUserIdTemplateTemplateIdResponses, PostApiReservationData, PostApiReservationErrors, PostApiReservationIdCheckInData, PostApiReservationIdCheckInErrors, PostApiReservationIdCheckInResponses, PostApiReservationIdCheckOutData, PostApiReservationIdCheckOutErrors, PostApiReservationIdCheckOutResponses, PostApiReservationResponses, PostApiRestaurantBillsData, PostApiRestaurantBillsErrors, PostApiRestaurantBillsIdSettleData, PostApiRestaurantBillsIdSettleErrors, PostApiRestaurantBillsIdSettleResponses, PostApiRestaurantBillsResponses, PostApiRestaurantInventoryData, PostApiRestaurantInventoryErrors, PostApiRestaurantInventoryResponses, PostApiRestaurantTransactionsData, PostApiRestaurantTransactionsErrors, PostApiRestaurantTransactionsResponses, PostApiRoomsData, PostApiRoomsErrors, PostApiRoomsResponses, PostApiSanaGuestsIdSyncData, PostApiSanaGuestsIdSyncErrors, PostApiSanaGuestsIdSyncResponses, PostApiSanaRoomsIdSyncData, PostApiSanaRoomsIdSyncErrors, PostApiSanaRoomsIdSyncResponses, PostApiSanaSyncAllData, PostApiSanaSyncAllErrors, PostApiSanaSyncAllResponses, PostApiUsersData, PostApiUsersErrors, PostApiUsersResponses, PutApiGuestsIdData, PutApiGuestsIdErrors, PutApiGuestsIdResponses, PutApiHotelsIdData, PutApiHotelsIdErrors, PutApiHotelsIdResponses, PutApiParkingLotsIdData, PutApiParkingLotsIdErrors, PutApiParkingLotsIdResponses, PutApiParkingSpotsIdData, PutApiParkingSpotsIdErrors, PutApiParkingSpotsIdResponses, PutApiParkingVehiclesIdData, PutApiParkingVehiclesIdErrors, PutApiParkingVehiclesIdResponses, PutApiReservationIdData, PutApiReservationIdErrors, PutApiReservationIdResponses, PutApiRestaurantBillsIdData, PutApiRestaurantBillsIdErrors, PutApiRestaurantBillsIdResponses, PutApiRestaurantInventoryIdData, PutApiRestaurantInventoryIdErrors, PutApiRestaurantInventoryIdResponses, PutApiRestaurantTransactionsIdData, PutApiRestaurantTransactionsIdErrors, PutApiRestaurantTransactionsIdResponses, PutApiRoomsIdData, PutApiRoomsIdErrors, PutApiRoomsIdResponses, PutApiUsersIdData, PutApiUsersIdErrors, PutApiUsersIdResponses } from './types.gen';
+import { zDeleteApiHotelsIdHeaders, zDeleteApiHotelsIdPath, zDeleteApiParkingLotsIdHeaders, zDeleteApiParkingLotsIdPath, zDeleteApiParkingSpotsIdHeaders, zDeleteApiParkingSpotsIdPath, zDeleteApiParkingVehiclesIdHeaders, zDeleteApiParkingVehiclesIdPath, zDeleteApiPermissionsUserUserIdPermissionIdHeaders, zDeleteApiPermissionsUserUserIdPermissionIdPath, zDeleteApiRestaurantBillsIdHeaders, zDeleteApiRestaurantBillsIdPath, zDeleteApiRestaurantInventoryIdHeaders, zDeleteApiRestaurantInventoryIdPath, zDeleteApiRestaurantTransactionsIdHeaders, zDeleteApiRestaurantTransactionsIdPath, zDeleteApiRoomsIdHeaders, zDeleteApiRoomsIdPath, zGetApiAccountingAccountsHeaders, zGetApiAccountingAccountsQuery, zGetApiAccountingExpensesHeaders, zGetApiAccountingExpensesQuery, zGetApiAccountingIncomeHeaders, zGetApiAccountingIncomeQuery, zGetApiAuthMeHeaders, zGetApiCommonCountriesHeaders, zGetApiCommonCountriesQuery, zGetApiGuestsArchivedHeaders, zGetApiGuestsArchivedQuery, zGetApiGuestsHeaders, zGetApiGuestsIdHeaders, zGetApiGuestsIdPath, zGetApiGuestsIdSettleHeaders, zGetApiGuestsIdSettlePath, zGetApiGuestsQuery, zGetApiGuestsRelationsHeaders, zGetApiGuestsRelationsQuery, zGetApiHealthzHeaders, zGetApiHotelsHeaders, zGetApiHotelsIdHeaders, zGetApiHotelsIdPath, zGetApiHotelsQuery, zGetApiParkingLotsHeaders, zGetApiParkingLotsIdHeaders, zGetApiParkingLotsIdPath, zGetApiParkingLotsQuery, zGetApiParkingSpotsHeaders, zGetApiParkingSpotsIdHeaders, zGetApiParkingSpotsIdPath, zGetApiParkingSpotsQuery, zGetApiParkingSpotsStatusesHeaders, zGetApiParkingSpotsStatusesQuery, zGetApiParkingSpotsTypesHeaders, zGetApiParkingSpotsTypesQuery, zGetApiParkingStatsHeaders, zGetApiParkingTransactionsHeaders, zGetApiParkingTransactionsIdHeaders, zGetApiParkingTransactionsIdPath, zGetApiParkingTransactionsQuery, zGetApiParkingVehiclesHeaders, zGetApiParkingVehiclesIdHeaders, zGetApiParkingVehiclesIdPath, zGetApiParkingVehiclesQuery, zGetApiPermissionsHeaders, zGetApiPermissionsTemplatesHeaders, zGetApiPermissionsTemplatesQuery, zGetApiPermissionsUserUserIdHeaders, zGetApiPermissionsUserUserIdPath, zGetApiReadyzHeaders, zGetApiReservationHeaders, zGetApiReservationIdDetailedHeaders, zGetApiReservationIdDetailedPath, zGetApiReservationIdHeaders, zGetApiReservationIdPath, zGetApiReservationQuery, zGetApiRestaurantBillsHeaders, zGetApiRestaurantBillsIdHeaders, zGetApiRestaurantBillsIdPath, zGetApiRestaurantBillsQuery, zGetApiRestaurantBillsStatusesHeaders, zGetApiRestaurantBillsStatusesQuery, zGetApiRestaurantInventoryCategoriesHeaders, zGetApiRestaurantInventoryCategoriesQuery, zGetApiRestaurantInventoryHeaders, zGetApiRestaurantInventoryIdHeaders, zGetApiRestaurantInventoryIdPath, zGetApiRestaurantInventoryQuery, zGetApiRestaurantInventoryStatusesHeaders, zGetApiRestaurantInventoryStatusesQuery, zGetApiRestaurantInventoryUnitsHeaders, zGetApiRestaurantInventoryUnitsQuery, zGetApiRestaurantStatsHeaders, zGetApiRestaurantTransactionsHeaders, zGetApiRestaurantTransactionsIdHeaders, zGetApiRestaurantTransactionsIdPath, zGetApiRestaurantTransactionsQuery, zGetApiRoomsAmenitiesHeaders, zGetApiRoomsAmenitiesQuery, zGetApiRoomsHeaders, zGetApiRoomsIdHeaders, zGetApiRoomsIdPath, zGetApiRoomsQuery, zGetApiRoomsStatusesHeaders, zGetApiRoomsStatusesQuery, zGetApiRoomsTypesHeaders, zGetApiRoomsTypesQuery, zGetApiSanaCitiesHeaders, zGetApiSanaCountriesHeaders, zGetApiSanaFamilyRelationshipsHeaders, zGetApiSanaGuestsHeaders, zGetApiSanaNationalitiesHeaders, zGetApiSanaOccupationsHeaders, zGetApiSanaRoomsHeaders, zGetApiSanaTravelReasonsHeaders, zGetApiUsersHeaders, zGetApiUsersIdHeaders, zGetApiUsersIdPath, zPostApiAccountingAccountsBody, zPostApiAccountingAccountsHeaders, zPostApiAccountingExpensesBody, zPostApiAccountingExpensesHeaders, zPostApiAccountingIncomeBody, zPostApiAccountingIncomeHeaders, zPostApiAuthLoginBody, zPostApiAuthLoginHeaders, zPostApiAuthLogoutHeaders, zPostApiGuestsBody, zPostApiGuestsHeaders, zPostApiGuestsIdSettleBody, zPostApiGuestsIdSettleHeaders, zPostApiGuestsIdSettlePath, zPostApiGuestsWithReservationBody, zPostApiGuestsWithReservationHeaders, zPostApiHotelsBody, zPostApiHotelsHeaders, zPostApiParkingLotsBody, zPostApiParkingLotsHeaders, zPostApiParkingSpotsBody, zPostApiParkingSpotsHeaders, zPostApiParkingTransactionsBody, zPostApiParkingTransactionsHeaders, zPostApiParkingTransactionsIdCheckOutHeaders, zPostApiParkingTransactionsIdCheckOutPath, zPostApiParkingVehiclesBody, zPostApiParkingVehiclesHeaders, zPostApiPermissionsUserUserIdPermissionIdHeaders, zPostApiPermissionsUserUserIdPermissionIdPath, zPostApiPermissionsUserUserIdTemplateTemplateIdHeaders, zPostApiPermissionsUserUserIdTemplateTemplateIdPath, zPostApiReservationBody, zPostApiReservationHeaders, zPostApiReservationIdCheckInHeaders, zPostApiReservationIdCheckInPath, zPostApiReservationIdCheckOutHeaders, zPostApiReservationIdCheckOutPath, zPostApiRestaurantBillsBody, zPostApiRestaurantBillsHeaders, zPostApiRestaurantBillsIdSettleHeaders, zPostApiRestaurantBillsIdSettlePath, zPostApiRestaurantInventoryBody, zPostApiRestaurantInventoryHeaders, zPostApiRestaurantTransactionsBody, zPostApiRestaurantTransactionsHeaders, zPostApiRoomsBody, zPostApiRoomsHeaders, zPostApiSanaGuestsIdSyncHeaders, zPostApiSanaRoomsIdSyncHeaders, zPostApiSanaSyncAllHeaders, zPostApiUsersBody, zPostApiUsersHeaders, zPutApiGuestsIdBody, zPutApiGuestsIdHeaders, zPutApiGuestsIdPath, zPutApiHotelsIdBody, zPutApiHotelsIdHeaders, zPutApiHotelsIdPath, zPutApiParkingLotsIdBody, zPutApiParkingLotsIdHeaders, zPutApiParkingLotsIdPath, zPutApiParkingSpotsIdBody, zPutApiParkingSpotsIdHeaders, zPutApiParkingSpotsIdPath, zPutApiParkingVehiclesIdBody, zPutApiParkingVehiclesIdHeaders, zPutApiParkingVehiclesIdPath, zPutApiReservationIdBody, zPutApiReservationIdHeaders, zPutApiReservationIdPath, zPutApiRestaurantBillsIdBody, zPutApiRestaurantBillsIdHeaders, zPutApiRestaurantBillsIdPath, zPutApiRestaurantInventoryIdBody, zPutApiRestaurantInventoryIdHeaders, zPutApiRestaurantInventoryIdPath, zPutApiRestaurantTransactionsIdBody, zPutApiRestaurantTransactionsIdHeaders, zPutApiRestaurantTransactionsIdPath, zPutApiRoomsIdBody, zPutApiRoomsIdHeaders, zPutApiRoomsIdPath, zPutApiUsersIdBody, zPutApiUsersIdHeaders, zPutApiUsersIdPath } from './zod.gen';
 
-export type Options<TComposable extends Composable = '$fetch', TData extends TDataShape = TDataShape, ResT = unknown, DefaultT = undefined> = Options2<TComposable, TData, ResT, DefaultT> & {
+export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
      * You can provide a client instance returned by `createClient()` instead of
      * individual options. This might be also useful if you want to implement a
@@ -26,7 +26,7 @@ export type Options<TComposable extends Composable = '$fetch', TData extends TDa
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.ListModel[...].func1`
  *
  * #### Middlewares:
  *
@@ -37,7 +37,7 @@ export type Options<TComposable extends Composable = '$fetch', TData extends TDa
  *
  *
  */
-export const getApiAccountingAccounts = <TComposable extends Composable = '$fetch', DefaultT extends GetApiAccountingAccountsResponse = GetApiAccountingAccountsResponse>(options: Options<TComposable, GetApiAccountingAccountsData, GetApiAccountingAccountsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiAccountingAccountsResponse | DefaultT, GetApiAccountingAccountsError, DefaultT>({
+export const getApiAccountingAccounts = <ThrowOnError extends boolean = false>(options?: Options<GetApiAccountingAccountsData, ThrowOnError>) => (options?.client ?? client).get<GetApiAccountingAccountsResponses, GetApiAccountingAccountsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiAccountingAccountsHeaders.optional(),
@@ -45,64 +45,6 @@ export const getApiAccountingAccounts = <TComposable extends Composable = '$fetc
         query: zGetApiAccountingAccountsQuery.optional()
     }).parseAsync(data),
     url: '/api/accounting/accounts/',
-    ...options
-});
-
-/**
- * func1
- *
- * #### Controller:
- *
- * `hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.CreateModel[...].func1`
- *
- * #### Middlewares:
- *
- * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).AuthMiddleware`
- *
- * ---
- *
- *
- */
-export const postApiAccountingAccounts = <TComposable extends Composable = '$fetch', DefaultT extends PostApiAccountingAccountsResponse = PostApiAccountingAccountsResponse>(options: Options<TComposable, PostApiAccountingAccountsData, PostApiAccountingAccountsResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiAccountingAccountsResponse | DefaultT, PostApiAccountingAccountsError, DefaultT>({
-    requestValidator: async (data) => await z.object({
-        body: zPostApiAccountingAccountsBody,
-        headers: zPostApiAccountingAccountsHeaders.optional(),
-        path: z.never().optional(),
-        query: z.never().optional()
-    }).parseAsync(data),
-    url: '/api/accounting/accounts/',
-    ...options,
-    headers: {
-        'Content-Type': '*/*',
-        ...options.headers
-    }
-});
-
-/**
- * func1
- *
- * #### Controller:
- *
- * `hotel/internal/httpapi.ListModel[...].func1`
- *
- * #### Middlewares:
- *
- * - `github.com/go-fuego/fuego.defaultLogger.middleware`
- * - `hotel/internal/httpapi.(*API).AuthMiddleware`
- *
- * ---
- *
- *
- */
-export const getApiAccountingExpenses = <TComposable extends Composable = '$fetch', DefaultT extends GetApiAccountingExpensesResponse = GetApiAccountingExpensesResponse>(options: Options<TComposable, GetApiAccountingExpensesData, GetApiAccountingExpensesResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiAccountingExpensesResponse | DefaultT, GetApiAccountingExpensesError, DefaultT>({
-    requestValidator: async (data) => await z.object({
-        body: z.never().optional(),
-        headers: zGetApiAccountingExpensesHeaders.optional(),
-        path: z.never().optional(),
-        query: zGetApiAccountingExpensesQuery.optional()
-    }).parseAsync(data),
-    url: '/api/accounting/expenses/',
     ...options
 });
 
@@ -122,7 +64,65 @@ export const getApiAccountingExpenses = <TComposable extends Composable = '$fetc
  *
  *
  */
-export const postApiAccountingExpenses = <TComposable extends Composable = '$fetch', DefaultT extends PostApiAccountingExpensesResponse = PostApiAccountingExpensesResponse>(options: Options<TComposable, PostApiAccountingExpensesData, PostApiAccountingExpensesResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiAccountingExpensesResponse | DefaultT, PostApiAccountingExpensesError, DefaultT>({
+export const postApiAccountingAccounts = <ThrowOnError extends boolean = false>(options: Options<PostApiAccountingAccountsData, ThrowOnError>) => (options.client ?? client).post<PostApiAccountingAccountsResponses, PostApiAccountingAccountsErrors, ThrowOnError>({
+    requestValidator: async (data) => await z.object({
+        body: zPostApiAccountingAccountsBody,
+        headers: zPostApiAccountingAccountsHeaders.optional(),
+        path: z.never().optional(),
+        query: z.never().optional()
+    }).parseAsync(data),
+    url: '/api/accounting/accounts/',
+    ...options,
+    headers: {
+        'Content-Type': '*/*',
+        ...options.headers
+    }
+});
+
+/**
+ * func3
+ *
+ * #### Controller:
+ *
+ * `hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.ListModel[...].func3`
+ *
+ * #### Middlewares:
+ *
+ * - `github.com/go-fuego/fuego.defaultLogger.middleware`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
+ *
+ * ---
+ *
+ *
+ */
+export const getApiAccountingExpenses = <ThrowOnError extends boolean = false>(options?: Options<GetApiAccountingExpensesData, ThrowOnError>) => (options?.client ?? client).get<GetApiAccountingExpensesResponses, GetApiAccountingExpensesErrors, ThrowOnError>({
+    requestValidator: async (data) => await z.object({
+        body: z.never().optional(),
+        headers: zGetApiAccountingExpensesHeaders.optional(),
+        path: z.never().optional(),
+        query: zGetApiAccountingExpensesQuery.optional()
+    }).parseAsync(data),
+    url: '/api/accounting/expenses/',
+    ...options
+});
+
+/**
+ * func4
+ *
+ * #### Controller:
+ *
+ * `hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.CreateModel[...].func4`
+ *
+ * #### Middlewares:
+ *
+ * - `github.com/go-fuego/fuego.defaultLogger.middleware`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
+ *
+ * ---
+ *
+ *
+ */
+export const postApiAccountingExpenses = <ThrowOnError extends boolean = false>(options: Options<PostApiAccountingExpensesData, ThrowOnError>) => (options.client ?? client).post<PostApiAccountingExpensesResponses, PostApiAccountingExpensesErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPostApiAccountingExpensesBody,
         headers: zPostApiAccountingExpensesHeaders.optional(),
@@ -138,11 +138,11 @@ export const postApiAccountingExpenses = <TComposable extends Composable = '$fet
 });
 
 /**
- * func1
+ * func5
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.ListModel[...].func5`
  *
  * #### Middlewares:
  *
@@ -153,7 +153,7 @@ export const postApiAccountingExpenses = <TComposable extends Composable = '$fet
  *
  *
  */
-export const getApiAccountingIncome = <TComposable extends Composable = '$fetch', DefaultT extends GetApiAccountingIncomeResponse = GetApiAccountingIncomeResponse>(options: Options<TComposable, GetApiAccountingIncomeData, GetApiAccountingIncomeResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiAccountingIncomeResponse | DefaultT, GetApiAccountingIncomeError, DefaultT>({
+export const getApiAccountingIncome = <ThrowOnError extends boolean = false>(options?: Options<GetApiAccountingIncomeData, ThrowOnError>) => (options?.client ?? client).get<GetApiAccountingIncomeResponses, GetApiAccountingIncomeErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiAccountingIncomeHeaders.optional(),
@@ -165,11 +165,11 @@ export const getApiAccountingIncome = <TComposable extends Composable = '$fetch'
 });
 
 /**
- * func3
+ * func6
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.CreateModel[...].func3`
+ * `hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.CreateModel[...].func6`
  *
  * #### Middlewares:
  *
@@ -180,7 +180,7 @@ export const getApiAccountingIncome = <TComposable extends Composable = '$fetch'
  *
  *
  */
-export const postApiAccountingIncome = <TComposable extends Composable = '$fetch', DefaultT extends PostApiAccountingIncomeResponse = PostApiAccountingIncomeResponse>(options: Options<TComposable, PostApiAccountingIncomeData, PostApiAccountingIncomeResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiAccountingIncomeResponse | DefaultT, PostApiAccountingIncomeError, DefaultT>({
+export const postApiAccountingIncome = <ThrowOnError extends boolean = false>(options: Options<PostApiAccountingIncomeData, ThrowOnError>) => (options.client ?? client).post<PostApiAccountingIncomeResponses, PostApiAccountingIncomeErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPostApiAccountingIncomeBody,
         headers: zPostApiAccountingIncomeHeaders.optional(),
@@ -210,7 +210,7 @@ export const postApiAccountingIncome = <TComposable extends Composable = '$fetch
  *
  *
  */
-export const postApiAuthLogin = <TComposable extends Composable = '$fetch', DefaultT extends PostApiAuthLoginResponse = PostApiAuthLoginResponse>(options: Options<TComposable, PostApiAuthLoginData, PostApiAuthLoginResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiAuthLoginResponse | DefaultT, PostApiAuthLoginError, DefaultT>({
+export const postApiAuthLogin = <ThrowOnError extends boolean = false>(options: Options<PostApiAuthLoginData, ThrowOnError>) => (options.client ?? client).post<PostApiAuthLoginResponses, PostApiAuthLoginErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPostApiAuthLoginBody,
         headers: zPostApiAuthLoginHeaders.optional(),
@@ -241,7 +241,7 @@ export const postApiAuthLogin = <TComposable extends Composable = '$fetch', Defa
  *
  *
  */
-export const postApiAuthLogout = <TComposable extends Composable = '$fetch', DefaultT extends PostApiAuthLogoutResponse = PostApiAuthLogoutResponse>(options: Options<TComposable, PostApiAuthLogoutData, PostApiAuthLogoutResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiAuthLogoutResponse | DefaultT, PostApiAuthLogoutError, DefaultT>({
+export const postApiAuthLogout = <ThrowOnError extends boolean = false>(options?: Options<PostApiAuthLogoutData, ThrowOnError>) => (options?.client ?? client).post<PostApiAuthLogoutResponses, PostApiAuthLogoutErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zPostApiAuthLogoutHeaders.optional(),
@@ -268,7 +268,7 @@ export const postApiAuthLogout = <TComposable extends Composable = '$fetch', Def
  *
  *
  */
-export const getApiAuthMe = <TComposable extends Composable = '$fetch', DefaultT extends GetApiAuthMeResponse = GetApiAuthMeResponse>(options: Options<TComposable, GetApiAuthMeData, GetApiAuthMeResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiAuthMeResponse | DefaultT, GetApiAuthMeError, DefaultT>({
+export const getApiAuthMe = <ThrowOnError extends boolean = false>(options?: Options<GetApiAuthMeData, ThrowOnError>) => (options?.client ?? client).get<GetApiAuthMeResponses, GetApiAuthMeErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiAuthMeHeaders.optional(),
@@ -280,11 +280,11 @@ export const getApiAuthMe = <TComposable extends Composable = '$fetch', DefaultT
 });
 
 /**
- * func1
+ * func2
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/common.CommonModule.RegisterRoutes.ListModel[...].func2`
  *
  * #### Middlewares:
  *
@@ -295,7 +295,7 @@ export const getApiAuthMe = <TComposable extends Composable = '$fetch', DefaultT
  *
  *
  */
-export const getApiCommonCountries = <TComposable extends Composable = '$fetch', DefaultT extends GetApiCommonCountriesResponse = GetApiCommonCountriesResponse>(options: Options<TComposable, GetApiCommonCountriesData, GetApiCommonCountriesResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiCommonCountriesResponse | DefaultT, GetApiCommonCountriesError, DefaultT>({
+export const getApiCommonCountries = <ThrowOnError extends boolean = false>(options?: Options<GetApiCommonCountriesData, ThrowOnError>) => (options?.client ?? client).get<GetApiCommonCountriesResponses, GetApiCommonCountriesErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiCommonCountriesHeaders.optional(),
@@ -307,11 +307,11 @@ export const getApiCommonCountries = <TComposable extends Composable = '$fetch',
 });
 
 /**
- * func1
+ * func2
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.ListModel[...].func2`
  *
  * #### Middlewares:
  *
@@ -322,7 +322,7 @@ export const getApiCommonCountries = <TComposable extends Composable = '$fetch',
  *
  *
  */
-export const getApiGuests = <TComposable extends Composable = '$fetch', DefaultT extends GetApiGuestsResponse = GetApiGuestsResponse>(options: Options<TComposable, GetApiGuestsData, GetApiGuestsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiGuestsResponse | DefaultT, GetApiGuestsError, DefaultT>({
+export const getApiGuests = <ThrowOnError extends boolean = false>(options?: Options<GetApiGuestsData, ThrowOnError>) => (options?.client ?? client).get<GetApiGuestsResponses, GetApiGuestsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiGuestsHeaders.optional(),
@@ -334,11 +334,11 @@ export const getApiGuests = <TComposable extends Composable = '$fetch', DefaultT
 });
 
 /**
- * func1
+ * func3
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.CreateModel[...].func1`
+ * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.CreateModel[...].func3`
  *
  * #### Middlewares:
  *
@@ -349,7 +349,7 @@ export const getApiGuests = <TComposable extends Composable = '$fetch', DefaultT
  *
  *
  */
-export const postApiGuests = <TComposable extends Composable = '$fetch', DefaultT extends PostApiGuestsResponse = PostApiGuestsResponse>(options: Options<TComposable, PostApiGuestsData, PostApiGuestsResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiGuestsResponse | DefaultT, PostApiGuestsError, DefaultT>({
+export const postApiGuests = <ThrowOnError extends boolean = false>(options: Options<PostApiGuestsData, ThrowOnError>) => (options.client ?? client).post<PostApiGuestsResponses, PostApiGuestsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPostApiGuestsBody,
         headers: zPostApiGuestsHeaders.optional(),
@@ -365,11 +365,11 @@ export const postApiGuests = <TComposable extends Composable = '$fetch', Default
 });
 
 /**
- * func1
+ * get archived guests handler
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/guests.(*GuestsModule).getArchivedGuestsHandler`
  *
  * #### Middlewares:
  *
@@ -380,7 +380,34 @@ export const postApiGuests = <TComposable extends Composable = '$fetch', Default
  *
  *
  */
-export const getApiGuestsRelations = <TComposable extends Composable = '$fetch', DefaultT extends GetApiGuestsRelationsResponse = GetApiGuestsRelationsResponse>(options: Options<TComposable, GetApiGuestsRelationsData, GetApiGuestsRelationsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiGuestsRelationsResponse | DefaultT, GetApiGuestsRelationsError, DefaultT>({
+export const getApiGuestsArchived = <ThrowOnError extends boolean = false>(options?: Options<GetApiGuestsArchivedData, ThrowOnError>) => (options?.client ?? client).get<GetApiGuestsArchivedResponses, GetApiGuestsArchivedErrors, ThrowOnError>({
+    requestValidator: async (data) => await z.object({
+        body: z.never().optional(),
+        headers: zGetApiGuestsArchivedHeaders.optional(),
+        path: z.never().optional(),
+        query: zGetApiGuestsArchivedQuery.optional()
+    }).parseAsync(data),
+    url: '/api/guests/archived',
+    ...options
+});
+
+/**
+ * func7
+ *
+ * #### Controller:
+ *
+ * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.ListModel[...].func7`
+ *
+ * #### Middlewares:
+ *
+ * - `github.com/go-fuego/fuego.defaultLogger.middleware`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
+ *
+ * ---
+ *
+ *
+ */
+export const getApiGuestsRelations = <ThrowOnError extends boolean = false>(options?: Options<GetApiGuestsRelationsData, ThrowOnError>) => (options?.client ?? client).get<GetApiGuestsRelationsResponses, GetApiGuestsRelationsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiGuestsRelationsHeaders.optional(),
@@ -407,7 +434,7 @@ export const getApiGuestsRelations = <TComposable extends Composable = '$fetch',
  *
  *
  */
-export const postApiGuestsWithReservation = <TComposable extends Composable = '$fetch', DefaultT extends PostApiGuestsWithReservationResponse = PostApiGuestsWithReservationResponse>(options: Options<TComposable, PostApiGuestsWithReservationData, PostApiGuestsWithReservationResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiGuestsWithReservationResponse | DefaultT, PostApiGuestsWithReservationError, DefaultT>({
+export const postApiGuestsWithReservation = <ThrowOnError extends boolean = false>(options: Options<PostApiGuestsWithReservationData, ThrowOnError>) => (options.client ?? client).post<PostApiGuestsWithReservationResponses, PostApiGuestsWithReservationErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPostApiGuestsWithReservationBody,
         headers: zPostApiGuestsWithReservationHeaders.optional(),
@@ -423,11 +450,11 @@ export const postApiGuestsWithReservation = <TComposable extends Composable = '$
 });
 
 /**
- * func1
+ * func4
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.GetModel[...].func1`
+ * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.GetModel[...].func4`
  *
  * #### Middlewares:
  *
@@ -438,7 +465,7 @@ export const postApiGuestsWithReservation = <TComposable extends Composable = '$
  *
  *
  */
-export const getApiGuestsId = <TComposable extends Composable = '$fetch', DefaultT extends GetApiGuestsIdResponse = GetApiGuestsIdResponse>(options: Options<TComposable, GetApiGuestsIdData, GetApiGuestsIdResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiGuestsIdResponse | DefaultT, GetApiGuestsIdError, DefaultT>({
+export const getApiGuestsId = <ThrowOnError extends boolean = false>(options: Options<GetApiGuestsIdData, ThrowOnError>) => (options.client ?? client).get<GetApiGuestsIdResponses, GetApiGuestsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiGuestsIdHeaders.optional(),
@@ -450,11 +477,11 @@ export const getApiGuestsId = <TComposable extends Composable = '$fetch', Defaul
 });
 
 /**
- * func2
+ * func5
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.UpdateModel[...].func2`
+ * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.UpdateModel[...].func5`
  *
  * #### Middlewares:
  *
@@ -465,7 +492,7 @@ export const getApiGuestsId = <TComposable extends Composable = '$fetch', Defaul
  *
  *
  */
-export const putApiGuestsId = <TComposable extends Composable = '$fetch', DefaultT extends PutApiGuestsIdResponse = PutApiGuestsIdResponse>(options: Options<TComposable, PutApiGuestsIdData, PutApiGuestsIdResponse, DefaultT>) => (options.client ?? client).put<TComposable, PutApiGuestsIdResponse | DefaultT, PutApiGuestsIdError, DefaultT>({
+export const putApiGuestsId = <ThrowOnError extends boolean = false>(options: Options<PutApiGuestsIdData, ThrowOnError>) => (options.client ?? client).put<PutApiGuestsIdResponses, PutApiGuestsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPutApiGuestsIdBody,
         headers: zPutApiGuestsIdHeaders.optional(),
@@ -496,7 +523,7 @@ export const putApiGuestsId = <TComposable extends Composable = '$fetch', Defaul
  *
  *
  */
-export const getApiGuestsIdSettle = <TComposable extends Composable = '$fetch', DefaultT extends GetApiGuestsIdSettleResponse = GetApiGuestsIdSettleResponse>(options: Options<TComposable, GetApiGuestsIdSettleData, GetApiGuestsIdSettleResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiGuestsIdSettleResponse | DefaultT, GetApiGuestsIdSettleError, DefaultT>({
+export const getApiGuestsIdSettle = <ThrowOnError extends boolean = false>(options: Options<GetApiGuestsIdSettleData, ThrowOnError>) => (options.client ?? client).get<GetApiGuestsIdSettleResponses, GetApiGuestsIdSettleErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiGuestsIdSettleHeaders.optional(),
@@ -523,7 +550,7 @@ export const getApiGuestsIdSettle = <TComposable extends Composable = '$fetch', 
  *
  *
  */
-export const postApiGuestsIdSettle = <TComposable extends Composable = '$fetch', DefaultT extends PostApiGuestsIdSettleResponse = PostApiGuestsIdSettleResponse>(options: Options<TComposable, PostApiGuestsIdSettleData, PostApiGuestsIdSettleResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiGuestsIdSettleResponse | DefaultT, PostApiGuestsIdSettleError, DefaultT>({
+export const postApiGuestsIdSettle = <ThrowOnError extends boolean = false>(options: Options<PostApiGuestsIdSettleData, ThrowOnError>) => (options.client ?? client).post<PostApiGuestsIdSettleResponses, PostApiGuestsIdSettleErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPostApiGuestsIdSettleBody,
         headers: zPostApiGuestsIdSettleHeaders.optional(),
@@ -553,7 +580,7 @@ export const postApiGuestsIdSettle = <TComposable extends Composable = '$fetch',
  *
  *
  */
-export const getApiHealthz = <TComposable extends Composable = '$fetch', DefaultT extends GetApiHealthzResponse = GetApiHealthzResponse>(options: Options<TComposable, GetApiHealthzData, GetApiHealthzResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiHealthzResponse | DefaultT, GetApiHealthzError, DefaultT>({
+export const getApiHealthz = <ThrowOnError extends boolean = false>(options?: Options<GetApiHealthzData, ThrowOnError>) => (options?.client ?? client).get<GetApiHealthzResponses, GetApiHealthzErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiHealthzHeaders.optional(),
@@ -569,7 +596,7 @@ export const getApiHealthz = <TComposable extends Composable = '$fetch', Default
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/hotels.HotelsModule.RegisterRoutes.ListModel[...].func1`
  *
  * #### Middlewares:
  *
@@ -580,7 +607,7 @@ export const getApiHealthz = <TComposable extends Composable = '$fetch', Default
  *
  *
  */
-export const getApiHotels = <TComposable extends Composable = '$fetch', DefaultT extends GetApiHotelsResponse = GetApiHotelsResponse>(options: Options<TComposable, GetApiHotelsData, GetApiHotelsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiHotelsResponse | DefaultT, GetApiHotelsError, DefaultT>({
+export const getApiHotels = <ThrowOnError extends boolean = false>(options?: Options<GetApiHotelsData, ThrowOnError>) => (options?.client ?? client).get<GetApiHotelsResponses, GetApiHotelsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiHotelsHeaders.optional(),
@@ -592,11 +619,11 @@ export const getApiHotels = <TComposable extends Composable = '$fetch', DefaultT
 });
 
 /**
- * func1
+ * func2
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/hotels.HotelsModule.RegisterRoutes.CreateModel[...].func1`
+ * `hotel/internal/httpapi/hotels.HotelsModule.RegisterRoutes.CreateModel[...].func2`
  *
  * #### Middlewares:
  *
@@ -607,7 +634,7 @@ export const getApiHotels = <TComposable extends Composable = '$fetch', DefaultT
  *
  *
  */
-export const postApiHotels = <TComposable extends Composable = '$fetch', DefaultT extends PostApiHotelsResponse = PostApiHotelsResponse>(options: Options<TComposable, PostApiHotelsData, PostApiHotelsResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiHotelsResponse | DefaultT, PostApiHotelsError, DefaultT>({
+export const postApiHotels = <ThrowOnError extends boolean = false>(options: Options<PostApiHotelsData, ThrowOnError>) => (options.client ?? client).post<PostApiHotelsResponses, PostApiHotelsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPostApiHotelsBody,
         headers: zPostApiHotelsHeaders.optional(),
@@ -623,11 +650,11 @@ export const postApiHotels = <TComposable extends Composable = '$fetch', Default
 });
 
 /**
- * func3
+ * func5
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/hotels.HotelsModule.RegisterRoutes.DeleteModel.func3`
+ * `hotel/internal/httpapi/hotels.HotelsModule.RegisterRoutes.DeleteModel[...].func5`
  *
  * #### Middlewares:
  *
@@ -638,7 +665,7 @@ export const postApiHotels = <TComposable extends Composable = '$fetch', Default
  *
  *
  */
-export const deleteApiHotelsId = <TComposable extends Composable = '$fetch', DefaultT extends DeleteApiHotelsIdResponse = DeleteApiHotelsIdResponse>(options: Options<TComposable, DeleteApiHotelsIdData, DeleteApiHotelsIdResponse, DefaultT>) => (options.client ?? client).delete<TComposable, DeleteApiHotelsIdResponse | DefaultT, DeleteApiHotelsIdError, DefaultT>({
+export const deleteApiHotelsId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiHotelsIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiHotelsIdResponses, DeleteApiHotelsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zDeleteApiHotelsIdHeaders.optional(),
@@ -650,11 +677,11 @@ export const deleteApiHotelsId = <TComposable extends Composable = '$fetch', Def
 });
 
 /**
- * func1
+ * func3
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.GetModel[...].func1`
+ * `hotel/internal/httpapi/hotels.HotelsModule.RegisterRoutes.GetModel[...].func3`
  *
  * #### Middlewares:
  *
@@ -665,7 +692,7 @@ export const deleteApiHotelsId = <TComposable extends Composable = '$fetch', Def
  *
  *
  */
-export const getApiHotelsId = <TComposable extends Composable = '$fetch', DefaultT extends GetApiHotelsIdResponse = GetApiHotelsIdResponse>(options: Options<TComposable, GetApiHotelsIdData, GetApiHotelsIdResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiHotelsIdResponse | DefaultT, GetApiHotelsIdError, DefaultT>({
+export const getApiHotelsId = <ThrowOnError extends boolean = false>(options: Options<GetApiHotelsIdData, ThrowOnError>) => (options.client ?? client).get<GetApiHotelsIdResponses, GetApiHotelsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiHotelsIdHeaders.optional(),
@@ -677,11 +704,11 @@ export const getApiHotelsId = <TComposable extends Composable = '$fetch', Defaul
 });
 
 /**
- * func2
+ * func4
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/hotels.HotelsModule.RegisterRoutes.UpdateModel[...].func2`
+ * `hotel/internal/httpapi/hotels.HotelsModule.RegisterRoutes.UpdateModel[...].func4`
  *
  * #### Middlewares:
  *
@@ -692,7 +719,7 @@ export const getApiHotelsId = <TComposable extends Composable = '$fetch', Defaul
  *
  *
  */
-export const putApiHotelsId = <TComposable extends Composable = '$fetch', DefaultT extends PutApiHotelsIdResponse = PutApiHotelsIdResponse>(options: Options<TComposable, PutApiHotelsIdData, PutApiHotelsIdResponse, DefaultT>) => (options.client ?? client).put<TComposable, PutApiHotelsIdResponse | DefaultT, PutApiHotelsIdError, DefaultT>({
+export const putApiHotelsId = <ThrowOnError extends boolean = false>(options: Options<PutApiHotelsIdData, ThrowOnError>) => (options.client ?? client).put<PutApiHotelsIdResponses, PutApiHotelsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPutApiHotelsIdBody,
         headers: zPutApiHotelsIdHeaders.optional(),
@@ -712,7 +739,7 @@ export const putApiHotelsId = <TComposable extends Composable = '$fetch', Defaul
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func1`
  *
  * #### Middlewares:
  *
@@ -723,7 +750,7 @@ export const putApiHotelsId = <TComposable extends Composable = '$fetch', Defaul
  *
  *
  */
-export const getApiParkingLots = <TComposable extends Composable = '$fetch', DefaultT extends GetApiParkingLotsResponse = GetApiParkingLotsResponse>(options: Options<TComposable, GetApiParkingLotsData, GetApiParkingLotsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiParkingLotsResponse | DefaultT, GetApiParkingLotsError, DefaultT>({
+export const getApiParkingLots = <ThrowOnError extends boolean = false>(options?: Options<GetApiParkingLotsData, ThrowOnError>) => (options?.client ?? client).get<GetApiParkingLotsResponses, GetApiParkingLotsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiParkingLotsHeaders.optional(),
@@ -735,11 +762,11 @@ export const getApiParkingLots = <TComposable extends Composable = '$fetch', Def
 });
 
 /**
- * func1
+ * func2
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func1`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func2`
  *
  * #### Middlewares:
  *
@@ -750,7 +777,7 @@ export const getApiParkingLots = <TComposable extends Composable = '$fetch', Def
  *
  *
  */
-export const postApiParkingLots = <TComposable extends Composable = '$fetch', DefaultT extends PostApiParkingLotsResponse = PostApiParkingLotsResponse>(options: Options<TComposable, PostApiParkingLotsData, PostApiParkingLotsResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiParkingLotsResponse | DefaultT, PostApiParkingLotsError, DefaultT>({
+export const postApiParkingLots = <ThrowOnError extends boolean = false>(options: Options<PostApiParkingLotsData, ThrowOnError>) => (options.client ?? client).post<PostApiParkingLotsResponses, PostApiParkingLotsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPostApiParkingLotsBody,
         headers: zPostApiParkingLotsHeaders.optional(),
@@ -766,11 +793,11 @@ export const postApiParkingLots = <TComposable extends Composable = '$fetch', De
 });
 
 /**
- * func3
+ * func5
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.DeleteModel.func3`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.DeleteModel[...].func5`
  *
  * #### Middlewares:
  *
@@ -781,7 +808,7 @@ export const postApiParkingLots = <TComposable extends Composable = '$fetch', De
  *
  *
  */
-export const deleteApiParkingLotsId = <TComposable extends Composable = '$fetch', DefaultT extends DeleteApiParkingLotsIdResponse = DeleteApiParkingLotsIdResponse>(options: Options<TComposable, DeleteApiParkingLotsIdData, DeleteApiParkingLotsIdResponse, DefaultT>) => (options.client ?? client).delete<TComposable, DeleteApiParkingLotsIdResponse | DefaultT, DeleteApiParkingLotsIdError, DefaultT>({
+export const deleteApiParkingLotsId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiParkingLotsIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiParkingLotsIdResponses, DeleteApiParkingLotsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zDeleteApiParkingLotsIdHeaders.optional(),
@@ -793,11 +820,11 @@ export const deleteApiParkingLotsId = <TComposable extends Composable = '$fetch'
 });
 
 /**
- * func1
+ * func3
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.GetModel[...].func1`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.GetModel[...].func3`
  *
  * #### Middlewares:
  *
@@ -808,7 +835,7 @@ export const deleteApiParkingLotsId = <TComposable extends Composable = '$fetch'
  *
  *
  */
-export const getApiParkingLotsId = <TComposable extends Composable = '$fetch', DefaultT extends GetApiParkingLotsIdResponse = GetApiParkingLotsIdResponse>(options: Options<TComposable, GetApiParkingLotsIdData, GetApiParkingLotsIdResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiParkingLotsIdResponse | DefaultT, GetApiParkingLotsIdError, DefaultT>({
+export const getApiParkingLotsId = <ThrowOnError extends boolean = false>(options: Options<GetApiParkingLotsIdData, ThrowOnError>) => (options.client ?? client).get<GetApiParkingLotsIdResponses, GetApiParkingLotsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiParkingLotsIdHeaders.optional(),
@@ -820,11 +847,11 @@ export const getApiParkingLotsId = <TComposable extends Composable = '$fetch', D
 });
 
 /**
- * func2
+ * func4
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.UpdateModel[...].func2`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.UpdateModel[...].func4`
  *
  * #### Middlewares:
  *
@@ -835,7 +862,7 @@ export const getApiParkingLotsId = <TComposable extends Composable = '$fetch', D
  *
  *
  */
-export const putApiParkingLotsId = <TComposable extends Composable = '$fetch', DefaultT extends PutApiParkingLotsIdResponse = PutApiParkingLotsIdResponse>(options: Options<TComposable, PutApiParkingLotsIdData, PutApiParkingLotsIdResponse, DefaultT>) => (options.client ?? client).put<TComposable, PutApiParkingLotsIdResponse | DefaultT, PutApiParkingLotsIdError, DefaultT>({
+export const putApiParkingLotsId = <ThrowOnError extends boolean = false>(options: Options<PutApiParkingLotsIdData, ThrowOnError>) => (options.client ?? client).put<PutApiParkingLotsIdResponses, PutApiParkingLotsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPutApiParkingLotsIdBody,
         headers: zPutApiParkingLotsIdHeaders.optional(),
@@ -851,11 +878,11 @@ export const putApiParkingLotsId = <TComposable extends Composable = '$fetch', D
 });
 
 /**
- * func1
+ * func6
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func6`
  *
  * #### Middlewares:
  *
@@ -866,7 +893,7 @@ export const putApiParkingLotsId = <TComposable extends Composable = '$fetch', D
  *
  *
  */
-export const getApiParkingSpots = <TComposable extends Composable = '$fetch', DefaultT extends GetApiParkingSpotsResponse = GetApiParkingSpotsResponse>(options: Options<TComposable, GetApiParkingSpotsData, GetApiParkingSpotsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiParkingSpotsResponse | DefaultT, GetApiParkingSpotsError, DefaultT>({
+export const getApiParkingSpots = <ThrowOnError extends boolean = false>(options?: Options<GetApiParkingSpotsData, ThrowOnError>) => (options?.client ?? client).get<GetApiParkingSpotsResponses, GetApiParkingSpotsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiParkingSpotsHeaders.optional(),
@@ -878,11 +905,11 @@ export const getApiParkingSpots = <TComposable extends Composable = '$fetch', De
 });
 
 /**
- * func4
+ * func7
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func4`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func7`
  *
  * #### Middlewares:
  *
@@ -893,7 +920,7 @@ export const getApiParkingSpots = <TComposable extends Composable = '$fetch', De
  *
  *
  */
-export const postApiParkingSpots = <TComposable extends Composable = '$fetch', DefaultT extends PostApiParkingSpotsResponse = PostApiParkingSpotsResponse>(options: Options<TComposable, PostApiParkingSpotsData, PostApiParkingSpotsResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiParkingSpotsResponse | DefaultT, PostApiParkingSpotsError, DefaultT>({
+export const postApiParkingSpots = <ThrowOnError extends boolean = false>(options: Options<PostApiParkingSpotsData, ThrowOnError>) => (options.client ?? client).post<PostApiParkingSpotsResponses, PostApiParkingSpotsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPostApiParkingSpotsBody,
         headers: zPostApiParkingSpotsHeaders.optional(),
@@ -909,11 +936,11 @@ export const postApiParkingSpots = <TComposable extends Composable = '$fetch', D
 });
 
 /**
- * func1
+ * func12
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func12`
  *
  * #### Middlewares:
  *
@@ -924,7 +951,7 @@ export const postApiParkingSpots = <TComposable extends Composable = '$fetch', D
  *
  *
  */
-export const getApiParkingSpotsStatuses = <TComposable extends Composable = '$fetch', DefaultT extends GetApiParkingSpotsStatusesResponse = GetApiParkingSpotsStatusesResponse>(options: Options<TComposable, GetApiParkingSpotsStatusesData, GetApiParkingSpotsStatusesResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiParkingSpotsStatusesResponse | DefaultT, GetApiParkingSpotsStatusesError, DefaultT>({
+export const getApiParkingSpotsStatuses = <ThrowOnError extends boolean = false>(options?: Options<GetApiParkingSpotsStatusesData, ThrowOnError>) => (options?.client ?? client).get<GetApiParkingSpotsStatusesResponses, GetApiParkingSpotsStatusesErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiParkingSpotsStatusesHeaders.optional(),
@@ -936,11 +963,11 @@ export const getApiParkingSpotsStatuses = <TComposable extends Composable = '$fe
 });
 
 /**
- * func1
+ * func14
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func14`
  *
  * #### Middlewares:
  *
@@ -951,7 +978,7 @@ export const getApiParkingSpotsStatuses = <TComposable extends Composable = '$fe
  *
  *
  */
-export const getApiParkingSpotsTypes = <TComposable extends Composable = '$fetch', DefaultT extends GetApiParkingSpotsTypesResponse = GetApiParkingSpotsTypesResponse>(options: Options<TComposable, GetApiParkingSpotsTypesData, GetApiParkingSpotsTypesResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiParkingSpotsTypesResponse | DefaultT, GetApiParkingSpotsTypesError, DefaultT>({
+export const getApiParkingSpotsTypes = <ThrowOnError extends boolean = false>(options?: Options<GetApiParkingSpotsTypesData, ThrowOnError>) => (options?.client ?? client).get<GetApiParkingSpotsTypesResponses, GetApiParkingSpotsTypesErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiParkingSpotsTypesHeaders.optional(),
@@ -963,11 +990,11 @@ export const getApiParkingSpotsTypes = <TComposable extends Composable = '$fetch
 });
 
 /**
- * func6
+ * func10
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.DeleteModel.func6`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.DeleteModel[...].func10`
  *
  * #### Middlewares:
  *
@@ -978,7 +1005,7 @@ export const getApiParkingSpotsTypes = <TComposable extends Composable = '$fetch
  *
  *
  */
-export const deleteApiParkingSpotsId = <TComposable extends Composable = '$fetch', DefaultT extends DeleteApiParkingSpotsIdResponse = DeleteApiParkingSpotsIdResponse>(options: Options<TComposable, DeleteApiParkingSpotsIdData, DeleteApiParkingSpotsIdResponse, DefaultT>) => (options.client ?? client).delete<TComposable, DeleteApiParkingSpotsIdResponse | DefaultT, DeleteApiParkingSpotsIdError, DefaultT>({
+export const deleteApiParkingSpotsId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiParkingSpotsIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiParkingSpotsIdResponses, DeleteApiParkingSpotsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zDeleteApiParkingSpotsIdHeaders.optional(),
@@ -990,11 +1017,11 @@ export const deleteApiParkingSpotsId = <TComposable extends Composable = '$fetch
 });
 
 /**
- * func1
+ * func8
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.GetModel[...].func1`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.GetModel[...].func8`
  *
  * #### Middlewares:
  *
@@ -1005,7 +1032,7 @@ export const deleteApiParkingSpotsId = <TComposable extends Composable = '$fetch
  *
  *
  */
-export const getApiParkingSpotsId = <TComposable extends Composable = '$fetch', DefaultT extends GetApiParkingSpotsIdResponse = GetApiParkingSpotsIdResponse>(options: Options<TComposable, GetApiParkingSpotsIdData, GetApiParkingSpotsIdResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiParkingSpotsIdResponse | DefaultT, GetApiParkingSpotsIdError, DefaultT>({
+export const getApiParkingSpotsId = <ThrowOnError extends boolean = false>(options: Options<GetApiParkingSpotsIdData, ThrowOnError>) => (options.client ?? client).get<GetApiParkingSpotsIdResponses, GetApiParkingSpotsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiParkingSpotsIdHeaders.optional(),
@@ -1017,11 +1044,11 @@ export const getApiParkingSpotsId = <TComposable extends Composable = '$fetch', 
 });
 
 /**
- * func5
+ * func9
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.UpdateModel[...].func5`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.UpdateModel[...].func9`
  *
  * #### Middlewares:
  *
@@ -1032,7 +1059,7 @@ export const getApiParkingSpotsId = <TComposable extends Composable = '$fetch', 
  *
  *
  */
-export const putApiParkingSpotsId = <TComposable extends Composable = '$fetch', DefaultT extends PutApiParkingSpotsIdResponse = PutApiParkingSpotsIdResponse>(options: Options<TComposable, PutApiParkingSpotsIdData, PutApiParkingSpotsIdResponse, DefaultT>) => (options.client ?? client).put<TComposable, PutApiParkingSpotsIdResponse | DefaultT, PutApiParkingSpotsIdError, DefaultT>({
+export const putApiParkingSpotsId = <ThrowOnError extends boolean = false>(options: Options<PutApiParkingSpotsIdData, ThrowOnError>) => (options.client ?? client).put<PutApiParkingSpotsIdResponses, PutApiParkingSpotsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPutApiParkingSpotsIdBody,
         headers: zPutApiParkingSpotsIdHeaders.optional(),
@@ -1063,7 +1090,7 @@ export const putApiParkingSpotsId = <TComposable extends Composable = '$fetch', 
  *
  *
  */
-export const getApiParkingStats = <TComposable extends Composable = '$fetch', DefaultT extends GetApiParkingStatsResponse = GetApiParkingStatsResponse>(options: Options<TComposable, GetApiParkingStatsData, GetApiParkingStatsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiParkingStatsResponse | DefaultT, GetApiParkingStatsError, DefaultT>({
+export const getApiParkingStats = <ThrowOnError extends boolean = false>(options?: Options<GetApiParkingStatsData, ThrowOnError>) => (options?.client ?? client).get<GetApiParkingStatsResponses, GetApiParkingStatsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiParkingStatsHeaders.optional(),
@@ -1075,11 +1102,11 @@ export const getApiParkingStats = <TComposable extends Composable = '$fetch', De
 });
 
 /**
- * func1
+ * func20
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func20`
  *
  * #### Middlewares:
  *
@@ -1090,7 +1117,7 @@ export const getApiParkingStats = <TComposable extends Composable = '$fetch', De
  *
  *
  */
-export const getApiParkingTransactions = <TComposable extends Composable = '$fetch', DefaultT extends GetApiParkingTransactionsResponse = GetApiParkingTransactionsResponse>(options: Options<TComposable, GetApiParkingTransactionsData, GetApiParkingTransactionsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiParkingTransactionsResponse | DefaultT, GetApiParkingTransactionsError, DefaultT>({
+export const getApiParkingTransactions = <ThrowOnError extends boolean = false>(options?: Options<GetApiParkingTransactionsData, ThrowOnError>) => (options?.client ?? client).get<GetApiParkingTransactionsResponses, GetApiParkingTransactionsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiParkingTransactionsHeaders.optional(),
@@ -1102,11 +1129,11 @@ export const getApiParkingTransactions = <TComposable extends Composable = '$fet
 });
 
 /**
- * func12
+ * func21
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func12`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func21`
  *
  * #### Middlewares:
  *
@@ -1117,7 +1144,7 @@ export const getApiParkingTransactions = <TComposable extends Composable = '$fet
  *
  *
  */
-export const postApiParkingTransactions = <TComposable extends Composable = '$fetch', DefaultT extends PostApiParkingTransactionsResponse = PostApiParkingTransactionsResponse>(options: Options<TComposable, PostApiParkingTransactionsData, PostApiParkingTransactionsResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiParkingTransactionsResponse | DefaultT, PostApiParkingTransactionsError, DefaultT>({
+export const postApiParkingTransactions = <ThrowOnError extends boolean = false>(options: Options<PostApiParkingTransactionsData, ThrowOnError>) => (options.client ?? client).post<PostApiParkingTransactionsResponses, PostApiParkingTransactionsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPostApiParkingTransactionsBody,
         headers: zPostApiParkingTransactionsHeaders.optional(),
@@ -1133,11 +1160,11 @@ export const postApiParkingTransactions = <TComposable extends Composable = '$fe
 });
 
 /**
- * func1
+ * func22
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.GetModel[...].func1`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.GetModel[...].func22`
  *
  * #### Middlewares:
  *
@@ -1148,7 +1175,7 @@ export const postApiParkingTransactions = <TComposable extends Composable = '$fe
  *
  *
  */
-export const getApiParkingTransactionsId = <TComposable extends Composable = '$fetch', DefaultT extends GetApiParkingTransactionsIdResponse = GetApiParkingTransactionsIdResponse>(options: Options<TComposable, GetApiParkingTransactionsIdData, GetApiParkingTransactionsIdResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiParkingTransactionsIdResponse | DefaultT, GetApiParkingTransactionsIdError, DefaultT>({
+export const getApiParkingTransactionsId = <ThrowOnError extends boolean = false>(options: Options<GetApiParkingTransactionsIdData, ThrowOnError>) => (options.client ?? client).get<GetApiParkingTransactionsIdResponses, GetApiParkingTransactionsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiParkingTransactionsIdHeaders.optional(),
@@ -1175,7 +1202,7 @@ export const getApiParkingTransactionsId = <TComposable extends Composable = '$f
  *
  *
  */
-export const postApiParkingTransactionsIdCheckOut = <TComposable extends Composable = '$fetch', DefaultT extends PostApiParkingTransactionsIdCheckOutResponse = PostApiParkingTransactionsIdCheckOutResponse>(options: Options<TComposable, PostApiParkingTransactionsIdCheckOutData, PostApiParkingTransactionsIdCheckOutResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiParkingTransactionsIdCheckOutResponse | DefaultT, PostApiParkingTransactionsIdCheckOutError, DefaultT>({
+export const postApiParkingTransactionsIdCheckOut = <ThrowOnError extends boolean = false>(options: Options<PostApiParkingTransactionsIdCheckOutData, ThrowOnError>) => (options.client ?? client).post<PostApiParkingTransactionsIdCheckOutResponses, PostApiParkingTransactionsIdCheckOutErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zPostApiParkingTransactionsIdCheckOutHeaders.optional(),
@@ -1187,11 +1214,11 @@ export const postApiParkingTransactionsIdCheckOut = <TComposable extends Composa
 });
 
 /**
- * func1
+ * func15
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.ListModel[...].func15`
  *
  * #### Middlewares:
  *
@@ -1202,7 +1229,7 @@ export const postApiParkingTransactionsIdCheckOut = <TComposable extends Composa
  *
  *
  */
-export const getApiParkingVehicles = <TComposable extends Composable = '$fetch', DefaultT extends GetApiParkingVehiclesResponse = GetApiParkingVehiclesResponse>(options: Options<TComposable, GetApiParkingVehiclesData, GetApiParkingVehiclesResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiParkingVehiclesResponse | DefaultT, GetApiParkingVehiclesError, DefaultT>({
+export const getApiParkingVehicles = <ThrowOnError extends boolean = false>(options?: Options<GetApiParkingVehiclesData, ThrowOnError>) => (options?.client ?? client).get<GetApiParkingVehiclesResponses, GetApiParkingVehiclesErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiParkingVehiclesHeaders.optional(),
@@ -1214,11 +1241,11 @@ export const getApiParkingVehicles = <TComposable extends Composable = '$fetch',
 });
 
 /**
- * func9
+ * func16
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func9`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.CreateModel[...].func16`
  *
  * #### Middlewares:
  *
@@ -1229,7 +1256,7 @@ export const getApiParkingVehicles = <TComposable extends Composable = '$fetch',
  *
  *
  */
-export const postApiParkingVehicles = <TComposable extends Composable = '$fetch', DefaultT extends PostApiParkingVehiclesResponse = PostApiParkingVehiclesResponse>(options: Options<TComposable, PostApiParkingVehiclesData, PostApiParkingVehiclesResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiParkingVehiclesResponse | DefaultT, PostApiParkingVehiclesError, DefaultT>({
+export const postApiParkingVehicles = <ThrowOnError extends boolean = false>(options: Options<PostApiParkingVehiclesData, ThrowOnError>) => (options.client ?? client).post<PostApiParkingVehiclesResponses, PostApiParkingVehiclesErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPostApiParkingVehiclesBody,
         headers: zPostApiParkingVehiclesHeaders.optional(),
@@ -1245,11 +1272,11 @@ export const postApiParkingVehicles = <TComposable extends Composable = '$fetch'
 });
 
 /**
- * func11
+ * func19
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.DeleteModel.func11`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.DeleteModel[...].func19`
  *
  * #### Middlewares:
  *
@@ -1260,7 +1287,7 @@ export const postApiParkingVehicles = <TComposable extends Composable = '$fetch'
  *
  *
  */
-export const deleteApiParkingVehiclesId = <TComposable extends Composable = '$fetch', DefaultT extends DeleteApiParkingVehiclesIdResponse = DeleteApiParkingVehiclesIdResponse>(options: Options<TComposable, DeleteApiParkingVehiclesIdData, DeleteApiParkingVehiclesIdResponse, DefaultT>) => (options.client ?? client).delete<TComposable, DeleteApiParkingVehiclesIdResponse | DefaultT, DeleteApiParkingVehiclesIdError, DefaultT>({
+export const deleteApiParkingVehiclesId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiParkingVehiclesIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiParkingVehiclesIdResponses, DeleteApiParkingVehiclesIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zDeleteApiParkingVehiclesIdHeaders.optional(),
@@ -1272,11 +1299,11 @@ export const deleteApiParkingVehiclesId = <TComposable extends Composable = '$fe
 });
 
 /**
- * func1
+ * func17
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.GetModel[...].func1`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.GetModel[...].func17`
  *
  * #### Middlewares:
  *
@@ -1287,7 +1314,7 @@ export const deleteApiParkingVehiclesId = <TComposable extends Composable = '$fe
  *
  *
  */
-export const getApiParkingVehiclesId = <TComposable extends Composable = '$fetch', DefaultT extends GetApiParkingVehiclesIdResponse = GetApiParkingVehiclesIdResponse>(options: Options<TComposable, GetApiParkingVehiclesIdData, GetApiParkingVehiclesIdResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiParkingVehiclesIdResponse | DefaultT, GetApiParkingVehiclesIdError, DefaultT>({
+export const getApiParkingVehiclesId = <ThrowOnError extends boolean = false>(options: Options<GetApiParkingVehiclesIdData, ThrowOnError>) => (options.client ?? client).get<GetApiParkingVehiclesIdResponses, GetApiParkingVehiclesIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiParkingVehiclesIdHeaders.optional(),
@@ -1299,11 +1326,11 @@ export const getApiParkingVehiclesId = <TComposable extends Composable = '$fetch
 });
 
 /**
- * func10
+ * func18
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.UpdateModel[...].func10`
+ * `hotel/internal/httpapi/parking.ParkingModule.RegisterRoutes.UpdateModel[...].func18`
  *
  * #### Middlewares:
  *
@@ -1314,7 +1341,7 @@ export const getApiParkingVehiclesId = <TComposable extends Composable = '$fetch
  *
  *
  */
-export const putApiParkingVehiclesId = <TComposable extends Composable = '$fetch', DefaultT extends PutApiParkingVehiclesIdResponse = PutApiParkingVehiclesIdResponse>(options: Options<TComposable, PutApiParkingVehiclesIdData, PutApiParkingVehiclesIdResponse, DefaultT>) => (options.client ?? client).put<TComposable, PutApiParkingVehiclesIdResponse | DefaultT, PutApiParkingVehiclesIdError, DefaultT>({
+export const putApiParkingVehiclesId = <ThrowOnError extends boolean = false>(options: Options<PutApiParkingVehiclesIdData, ThrowOnError>) => (options.client ?? client).put<PutApiParkingVehiclesIdResponses, PutApiParkingVehiclesIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPutApiParkingVehiclesIdBody,
         headers: zPutApiParkingVehiclesIdHeaders.optional(),
@@ -1345,7 +1372,7 @@ export const putApiParkingVehiclesId = <TComposable extends Composable = '$fetch
  *
  *
  */
-export const getApiPermissions = <TComposable extends Composable = '$fetch', DefaultT extends GetApiPermissionsResponse = GetApiPermissionsResponse>(options: Options<TComposable, GetApiPermissionsData, GetApiPermissionsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiPermissionsResponse | DefaultT, GetApiPermissionsError, DefaultT>({
+export const getApiPermissions = <ThrowOnError extends boolean = false>(options?: Options<GetApiPermissionsData, ThrowOnError>) => (options?.client ?? client).get<GetApiPermissionsResponses, GetApiPermissionsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiPermissionsHeaders.optional(),
@@ -1361,7 +1388,7 @@ export const getApiPermissions = <TComposable extends Composable = '$fetch', Def
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/permissions.PermissionsModule.RegisterRoutes.ListModel[...].func1`
  *
  * #### Middlewares:
  *
@@ -1372,7 +1399,7 @@ export const getApiPermissions = <TComposable extends Composable = '$fetch', Def
  *
  *
  */
-export const getApiPermissionsTemplates = <TComposable extends Composable = '$fetch', DefaultT extends GetApiPermissionsTemplatesResponse = GetApiPermissionsTemplatesResponse>(options: Options<TComposable, GetApiPermissionsTemplatesData, GetApiPermissionsTemplatesResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiPermissionsTemplatesResponse | DefaultT, GetApiPermissionsTemplatesError, DefaultT>({
+export const getApiPermissionsTemplates = <ThrowOnError extends boolean = false>(options?: Options<GetApiPermissionsTemplatesData, ThrowOnError>) => (options?.client ?? client).get<GetApiPermissionsTemplatesResponses, GetApiPermissionsTemplatesErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiPermissionsTemplatesHeaders.optional(),
@@ -1399,7 +1426,7 @@ export const getApiPermissionsTemplates = <TComposable extends Composable = '$fe
  *
  *
  */
-export const getApiPermissionsUserUserId = <TComposable extends Composable = '$fetch', DefaultT extends GetApiPermissionsUserUserIdResponse = GetApiPermissionsUserUserIdResponse>(options: Options<TComposable, GetApiPermissionsUserUserIdData, GetApiPermissionsUserUserIdResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiPermissionsUserUserIdResponse | DefaultT, GetApiPermissionsUserUserIdError, DefaultT>({
+export const getApiPermissionsUserUserId = <ThrowOnError extends boolean = false>(options: Options<GetApiPermissionsUserUserIdData, ThrowOnError>) => (options.client ?? client).get<GetApiPermissionsUserUserIdResponses, GetApiPermissionsUserUserIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiPermissionsUserUserIdHeaders.optional(),
@@ -1426,7 +1453,7 @@ export const getApiPermissionsUserUserId = <TComposable extends Composable = '$f
  *
  *
  */
-export const postApiPermissionsUserUserIdTemplateTemplateId = <TComposable extends Composable = '$fetch', DefaultT extends PostApiPermissionsUserUserIdTemplateTemplateIdResponse = PostApiPermissionsUserUserIdTemplateTemplateIdResponse>(options: Options<TComposable, PostApiPermissionsUserUserIdTemplateTemplateIdData, PostApiPermissionsUserUserIdTemplateTemplateIdResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiPermissionsUserUserIdTemplateTemplateIdResponse | DefaultT, PostApiPermissionsUserUserIdTemplateTemplateIdError, DefaultT>({
+export const postApiPermissionsUserUserIdTemplateTemplateId = <ThrowOnError extends boolean = false>(options: Options<PostApiPermissionsUserUserIdTemplateTemplateIdData, ThrowOnError>) => (options.client ?? client).post<PostApiPermissionsUserUserIdTemplateTemplateIdResponses, PostApiPermissionsUserUserIdTemplateTemplateIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zPostApiPermissionsUserUserIdTemplateTemplateIdHeaders.optional(),
@@ -1453,7 +1480,7 @@ export const postApiPermissionsUserUserIdTemplateTemplateId = <TComposable exten
  *
  *
  */
-export const deleteApiPermissionsUserUserIdPermissionId = <TComposable extends Composable = '$fetch', DefaultT extends DeleteApiPermissionsUserUserIdPermissionIdResponse = DeleteApiPermissionsUserUserIdPermissionIdResponse>(options: Options<TComposable, DeleteApiPermissionsUserUserIdPermissionIdData, DeleteApiPermissionsUserUserIdPermissionIdResponse, DefaultT>) => (options.client ?? client).delete<TComposable, DeleteApiPermissionsUserUserIdPermissionIdResponse | DefaultT, DeleteApiPermissionsUserUserIdPermissionIdError, DefaultT>({
+export const deleteApiPermissionsUserUserIdPermissionId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiPermissionsUserUserIdPermissionIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiPermissionsUserUserIdPermissionIdResponses, DeleteApiPermissionsUserUserIdPermissionIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zDeleteApiPermissionsUserUserIdPermissionIdHeaders.optional(),
@@ -1480,7 +1507,7 @@ export const deleteApiPermissionsUserUserIdPermissionId = <TComposable extends C
  *
  *
  */
-export const postApiPermissionsUserUserIdPermissionId = <TComposable extends Composable = '$fetch', DefaultT extends PostApiPermissionsUserUserIdPermissionIdResponse = PostApiPermissionsUserUserIdPermissionIdResponse>(options: Options<TComposable, PostApiPermissionsUserUserIdPermissionIdData, PostApiPermissionsUserUserIdPermissionIdResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiPermissionsUserUserIdPermissionIdResponse | DefaultT, PostApiPermissionsUserUserIdPermissionIdError, DefaultT>({
+export const postApiPermissionsUserUserIdPermissionId = <ThrowOnError extends boolean = false>(options: Options<PostApiPermissionsUserUserIdPermissionIdData, ThrowOnError>) => (options.client ?? client).post<PostApiPermissionsUserUserIdPermissionIdResponses, PostApiPermissionsUserUserIdPermissionIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zPostApiPermissionsUserUserIdPermissionIdHeaders.optional(),
@@ -1506,7 +1533,7 @@ export const postApiPermissionsUserUserIdPermissionId = <TComposable extends Com
  *
  *
  */
-export const getApiReadyz = <TComposable extends Composable = '$fetch', DefaultT extends GetApiReadyzResponse = GetApiReadyzResponse>(options: Options<TComposable, GetApiReadyzData, GetApiReadyzResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiReadyzResponse | DefaultT, GetApiReadyzError, DefaultT>({
+export const getApiReadyz = <ThrowOnError extends boolean = false>(options?: Options<GetApiReadyzData, ThrowOnError>) => (options?.client ?? client).get<GetApiReadyzResponses, GetApiReadyzErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiReadyzHeaders.optional(),
@@ -1518,11 +1545,11 @@ export const getApiReadyz = <TComposable extends Composable = '$fetch', DefaultT
 });
 
 /**
- * func1
+ * func3
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.ListModel[...].func3`
  *
  * #### Middlewares:
  *
@@ -1533,7 +1560,7 @@ export const getApiReadyz = <TComposable extends Composable = '$fetch', DefaultT
  *
  *
  */
-export const getApiReservation = <TComposable extends Composable = '$fetch', DefaultT extends GetApiReservationResponse = GetApiReservationResponse>(options: Options<TComposable, GetApiReservationData, GetApiReservationResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiReservationResponse | DefaultT, GetApiReservationError, DefaultT>({
+export const getApiReservation = <ThrowOnError extends boolean = false>(options?: Options<GetApiReservationData, ThrowOnError>) => (options?.client ?? client).get<GetApiReservationResponses, GetApiReservationErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiReservationHeaders.optional(),
@@ -1545,11 +1572,11 @@ export const getApiReservation = <TComposable extends Composable = '$fetch', Def
 });
 
 /**
- * func1
+ * func4
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.CreateModel[...].func1`
+ * `hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.CreateModel[...].func4`
  *
  * #### Middlewares:
  *
@@ -1560,7 +1587,7 @@ export const getApiReservation = <TComposable extends Composable = '$fetch', Def
  *
  *
  */
-export const postApiReservation = <TComposable extends Composable = '$fetch', DefaultT extends PostApiReservationResponse = PostApiReservationResponse>(options: Options<TComposable, PostApiReservationData, PostApiReservationResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiReservationResponse | DefaultT, PostApiReservationError, DefaultT>({
+export const postApiReservation = <ThrowOnError extends boolean = false>(options: Options<PostApiReservationData, ThrowOnError>) => (options.client ?? client).post<PostApiReservationResponses, PostApiReservationErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPostApiReservationBody,
         headers: zPostApiReservationHeaders.optional(),
@@ -1576,11 +1603,11 @@ export const postApiReservation = <TComposable extends Composable = '$fetch', De
 });
 
 /**
- * func1
+ * func5
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.GetModel[...].func1`
+ * `hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.GetModel[...].func5`
  *
  * #### Middlewares:
  *
@@ -1591,7 +1618,7 @@ export const postApiReservation = <TComposable extends Composable = '$fetch', De
  *
  *
  */
-export const getApiReservationId = <TComposable extends Composable = '$fetch', DefaultT extends GetApiReservationIdResponse = GetApiReservationIdResponse>(options: Options<TComposable, GetApiReservationIdData, GetApiReservationIdResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiReservationIdResponse | DefaultT, GetApiReservationIdError, DefaultT>({
+export const getApiReservationId = <ThrowOnError extends boolean = false>(options: Options<GetApiReservationIdData, ThrowOnError>) => (options.client ?? client).get<GetApiReservationIdResponses, GetApiReservationIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiReservationIdHeaders.optional(),
@@ -1603,11 +1630,11 @@ export const getApiReservationId = <TComposable extends Composable = '$fetch', D
 });
 
 /**
- * func2
+ * func6
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.UpdateModel[...].func2`
+ * `hotel/internal/httpapi/reservation.ReservationModule.RegisterRoutes.UpdateModel[...].func6`
  *
  * #### Middlewares:
  *
@@ -1618,7 +1645,7 @@ export const getApiReservationId = <TComposable extends Composable = '$fetch', D
  *
  *
  */
-export const putApiReservationId = <TComposable extends Composable = '$fetch', DefaultT extends PutApiReservationIdResponse = PutApiReservationIdResponse>(options: Options<TComposable, PutApiReservationIdData, PutApiReservationIdResponse, DefaultT>) => (options.client ?? client).put<TComposable, PutApiReservationIdResponse | DefaultT, PutApiReservationIdError, DefaultT>({
+export const putApiReservationId = <ThrowOnError extends boolean = false>(options: Options<PutApiReservationIdData, ThrowOnError>) => (options.client ?? client).put<PutApiReservationIdResponses, PutApiReservationIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPutApiReservationIdBody,
         headers: zPutApiReservationIdHeaders.optional(),
@@ -1649,7 +1676,7 @@ export const putApiReservationId = <TComposable extends Composable = '$fetch', D
  *
  *
  */
-export const postApiReservationIdCheckIn = <TComposable extends Composable = '$fetch', DefaultT extends PostApiReservationIdCheckInResponse = PostApiReservationIdCheckInResponse>(options: Options<TComposable, PostApiReservationIdCheckInData, PostApiReservationIdCheckInResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiReservationIdCheckInResponse | DefaultT, PostApiReservationIdCheckInError, DefaultT>({
+export const postApiReservationIdCheckIn = <ThrowOnError extends boolean = false>(options: Options<PostApiReservationIdCheckInData, ThrowOnError>) => (options.client ?? client).post<PostApiReservationIdCheckInResponses, PostApiReservationIdCheckInErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zPostApiReservationIdCheckInHeaders.optional(),
@@ -1676,7 +1703,7 @@ export const postApiReservationIdCheckIn = <TComposable extends Composable = '$f
  *
  *
  */
-export const postApiReservationIdCheckOut = <TComposable extends Composable = '$fetch', DefaultT extends PostApiReservationIdCheckOutResponse = PostApiReservationIdCheckOutResponse>(options: Options<TComposable, PostApiReservationIdCheckOutData, PostApiReservationIdCheckOutResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiReservationIdCheckOutResponse | DefaultT, PostApiReservationIdCheckOutError, DefaultT>({
+export const postApiReservationIdCheckOut = <ThrowOnError extends boolean = false>(options: Options<PostApiReservationIdCheckOutData, ThrowOnError>) => (options.client ?? client).post<PostApiReservationIdCheckOutResponses, PostApiReservationIdCheckOutErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zPostApiReservationIdCheckOutHeaders.optional(),
@@ -1688,11 +1715,11 @@ export const postApiReservationIdCheckOut = <TComposable extends Composable = '$
 });
 
 /**
- * func1
+ * get reservation details
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/reservation.(*ReservationModule).getReservationDetails`
  *
  * #### Middlewares:
  *
@@ -1703,7 +1730,34 @@ export const postApiReservationIdCheckOut = <TComposable extends Composable = '$
  *
  *
  */
-export const getApiRestaurantBills = <TComposable extends Composable = '$fetch', DefaultT extends GetApiRestaurantBillsResponse = GetApiRestaurantBillsResponse>(options: Options<TComposable, GetApiRestaurantBillsData, GetApiRestaurantBillsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiRestaurantBillsResponse | DefaultT, GetApiRestaurantBillsError, DefaultT>({
+export const getApiReservationIdDetailed = <ThrowOnError extends boolean = false>(options: Options<GetApiReservationIdDetailedData, ThrowOnError>) => (options.client ?? client).get<GetApiReservationIdDetailedResponses, GetApiReservationIdDetailedErrors, ThrowOnError>({
+    requestValidator: async (data) => await z.object({
+        body: z.never().optional(),
+        headers: zGetApiReservationIdDetailedHeaders.optional(),
+        path: zGetApiReservationIdDetailedPath,
+        query: z.never().optional()
+    }).parseAsync(data),
+    url: '/api/reservation/{id}/detailed',
+    ...options
+});
+
+/**
+ * func12
+ *
+ * #### Controller:
+ *
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.ListModel[...].func12`
+ *
+ * #### Middlewares:
+ *
+ * - `github.com/go-fuego/fuego.defaultLogger.middleware`
+ * - `hotel/internal/httpapi.(*API).AuthMiddleware`
+ *
+ * ---
+ *
+ *
+ */
+export const getApiRestaurantBills = <ThrowOnError extends boolean = false>(options?: Options<GetApiRestaurantBillsData, ThrowOnError>) => (options?.client ?? client).get<GetApiRestaurantBillsResponses, GetApiRestaurantBillsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiRestaurantBillsHeaders.optional(),
@@ -1715,11 +1769,11 @@ export const getApiRestaurantBills = <TComposable extends Composable = '$fetch',
 });
 
 /**
- * func7
+ * func14
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.CreateModel[...].func7`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.CreateModel[...].func14`
  *
  * #### Middlewares:
  *
@@ -1730,7 +1784,7 @@ export const getApiRestaurantBills = <TComposable extends Composable = '$fetch',
  *
  *
  */
-export const postApiRestaurantBills = <TComposable extends Composable = '$fetch', DefaultT extends PostApiRestaurantBillsResponse = PostApiRestaurantBillsResponse>(options: Options<TComposable, PostApiRestaurantBillsData, PostApiRestaurantBillsResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiRestaurantBillsResponse | DefaultT, PostApiRestaurantBillsError, DefaultT>({
+export const postApiRestaurantBills = <ThrowOnError extends boolean = false>(options: Options<PostApiRestaurantBillsData, ThrowOnError>) => (options.client ?? client).post<PostApiRestaurantBillsResponses, PostApiRestaurantBillsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPostApiRestaurantBillsBody,
         headers: zPostApiRestaurantBillsHeaders.optional(),
@@ -1746,11 +1800,11 @@ export const postApiRestaurantBills = <TComposable extends Composable = '$fetch'
 });
 
 /**
- * func1
+ * func13
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.ListModel[...].func13`
  *
  * #### Middlewares:
  *
@@ -1761,7 +1815,7 @@ export const postApiRestaurantBills = <TComposable extends Composable = '$fetch'
  *
  *
  */
-export const getApiRestaurantBillsStatuses = <TComposable extends Composable = '$fetch', DefaultT extends GetApiRestaurantBillsStatusesResponse = GetApiRestaurantBillsStatusesResponse>(options: Options<TComposable, GetApiRestaurantBillsStatusesData, GetApiRestaurantBillsStatusesResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiRestaurantBillsStatusesResponse | DefaultT, GetApiRestaurantBillsStatusesError, DefaultT>({
+export const getApiRestaurantBillsStatuses = <ThrowOnError extends boolean = false>(options?: Options<GetApiRestaurantBillsStatusesData, ThrowOnError>) => (options?.client ?? client).get<GetApiRestaurantBillsStatusesResponses, GetApiRestaurantBillsStatusesErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiRestaurantBillsStatusesHeaders.optional(),
@@ -1773,11 +1827,11 @@ export const getApiRestaurantBillsStatuses = <TComposable extends Composable = '
 });
 
 /**
- * func9
+ * func17
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.DeleteModel.func9`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.DeleteModel[...].func17`
  *
  * #### Middlewares:
  *
@@ -1788,7 +1842,7 @@ export const getApiRestaurantBillsStatuses = <TComposable extends Composable = '
  *
  *
  */
-export const deleteApiRestaurantBillsId = <TComposable extends Composable = '$fetch', DefaultT extends DeleteApiRestaurantBillsIdResponse = DeleteApiRestaurantBillsIdResponse>(options: Options<TComposable, DeleteApiRestaurantBillsIdData, DeleteApiRestaurantBillsIdResponse, DefaultT>) => (options.client ?? client).delete<TComposable, DeleteApiRestaurantBillsIdResponse | DefaultT, DeleteApiRestaurantBillsIdError, DefaultT>({
+export const deleteApiRestaurantBillsId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiRestaurantBillsIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiRestaurantBillsIdResponses, DeleteApiRestaurantBillsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zDeleteApiRestaurantBillsIdHeaders.optional(),
@@ -1800,11 +1854,11 @@ export const deleteApiRestaurantBillsId = <TComposable extends Composable = '$fe
 });
 
 /**
- * func1
+ * func15
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.GetModel[...].func1`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.GetModel[...].func15`
  *
  * #### Middlewares:
  *
@@ -1815,7 +1869,7 @@ export const deleteApiRestaurantBillsId = <TComposable extends Composable = '$fe
  *
  *
  */
-export const getApiRestaurantBillsId = <TComposable extends Composable = '$fetch', DefaultT extends GetApiRestaurantBillsIdResponse = GetApiRestaurantBillsIdResponse>(options: Options<TComposable, GetApiRestaurantBillsIdData, GetApiRestaurantBillsIdResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiRestaurantBillsIdResponse | DefaultT, GetApiRestaurantBillsIdError, DefaultT>({
+export const getApiRestaurantBillsId = <ThrowOnError extends boolean = false>(options: Options<GetApiRestaurantBillsIdData, ThrowOnError>) => (options.client ?? client).get<GetApiRestaurantBillsIdResponses, GetApiRestaurantBillsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiRestaurantBillsIdHeaders.optional(),
@@ -1827,11 +1881,11 @@ export const getApiRestaurantBillsId = <TComposable extends Composable = '$fetch
 });
 
 /**
- * func8
+ * func16
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.UpdateModel[...].func8`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.UpdateModel[...].func16`
  *
  * #### Middlewares:
  *
@@ -1842,7 +1896,7 @@ export const getApiRestaurantBillsId = <TComposable extends Composable = '$fetch
  *
  *
  */
-export const putApiRestaurantBillsId = <TComposable extends Composable = '$fetch', DefaultT extends PutApiRestaurantBillsIdResponse = PutApiRestaurantBillsIdResponse>(options: Options<TComposable, PutApiRestaurantBillsIdData, PutApiRestaurantBillsIdResponse, DefaultT>) => (options.client ?? client).put<TComposable, PutApiRestaurantBillsIdResponse | DefaultT, PutApiRestaurantBillsIdError, DefaultT>({
+export const putApiRestaurantBillsId = <ThrowOnError extends boolean = false>(options: Options<PutApiRestaurantBillsIdData, ThrowOnError>) => (options.client ?? client).put<PutApiRestaurantBillsIdResponses, PutApiRestaurantBillsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPutApiRestaurantBillsIdBody,
         headers: zPutApiRestaurantBillsIdHeaders.optional(),
@@ -1873,7 +1927,7 @@ export const putApiRestaurantBillsId = <TComposable extends Composable = '$fetch
  *
  *
  */
-export const postApiRestaurantBillsIdSettle = <TComposable extends Composable = '$fetch', DefaultT extends PostApiRestaurantBillsIdSettleResponse = PostApiRestaurantBillsIdSettleResponse>(options: Options<TComposable, PostApiRestaurantBillsIdSettleData, PostApiRestaurantBillsIdSettleResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiRestaurantBillsIdSettleResponse | DefaultT, PostApiRestaurantBillsIdSettleError, DefaultT>({
+export const postApiRestaurantBillsIdSettle = <ThrowOnError extends boolean = false>(options: Options<PostApiRestaurantBillsIdSettleData, ThrowOnError>) => (options.client ?? client).post<PostApiRestaurantBillsIdSettleResponses, PostApiRestaurantBillsIdSettleErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zPostApiRestaurantBillsIdSettleHeaders.optional(),
@@ -1889,7 +1943,7 @@ export const postApiRestaurantBillsIdSettle = <TComposable extends Composable = 
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.ListModel[...].func1`
  *
  * #### Middlewares:
  *
@@ -1900,7 +1954,7 @@ export const postApiRestaurantBillsIdSettle = <TComposable extends Composable = 
  *
  *
  */
-export const getApiRestaurantInventory = <TComposable extends Composable = '$fetch', DefaultT extends GetApiRestaurantInventoryResponse = GetApiRestaurantInventoryResponse>(options: Options<TComposable, GetApiRestaurantInventoryData, GetApiRestaurantInventoryResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiRestaurantInventoryResponse | DefaultT, GetApiRestaurantInventoryError, DefaultT>({
+export const getApiRestaurantInventory = <ThrowOnError extends boolean = false>(options?: Options<GetApiRestaurantInventoryData, ThrowOnError>) => (options?.client ?? client).get<GetApiRestaurantInventoryResponses, GetApiRestaurantInventoryErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiRestaurantInventoryHeaders.optional(),
@@ -1912,11 +1966,11 @@ export const getApiRestaurantInventory = <TComposable extends Composable = '$fet
 });
 
 /**
- * func1
+ * func2
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.CreateModel[...].func1`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.CreateModel[...].func2`
  *
  * #### Middlewares:
  *
@@ -1927,7 +1981,7 @@ export const getApiRestaurantInventory = <TComposable extends Composable = '$fet
  *
  *
  */
-export const postApiRestaurantInventory = <TComposable extends Composable = '$fetch', DefaultT extends PostApiRestaurantInventoryResponse = PostApiRestaurantInventoryResponse>(options: Options<TComposable, PostApiRestaurantInventoryData, PostApiRestaurantInventoryResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiRestaurantInventoryResponse | DefaultT, PostApiRestaurantInventoryError, DefaultT>({
+export const postApiRestaurantInventory = <ThrowOnError extends boolean = false>(options: Options<PostApiRestaurantInventoryData, ThrowOnError>) => (options.client ?? client).post<PostApiRestaurantInventoryResponses, PostApiRestaurantInventoryErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPostApiRestaurantInventoryBody,
         headers: zPostApiRestaurantInventoryHeaders.optional(),
@@ -1943,11 +1997,11 @@ export const postApiRestaurantInventory = <TComposable extends Composable = '$fe
 });
 
 /**
- * func1
+ * func7
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.ListModel[...].func7`
  *
  * #### Middlewares:
  *
@@ -1958,7 +2012,7 @@ export const postApiRestaurantInventory = <TComposable extends Composable = '$fe
  *
  *
  */
-export const getApiRestaurantInventoryCategories = <TComposable extends Composable = '$fetch', DefaultT extends GetApiRestaurantInventoryCategoriesResponse = GetApiRestaurantInventoryCategoriesResponse>(options: Options<TComposable, GetApiRestaurantInventoryCategoriesData, GetApiRestaurantInventoryCategoriesResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiRestaurantInventoryCategoriesResponse | DefaultT, GetApiRestaurantInventoryCategoriesError, DefaultT>({
+export const getApiRestaurantInventoryCategories = <ThrowOnError extends boolean = false>(options?: Options<GetApiRestaurantInventoryCategoriesData, ThrowOnError>) => (options?.client ?? client).get<GetApiRestaurantInventoryCategoriesResponses, GetApiRestaurantInventoryCategoriesErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiRestaurantInventoryCategoriesHeaders.optional(),
@@ -1970,11 +2024,11 @@ export const getApiRestaurantInventoryCategories = <TComposable extends Composab
 });
 
 /**
- * func1
+ * func11
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.ListModel[...].func11`
  *
  * #### Middlewares:
  *
@@ -1985,7 +2039,7 @@ export const getApiRestaurantInventoryCategories = <TComposable extends Composab
  *
  *
  */
-export const getApiRestaurantInventoryStatuses = <TComposable extends Composable = '$fetch', DefaultT extends GetApiRestaurantInventoryStatusesResponse = GetApiRestaurantInventoryStatusesResponse>(options: Options<TComposable, GetApiRestaurantInventoryStatusesData, GetApiRestaurantInventoryStatusesResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiRestaurantInventoryStatusesResponse | DefaultT, GetApiRestaurantInventoryStatusesError, DefaultT>({
+export const getApiRestaurantInventoryStatuses = <ThrowOnError extends boolean = false>(options?: Options<GetApiRestaurantInventoryStatusesData, ThrowOnError>) => (options?.client ?? client).get<GetApiRestaurantInventoryStatusesResponses, GetApiRestaurantInventoryStatusesErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiRestaurantInventoryStatusesHeaders.optional(),
@@ -1997,11 +2051,11 @@ export const getApiRestaurantInventoryStatuses = <TComposable extends Composable
 });
 
 /**
- * func1
+ * func9
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.ListModel[...].func9`
  *
  * #### Middlewares:
  *
@@ -2012,7 +2066,7 @@ export const getApiRestaurantInventoryStatuses = <TComposable extends Composable
  *
  *
  */
-export const getApiRestaurantInventoryUnits = <TComposable extends Composable = '$fetch', DefaultT extends GetApiRestaurantInventoryUnitsResponse = GetApiRestaurantInventoryUnitsResponse>(options: Options<TComposable, GetApiRestaurantInventoryUnitsData, GetApiRestaurantInventoryUnitsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiRestaurantInventoryUnitsResponse | DefaultT, GetApiRestaurantInventoryUnitsError, DefaultT>({
+export const getApiRestaurantInventoryUnits = <ThrowOnError extends boolean = false>(options?: Options<GetApiRestaurantInventoryUnitsData, ThrowOnError>) => (options?.client ?? client).get<GetApiRestaurantInventoryUnitsResponses, GetApiRestaurantInventoryUnitsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiRestaurantInventoryUnitsHeaders.optional(),
@@ -2024,11 +2078,11 @@ export const getApiRestaurantInventoryUnits = <TComposable extends Composable = 
 });
 
 /**
- * func3
+ * func5
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.DeleteModel.func3`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.DeleteModel[...].func5`
  *
  * #### Middlewares:
  *
@@ -2039,7 +2093,7 @@ export const getApiRestaurantInventoryUnits = <TComposable extends Composable = 
  *
  *
  */
-export const deleteApiRestaurantInventoryId = <TComposable extends Composable = '$fetch', DefaultT extends DeleteApiRestaurantInventoryIdResponse = DeleteApiRestaurantInventoryIdResponse>(options: Options<TComposable, DeleteApiRestaurantInventoryIdData, DeleteApiRestaurantInventoryIdResponse, DefaultT>) => (options.client ?? client).delete<TComposable, DeleteApiRestaurantInventoryIdResponse | DefaultT, DeleteApiRestaurantInventoryIdError, DefaultT>({
+export const deleteApiRestaurantInventoryId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiRestaurantInventoryIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiRestaurantInventoryIdResponses, DeleteApiRestaurantInventoryIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zDeleteApiRestaurantInventoryIdHeaders.optional(),
@@ -2051,11 +2105,11 @@ export const deleteApiRestaurantInventoryId = <TComposable extends Composable = 
 });
 
 /**
- * func1
+ * func3
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.GetModel[...].func1`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.GetModel[...].func3`
  *
  * #### Middlewares:
  *
@@ -2066,7 +2120,7 @@ export const deleteApiRestaurantInventoryId = <TComposable extends Composable = 
  *
  *
  */
-export const getApiRestaurantInventoryId = <TComposable extends Composable = '$fetch', DefaultT extends GetApiRestaurantInventoryIdResponse = GetApiRestaurantInventoryIdResponse>(options: Options<TComposable, GetApiRestaurantInventoryIdData, GetApiRestaurantInventoryIdResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiRestaurantInventoryIdResponse | DefaultT, GetApiRestaurantInventoryIdError, DefaultT>({
+export const getApiRestaurantInventoryId = <ThrowOnError extends boolean = false>(options: Options<GetApiRestaurantInventoryIdData, ThrowOnError>) => (options.client ?? client).get<GetApiRestaurantInventoryIdResponses, GetApiRestaurantInventoryIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiRestaurantInventoryIdHeaders.optional(),
@@ -2078,11 +2132,11 @@ export const getApiRestaurantInventoryId = <TComposable extends Composable = '$f
 });
 
 /**
- * func2
+ * func4
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.UpdateModel[...].func2`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.UpdateModel[...].func4`
  *
  * #### Middlewares:
  *
@@ -2093,7 +2147,7 @@ export const getApiRestaurantInventoryId = <TComposable extends Composable = '$f
  *
  *
  */
-export const putApiRestaurantInventoryId = <TComposable extends Composable = '$fetch', DefaultT extends PutApiRestaurantInventoryIdResponse = PutApiRestaurantInventoryIdResponse>(options: Options<TComposable, PutApiRestaurantInventoryIdData, PutApiRestaurantInventoryIdResponse, DefaultT>) => (options.client ?? client).put<TComposable, PutApiRestaurantInventoryIdResponse | DefaultT, PutApiRestaurantInventoryIdError, DefaultT>({
+export const putApiRestaurantInventoryId = <ThrowOnError extends boolean = false>(options: Options<PutApiRestaurantInventoryIdData, ThrowOnError>) => (options.client ?? client).put<PutApiRestaurantInventoryIdResponses, PutApiRestaurantInventoryIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPutApiRestaurantInventoryIdBody,
         headers: zPutApiRestaurantInventoryIdHeaders.optional(),
@@ -2124,7 +2178,7 @@ export const putApiRestaurantInventoryId = <TComposable extends Composable = '$f
  *
  *
  */
-export const getApiRestaurantStats = <TComposable extends Composable = '$fetch', DefaultT extends GetApiRestaurantStatsResponse = GetApiRestaurantStatsResponse>(options: Options<TComposable, GetApiRestaurantStatsData, GetApiRestaurantStatsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiRestaurantStatsResponse | DefaultT, GetApiRestaurantStatsError, DefaultT>({
+export const getApiRestaurantStats = <ThrowOnError extends boolean = false>(options?: Options<GetApiRestaurantStatsData, ThrowOnError>) => (options?.client ?? client).get<GetApiRestaurantStatsResponses, GetApiRestaurantStatsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiRestaurantStatsHeaders.optional(),
@@ -2136,11 +2190,11 @@ export const getApiRestaurantStats = <TComposable extends Composable = '$fetch',
 });
 
 /**
- * func1
+ * func18
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.ListModel[...].func18`
  *
  * #### Middlewares:
  *
@@ -2151,7 +2205,7 @@ export const getApiRestaurantStats = <TComposable extends Composable = '$fetch',
  *
  *
  */
-export const getApiRestaurantTransactions = <TComposable extends Composable = '$fetch', DefaultT extends GetApiRestaurantTransactionsResponse = GetApiRestaurantTransactionsResponse>(options: Options<TComposable, GetApiRestaurantTransactionsData, GetApiRestaurantTransactionsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiRestaurantTransactionsResponse | DefaultT, GetApiRestaurantTransactionsError, DefaultT>({
+export const getApiRestaurantTransactions = <ThrowOnError extends boolean = false>(options?: Options<GetApiRestaurantTransactionsData, ThrowOnError>) => (options?.client ?? client).get<GetApiRestaurantTransactionsResponses, GetApiRestaurantTransactionsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiRestaurantTransactionsHeaders.optional(),
@@ -2163,11 +2217,11 @@ export const getApiRestaurantTransactions = <TComposable extends Composable = '$
 });
 
 /**
- * func10
+ * func19
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.CreateModel[...].func10`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.CreateModel[...].func19`
  *
  * #### Middlewares:
  *
@@ -2178,7 +2232,7 @@ export const getApiRestaurantTransactions = <TComposable extends Composable = '$
  *
  *
  */
-export const postApiRestaurantTransactions = <TComposable extends Composable = '$fetch', DefaultT extends PostApiRestaurantTransactionsResponse = PostApiRestaurantTransactionsResponse>(options: Options<TComposable, PostApiRestaurantTransactionsData, PostApiRestaurantTransactionsResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiRestaurantTransactionsResponse | DefaultT, PostApiRestaurantTransactionsError, DefaultT>({
+export const postApiRestaurantTransactions = <ThrowOnError extends boolean = false>(options: Options<PostApiRestaurantTransactionsData, ThrowOnError>) => (options.client ?? client).post<PostApiRestaurantTransactionsResponses, PostApiRestaurantTransactionsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPostApiRestaurantTransactionsBody,
         headers: zPostApiRestaurantTransactionsHeaders.optional(),
@@ -2194,11 +2248,11 @@ export const postApiRestaurantTransactions = <TComposable extends Composable = '
 });
 
 /**
- * func12
+ * func22
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.DeleteModel.func12`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.DeleteModel[...].func22`
  *
  * #### Middlewares:
  *
@@ -2209,7 +2263,7 @@ export const postApiRestaurantTransactions = <TComposable extends Composable = '
  *
  *
  */
-export const deleteApiRestaurantTransactionsId = <TComposable extends Composable = '$fetch', DefaultT extends DeleteApiRestaurantTransactionsIdResponse = DeleteApiRestaurantTransactionsIdResponse>(options: Options<TComposable, DeleteApiRestaurantTransactionsIdData, DeleteApiRestaurantTransactionsIdResponse, DefaultT>) => (options.client ?? client).delete<TComposable, DeleteApiRestaurantTransactionsIdResponse | DefaultT, DeleteApiRestaurantTransactionsIdError, DefaultT>({
+export const deleteApiRestaurantTransactionsId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiRestaurantTransactionsIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiRestaurantTransactionsIdResponses, DeleteApiRestaurantTransactionsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zDeleteApiRestaurantTransactionsIdHeaders.optional(),
@@ -2221,11 +2275,11 @@ export const deleteApiRestaurantTransactionsId = <TComposable extends Composable
 });
 
 /**
- * func1
+ * func20
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.GetModel[...].func1`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.GetModel[...].func20`
  *
  * #### Middlewares:
  *
@@ -2236,7 +2290,7 @@ export const deleteApiRestaurantTransactionsId = <TComposable extends Composable
  *
  *
  */
-export const getApiRestaurantTransactionsId = <TComposable extends Composable = '$fetch', DefaultT extends GetApiRestaurantTransactionsIdResponse = GetApiRestaurantTransactionsIdResponse>(options: Options<TComposable, GetApiRestaurantTransactionsIdData, GetApiRestaurantTransactionsIdResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiRestaurantTransactionsIdResponse | DefaultT, GetApiRestaurantTransactionsIdError, DefaultT>({
+export const getApiRestaurantTransactionsId = <ThrowOnError extends boolean = false>(options: Options<GetApiRestaurantTransactionsIdData, ThrowOnError>) => (options.client ?? client).get<GetApiRestaurantTransactionsIdResponses, GetApiRestaurantTransactionsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiRestaurantTransactionsIdHeaders.optional(),
@@ -2248,11 +2302,11 @@ export const getApiRestaurantTransactionsId = <TComposable extends Composable = 
 });
 
 /**
- * func11
+ * func21
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.UpdateModel[...].func11`
+ * `hotel/internal/httpapi/restaurant.RestaurantModule.RegisterRoutes.UpdateModel[...].func21`
  *
  * #### Middlewares:
  *
@@ -2263,7 +2317,7 @@ export const getApiRestaurantTransactionsId = <TComposable extends Composable = 
  *
  *
  */
-export const putApiRestaurantTransactionsId = <TComposable extends Composable = '$fetch', DefaultT extends PutApiRestaurantTransactionsIdResponse = PutApiRestaurantTransactionsIdResponse>(options: Options<TComposable, PutApiRestaurantTransactionsIdData, PutApiRestaurantTransactionsIdResponse, DefaultT>) => (options.client ?? client).put<TComposable, PutApiRestaurantTransactionsIdResponse | DefaultT, PutApiRestaurantTransactionsIdError, DefaultT>({
+export const putApiRestaurantTransactionsId = <ThrowOnError extends boolean = false>(options: Options<PutApiRestaurantTransactionsIdData, ThrowOnError>) => (options.client ?? client).put<PutApiRestaurantTransactionsIdResponses, PutApiRestaurantTransactionsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPutApiRestaurantTransactionsIdBody,
         headers: zPutApiRestaurantTransactionsIdHeaders.optional(),
@@ -2279,11 +2333,11 @@ export const putApiRestaurantTransactionsId = <TComposable extends Composable = 
 });
 
 /**
- * func1
+ * func3
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.ListModel[...].func3`
  *
  * #### Middlewares:
  *
@@ -2294,7 +2348,7 @@ export const putApiRestaurantTransactionsId = <TComposable extends Composable = 
  *
  *
  */
-export const getApiRooms = <TComposable extends Composable = '$fetch', DefaultT extends GetApiRoomsResponse = GetApiRoomsResponse>(options: Options<TComposable, GetApiRoomsData, GetApiRoomsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiRoomsResponse | DefaultT, GetApiRoomsError, DefaultT>({
+export const getApiRooms = <ThrowOnError extends boolean = false>(options?: Options<GetApiRoomsData, ThrowOnError>) => (options?.client ?? client).get<GetApiRoomsResponses, GetApiRoomsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiRoomsHeaders.optional(),
@@ -2306,11 +2360,11 @@ export const getApiRooms = <TComposable extends Composable = '$fetch', DefaultT 
 });
 
 /**
- * func3
+ * func4
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.CreateModel[...].func3`
+ * `hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.CreateModel[...].func4`
  *
  * #### Middlewares:
  *
@@ -2321,7 +2375,7 @@ export const getApiRooms = <TComposable extends Composable = '$fetch', DefaultT 
  *
  *
  */
-export const postApiRooms = <TComposable extends Composable = '$fetch', DefaultT extends PostApiRoomsResponse = PostApiRoomsResponse>(options: Options<TComposable, PostApiRoomsData, PostApiRoomsResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiRoomsResponse | DefaultT, PostApiRoomsError, DefaultT>({
+export const postApiRooms = <ThrowOnError extends boolean = false>(options: Options<PostApiRoomsData, ThrowOnError>) => (options.client ?? client).post<PostApiRoomsResponses, PostApiRoomsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPostApiRoomsBody,
         headers: zPostApiRoomsHeaders.optional(),
@@ -2337,11 +2391,11 @@ export const postApiRooms = <TComposable extends Composable = '$fetch', DefaultT
 });
 
 /**
- * func1
+ * func9
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.ListModel[...].func9`
  *
  * #### Middlewares:
  *
@@ -2352,7 +2406,7 @@ export const postApiRooms = <TComposable extends Composable = '$fetch', DefaultT
  *
  *
  */
-export const getApiRoomsAmenities = <TComposable extends Composable = '$fetch', DefaultT extends GetApiRoomsAmenitiesResponse = GetApiRoomsAmenitiesResponse>(options: Options<TComposable, GetApiRoomsAmenitiesData, GetApiRoomsAmenitiesResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiRoomsAmenitiesResponse | DefaultT, GetApiRoomsAmenitiesError, DefaultT>({
+export const getApiRoomsAmenities = <ThrowOnError extends boolean = false>(options?: Options<GetApiRoomsAmenitiesData, ThrowOnError>) => (options?.client ?? client).get<GetApiRoomsAmenitiesResponses, GetApiRoomsAmenitiesErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiRoomsAmenitiesHeaders.optional(),
@@ -2364,11 +2418,11 @@ export const getApiRoomsAmenities = <TComposable extends Composable = '$fetch', 
 });
 
 /**
- * func1
+ * func13
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.ListModel[...].func13`
  *
  * #### Middlewares:
  *
@@ -2379,7 +2433,7 @@ export const getApiRoomsAmenities = <TComposable extends Composable = '$fetch', 
  *
  *
  */
-export const getApiRoomsStatuses = <TComposable extends Composable = '$fetch', DefaultT extends GetApiRoomsStatusesResponse = GetApiRoomsStatusesResponse>(options: Options<TComposable, GetApiRoomsStatusesData, GetApiRoomsStatusesResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiRoomsStatusesResponse | DefaultT, GetApiRoomsStatusesError, DefaultT>({
+export const getApiRoomsStatuses = <ThrowOnError extends boolean = false>(options?: Options<GetApiRoomsStatusesData, ThrowOnError>) => (options?.client ?? client).get<GetApiRoomsStatusesResponses, GetApiRoomsStatusesErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiRoomsStatusesHeaders.optional(),
@@ -2391,11 +2445,11 @@ export const getApiRoomsStatuses = <TComposable extends Composable = '$fetch', D
 });
 
 /**
- * func1
+ * func11
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.ListModel[...].func1`
+ * `hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.ListModel[...].func11`
  *
  * #### Middlewares:
  *
@@ -2406,7 +2460,7 @@ export const getApiRoomsStatuses = <TComposable extends Composable = '$fetch', D
  *
  *
  */
-export const getApiRoomsTypes = <TComposable extends Composable = '$fetch', DefaultT extends GetApiRoomsTypesResponse = GetApiRoomsTypesResponse>(options: Options<TComposable, GetApiRoomsTypesData, GetApiRoomsTypesResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiRoomsTypesResponse | DefaultT, GetApiRoomsTypesError, DefaultT>({
+export const getApiRoomsTypes = <ThrowOnError extends boolean = false>(options?: Options<GetApiRoomsTypesData, ThrowOnError>) => (options?.client ?? client).get<GetApiRoomsTypesResponses, GetApiRoomsTypesErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiRoomsTypesHeaders.optional(),
@@ -2422,7 +2476,7 @@ export const getApiRoomsTypes = <TComposable extends Composable = '$fetch', Defa
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.DeleteModel.func7`
+ * `hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.DeleteModel[...].func7`
  *
  * #### Middlewares:
  *
@@ -2433,7 +2487,7 @@ export const getApiRoomsTypes = <TComposable extends Composable = '$fetch', Defa
  *
  *
  */
-export const deleteApiRoomsId = <TComposable extends Composable = '$fetch', DefaultT extends DeleteApiRoomsIdResponse = DeleteApiRoomsIdResponse>(options: Options<TComposable, DeleteApiRoomsIdData, DeleteApiRoomsIdResponse, DefaultT>) => (options.client ?? client).delete<TComposable, DeleteApiRoomsIdResponse | DefaultT, DeleteApiRoomsIdError, DefaultT>({
+export const deleteApiRoomsId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiRoomsIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiRoomsIdResponses, DeleteApiRoomsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zDeleteApiRoomsIdHeaders.optional(),
@@ -2445,11 +2499,11 @@ export const deleteApiRoomsId = <TComposable extends Composable = '$fetch', Defa
 });
 
 /**
- * func1
+ * func5
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi.GetModel[...].func1`
+ * `hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.GetModel[...].func5`
  *
  * #### Middlewares:
  *
@@ -2460,7 +2514,7 @@ export const deleteApiRoomsId = <TComposable extends Composable = '$fetch', Defa
  *
  *
  */
-export const getApiRoomsId = <TComposable extends Composable = '$fetch', DefaultT extends GetApiRoomsIdResponse = GetApiRoomsIdResponse>(options: Options<TComposable, GetApiRoomsIdData, GetApiRoomsIdResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiRoomsIdResponse | DefaultT, GetApiRoomsIdError, DefaultT>({
+export const getApiRoomsId = <ThrowOnError extends boolean = false>(options: Options<GetApiRoomsIdData, ThrowOnError>) => (options.client ?? client).get<GetApiRoomsIdResponses, GetApiRoomsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiRoomsIdHeaders.optional(),
@@ -2487,7 +2541,7 @@ export const getApiRoomsId = <TComposable extends Composable = '$fetch', Default
  *
  *
  */
-export const putApiRoomsId = <TComposable extends Composable = '$fetch', DefaultT extends PutApiRoomsIdResponse = PutApiRoomsIdResponse>(options: Options<TComposable, PutApiRoomsIdData, PutApiRoomsIdResponse, DefaultT>) => (options.client ?? client).put<TComposable, PutApiRoomsIdResponse | DefaultT, PutApiRoomsIdError, DefaultT>({
+export const putApiRoomsId = <ThrowOnError extends boolean = false>(options: Options<PutApiRoomsIdData, ThrowOnError>) => (options.client ?? client).put<PutApiRoomsIdResponses, PutApiRoomsIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPutApiRoomsIdBody,
         headers: zPutApiRoomsIdHeaders.optional(),
@@ -2518,7 +2572,7 @@ export const putApiRoomsId = <TComposable extends Composable = '$fetch', Default
  *
  *
  */
-export const getApiSanaCities = <TComposable extends Composable = '$fetch', DefaultT extends GetApiSanaCitiesResponse = GetApiSanaCitiesResponse>(options: Options<TComposable, GetApiSanaCitiesData, GetApiSanaCitiesResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiSanaCitiesResponse | DefaultT, GetApiSanaCitiesError, DefaultT>({
+export const getApiSanaCities = <ThrowOnError extends boolean = false>(options?: Options<GetApiSanaCitiesData, ThrowOnError>) => (options?.client ?? client).get<GetApiSanaCitiesResponses, GetApiSanaCitiesErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiSanaCitiesHeaders.optional(),
@@ -2545,7 +2599,7 @@ export const getApiSanaCities = <TComposable extends Composable = '$fetch', Defa
  *
  *
  */
-export const getApiSanaCountries = <TComposable extends Composable = '$fetch', DefaultT extends GetApiSanaCountriesResponse = GetApiSanaCountriesResponse>(options: Options<TComposable, GetApiSanaCountriesData, GetApiSanaCountriesResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiSanaCountriesResponse | DefaultT, GetApiSanaCountriesError, DefaultT>({
+export const getApiSanaCountries = <ThrowOnError extends boolean = false>(options?: Options<GetApiSanaCountriesData, ThrowOnError>) => (options?.client ?? client).get<GetApiSanaCountriesResponses, GetApiSanaCountriesErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiSanaCountriesHeaders.optional(),
@@ -2572,7 +2626,7 @@ export const getApiSanaCountries = <TComposable extends Composable = '$fetch', D
  *
  *
  */
-export const getApiSanaFamilyRelationships = <TComposable extends Composable = '$fetch', DefaultT extends GetApiSanaFamilyRelationshipsResponse = GetApiSanaFamilyRelationshipsResponse>(options: Options<TComposable, GetApiSanaFamilyRelationshipsData, GetApiSanaFamilyRelationshipsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiSanaFamilyRelationshipsResponse | DefaultT, GetApiSanaFamilyRelationshipsError, DefaultT>({
+export const getApiSanaFamilyRelationships = <ThrowOnError extends boolean = false>(options?: Options<GetApiSanaFamilyRelationshipsData, ThrowOnError>) => (options?.client ?? client).get<GetApiSanaFamilyRelationshipsResponses, GetApiSanaFamilyRelationshipsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiSanaFamilyRelationshipsHeaders.optional(),
@@ -2599,7 +2653,7 @@ export const getApiSanaFamilyRelationships = <TComposable extends Composable = '
  *
  *
  */
-export const getApiSanaGuests = <TComposable extends Composable = '$fetch', DefaultT extends GetApiSanaGuestsResponse = GetApiSanaGuestsResponse>(options: Options<TComposable, GetApiSanaGuestsData, GetApiSanaGuestsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiSanaGuestsResponse | DefaultT, GetApiSanaGuestsError, DefaultT>({
+export const getApiSanaGuests = <ThrowOnError extends boolean = false>(options?: Options<GetApiSanaGuestsData, ThrowOnError>) => (options?.client ?? client).get<GetApiSanaGuestsResponses, GetApiSanaGuestsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiSanaGuestsHeaders.optional(),
@@ -2626,7 +2680,7 @@ export const getApiSanaGuests = <TComposable extends Composable = '$fetch', Defa
  *
  *
  */
-export const postApiSanaGuestsIdSync = <TComposable extends Composable = '$fetch', DefaultT extends PostApiSanaGuestsIdSyncResponse = PostApiSanaGuestsIdSyncResponse>(options: Options<TComposable, PostApiSanaGuestsIdSyncData, PostApiSanaGuestsIdSyncResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiSanaGuestsIdSyncResponse | DefaultT, PostApiSanaGuestsIdSyncError, DefaultT>({
+export const postApiSanaGuestsIdSync = <ThrowOnError extends boolean = false>(options?: Options<PostApiSanaGuestsIdSyncData, ThrowOnError>) => (options?.client ?? client).post<PostApiSanaGuestsIdSyncResponses, PostApiSanaGuestsIdSyncErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zPostApiSanaGuestsIdSyncHeaders.optional(),
@@ -2653,7 +2707,7 @@ export const postApiSanaGuestsIdSync = <TComposable extends Composable = '$fetch
  *
  *
  */
-export const getApiSanaNationalities = <TComposable extends Composable = '$fetch', DefaultT extends GetApiSanaNationalitiesResponse = GetApiSanaNationalitiesResponse>(options: Options<TComposable, GetApiSanaNationalitiesData, GetApiSanaNationalitiesResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiSanaNationalitiesResponse | DefaultT, GetApiSanaNationalitiesError, DefaultT>({
+export const getApiSanaNationalities = <ThrowOnError extends boolean = false>(options?: Options<GetApiSanaNationalitiesData, ThrowOnError>) => (options?.client ?? client).get<GetApiSanaNationalitiesResponses, GetApiSanaNationalitiesErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiSanaNationalitiesHeaders.optional(),
@@ -2680,7 +2734,7 @@ export const getApiSanaNationalities = <TComposable extends Composable = '$fetch
  *
  *
  */
-export const getApiSanaOccupations = <TComposable extends Composable = '$fetch', DefaultT extends GetApiSanaOccupationsResponse = GetApiSanaOccupationsResponse>(options: Options<TComposable, GetApiSanaOccupationsData, GetApiSanaOccupationsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiSanaOccupationsResponse | DefaultT, GetApiSanaOccupationsError, DefaultT>({
+export const getApiSanaOccupations = <ThrowOnError extends boolean = false>(options?: Options<GetApiSanaOccupationsData, ThrowOnError>) => (options?.client ?? client).get<GetApiSanaOccupationsResponses, GetApiSanaOccupationsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiSanaOccupationsHeaders.optional(),
@@ -2707,7 +2761,7 @@ export const getApiSanaOccupations = <TComposable extends Composable = '$fetch',
  *
  *
  */
-export const getApiSanaRooms = <TComposable extends Composable = '$fetch', DefaultT extends GetApiSanaRoomsResponse = GetApiSanaRoomsResponse>(options: Options<TComposable, GetApiSanaRoomsData, GetApiSanaRoomsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiSanaRoomsResponse | DefaultT, GetApiSanaRoomsError, DefaultT>({
+export const getApiSanaRooms = <ThrowOnError extends boolean = false>(options?: Options<GetApiSanaRoomsData, ThrowOnError>) => (options?.client ?? client).get<GetApiSanaRoomsResponses, GetApiSanaRoomsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiSanaRoomsHeaders.optional(),
@@ -2734,7 +2788,7 @@ export const getApiSanaRooms = <TComposable extends Composable = '$fetch', Defau
  *
  *
  */
-export const postApiSanaRoomsIdSync = <TComposable extends Composable = '$fetch', DefaultT extends PostApiSanaRoomsIdSyncResponse = PostApiSanaRoomsIdSyncResponse>(options: Options<TComposable, PostApiSanaRoomsIdSyncData, PostApiSanaRoomsIdSyncResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiSanaRoomsIdSyncResponse | DefaultT, PostApiSanaRoomsIdSyncError, DefaultT>({
+export const postApiSanaRoomsIdSync = <ThrowOnError extends boolean = false>(options?: Options<PostApiSanaRoomsIdSyncData, ThrowOnError>) => (options?.client ?? client).post<PostApiSanaRoomsIdSyncResponses, PostApiSanaRoomsIdSyncErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zPostApiSanaRoomsIdSyncHeaders.optional(),
@@ -2761,7 +2815,7 @@ export const postApiSanaRoomsIdSync = <TComposable extends Composable = '$fetch'
  *
  *
  */
-export const postApiSanaSyncAll = <TComposable extends Composable = '$fetch', DefaultT extends PostApiSanaSyncAllResponse = PostApiSanaSyncAllResponse>(options: Options<TComposable, PostApiSanaSyncAllData, PostApiSanaSyncAllResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiSanaSyncAllResponse | DefaultT, PostApiSanaSyncAllError, DefaultT>({
+export const postApiSanaSyncAll = <ThrowOnError extends boolean = false>(options?: Options<PostApiSanaSyncAllData, ThrowOnError>) => (options?.client ?? client).post<PostApiSanaSyncAllResponses, PostApiSanaSyncAllErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zPostApiSanaSyncAllHeaders.optional(),
@@ -2788,7 +2842,7 @@ export const postApiSanaSyncAll = <TComposable extends Composable = '$fetch', De
  *
  *
  */
-export const getApiSanaTravelReasons = <TComposable extends Composable = '$fetch', DefaultT extends GetApiSanaTravelReasonsResponse = GetApiSanaTravelReasonsResponse>(options: Options<TComposable, GetApiSanaTravelReasonsData, GetApiSanaTravelReasonsResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiSanaTravelReasonsResponse | DefaultT, GetApiSanaTravelReasonsError, DefaultT>({
+export const getApiSanaTravelReasons = <ThrowOnError extends boolean = false>(options?: Options<GetApiSanaTravelReasonsData, ThrowOnError>) => (options?.client ?? client).get<GetApiSanaTravelReasonsResponses, GetApiSanaTravelReasonsErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiSanaTravelReasonsHeaders.optional(),
@@ -2815,7 +2869,7 @@ export const getApiSanaTravelReasons = <TComposable extends Composable = '$fetch
  *
  *
  */
-export const getApiUsers = <TComposable extends Composable = '$fetch', DefaultT extends GetApiUsersResponse = GetApiUsersResponse>(options: Options<TComposable, GetApiUsersData, GetApiUsersResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiUsersResponse | DefaultT, GetApiUsersError, DefaultT>({
+export const getApiUsers = <ThrowOnError extends boolean = false>(options?: Options<GetApiUsersData, ThrowOnError>) => (options?.client ?? client).get<GetApiUsersResponses, GetApiUsersErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiUsersHeaders.optional(),
@@ -2842,7 +2896,7 @@ export const getApiUsers = <TComposable extends Composable = '$fetch', DefaultT 
  *
  *
  */
-export const postApiUsers = <TComposable extends Composable = '$fetch', DefaultT extends PostApiUsersResponse = PostApiUsersResponse>(options: Options<TComposable, PostApiUsersData, PostApiUsersResponse, DefaultT>) => (options.client ?? client).post<TComposable, PostApiUsersResponse | DefaultT, PostApiUsersError, DefaultT>({
+export const postApiUsers = <ThrowOnError extends boolean = false>(options: Options<PostApiUsersData, ThrowOnError>) => (options.client ?? client).post<PostApiUsersResponses, PostApiUsersErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPostApiUsersBody,
         headers: zPostApiUsersHeaders.optional(),
@@ -2873,7 +2927,7 @@ export const postApiUsers = <TComposable extends Composable = '$fetch', DefaultT
  *
  *
  */
-export const getApiUsersId = <TComposable extends Composable = '$fetch', DefaultT extends GetApiUsersIdResponse = GetApiUsersIdResponse>(options: Options<TComposable, GetApiUsersIdData, GetApiUsersIdResponse, DefaultT>) => (options.client ?? client).get<TComposable, GetApiUsersIdResponse | DefaultT, GetApiUsersIdError, DefaultT>({
+export const getApiUsersId = <ThrowOnError extends boolean = false>(options: Options<GetApiUsersIdData, ThrowOnError>) => (options.client ?? client).get<GetApiUsersIdResponses, GetApiUsersIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: z.never().optional(),
         headers: zGetApiUsersIdHeaders.optional(),
@@ -2900,7 +2954,7 @@ export const getApiUsersId = <TComposable extends Composable = '$fetch', Default
  *
  *
  */
-export const putApiUsersId = <TComposable extends Composable = '$fetch', DefaultT extends PutApiUsersIdResponse = PutApiUsersIdResponse>(options: Options<TComposable, PutApiUsersIdData, PutApiUsersIdResponse, DefaultT>) => (options.client ?? client).put<TComposable, PutApiUsersIdResponse | DefaultT, PutApiUsersIdError, DefaultT>({
+export const putApiUsersId = <ThrowOnError extends boolean = false>(options: Options<PutApiUsersIdData, ThrowOnError>) => (options.client ?? client).put<PutApiUsersIdResponses, PutApiUsersIdErrors, ThrowOnError>({
     requestValidator: async (data) => await z.object({
         body: zPutApiUsersIdBody,
         headers: zPutApiUsersIdHeaders.optional(),

@@ -2,6 +2,7 @@
 import type { FormSubmitEvent } from "@nuxt/ui";
 import { companionSchema, type Companion } from "../utils";
 import { getApiGuestsRelations } from "~/utils/client";
+import { useCountriesQuery } from "../queries";
 
 const props = defineProps<{
   loading: boolean;
@@ -19,10 +20,7 @@ const emit = defineEmits<{
   submit: [FormSubmitEvent<Companion>];
 }>();
 
-const { data: countries } = useAsyncData("countries", async () => {
-  const res = await getApiCommonCountries({ query: { limit: -1 } });
-  return res.data;
-});
+const { data: countries } = useCountriesQuery();
 </script>
 <template>
   <UModal :title="t('guests.addCompanion')" v-model:open="open">

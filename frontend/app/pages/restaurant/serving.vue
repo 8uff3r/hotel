@@ -361,9 +361,9 @@ const {
     const response = await $fetch<PaginatedResponseModelsRestaurantBill>("/api/restaurant/bills", {
       query: params,
     });
-    pagination.total = response.total ?? 0;
-    pagination.totalPages = response.totalPages ?? 0;
-    return response.data;
+    pagination.total = response.data?.data?.total ?? 0;
+    pagination.totalPages = response.data?.data?.totalPages ?? 0;
+    return response.data?.data;
   },
   { watch: [() => pagination.page], immediate: true }
 );
@@ -371,7 +371,7 @@ const {
 const bills = computed(() => billsData.value ?? []);
 
 const { data: guestsData } = useAsyncData("guests-select", () => getApiGuests({}), {
-  transform: (response) => response.data,
+  transform: (response) => response.data?.data,
 });
 
 const guestOptions = computed(() =>
@@ -382,7 +382,7 @@ const guestOptions = computed(() =>
 );
 
 const { data: roomsData } = useAsyncData("rooms-select", () => getApiRooms({}), {
-  transform: (response) => response.data,
+  transform: (response) => response.data?.data,
 });
 
 const roomOptions = computed(() =>
@@ -396,7 +396,7 @@ const { data: inventoryData } = useAsyncData(
   "inventory-select",
   () => getApiRestaurantInventory({}),
   {
-    transform: (response) => response.data,
+    transform: (response) => response.data?.data,
   }
 );
 
@@ -531,7 +531,7 @@ const fetchTransactions = async () => {
       query: { billId: selectedBill.value.id },
     }
   );
-  transactions.value = response.data ?? [];
+  transactions.value = response.data?.data ?? [];
 };
 
 const deleteTransaction = async (transaction: MealTransaction) => {

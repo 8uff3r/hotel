@@ -49,6 +49,7 @@ func Seed(db *gorm.DB, cfg config.Config) {
 	seedSanaReferenceData(db, cfg)
 	seedRestaurantReferenceData(db)
 	seedAllReferenceData(db)
+	seedReservationStatuses(db)
 }
 
 type Seedable interface {
@@ -176,4 +177,19 @@ func seedCountries(db *gorm.DB) {
 	}
 
 	seed(db, countries)
+}
+
+func seedReservationStatuses(db *gorm.DB) {
+	t := Translations["reservation-stratus"]
+
+	statuses := []models.ReservationStatus{
+		{TranslateBase: models.TranslateBase{Slug: "pending", Translation: t["pending"]}, ColorHex: "FFA500"},         // Amber
+		{TranslateBase: models.TranslateBase{Slug: "confirmed", Translation: t["confirmed"]}, ColorHex: "2E8B57"},     // Forest Green
+		{TranslateBase: models.TranslateBase{Slug: "checked_in", Translation: t["checked_in"]}, ColorHex: "1E90FF"},   // Dodger Blue
+		{TranslateBase: models.TranslateBase{Slug: "checked_out", Translation: t["checked_out"]}, ColorHex: "708090"}, // Slate Gray
+		{TranslateBase: models.TranslateBase{Slug: "cancelled", Translation: t["cancelled"]}, ColorHex: "DC143C"},     // Crimson
+		{TranslateBase: models.TranslateBase{Slug: "no_show", Translation: t["no_show"]}, ColorHex: "8B0000"},         // Dark Red
+	}
+
+	seed(db, statuses)
 }

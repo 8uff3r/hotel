@@ -213,7 +213,7 @@ const fetchSpots = async () => {
     if (filters.status && filters.status !== "all") params.append("status", filters.status);
 
     const response = await $fetch(`/api/parking/spots?${params.toString()}`);
-    spots.value = response.data;
+    spots.value = response.data?.data;
     pagination.total = response.pagination.total ?? 0;
     pagination.totalPages = response.pagination.totalPages ?? 0;
   } catch (error) {

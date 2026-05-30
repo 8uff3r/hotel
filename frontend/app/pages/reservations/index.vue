@@ -271,7 +271,7 @@ const fetchReservations = async () => {
     const response = await $fetch(`/api/reservations`, {
       query: params,
     });
-    reservations.value = response.data as any;
+    reservations.value = response.data?.data as any;
     pagination.total = response.pagination.total;
     pagination.totalPages = response.pagination.totalPages;
   } catch (error) {

@@ -126,8 +126,8 @@ const lots = ref<any[]>([]);
 const recentTransactions = ref<any[]>([]);
 
 const { data: stats } = useAsyncData(async () => {
-  const res = await $api<ParkingStats>("/api/parking/stats");
-  return res;
+  const res = await getApiParkingStats({});
+  return res.data;
 });
 
 const formatDate = (date: string) => {

@@ -151,13 +151,13 @@ const fetchData = async () => {
       getApiPermissionsUserUserId({ path: { userId: String(userId.value) } }),
     ]);
 
-    const user = userResp;
-    form.value.email = user.email ?? "";
-    form.value.firstName = user.firstName ?? "";
-    form.value.lastName = user.lastName ?? "";
+    const user = userResp.data;
+    form.value.email = user?.email ?? "";
+    form.value.firstName = user?.firstName ?? "";
+    form.value.lastName = user?.lastName ?? "";
 
-    allPermissions.value = allPermsResp.data ?? [];
-    userPermissions.value = userPermsResp.permissions ?? [];
+    allPermissions.value = allPermsResp.data?.data ?? [];
+    userPermissions.value = userPermsResp.data?.permissions ?? [];
 
     for (const up of userPermissions.value) {
       if (up.permissionId && up.granted) {

@@ -228,5 +228,13 @@
     "truck": { "fa": "کامیون", "en": "Truck" },
     "van": { "fa": "ون", "en": "Van" },
     "other": { "fa": "سایر", "en": "Other" }
+  },
+  "reservation-stratus": {
+    "pending": { "fa": "در انتظار", "en": "Pending" },
+    "confirmed": { "fa": "تأیید شده", "en": "Confirmed" },
+    "checked_in": { "fa": "ورود انجام شد", "en": "Checked In" },
+    "checked_out": { "fa": "خروج انجام شد", "en": "Checked Out" },
+    "cancelled": { "fa": "لغو شده", "en": "Cancelled" },
+    "no_show": { "fa": "عدم حضور", "en": "No Show" }
   }
 }

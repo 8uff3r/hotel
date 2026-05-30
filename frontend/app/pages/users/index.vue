@@ -146,7 +146,7 @@ const fetchUsers = async () => {
   loading.value = true;
   try {
     const response = await getApiUsers({});
-    sourceUsers.value = response.data ?? [];
+    sourceUsers.value = response.data?.data ?? [];
     applyFilters();
   } catch (error) {
     console.error("Failed to fetch users:", error);

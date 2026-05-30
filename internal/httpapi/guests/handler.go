@@ -62,10 +62,18 @@ type PaymentRequest struct {
 	ContractType string `json:"contractType"`
 }
 
-func (m GuestsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
-	gm := GuestsModule{api}
+func (gm GuestsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
+	gm = GuestsModule{api}
 
-	fuego.Get(s, "/", h.ListModel[models.Guest](api.Db))
+	fuego.Get(
+		s,
+		"/",
+		h.ListModel[models.Guest](
+			api.Db,
+			h.WithAllowedFilters("first_name", "last_name", "phone", "national_id", "id_number"),
+		),
+	)
+
 	fuego.Get(s, "/archived", gm.getArchivedGuestsHandler)
 	fuego.Post(s, "/", h.CreateModel[models.Guest](api.Db))
 	fuego.Post(s, "/with-reservation", gm.createGuestWithReservation)
@@ -95,13 +103,13 @@ type GuestSettlementResponse struct {
 }
 
 type ReservationSettlement struct {
-	ID              uint    `json:"id"`
-	ReservationCode string  `json:"reservationCode"`
-	CheckInDate     string  `json:"checkInDate"`
-	CheckOutDate    string  `json:"checkOutDate"`
-	CheckedOut      bool    `json:"checkedOut"`
-	RoomPrice       float64 `json:"roomPrice"`
-	PaidAmount      float64 `json:"paidAmount"`
+	ID              uint                     `json:"id"`
+	ReservationCode string                   `json:"reservationCode"`
+	CheckInDate     string                   `json:"checkInDate"`
+	CheckOutDate    string                   `json:"checkOutDate"`
+	Status          models.ReservationStatus `json:"checkedOut"`
+	RoomPrice       float64                  `json:"roomPrice"`
+	PaidAmount      float64                  `json:"paidAmount"`
 }
 
 type ParkingSettlement struct {
@@ -319,7 +327,7 @@ func (gm *GuestsModule) getGuestSettlement(id uint) (GuestSettlementResponse, er
 			ReservationCode: r.ReservationCode,
 			CheckInDate:     r.EntryDate.Format(time.RFC3339),
 			CheckOutDate:    r.DepartureDate.Format(time.RFC3339),
-			CheckedOut:      r.CheckedOut,
+			Status:          r.Status,
 			RoomPrice:       r.RoomPrice,
 			PaidAmount:      paid,
 		}
@@ -375,13 +383,17 @@ func (gm *GuestsModule) getArchivedGuestsHandler(c fuego.ContextWithParams[h.Par
 	var zeroResponse h.PaginatedResponse[models.Guest]
 
 	q := gm.Db.Joins("JOIN reservations ON reservations.guest_id = guests.id").
+		Joins("JOIN reservation_statuses ON reservation_statuses.id = reservations.status_id").
 		Group("guests.id").
-		Having("COUNT(*) = COUNT(CASE WHEN reservations.checked_out = true THEN 1 END)")
+		Having("COUNT(*) = COUNT(CASE WHEN reservation_statuses.slug = ? THEN 1 END)", "checked_out")
 
 	var total int64
 	if err := q.Count(&total).Error; err != nil {
 		return zeroResponse, err
 	}
+
+	f := h.WithAllowedFilters("first_name", "last_name", "phone", "national_id", "id_number")
+	f(c, q)
 
 	return h.Paginate[models.Guest](c, q)
 }
