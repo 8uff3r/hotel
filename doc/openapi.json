@@ -323,6 +323,12 @@
 										"label": {
 											"type": "string"
 										},
+										"sanaId": {
+											"type": "string"
+										},
+										"sanaName": {
+											"type": "string"
+										},
 										"slug": {
 											"type": "string"
 										}
@@ -841,6 +847,12 @@
 													"type": "integer"
 												},
 												"label": {
+													"type": "string"
+												},
+												"sanaId": {
+													"type": "string"
+												},
+												"sanaName": {
 													"type": "string"
 												},
 												"slug": {
@@ -1378,6 +1390,12 @@
 													"type": "integer"
 												},
 												"label": {
+													"type": "string"
+												},
+												"sanaId": {
+													"type": "string"
+												},
+												"sanaName": {
 													"type": "string"
 												},
 												"slug": {
@@ -3077,6 +3095,49 @@
 				},
 				"type": "object"
 			},
+			"PaginatedResponse_models.FamilyRelationship": {
+				"description": "PaginatedResponse_models.FamilyRelationship schema",
+				"properties": {
+					"data": {
+						"items": {
+							"properties": {
+								"id": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"label": {
+									"type": "string"
+								},
+								"sanaId": {
+									"type": "string"
+								},
+								"sanaName": {
+									"type": "string"
+								},
+								"slug": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"limit": {
+						"type": "integer"
+					},
+					"page": {
+						"type": "integer"
+					},
+					"total": {
+						"format": "int64",
+						"type": "integer"
+					},
+					"totalPages": {
+						"type": "integer"
+					}
+				},
+				"type": "object"
+			},
 			"PaginatedResponse_models.Guest": {
 				"description": "PaginatedResponse_models.Guest schema",
 				"properties": {
@@ -3149,6 +3210,12 @@
 														"type": "integer"
 													},
 													"label": {
+														"type": "string"
+													},
+													"sanaId": {
+														"type": "string"
+													},
+													"sanaName": {
 														"type": "string"
 													},
 													"slug": {
@@ -3442,43 +3509,6 @@
 								"lastName",
 								"nationalityID"
 							],
-							"type": "object"
-						},
-						"type": "array"
-					},
-					"limit": {
-						"type": "integer"
-					},
-					"page": {
-						"type": "integer"
-					},
-					"total": {
-						"format": "int64",
-						"type": "integer"
-					},
-					"totalPages": {
-						"type": "integer"
-					}
-				},
-				"type": "object"
-			},
-			"PaginatedResponse_models.GuestCompanionRelation": {
-				"description": "PaginatedResponse_models.GuestCompanionRelation schema",
-				"properties": {
-					"data": {
-						"items": {
-							"properties": {
-								"id": {
-									"minimum": 0,
-									"type": "integer"
-								},
-								"label": {
-									"type": "string"
-								},
-								"slug": {
-									"type": "string"
-								}
-							},
 							"type": "object"
 						},
 						"type": "array"
@@ -4814,6 +4844,12 @@
 															"label": {
 																"type": "string"
 															},
+															"sanaId": {
+																"type": "string"
+															},
+															"sanaName": {
+																"type": "string"
+															},
 															"slug": {
 																"type": "string"
 															}
@@ -6002,6 +6038,12 @@
 															"label": {
 																"type": "string"
 															},
+															"sanaId": {
+																"type": "string"
+															},
+															"sanaName": {
+																"type": "string"
+															},
 															"slug": {
 																"type": "string"
 															}
@@ -7085,6 +7127,12 @@
 															"label": {
 																"type": "string"
 															},
+															"sanaId": {
+																"type": "string"
+															},
+															"sanaName": {
+																"type": "string"
+															},
 															"slug": {
 																"type": "string"
 															}
@@ -7763,6 +7811,12 @@
 													"type": "integer"
 												},
 												"label": {
+													"type": "string"
+												},
+												"sanaId": {
+													"type": "string"
+												},
+												"sanaName": {
 													"type": "string"
 												},
 												"slug": {
@@ -8832,6 +8886,12 @@
 													"type": "integer"
 												},
 												"label": {
+													"type": "string"
+												},
+												"sanaId": {
+													"type": "string"
+												},
+												"sanaName": {
 													"type": "string"
 												},
 												"slug": {
@@ -9918,6 +9978,12 @@
 													"type": "integer"
 												},
 												"label": {
+													"type": "string"
+												},
+												"sanaId": {
+													"type": "string"
+												},
+												"sanaName": {
 													"type": "string"
 												},
 												"slug": {
@@ -11475,12 +11541,12 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/PaginatedResponse_models.GuestCompanionRelation"
+									"$ref": "#/components/schemas/PaginatedResponse_models.FamilyRelationship"
 								}
 							},
 							"application/xml": {
 								"schema": {
-									"$ref": "#/components/schemas/PaginatedResponse_models.GuestCompanionRelation"
+									"$ref": "#/components/schemas/PaginatedResponse_models.FamilyRelationship"
 								}
 							}
 						},

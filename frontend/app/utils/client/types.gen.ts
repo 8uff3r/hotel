@@ -121,6 +121,8 @@ export type Guest = {
         relation?: {
             id?: number;
             label?: string;
+            sanaId?: string;
+            sanaName?: string;
             slug?: string;
         };
         relationId?: number;
@@ -279,6 +281,8 @@ export type GuestWithReservationRequest = {
             relation?: {
                 id?: number;
                 label?: string;
+                sanaId?: string;
+                sanaName?: string;
                 slug?: string;
             };
             relationId?: number;
@@ -440,6 +444,8 @@ export type GuestWithReservationResponse = {
             relation?: {
                 id?: number;
                 label?: string;
+                sanaId?: string;
+                sanaName?: string;
                 slug?: string;
             };
             relationId?: number;
@@ -1013,6 +1019,23 @@ export type PaginatedResponseModelsExpense = {
 };
 
 /**
+ * PaginatedResponse_models.FamilyRelationship schema
+ */
+export type PaginatedResponseModelsFamilyRelationship = {
+    data?: Array<{
+        id?: number;
+        label?: string;
+        sanaId?: string;
+        sanaName?: string;
+        slug?: string;
+    }>;
+    limit?: number;
+    page?: number;
+    total?: number;
+    totalPages?: number;
+};
+
+/**
  * PaginatedResponse_models.Guest schema
  */
 export type PaginatedResponseModelsGuest = {
@@ -1038,6 +1061,8 @@ export type PaginatedResponseModelsGuest = {
             relation?: {
                 id?: number;
                 label?: string;
+                sanaId?: string;
+                sanaName?: string;
                 slug?: string;
             };
             relationId?: number;
@@ -1120,21 +1145,6 @@ export type PaginatedResponseModelsGuest = {
             userCheckIn?: string;
             userCheckOut?: string;
         }>;
-    }>;
-    limit?: number;
-    page?: number;
-    total?: number;
-    totalPages?: number;
-};
-
-/**
- * PaginatedResponse_models.GuestCompanionRelation schema
- */
-export type PaginatedResponseModelsGuestCompanionRelation = {
-    data?: Array<{
-        id?: number;
-        label?: string;
-        slug?: string;
     }>;
     limit?: number;
     page?: number;
@@ -1584,6 +1594,8 @@ export type PaginatedResponseModelsParkingTransaction = {
                 relation?: {
                     id?: number;
                     label?: string;
+                    sanaId?: string;
+                    sanaName?: string;
                     slug?: string;
                 };
                 relationId?: number;
@@ -1946,6 +1958,8 @@ export type PaginatedResponseModelsRestaurantBill = {
                 relation?: {
                     id?: number;
                     label?: string;
+                    sanaId?: string;
+                    sanaName?: string;
                     slug?: string;
                 };
                 relationId?: number;
@@ -2283,6 +2297,8 @@ export type PaginatedResponseModelsVehicle = {
                 relation?: {
                     id?: number;
                     label?: string;
+                    sanaId?: string;
+                    sanaName?: string;
                     slug?: string;
                 };
                 relationId?: number;
@@ -2500,6 +2516,8 @@ export type ParkingTransaction = {
             relation?: {
                 id?: number;
                 label?: string;
+                sanaId?: string;
+                sanaName?: string;
                 slug?: string;
             };
             relationId?: number;
@@ -2823,6 +2841,8 @@ export type RestaurantBill = {
             relation?: {
                 id?: number;
                 label?: string;
+                sanaId?: string;
+                sanaName?: string;
                 slug?: string;
             };
             relationId?: number;
@@ -3173,6 +3193,8 @@ export type Vehicle = {
             relation?: {
                 id?: number;
                 label?: string;
+                sanaId?: string;
+                sanaName?: string;
                 slug?: string;
             };
             relationId?: number;
@@ -3844,7 +3866,7 @@ export type GetApiGuestsRelationsResponses = {
     /**
      * OK
      */
-    200: PaginatedResponseModelsGuestCompanionRelation;
+    200: PaginatedResponseModelsFamilyRelationship;
 };
 
 export type GetApiGuestsRelationsResponse = GetApiGuestsRelationsResponses[keyof GetApiGuestsRelationsResponses];

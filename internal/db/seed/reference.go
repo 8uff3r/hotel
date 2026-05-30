@@ -3,6 +3,7 @@ package seed
 import (
 	"hotel/internal/models"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -16,20 +17,21 @@ func seedAllReferenceData(db *gorm.DB) {
 	seedVehicleTypes(db)
 }
 
+// TODO: this must be removed and the seed function in ./sana.go must be used.
 func seedGuestCompanionRelations(db *gorm.DB) {
 	t := Translations["guest-companion-relations"]
-	relations := []models.GuestCompanionRelation{
-		{TranslateBase: models.TranslateBase{Slug: "spouse", Translation: t["spouse"]}},
-		{TranslateBase: models.TranslateBase{Slug: "child", Translation: t["child"]}},
-		{TranslateBase: models.TranslateBase{Slug: "parent", Translation: t["parent"]}},
-		{TranslateBase: models.TranslateBase{Slug: "sibling", Translation: t["sibling"]}},
-		{TranslateBase: models.TranslateBase{Slug: "relative", Translation: t["relative"]}},
-		{TranslateBase: models.TranslateBase{Slug: "friend", Translation: t["friend"]}},
-		{TranslateBase: models.TranslateBase{Slug: "colleague", Translation: t["colleague"]}},
-		{TranslateBase: models.TranslateBase{Slug: "other", Translation: t["other"]}},
+	relations := []models.FamilyRelationship{
+		{TranslateBase: models.TranslateBase{Slug: "spouse", Translation: t["spouse"]}, SanaID: uuid.NewString()},
+		{TranslateBase: models.TranslateBase{Slug: "child", Translation: t["child"]}, SanaID: uuid.NewString()},
+		{TranslateBase: models.TranslateBase{Slug: "parent", Translation: t["parent"]}, SanaID: uuid.NewString()},
+		{TranslateBase: models.TranslateBase{Slug: "sibling", Translation: t["sibling"]}, SanaID: uuid.NewString()},
+		{TranslateBase: models.TranslateBase{Slug: "relative", Translation: t["relative"]}, SanaID: uuid.NewString()},
+		{TranslateBase: models.TranslateBase{Slug: "friend", Translation: t["friend"]}, SanaID: uuid.NewString()},
+		{TranslateBase: models.TranslateBase{Slug: "colleague", Translation: t["colleague"]}, SanaID: uuid.NewString()},
+		{TranslateBase: models.TranslateBase{Slug: "other", Translation: t["other"]}, SanaID: uuid.NewString()},
 	}
 
-	seed(db, relations)
+	_ = seed(db, relations)
 }
 
 func seedParkingLotStatuses(db *gorm.DB) {
@@ -41,7 +43,7 @@ func seedParkingLotStatuses(db *gorm.DB) {
 		{TranslateBase: models.TranslateBase{Slug: "closed", Translation: t["closed"]}},
 	}
 
-	seed(db, statuses)
+	_ = seed(db, statuses)
 }
 
 func seedExpenseCategories(db *gorm.DB) {
@@ -57,7 +59,7 @@ func seedExpenseCategories(db *gorm.DB) {
 		{TranslateBase: models.TranslateBase{Slug: "other", Translation: t["other"]}},
 	}
 
-	seed(db, categories)
+	_ = seed(db, categories)
 }
 
 func seedIncomeCategories(db *gorm.DB) {
@@ -70,7 +72,7 @@ func seedIncomeCategories(db *gorm.DB) {
 		{TranslateBase: models.TranslateBase{Slug: "other", Translation: t["other"]}},
 	}
 
-	seed(db, categories)
+	_ = seed(db, categories)
 }
 
 func seedPaymentStatuses(db *gorm.DB) {
@@ -83,7 +85,7 @@ func seedPaymentStatuses(db *gorm.DB) {
 		{TranslateBase: models.TranslateBase{Slug: "refunded", Translation: t["refunded"]}, ColorHex: "9B59B6"},
 	}
 
-	seed(db, statuses)
+	_ = seed(db, statuses)
 }
 
 func seedPaymentMethods(db *gorm.DB) {
@@ -99,7 +101,7 @@ func seedPaymentMethods(db *gorm.DB) {
 		{TranslateBase: models.TranslateBase{Slug: "other", Translation: t["other"]}},
 	}
 
-	seed(db, methods)
+	_ = seed(db, methods)
 }
 
 func seedVehicleTypes(db *gorm.DB) {
@@ -113,5 +115,5 @@ func seedVehicleTypes(db *gorm.DB) {
 		{TranslateBase: models.TranslateBase{Slug: "other", Translation: t["other"]}},
 	}
 
-	seed(db, types)
+	_ = seed(db, types)
 }

@@ -74,7 +74,7 @@ func (m GuestsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Get(s, "/{id}/settle", gm.getGuestSettlementHandler)
 	fuego.Post(s, "/{id}/settle", gm.settleGuestAccount)
 
-	fuego.Get(s, "/relations", h.ListModel(api.Db, models.GuestCompanionRelation{}, h.WithTranslation()))
+	fuego.Get(s, "/relations", h.ListModel(api.Db, models.FamilyRelationship{}, h.WithTranslation()))
 }
 
 type GuestWithReservationResponse struct {

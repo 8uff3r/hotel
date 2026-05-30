@@ -119,6 +119,8 @@ export const zGuest = z.object({
         relation: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
+            sanaId: z.string().optional(),
+            sanaName: z.string().optional(),
             slug: z.string().optional()
         }).optional(),
         relationId: z.int().gte(0).optional()
@@ -277,6 +279,8 @@ export const zGuestWithReservationRequest = z.object({
             relation: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
+                sanaId: z.string().optional(),
+                sanaName: z.string().optional(),
                 slug: z.string().optional()
             }).optional(),
             relationId: z.int().gte(0).optional()
@@ -438,6 +442,8 @@ export const zGuestWithReservationResponse = z.object({
             relation: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
+                sanaId: z.string().optional(),
+                sanaName: z.string().optional(),
                 slug: z.string().optional()
             }).optional(),
             relationId: z.int().gte(0).optional()
@@ -988,6 +994,23 @@ export const zPaginatedResponseModelsExpense = z.object({
 });
 
 /**
+ * PaginatedResponse_models.FamilyRelationship schema
+ */
+export const zPaginatedResponseModelsFamilyRelationship = z.object({
+    data: z.array(z.object({
+        id: z.int().gte(0).optional(),
+        label: z.string().optional(),
+        sanaId: z.string().optional(),
+        sanaName: z.string().optional(),
+        slug: z.string().optional()
+    })).optional(),
+    limit: z.int().optional(),
+    page: z.int().optional(),
+    total: z.coerce.bigint().min(BigInt('-9223372036854775808'), { error: 'Invalid value: Expected int64 to be >= -9223372036854775808' }).max(BigInt('9223372036854775807'), { error: 'Invalid value: Expected int64 to be <= 9223372036854775807' }).optional(),
+    totalPages: z.int().optional()
+});
+
+/**
  * PaginatedResponse_models.Guest schema
  */
 export const zPaginatedResponseModelsGuest = z.object({
@@ -1013,6 +1036,8 @@ export const zPaginatedResponseModelsGuest = z.object({
             relation: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
+                sanaId: z.string().optional(),
+                sanaName: z.string().optional(),
                 slug: z.string().optional()
             }).optional(),
             relationId: z.int().gte(0).optional()
@@ -1095,21 +1120,6 @@ export const zPaginatedResponseModelsGuest = z.object({
             userCheckIn: z.string().optional(),
             userCheckOut: z.string().optional()
         })).optional()
-    })).optional(),
-    limit: z.int().optional(),
-    page: z.int().optional(),
-    total: z.coerce.bigint().min(BigInt('-9223372036854775808'), { error: 'Invalid value: Expected int64 to be >= -9223372036854775808' }).max(BigInt('9223372036854775807'), { error: 'Invalid value: Expected int64 to be <= 9223372036854775807' }).optional(),
-    totalPages: z.int().optional()
-});
-
-/**
- * PaginatedResponse_models.GuestCompanionRelation schema
- */
-export const zPaginatedResponseModelsGuestCompanionRelation = z.object({
-    data: z.array(z.object({
-        id: z.int().gte(0).optional(),
-        label: z.string().optional(),
-        slug: z.string().optional()
     })).optional(),
     limit: z.int().optional(),
     page: z.int().optional(),
@@ -1559,6 +1569,8 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
                 relation: z.object({
                     id: z.int().gte(0).optional(),
                     label: z.string().optional(),
+                    sanaId: z.string().optional(),
+                    sanaName: z.string().optional(),
                     slug: z.string().optional()
                 }).optional(),
                 relationId: z.int().gte(0).optional()
@@ -1921,6 +1933,8 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
                 relation: z.object({
                     id: z.int().gte(0).optional(),
                     label: z.string().optional(),
+                    sanaId: z.string().optional(),
+                    sanaName: z.string().optional(),
                     slug: z.string().optional()
                 }).optional(),
                 relationId: z.int().gte(0).optional()
@@ -2258,6 +2272,8 @@ export const zPaginatedResponseModelsVehicle = z.object({
                 relation: z.object({
                     id: z.int().gte(0).optional(),
                     label: z.string().optional(),
+                    sanaId: z.string().optional(),
+                    sanaName: z.string().optional(),
                     slug: z.string().optional()
                 }).optional(),
                 relationId: z.int().gte(0).optional()
@@ -2475,6 +2491,8 @@ export const zParkingTransaction = z.object({
             relation: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
+                sanaId: z.string().optional(),
+                sanaName: z.string().optional(),
                 slug: z.string().optional()
             }).optional(),
             relationId: z.int().gte(0).optional()
@@ -2798,6 +2816,8 @@ export const zRestaurantBill = z.object({
             relation: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
+                sanaId: z.string().optional(),
+                sanaName: z.string().optional(),
                 slug: z.string().optional()
             }).optional(),
             relationId: z.int().gte(0).optional()
@@ -3148,6 +3168,8 @@ export const zVehicle = z.object({
             relation: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
+                sanaId: z.string().optional(),
+                sanaName: z.string().optional(),
                 slug: z.string().optional()
             }).optional(),
             relationId: z.int().gte(0).optional()
