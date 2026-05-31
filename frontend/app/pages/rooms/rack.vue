@@ -15,7 +15,11 @@
           >
         </div>
         <div class="flex flex-wrap gap-3">
-          <div v-for="status in statuses" :key="status.id" class="flex items-center gap-2">
+          <div
+            v-for="status in statuses"
+            :key="status.id"
+            class="flex items-center gap-2 rounded-md border border-primary/10 p-0.5"
+          >
             <div
               class="h-4 w-4 rounded border border-gray-200 dark:border-gray-700"
               :style="{ backgroundColor: `#${status.colorHex || '94a3b8'}` }"
@@ -68,6 +72,16 @@
           </div>
         </div>
       </div>
+    </UCard>
+
+    <!-- Filters -->
+    <UCard v-if="agencies?.length || roomTypes?.length" class="mb-6">
+      <RoomRackFilters
+        v-model:filters="filters"
+        :room-types="roomTypes ?? []"
+        :countries="countries ?? []"
+        :agencies="agencies ?? []"
+      />
     </UCard>
 
     <!-- Room Rack Grid -->
@@ -132,27 +146,13 @@
           v-else
           class="grid grid-cols-4 gap-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-12"
         >
-          <NuxtLink
+          <RoomRackCard
             v-for="room in currentFloorRooms"
             :key="room.id"
-            :to="`/rooms/${room.id}`"
-            class="group flex flex-col items-center rounded-lg border border-gray-200 p-3 transition-all hover:scale-105 hover:shadow-lg dark:border-gray-700"
-            :style="{
-              backgroundColor: room.status?.colorHex ? `#${room.status.colorHex}15` : undefined,
-              borderColor: room.status?.colorHex ? `#${room.status.colorHex}` : undefined,
-            }"
-          >
-            <div
-              class="mb-2 h-3 w-full rounded-full"
-              :style="{ backgroundColor: `#${room.status?.colorHex || '94a3b8'}` }"
-            />
-            <span class="font-semibold text-gray-900 dark:text-white">
-              {{ room.roomNumber }}
-            </span>
-            <span class="text-xs text-gray-500 dark:text-gray-400">
-              {{ room.roomType?.label }}
-            </span>
-          </NuxtLink>
+            :room="room"
+            @select="openDetail"
+            @change-status="openStatusChange"
+          />
         </div>
       </div>
 
@@ -161,7 +161,7 @@
         <div v-if="pending" class="flex h-64 items-center justify-center">
           <UIcon name="i-lucide-loader" class="h-8 w-8 animate-spin text-primary" />
         </div>
-        <div v-else-if="allRooms?.length === 0" class="flex h-64 items-center justify-center">
+        <div v-else-if="filteredRooms?.length === 0" class="flex h-64 items-center justify-center">
           <p class="text-gray-500">{{ t("rooms.roomRack.noRooms") }}</p>
         </div>
         <div v-else ref="scrollContainer" class="max-h-150 overflow-y-auto">
@@ -172,24 +172,13 @@
             <div
               class="grid grid-cols-4 gap-2 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-12"
             >
-              <NuxtLink
+              <RoomRackCard
                 v-for="room in getRoomsByFloor(floor)"
                 :key="room.id"
-                :to="`/rooms/${room.id}`"
-                class="group flex flex-col items-center rounded border border-gray-200 p-2 text-center transition-all hover:scale-105 dark:border-gray-700"
-                :style="{
-                  backgroundColor: room.status?.colorHex ? `#${room.status.colorHex}15` : undefined,
-                  borderColor: room.status?.colorHex ? `#${room.status.colorHex}` : undefined,
-                }"
-              >
-                <span class="text-sm font-medium text-gray-900 dark:text-white">
-                  {{ room.roomNumber }}
-                </span>
-                <div
-                  class="mt-1 h-2 w-2 rounded-full"
-                  :style="{ backgroundColor: `#${room.status?.colorHex || '94a3b8'}` }"
-                />
-              </NuxtLink>
+                :room="room"
+                @select="openDetail"
+                @change-status="openStatusChange"
+              />
             </div>
           </div>
         </div>
@@ -200,7 +189,7 @@
         <div v-if="pending" class="flex h-64 items-center justify-center">
           <UIcon name="i-lucide-loader" class="h-8 w-8 animate-spin text-primary" />
         </div>
-        <div v-else-if="allRooms?.length === 0" class="flex h-64 items-center justify-center">
+        <div v-else-if="filteredRooms?.length === 0" class="flex h-64 items-center justify-center">
           <p class="text-gray-500">{{ t("rooms.roomRack.noRooms") }}</p>
         </div>
         <div v-else ref="scrollContainer" class="max-h-150 overflow-y-auto">
@@ -216,33 +205,13 @@
             <div
               class="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8"
             >
-              <NuxtLink
+              <RoomRackCard
                 v-for="room in getRoomsByFloor(floor)"
                 :key="room.id"
-                :to="`/rooms/${room.id}`"
-                class="group flex flex-col items-center rounded-lg border border-gray-200 p-3 transition-all hover:scale-105 hover:shadow-lg dark:border-gray-700"
-                :style="{
-                  backgroundColor: room.status?.colorHex ? `#${room.status.colorHex}20` : undefined,
-                  borderColor: room.status?.colorHex ? `#${room.status.colorHex}` : undefined,
-                }"
-              >
-                <div
-                  class="mb-2 h-2 w-full rounded-full"
-                  :style="{ backgroundColor: `#${room.status?.colorHex || '94a3b8'}` }"
-                />
-                <span class="font-bold text-gray-900 dark:text-white">
-                  {{ room.roomNumber }}
-                </span>
-                <span class="text-xs text-gray-500 dark:text-gray-400">
-                  {{ room.roomType?.label }}
-                </span>
-                <span
-                  class="mt-1 text-xs font-medium"
-                  :style="{ color: `#${room.status?.colorHex || '94a3b8'}` }"
-                >
-                  {{ room.status?.label }}
-                </span>
-              </NuxtLink>
+                :room="room"
+                @select="openDetail"
+                @change-status="openStatusChange"
+              />
             </div>
           </div>
         </div>
@@ -264,6 +233,25 @@
         </div>
       </template>
     </UCard>
+
+    <!-- Room Detail Modal -->
+    <RoomDetailModal
+      v-if="selectedRoom"
+      :room="selectedRoom"
+      :open="detailModalOpen"
+      @update:open="detailModalOpen = $event"
+      @change-status="openStatusChange"
+    />
+
+    <!-- Status Change Modal -->
+    <RoomStatusChangeModal
+      v-if="selectedRoom"
+      :room="selectedRoom"
+      :statuses="statuses ?? []"
+      :open="statusModalOpen"
+      @update:open="statusModalOpen = $event"
+      @status-changed="onStatusChanged"
+    />
   </div>
 </template>
 
@@ -271,6 +259,12 @@
 definePageMeta({
   requiresPermission: PERMISSIONS.rooms.rooms.read,
 });
+
+import type { RackFiltersState } from "~/composables/useRoomRackData";
+import RoomRackCard from "./components/RoomRackCard.vue";
+import RoomRackFilters from "./components/RoomRackFilters.vue";
+import RoomDetailModal from "./components/RoomDetailModal.vue";
+import RoomStatusChangeModal from "./components/RoomStatusChangeModal.vue";
 
 const { t } = useI18n();
 
@@ -299,27 +293,72 @@ const sortOptions = [
 
 const currentFloor = ref(1);
 
-const { data: statuses } = useQuery({
-  key: ["rooms", "status", "list"],
-  query: async () => {
-    const response = await getApiRoomsStatuses({});
-    return response.data?.data || [];
-  },
-  placeholderData: [],
+const { allRooms, pending, statuses, roomTypes, agencies, countries } = useRoomRackData();
+
+const filters = ref<RackFiltersState>({
+  roomTypeId: null,
+  nationalityId: null,
+  agencyId: null,
+  entryDateFrom: "",
+  entryDateTo: "",
+  departureDateFrom: "",
+  departureDateTo: "",
 });
 
-const { data: allRooms, isLoading: pending } = useQuery({
-  key: ["rooms", "list"],
-  query: async () => {
-    const response = await getApiRooms({ query: { limit: -1 } });
-    return response.data?.data || [];
-  },
-  placeholderData: [],
+const filteredRooms = computed(() => {
+  let rooms = allRooms.value || [];
+
+  if (filters.value.roomTypeId) {
+    rooms = rooms.filter((r: any) => r.roomType?.id === filters.value.roomTypeId);
+  }
+
+  if (filters.value.nationalityId) {
+    rooms = rooms.filter(
+      (r: any) => r.currentReservation?.guest?.nationality?.id === filters.value.nationalityId
+    );
+  }
+
+  if (filters.value.agencyId) {
+    const agency = agencies.value?.find((a: any) => a.id === filters.value.agencyId);
+    if (agency) {
+      rooms = rooms.filter((r: any) => r.currentReservation?.origin === agency.name);
+    }
+  }
+
+  if (filters.value.entryDateFrom) {
+    rooms = rooms.filter((r: any) => {
+      const d = r.currentReservation?.entryDate;
+      return d && d >= filters.value.entryDateFrom;
+    });
+  }
+
+  if (filters.value.entryDateTo) {
+    rooms = rooms.filter((r: any) => {
+      const d = r.currentReservation?.entryDate;
+      return d && d <= filters.value.entryDateTo;
+    });
+  }
+
+  if (filters.value.departureDateFrom) {
+    rooms = rooms.filter((r: any) => {
+      const d = r.currentReservation?.departureDate;
+      return d && d >= filters.value.departureDateFrom;
+    });
+  }
+
+  if (filters.value.departureDateTo) {
+    rooms = rooms.filter((r: any) => {
+      const d = r.currentReservation?.departureDate;
+      return d && d <= filters.value.departureDateTo;
+    });
+  }
+
+  return rooms;
 });
 
 const floors = computed(() => {
   const floorSet = new Set<number>();
-  allRooms.value?.forEach((room) => {
+  filteredRooms.value?.forEach((room: any) => {
     if (room.floor) floorSet.add(room.floor);
   });
   return Array.from(floorSet).sort((a, b) => a - b);
@@ -329,17 +368,13 @@ const minFloor = computed(() => floors.value[0] || 1);
 const maxFloor = computed(() => floors.value[floors.value.length - 1] || 1);
 
 const sortedFloors = computed(() => {
-  const floorList = [...floors.value];
-  if (sortBy.value === "roomNumber") {
-    return floorList;
-  }
-  return floorList;
+  return [...floors.value];
 });
 
 const currentFloorRooms = computed(() => {
-  return allRooms.value
-    ?.filter((room) => room.floor === currentFloor.value)
-    .sort((a, b) => {
+  return filteredRooms.value
+    ?.filter((room: any) => room.floor === currentFloor.value)
+    .sort((a: any, b: any) => {
       if (sortBy.value === "status") {
         return (a.status?.label || "").localeCompare(b.status?.label || "");
       }
@@ -352,7 +387,7 @@ const currentFloorRooms = computed(() => {
 
 const currentFloorStatusCounts = computed(() => {
   const counts: Record<number, { id: number; name: string; colorHex?: string; count: number }> = {};
-  currentFloorRooms.value?.forEach((room) => {
+  currentFloorRooms.value?.forEach((room: any) => {
     if (room.status) {
       const statusId = room.status.id || 0;
       if (!counts[statusId]) {
@@ -372,9 +407,9 @@ const currentFloorStatusCounts = computed(() => {
 const paginatedFloorList = computed(() => floors.value);
 
 const getRoomsByFloor = (floor: number) => {
-  return allRooms.value
-    ?.filter((room) => room.floor === floor)
-    .sort((a, b) => {
+  return filteredRooms.value
+    ?.filter((room: any) => room.floor === floor)
+    .sort((a: any, b: any) => {
       if (sortBy.value === "status") {
         return (a.status?.label || "").localeCompare(b.status?.label || "");
       }
@@ -409,7 +444,7 @@ watch(
 );
 
 watch(
-  allRooms,
+  filteredRooms,
   (rooms) => {
     if ((rooms?.length ?? 0) > 0 && currentFloor.value < minFloor.value) {
       currentFloor.value = minFloor.value;
@@ -417,4 +452,30 @@ watch(
   },
   { immediate: true }
 );
+
+const selectedRoom = ref<any>(null);
+const detailModalOpen = ref(false);
+const statusModalOpen = ref(false);
+
+function openDetail(room: any) {
+  selectedRoom.value = room;
+  detailModalOpen.value = true;
+}
+
+function openStatusChange(room: any) {
+  selectedRoom.value = room;
+  detailModalOpen.value = false;
+  statusModalOpen.value = true;
+}
+
+function onStatusChanged(roomId: number, statusId: number) {
+  const room = allRooms.value?.find((r: any) => r.id === roomId);
+  if (room) {
+    room.statusId = statusId;
+    const newStatus = statuses.value?.find((s: any) => s.id === statusId);
+    if (newStatus) {
+      room.status = newStatus;
+    }
+  }
+}
 </script>

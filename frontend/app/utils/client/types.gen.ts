@@ -310,7 +310,7 @@ export type GuestWithReservationRequest = {
             hotelId?: number;
             id?: number;
             name?: string;
-            roomNumber: string;
+            roomNumber?: string;
             roomType?: {
                 colorHex?: string;
                 id?: number;
@@ -501,7 +501,7 @@ export type GuestWithReservationResponse = {
             hotelId?: number;
             id?: number;
             name?: string;
-            roomNumber: string;
+            roomNumber?: string;
             roomType?: {
                 colorHex?: string;
                 id?: number;
@@ -728,7 +728,7 @@ export type Income = {
             hotelId?: number;
             id?: number;
             name?: string;
-            roomNumber: string;
+            roomNumber?: string;
             roomType?: {
                 colorHex?: string;
                 id?: number;
@@ -1277,7 +1277,7 @@ export type PaginatedResponseModelsIncome = {
                 hotelId?: number;
                 id?: number;
                 name?: string;
-                roomNumber: string;
+                roomNumber?: string;
                 roomType?: {
                     colorHex?: string;
                     id?: number;
@@ -1780,7 +1780,7 @@ export type PaginatedResponseModelsParkingTransaction = {
                 hotelId?: number;
                 id?: number;
                 name?: string;
-                roomNumber: string;
+                roomNumber?: string;
                 roomType?: {
                     colorHex?: string;
                     id?: number;
@@ -1987,7 +1987,7 @@ export type PaginatedResponseModelsReservation = {
             hotelId?: number;
             id?: number;
             name?: string;
-            roomNumber: string;
+            roomNumber?: string;
             roomType?: {
                 colorHex?: string;
                 id?: number;
@@ -2186,7 +2186,7 @@ export type PaginatedResponseModelsRestaurantBill = {
                 hotelId?: number;
                 id?: number;
                 name?: string;
-                roomNumber: string;
+                roomNumber?: string;
                 roomType?: {
                     colorHex?: string;
                     id?: number;
@@ -2224,7 +2224,7 @@ export type PaginatedResponseModelsRestaurantBill = {
             hotelId?: number;
             id?: number;
             name?: string;
-            roomNumber: string;
+            roomNumber?: string;
             roomType?: {
                 colorHex?: string;
                 id?: number;
@@ -2294,7 +2294,7 @@ export type PaginatedResponseModelsRoom = {
         hotelId?: number;
         id?: number;
         name?: string;
-        roomNumber: string;
+        roomNumber?: string;
         roomType?: {
             colorHex?: string;
             id?: number;
@@ -2763,7 +2763,7 @@ export type ParkingTransaction = {
             hotelId?: number;
             id?: number;
             name?: string;
-            roomNumber: string;
+            roomNumber?: string;
             roomType?: {
                 colorHex?: string;
                 id?: number;
@@ -2938,7 +2938,7 @@ export type Reservation = {
         hotelId?: number;
         id?: number;
         name?: string;
-        roomNumber: string;
+        roomNumber?: string;
         roomType?: {
             colorHex?: string;
             id?: number;
@@ -3131,7 +3131,7 @@ export type RestaurantBill = {
             hotelId?: number;
             id?: number;
             name?: string;
-            roomNumber: string;
+            roomNumber?: string;
             roomType?: {
                 colorHex?: string;
                 id?: number;
@@ -3169,7 +3169,7 @@ export type RestaurantBill = {
         hotelId?: number;
         id?: number;
         name?: string;
-        roomNumber: string;
+        roomNumber?: string;
         roomType?: {
             colorHex?: string;
             id?: number;
@@ -3228,7 +3228,7 @@ export type Room = {
     hotelId?: number;
     id?: number;
     name?: string;
-    roomNumber: string;
+    roomNumber?: string;
     roomType?: {
         colorHex?: string;
         id?: number;
@@ -3496,9 +3496,7 @@ export type LoginResponse = {
 /**
  * okResponse schema
  */
-export type OkResponse = {
-    ok?: boolean;
-};
+export type OkResponse = unknown;
 
 /**
  * permissionsResponse schema

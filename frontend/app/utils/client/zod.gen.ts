@@ -308,7 +308,7 @@ export const zGuestWithReservationRequest = z.object({
             hotelId: z.int().gte(0).optional(),
             id: z.int().gte(0).optional(),
             name: z.string().optional(),
-            roomNumber: z.string().min(1),
+            roomNumber: z.string().optional(),
             roomType: z.object({
                 colorHex: z.string().optional(),
                 id: z.int().gte(0).optional(),
@@ -499,7 +499,7 @@ export const zGuestWithReservationResponse = z.object({
             hotelId: z.int().gte(0).optional(),
             id: z.int().gte(0).optional(),
             name: z.string().optional(),
-            roomNumber: z.string().min(1),
+            roomNumber: z.string().optional(),
             roomType: z.object({
                 colorHex: z.string().optional(),
                 id: z.int().gte(0).optional(),
@@ -703,7 +703,7 @@ export const zIncome = z.object({
             hotelId: z.int().gte(0).optional(),
             id: z.int().gte(0).optional(),
             name: z.string().optional(),
-            roomNumber: z.string().min(1),
+            roomNumber: z.string().optional(),
             roomType: z.object({
                 colorHex: z.string().optional(),
                 id: z.int().gte(0).optional(),
@@ -1252,7 +1252,7 @@ export const zPaginatedResponseModelsIncome = z.object({
                 hotelId: z.int().gte(0).optional(),
                 id: z.int().gte(0).optional(),
                 name: z.string().optional(),
-                roomNumber: z.string().min(1),
+                roomNumber: z.string().optional(),
                 roomType: z.object({
                     colorHex: z.string().optional(),
                     id: z.int().gte(0).optional(),
@@ -1755,7 +1755,7 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
                 hotelId: z.int().gte(0).optional(),
                 id: z.int().gte(0).optional(),
                 name: z.string().optional(),
-                roomNumber: z.string().min(1),
+                roomNumber: z.string().optional(),
                 roomType: z.object({
                     colorHex: z.string().optional(),
                     id: z.int().gte(0).optional(),
@@ -1962,7 +1962,7 @@ export const zPaginatedResponseModelsReservation = z.object({
             hotelId: z.int().gte(0).optional(),
             id: z.int().gte(0).optional(),
             name: z.string().optional(),
-            roomNumber: z.string().min(1),
+            roomNumber: z.string().optional(),
             roomType: z.object({
                 colorHex: z.string().optional(),
                 id: z.int().gte(0).optional(),
@@ -2161,7 +2161,7 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
                 hotelId: z.int().gte(0).optional(),
                 id: z.int().gte(0).optional(),
                 name: z.string().optional(),
-                roomNumber: z.string().min(1),
+                roomNumber: z.string().optional(),
                 roomType: z.object({
                     colorHex: z.string().optional(),
                     id: z.int().gte(0).optional(),
@@ -2199,7 +2199,7 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
             hotelId: z.int().gte(0).optional(),
             id: z.int().gte(0).optional(),
             name: z.string().optional(),
-            roomNumber: z.string().min(1),
+            roomNumber: z.string().optional(),
             roomType: z.object({
                 colorHex: z.string().optional(),
                 id: z.int().gte(0).optional(),
@@ -2269,7 +2269,7 @@ export const zPaginatedResponseModelsRoom = z.object({
         hotelId: z.int().gte(0).optional(),
         id: z.int().gte(0).optional(),
         name: z.string().optional(),
-        roomNumber: z.string().min(1),
+        roomNumber: z.string().optional(),
         roomType: z.object({
             colorHex: z.string().optional(),
             id: z.int().gte(0).optional(),
@@ -2738,7 +2738,7 @@ export const zParkingTransaction = z.object({
             hotelId: z.int().gte(0).optional(),
             id: z.int().gte(0).optional(),
             name: z.string().optional(),
-            roomNumber: z.string().min(1),
+            roomNumber: z.string().optional(),
             roomType: z.object({
                 colorHex: z.string().optional(),
                 id: z.int().gte(0).optional(),
@@ -2913,7 +2913,7 @@ export const zReservation = z.object({
         hotelId: z.int().gte(0).optional(),
         id: z.int().gte(0).optional(),
         name: z.string().optional(),
-        roomNumber: z.string().min(1),
+        roomNumber: z.string().optional(),
         roomType: z.object({
             colorHex: z.string().optional(),
             id: z.int().gte(0).optional(),
@@ -3106,7 +3106,7 @@ export const zRestaurantBill = z.object({
             hotelId: z.int().gte(0).optional(),
             id: z.int().gte(0).optional(),
             name: z.string().optional(),
-            roomNumber: z.string().min(1),
+            roomNumber: z.string().optional(),
             roomType: z.object({
                 colorHex: z.string().optional(),
                 id: z.int().gte(0).optional(),
@@ -3144,7 +3144,7 @@ export const zRestaurantBill = z.object({
         hotelId: z.int().gte(0).optional(),
         id: z.int().gte(0).optional(),
         name: z.string().optional(),
-        roomNumber: z.string().min(1),
+        roomNumber: z.string().optional(),
         roomType: z.object({
             colorHex: z.string().optional(),
             id: z.int().gte(0).optional(),
@@ -3203,7 +3203,7 @@ export const zRoom = z.object({
     hotelId: z.int().gte(0).optional(),
     id: z.int().gte(0).optional(),
     name: z.string().optional(),
-    roomNumber: z.string().min(1),
+    roomNumber: z.string().optional(),
     roomType: z.object({
         colorHex: z.string().optional(),
         id: z.int().gte(0).optional(),
@@ -3471,9 +3471,7 @@ export const zLoginResponse = z.object({
 /**
  * okResponse schema
  */
-export const zOkResponse = z.object({
-    ok: z.boolean().optional()
-});
+export const zOkResponse = z.unknown();
 
 /**
  * permissionsResponse schema

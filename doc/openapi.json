@@ -932,7 +932,6 @@
 											"type": "string"
 										},
 										"roomNumber": {
-											"minLength": 1,
 											"type": "string"
 										},
 										"roomType": {
@@ -982,9 +981,6 @@
 											"type": "integer"
 										}
 									},
-									"required": [
-										"roomNumber"
-									],
 									"type": "object"
 								},
 								"type": "array"
@@ -1565,7 +1561,6 @@
 											"type": "string"
 										},
 										"roomNumber": {
-											"minLength": 1,
 											"type": "string"
 										},
 										"roomType": {
@@ -1615,9 +1610,6 @@
 											"type": "integer"
 										}
 									},
-									"required": [
-										"roomNumber"
-									],
 									"type": "object"
 								},
 								"type": "array"
@@ -2229,7 +2221,6 @@
 											"type": "string"
 										},
 										"roomNumber": {
-											"minLength": 1,
 											"type": "string"
 										},
 										"roomType": {
@@ -2279,9 +2270,6 @@
 											"type": "integer"
 										}
 									},
-									"required": [
-										"roomNumber"
-									],
 									"type": "object"
 								},
 								"type": "array"
@@ -3896,7 +3884,6 @@
 														"type": "string"
 													},
 													"roomNumber": {
-														"minLength": 1,
 														"type": "string"
 													},
 													"roomType": {
@@ -3946,9 +3933,6 @@
 														"type": "integer"
 													}
 												},
-												"required": [
-													"roomNumber"
-												],
 												"type": "object"
 											},
 											"type": "array"
@@ -5454,7 +5438,6 @@
 														"type": "string"
 													},
 													"roomNumber": {
-														"minLength": 1,
 														"type": "string"
 													},
 													"roomType": {
@@ -5504,9 +5487,6 @@
 														"type": "integer"
 													}
 												},
-												"required": [
-													"roomNumber"
-												],
 												"type": "object"
 											},
 											"type": "array"
@@ -6128,7 +6108,6 @@
 												"type": "string"
 											},
 											"roomNumber": {
-												"minLength": 1,
 												"type": "string"
 											},
 											"roomType": {
@@ -6178,9 +6157,6 @@
 												"type": "integer"
 											}
 										},
-										"required": [
-											"roomNumber"
-										],
 										"type": "object"
 									},
 									"type": "array"
@@ -6792,7 +6768,6 @@
 														"type": "string"
 													},
 													"roomNumber": {
-														"minLength": 1,
 														"type": "string"
 													},
 													"roomType": {
@@ -6842,9 +6817,6 @@
 														"type": "integer"
 													}
 												},
-												"required": [
-													"roomNumber"
-												],
 												"type": "object"
 											},
 											"type": "array"
@@ -6927,7 +6899,6 @@
 											"type": "string"
 										},
 										"roomNumber": {
-											"minLength": 1,
 											"type": "string"
 										},
 										"roomType": {
@@ -6977,9 +6948,6 @@
 											"type": "integer"
 										}
 									},
-									"required": [
-										"roomNumber"
-									],
 									"type": "object"
 								},
 								"roomId": {
@@ -7147,7 +7115,6 @@
 									"type": "string"
 								},
 								"roomNumber": {
-									"minLength": 1,
 									"type": "string"
 								},
 								"roomType": {
@@ -7197,9 +7164,6 @@
 									"type": "integer"
 								}
 							},
-							"required": [
-								"roomNumber"
-							],
 							"type": "object"
 						},
 						"type": "array"
@@ -8608,7 +8572,6 @@
 											"type": "string"
 										},
 										"roomNumber": {
-											"minLength": 1,
 											"type": "string"
 										},
 										"roomType": {
@@ -8658,9 +8621,6 @@
 											"type": "integer"
 										}
 									},
-									"required": [
-										"roomNumber"
-									],
 									"type": "object"
 								},
 								"type": "array"
@@ -9185,7 +9145,6 @@
 									"type": "string"
 								},
 								"roomNumber": {
-									"minLength": 1,
 									"type": "string"
 								},
 								"roomType": {
@@ -9235,9 +9194,6 @@
 									"type": "integer"
 								}
 							},
-							"required": [
-								"roomNumber"
-							],
 							"type": "object"
 						},
 						"type": "array"
@@ -9828,7 +9784,6 @@
 											"type": "string"
 										},
 										"roomNumber": {
-											"minLength": 1,
 											"type": "string"
 										},
 										"roomType": {
@@ -9878,9 +9833,6 @@
 											"type": "integer"
 										}
 									},
-									"required": [
-										"roomNumber"
-									],
 									"type": "object"
 								},
 								"type": "array"
@@ -9963,7 +9915,6 @@
 								"type": "string"
 							},
 							"roomNumber": {
-								"minLength": 1,
 								"type": "string"
 							},
 							"roomType": {
@@ -10013,9 +9964,6 @@
 								"type": "integer"
 							}
 						},
-						"required": [
-							"roomNumber"
-						],
 						"type": "object"
 					},
 					"roomId": {
@@ -10147,7 +10095,6 @@
 						"type": "string"
 					},
 					"roomNumber": {
-						"minLength": 1,
 						"type": "string"
 					},
 					"roomType": {
@@ -10197,9 +10144,6 @@
 						"type": "integer"
 					}
 				},
-				"required": [
-					"roomNumber"
-				],
 				"type": "object"
 			},
 			"SanaCity": {
@@ -10875,13 +10819,7 @@
 				"type": "object"
 			},
 			"okResponse": {
-				"description": "okResponse schema",
-				"properties": {
-					"ok": {
-						"type": "boolean"
-					}
-				},
-				"type": "object"
+				"description": "okResponse schema"
 			},
 			"permissionsResponse": {
 				"description": "permissionsResponse schema",

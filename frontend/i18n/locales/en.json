@@ -364,7 +364,10 @@
         "roomNumber": "Room Number",
         "status": "Status",
         "type": "Room Type"
-      }
+      },
+      "changeStatus": "Change room status",
+      "allTypes": "All Types",
+      "selectNewStatus": "Select new status"
     }
   },
   "parking": {

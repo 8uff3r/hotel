@@ -4,7 +4,7 @@ type Room struct {
 	Base
 	HotelID     *uint     `json:"hotelId,omitempty"`
 	Name        string    `json:"name"`
-	RoomNumber  string    `gorm:"not null" json:"roomNumber" validate:"required,min=1"`
+	RoomNumber  string    `gorm:"not null" json:"roomNumber"`
 	Floor       int       `json:"floor"`
 	Capacity    int       `gorm:"not null;default:2" json:"capacity"`
 	BasePrice   float64   `gorm:"not null;default:0" json:"basePrice"`

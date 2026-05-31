@@ -366,7 +366,10 @@
         "roomNumber": "شماره اتاق",
         "status": "وضعیت",
         "type": "نوع اتاق"
-      }
+      },
+      "changeStatus": "تغییر وضعیت اتاق",
+      "allTypes": "همه انواع",
+      "selectNewStatus": "انتخاب وضعیت جدید"
     }
   },
   "parking": {
