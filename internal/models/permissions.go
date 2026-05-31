@@ -31,8 +31,7 @@ func (t Permission) UniqueCondition() any {
 type PermissionTemplate struct {
 	Base
 	TranslateBase
-	Description string       `json:"description"`
-	Permissions []Permission `gorm:"many2many:template_permissions;" json:"permissions"`
+	Permissions []Permission `gorm:"many2many:template_permissions;" json:"permissions,omitempty"`
 }
 
 type UserPermission struct {

@@ -65,7 +65,7 @@
         <div class="flex gap-3">
           <UButton @click="grantAllPermissions()">{{ t("users.allPermissions") }}</UButton>
           <div class="w-80">
-            <HSelectMenu :items="templates" />
+            <HSelectMenu :items="templates" multiple v-model="selectedTemplates" />
           </div>
         </div>
 
@@ -278,6 +278,25 @@ const handleSubmit = async () => {
     loading.value = false;
   }
 };
+
+const selectedTemplates = ref<number[]>([]);
+const confirm = useConfirmDialog();
+watch(selectedTemplates, async (nv) => {
+  const confirmed = await confirm({
+    title: "تغییر نقش",
+    description: "با تغییر نقش تمامی دسترسی‌های اضافه شده به کاربر تغییر می‌کنند!",
+  });
+  if (confirmed) {
+    await postApiPermissionsUserUserIdGrantRole({
+      path: {
+        userId: String(userId.value),
+      },
+      body: {
+        roleIds: nv,
+      },
+    });
+  }
+});
 
 onMounted(fetchData);
 </script>

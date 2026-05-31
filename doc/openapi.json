@@ -252,6 +252,19 @@
 				},
 				"type": "object"
 			},
+			"GrantPermissionsOfTemplateToUserDto": {
+				"description": "GrantPermissionsOfTemplateToUserDto schema",
+				"properties": {
+					"roleIds": {
+						"items": {
+							"minimum": 0,
+							"type": "integer"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
 			"Guest": {
 				"description": "Guest schema",
 				"properties": {
@@ -2459,9 +2472,6 @@
 								"items": {
 									"nullable": true,
 									"properties": {
-										"description": {
-											"type": "string"
-										},
 										"id": {
 											"minimum": 0,
 											"type": "integer"
@@ -2471,6 +2481,7 @@
 										},
 										"permissions": {
 											"items": {
+												"nullable": true,
 												"properties": {
 													"action": {
 														"type": "string"
@@ -2504,6 +2515,7 @@
 												},
 												"type": "object"
 											},
+											"nullable": true,
 											"type": "array"
 										},
 										"slug": {
@@ -5707,9 +5719,6 @@
 					"data": {
 						"items": {
 							"properties": {
-								"description": {
-									"type": "string"
-								},
 								"id": {
 									"minimum": 0,
 									"type": "integer"
@@ -5719,6 +5728,7 @@
 								},
 								"permissions": {
 									"items": {
+										"nullable": true,
 										"properties": {
 											"action": {
 												"type": "string"
@@ -5752,6 +5762,7 @@
 										},
 										"type": "object"
 									},
+									"nullable": true,
 									"type": "array"
 								},
 								"slug": {
@@ -7314,9 +7325,6 @@
 									"items": {
 										"nullable": true,
 										"properties": {
-											"description": {
-												"type": "string"
-											},
 											"id": {
 												"minimum": 0,
 												"type": "integer"
@@ -7326,6 +7334,7 @@
 											},
 											"permissions": {
 												"items": {
+													"nullable": true,
 													"properties": {
 														"action": {
 															"type": "string"
@@ -7359,6 +7368,7 @@
 													},
 													"type": "object"
 												},
+												"nullable": true,
 												"type": "array"
 											},
 											"slug": {
@@ -10319,9 +10329,6 @@
 						"items": {
 							"nullable": true,
 							"properties": {
-								"description": {
-									"type": "string"
-								},
 								"id": {
 									"minimum": 0,
 									"type": "integer"
@@ -10331,6 +10338,7 @@
 								},
 								"permissions": {
 									"items": {
+										"nullable": true,
 										"properties": {
 											"action": {
 												"type": "string"
@@ -10364,6 +10372,7 @@
 										},
 										"type": "object"
 									},
+									"nullable": true,
 									"type": "array"
 								},
 								"slug": {
@@ -10773,9 +10782,6 @@
 								"items": {
 									"nullable": true,
 									"properties": {
-										"description": {
-											"type": "string"
-										},
 										"id": {
 											"minimum": 0,
 											"type": "integer"
@@ -10785,6 +10791,7 @@
 										},
 										"permissions": {
 											"items": {
+												"nullable": true,
 												"properties": {
 													"action": {
 														"type": "string"
@@ -10818,6 +10825,7 @@
 												},
 												"type": "object"
 											},
+											"nullable": true,
 											"type": "array"
 										},
 										"slug": {
@@ -15177,7 +15185,7 @@
 		},
 		"/api/permissions/templates": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/permissions.PermissionsModule.RegisterRoutes.ListModel[...].func1`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/permissions.PermissionsModule.RegisterRoutes.ListModel[...].func2`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/permissions/templates",
 				"parameters": [
 					{
@@ -15259,7 +15267,7 @@
 						"description": ""
 					}
 				},
-				"summary": "func1",
+				"summary": "func2",
 				"tags": [
 					"/PERMISSIONS"
 				]
@@ -15414,6 +15422,94 @@
 					}
 				},
 				"summary": "grant all permissions to user",
+				"tags": [
+					"/PERMISSIONS"
+				]
+			}
+		},
+		"/api/permissions/user/{userId}/grant-role": {
+			"post": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/permissions.(*PermissionsModule).grantPermissionsOfTemplateToUser`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "POST_/api/permissions/user/:userId/grant-role",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"*/*": {
+							"schema": {
+								"$ref": "#/components/schemas/GrantPermissionsOfTemplateToUserDto"
+							}
+						}
+					},
+					"description": "Request body for permissions.GrantPermissionsOfTemplateToUserDto",
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/okResponse"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/okResponse"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "grant permissions of template to user",
 				"tags": [
 					"/PERMISSIONS"
 				]

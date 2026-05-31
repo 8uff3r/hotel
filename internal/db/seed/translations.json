@@ -155,10 +155,30 @@
 
   "permission-template": {
     "admin": { "fa": "مدیر کل", "en": "Admin" },
+    "admin:description": {
+      "en": "Full administrative access to all features",
+      "fa": "دسترسی کامل مدیریتی به تمام ویژگی‌ها"
+    },
     "manager": { "fa": "مدیر", "en": "Manager" },
+    "manager:description": {
+      "en": "Management access to all operational features",
+      "fa": "دسترسی مدیریتی به تمام ویژگی‌های عملیاتی"
+    },
     "receptionist": { "fa": "پذیرش", "en": "Receptionist" },
+    "receptionist:description": {
+      "en": "Front desk operations: check-in, reservations, guest management, parking",
+      "fa": "خدمات پذیرش: ثبت نام، رزرو، مدیریت مهمان، پارکینگ"
+    },
     "staff": { "fa": "کارمند", "en": "Staff" },
-    "housekeeper": { "fa": "خانه‌دار", "en": "Housekeeper" }
+    "staff:description": {
+      "en": "Basic staff access - read only",
+      "fa": "دسترسی پایه کارکنان - فقط خواندنی"
+    },
+    "housekeeper": { "fa": "خانه‌دار", "en": "Housekeeper" },
+    "housekeeper:description": {
+      "en": "Housekeeping access to rooms",
+      "fa": "دسترسی نظافتچی به اتاق‌ها"
+    }
   },
 
   "inventory-item-category": {

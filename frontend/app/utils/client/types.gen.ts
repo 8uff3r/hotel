@@ -97,6 +97,13 @@ export type FamilyRelationship = {
 };
 
 /**
+ * GrantPermissionsOfTemplateToUserDto schema
+ */
+export type GrantPermissionsOfTemplateToUserDto = {
+    roleIds?: Array<number>;
+};
+
+/**
  * Guest schema
  */
 export type Guest = {
@@ -800,6 +807,22 @@ export type MeResponse = {
         firstName?: string;
         id?: number;
         lastName?: string;
+        roles?: Array<{
+            id?: number;
+            label?: string;
+            permissions?: Array<{
+                action?: string;
+                category?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                categoryId?: number;
+                id?: number;
+                resource?: string;
+            }>;
+            slug?: string;
+        }>;
         userHotels?: Array<{
             hotel?: {
                 address?: string;
@@ -1840,7 +1863,6 @@ export type PaginatedResponseModelsParkingTransaction = {
  */
 export type PaginatedResponseModelsPermissionTemplate = {
     data?: Array<{
-        description?: string;
         id?: number;
         label?: string;
         permissions?: Array<{
@@ -2335,6 +2357,22 @@ export type PaginatedResponseModelsSanitizedUser = {
         firstName?: string;
         id?: number;
         lastName?: string;
+        roles?: Array<{
+            id?: number;
+            label?: string;
+            permissions?: Array<{
+                action?: string;
+                category?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                categoryId?: number;
+                id?: number;
+                resource?: string;
+            }>;
+            slug?: string;
+        }>;
         userHotels?: Array<{
             hotel?: {
                 address?: string;
@@ -3260,6 +3298,22 @@ export type SanitizedUser = {
     firstName?: string;
     id?: number;
     lastName?: string;
+    roles?: Array<{
+        id?: number;
+        label?: string;
+        permissions?: Array<{
+            action?: string;
+            category?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            categoryId?: number;
+            id?: number;
+            resource?: string;
+        }>;
+        slug?: string;
+    }>;
     userHotels?: Array<{
         hotel?: {
             address?: string;
@@ -3410,6 +3464,22 @@ export type LoginResponse = {
         firstName?: string;
         id?: number;
         lastName?: string;
+        roles?: Array<{
+            id?: number;
+            label?: string;
+            permissions?: Array<{
+                action?: string;
+                category?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                categoryId?: number;
+                id?: number;
+                resource?: string;
+            }>;
+            slug?: string;
+        }>;
         userHotels?: Array<{
             hotel?: {
                 address?: string;
@@ -3474,6 +3544,7 @@ export type UserCreateDto = {
     firstName?: string;
     lastName?: string;
     password?: string;
+    roleIds?: Array<number>;
 };
 
 /**
@@ -5449,6 +5520,44 @@ export type PostApiPermissionsUserUserIdGrantAllResponses = {
 };
 
 export type PostApiPermissionsUserUserIdGrantAllResponse = PostApiPermissionsUserUserIdGrantAllResponses[keyof PostApiPermissionsUserUserIdGrantAllResponses];
+
+export type PostApiPermissionsUserUserIdGrantRoleData = {
+    /**
+     * Request body for permissions.GrantPermissionsOfTemplateToUserDto
+     */
+    body: GrantPermissionsOfTemplateToUserDto;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        userId: string;
+    };
+    query?: never;
+    url: '/api/permissions/user/{userId}/grant-role';
+};
+
+export type PostApiPermissionsUserUserIdGrantRoleErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PostApiPermissionsUserUserIdGrantRoleError = PostApiPermissionsUserUserIdGrantRoleErrors[keyof PostApiPermissionsUserUserIdGrantRoleErrors];
+
+export type PostApiPermissionsUserUserIdGrantRoleResponses = {
+    /**
+     * OK
+     */
+    200: OkResponse;
+};
+
+export type PostApiPermissionsUserUserIdGrantRoleResponse = PostApiPermissionsUserUserIdGrantRoleResponses[keyof PostApiPermissionsUserUserIdGrantRoleResponses];
 
 export type PostApiPermissionsUserUserIdTemplateTemplateIdData = {
     body?: never;

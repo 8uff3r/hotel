@@ -95,6 +95,13 @@ export const zFamilyRelationship = z.object({
 });
 
 /**
+ * GrantPermissionsOfTemplateToUserDto schema
+ */
+export const zGrantPermissionsOfTemplateToUserDto = z.object({
+    roleIds: z.array(z.int().gte(0)).optional()
+});
+
+/**
  * Guest schema
  */
 export const zGuest = z.object({
@@ -775,6 +782,22 @@ export const zMeResponse = z.object({
         firstName: z.string().optional(),
         id: z.int().gte(0).optional(),
         lastName: z.string().optional(),
+        roles: z.array(z.object({
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            permissions: z.array(z.object({
+                action: z.string().optional(),
+                category: z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                categoryId: z.int().gte(0).optional(),
+                id: z.int().gte(0).optional(),
+                resource: z.string().optional()
+            })).optional(),
+            slug: z.string().optional()
+        })).optional(),
         userHotels: z.array(z.object({
             hotel: z.object({
                 address: z.string().optional(),
@@ -1815,7 +1838,6 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
  */
 export const zPaginatedResponseModelsPermissionTemplate = z.object({
     data: z.array(z.object({
-        description: z.string().optional(),
         id: z.int().gte(0).optional(),
         label: z.string().optional(),
         permissions: z.array(z.object({
@@ -2310,6 +2332,22 @@ export const zPaginatedResponseModelsSanitizedUser = z.object({
         firstName: z.string().optional(),
         id: z.int().gte(0).optional(),
         lastName: z.string().optional(),
+        roles: z.array(z.object({
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            permissions: z.array(z.object({
+                action: z.string().optional(),
+                category: z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                categoryId: z.int().gte(0).optional(),
+                id: z.int().gte(0).optional(),
+                resource: z.string().optional()
+            })).optional(),
+            slug: z.string().optional()
+        })).optional(),
         userHotels: z.array(z.object({
             hotel: z.object({
                 address: z.string().optional(),
@@ -3235,6 +3273,22 @@ export const zSanitizedUser = z.object({
     firstName: z.string().optional(),
     id: z.int().gte(0).optional(),
     lastName: z.string().optional(),
+    roles: z.array(z.object({
+        id: z.int().gte(0).optional(),
+        label: z.string().optional(),
+        permissions: z.array(z.object({
+            action: z.string().optional(),
+            category: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            categoryId: z.int().gte(0).optional(),
+            id: z.int().gte(0).optional(),
+            resource: z.string().optional()
+        })).optional(),
+        slug: z.string().optional()
+    })).optional(),
     userHotels: z.array(z.object({
         hotel: z.object({
             address: z.string().optional(),
@@ -3385,6 +3439,22 @@ export const zLoginResponse = z.object({
         firstName: z.string().optional(),
         id: z.int().gte(0).optional(),
         lastName: z.string().optional(),
+        roles: z.array(z.object({
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            permissions: z.array(z.object({
+                action: z.string().optional(),
+                category: z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                categoryId: z.int().gte(0).optional(),
+                id: z.int().gte(0).optional(),
+                resource: z.string().optional()
+            })).optional(),
+            slug: z.string().optional()
+        })).optional(),
         userHotels: z.array(z.object({
             hotel: z.object({
                 address: z.string().optional(),
@@ -3448,7 +3518,8 @@ export const zUserCreateDto = z.object({
     email: z.string().optional(),
     firstName: z.string().optional(),
     lastName: z.string().optional(),
-    password: z.string().optional()
+    password: z.string().optional(),
+    roleIds: z.array(z.int().gte(0)).optional()
 });
 
 /**
@@ -3964,6 +4035,19 @@ export const zPostApiPermissionsUserUserIdGrantAllHeaders = z.object({
 });
 
 export const zPostApiPermissionsUserUserIdGrantAllPath = z.object({
+    userId: z.string()
+});
+
+/**
+ * Request body for permissions.GrantPermissionsOfTemplateToUserDto
+ */
+export const zPostApiPermissionsUserUserIdGrantRoleBody = zGrantPermissionsOfTemplateToUserDto;
+
+export const zPostApiPermissionsUserUserIdGrantRoleHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zPostApiPermissionsUserUserIdGrantRolePath = z.object({
     userId: z.string()
 });
 

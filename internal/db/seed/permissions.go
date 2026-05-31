@@ -3,19 +3,22 @@ package seed
 import (
 	_ "embed"
 	"encoding/json"
-	"hotel/internal/models"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 
+	"hotel/internal/models"
+
 	"gorm.io/gorm"
 )
 
-type permissionActions map[string]string
-type permissionPages map[string]permissionActions
-type permissionsJSON map[string]permissionPages
+type (
+	permissionActions map[string]string
+	permissionPages   map[string]permissionActions
+	permissionsJSON   map[string]permissionPages
+)
 
 //go:embed permissions.json
 var permissionsFile []byte
@@ -32,11 +35,11 @@ func init() {
 	content := "export const PERMISSIONS = " + strings.TrimSpace(string(permissionsFile)) + ";"
 
 	dir := filepath.Dir(distFile)
-	if err := os.MkdirAll(dir, 0755); err != nil {
+	if err := os.MkdirAll(dir, 0o755); err != nil {
 		log.Fatalf("failed to create directory: %v", err)
 	}
 
-	if err := os.WriteFile(distFile, []byte(content), 0644); err != nil {
+	if err := os.WriteFile(distFile, []byte(content), 0o644); err != nil {
 		log.Fatalf("failed to write permissions gen file: %v", err)
 	}
 
@@ -103,7 +106,6 @@ func seedPermissionTemplates(db *gorm.DB) {
 	if err := db.Where("slug = ?", "admin").First(&adminTemplate).Error; err == gorm.ErrRecordNotFound {
 		adminTemplate = models.PermissionTemplate{
 			TranslateBase: models.TranslateBase{Slug: "admin", Translation: t["admin"]},
-			Description:   "Full administrative access to all features",
 		}
 		db.Create(&adminTemplate)
 	}
@@ -113,7 +115,6 @@ func seedPermissionTemplates(db *gorm.DB) {
 	if err := db.Where("slug = ?", "manager").First(&managerTemplate).Error; err == gorm.ErrRecordNotFound {
 		managerTemplate = models.PermissionTemplate{
 			TranslateBase: models.TranslateBase{Slug: "manager", Translation: t["manager"]},
-			Description:   "Management access to all operational features",
 		}
 		db.Create(&managerTemplate)
 	}
@@ -129,7 +130,6 @@ func seedPermissionTemplates(db *gorm.DB) {
 	if err := db.Where("slug = ?", "receptionist").First(&receptionistTemplate).Error; err == gorm.ErrRecordNotFound {
 		receptionistTemplate = models.PermissionTemplate{
 			TranslateBase: models.TranslateBase{Slug: "receptionist", Translation: t["receptionist"]},
-			Description:   "Front desk operations: check-in, reservations, guest management, parking",
 		}
 		db.Create(&receptionistTemplate)
 	}
@@ -150,7 +150,6 @@ func seedPermissionTemplates(db *gorm.DB) {
 	if err := db.Where("slug = ?", "staff").First(&staffTemplate).Error; err == gorm.ErrRecordNotFound {
 		staffTemplate = models.PermissionTemplate{
 			TranslateBase: models.TranslateBase{Slug: "staff", Translation: t["staff"]},
-			Description:   "Basic staff access - read only",
 		}
 		db.Create(&staffTemplate)
 	}
@@ -166,7 +165,6 @@ func seedPermissionTemplates(db *gorm.DB) {
 	if err := db.Where("slug = ?", "housekeeper").First(&housekeeperTemplate).Error; err == gorm.ErrRecordNotFound {
 		housekeeperTemplate = models.PermissionTemplate{
 			TranslateBase: models.TranslateBase{Slug: "housekeeper", Translation: t["housekeeper"]},
-			Description:   "Housekeeping access to rooms",
 		}
 		db.Create(&housekeeperTemplate)
 	}

@@ -22,10 +22,18 @@ func (pm PermissionsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	pm = PermissionsModule{api}
 
 	fuego.Get(s, "/", pm.permissionsList)
-	fuego.Get(s, "/templates", h.ListModel[models.PermissionTemplate](api.Db))
+	fuego.Get(
+		s,
+		"/templates",
+		h.ListModel[models.PermissionTemplate](
+			api.Db,
+			h.WithTranslation[models.PermissionTemplate](),
+		),
+	)
 	fuego.Get(s, "/user/{userId}", pm.userPermissions)
 	fuego.Post(s, "/user/{userId}/template/{templateId}", pm.applyTemplate)
 	fuego.Post(s, "/user/{userId}/{permissionId}", pm.setUserPermission)
+	fuego.Post(s, "/user/{userId}/grant-role", pm.grantPermissionsOfTemplateToUser)
 	fuego.Post(s, "/user/{userId}/grant-all", pm.grantAllPermissionsToUser)
 	fuego.Delete(s, "/user/{userId}/{permissionId}", pm.setUserPermission)
 }
@@ -175,6 +183,88 @@ func (pm *PermissionsModule) grantAllPermissionsToUser(c fuego.ContextNoBody) (*
 		if err := pm.Db.WithContext(c).Create(&newPerm).Error; err != nil {
 			return nil, fuego.InternalServerError{Title: "create_failed"}
 		}
+	}
+
+	return &okResponse{Ok: true}, nil
+}
+
+type GrantPermissionsOfTemplateToUserDto struct {
+	Roles []uint `json:"roleIds"`
+}
+
+func (pm *PermissionsModule) grantPermissionsOfTemplateToUser(c fuego.ContextWithBody[GrantPermissionsOfTemplateToUserDto]) (*okResponse, error) {
+	var zero *okResponse
+	body, err := c.Body()
+	if err != nil {
+		return zero, err
+	}
+
+	userIDInt, err := c.PathParamIntErr("userId")
+	if err != nil {
+		return nil, err
+	}
+	userID := uint(userIDInt)
+
+	// 1. Replace UserTemplates
+	userTemplates := make([]models.UserTemplate, len(body.Roles))
+	for i, templateID := range body.Roles {
+		userTemplates[i] = models.UserTemplate{
+			UserID:     userID,
+			TemplateID: templateID,
+		}
+	}
+
+	err = pm.Db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.WithContext(c).Unscoped().
+			Model(&models.User{Base: models.Base{ID: userID}}).
+			Association("Roles").
+			Replace(userTemplates); err != nil {
+			return err
+		}
+
+		// 2. Fetch all permissions from the given templates
+		var templates []models.PermissionTemplate
+		if err := tx.WithContext(c).
+			Preload("Permissions").
+			Where("id IN ?", body.Roles).
+			Find(&templates).Error; err != nil {
+			return err
+		}
+
+		// 3. Flatten permissions into UserPermissions
+		seen := make(map[uint]bool)
+		var userPermissions []models.UserPermission
+		for _, template := range templates {
+			for _, perm := range template.Permissions {
+				if seen[perm.ID] {
+					continue
+				}
+				seen[perm.ID] = true
+				userPermissions = append(userPermissions, models.UserPermission{
+					UserID:       userID,
+					PermissionID: perm.ID,
+					Granted:      true,
+				})
+			}
+		}
+
+		// 4. Replace UserPermissions
+		if err := tx.WithContext(c).Unscoped().
+			Where("user_id = ?", userID).
+			Delete(&models.UserPermission{}).Error; err != nil {
+			return err
+		}
+
+		if len(userPermissions) > 0 {
+			if err := tx.WithContext(c).Create(&userPermissions).Error; err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
+	if err != nil {
+		return nil, err
 	}
 
 	return &okResponse{Ok: true}, nil
