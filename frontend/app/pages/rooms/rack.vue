@@ -20,7 +20,7 @@
               class="h-4 w-4 rounded border border-gray-200 dark:border-gray-700"
               :style="{ backgroundColor: `#${status.colorHex || '94a3b8'}` }"
             />
-            <span class="text-sm text-gray-700 dark:text-gray-300">{{ status.name }}</span>
+            <span class="text-sm text-gray-700 dark:text-gray-300">{{ status.label }}</span>
           </div>
         </div>
 
@@ -123,7 +123,7 @@
           <UIcon name="i-lucide-loader" class="h-8 w-8 animate-spin text-primary" />
         </div>
         <div
-          v-else-if="currentFloorRooms.length === 0"
+          v-else-if="(currentFloorRooms?.length ?? 0) === 0"
           class="flex h-64 items-center justify-center"
         >
           <p class="text-gray-500">{{ t("rooms.roomRack.noRoomsOnFloor") }}</p>
@@ -161,7 +161,7 @@
         <div v-if="pending" class="flex h-64 items-center justify-center">
           <UIcon name="i-lucide-loader" class="h-8 w-8 animate-spin text-primary" />
         </div>
-        <div v-else-if="allRooms.length === 0" class="flex h-64 items-center justify-center">
+        <div v-else-if="allRooms?.length === 0" class="flex h-64 items-center justify-center">
           <p class="text-gray-500">{{ t("rooms.roomRack.noRooms") }}</p>
         </div>
         <div v-else ref="scrollContainer" class="max-h-150 overflow-y-auto">
@@ -200,7 +200,7 @@
         <div v-if="pending" class="flex h-64 items-center justify-center">
           <UIcon name="i-lucide-loader" class="h-8 w-8 animate-spin text-primary" />
         </div>
-        <div v-else-if="allRooms.length === 0" class="flex h-64 items-center justify-center">
+        <div v-else-if="allRooms?.length === 0" class="flex h-64 items-center justify-center">
           <p class="text-gray-500">{{ t("rooms.roomRack.noRooms") }}</p>
         </div>
         <div v-else ref="scrollContainer" class="max-h-150 overflow-y-auto">
@@ -210,7 +210,7 @@
             >
               {{ t("rooms.roomRack.floorNumber", { floor }) }}
               <span class="text-sm font-normal text-gray-500">
-                ({{ getRoomsByFloor(floor).length }} {{ t("rooms.roomRack.rooms") }})
+                ({{ getRoomsByFloor(floor)?.length ?? 0 }} {{ t("rooms.roomRack.rooms") }})
               </span>
             </h3>
             <div
@@ -234,13 +234,13 @@
                   {{ room.roomNumber }}
                 </span>
                 <span class="text-xs text-gray-500 dark:text-gray-400">
-                  {{ room.roomType?.name }}
+                  {{ room.roomType?.label }}
                 </span>
                 <span
                   class="mt-1 text-xs font-medium"
                   :style="{ color: `#${room.status?.colorHex || '94a3b8'}` }"
                 >
-                  {{ room.status?.name }}
+                  {{ room.status?.label }}
                 </span>
               </NuxtLink>
             </div>
@@ -268,8 +268,6 @@
 </template>
 
 <script setup lang="ts">
-import type { Room, RoomStatus } from "~/utils/route-types.gen";
-
 definePageMeta({
   requiresPermission: PERMISSIONS.rooms.rooms.read,
 });
@@ -300,31 +298,28 @@ const sortOptions = [
 ];
 
 const currentFloor = ref(1);
-const scrollContainer = ref<HTMLElement | null>(null);
 
-const { data: statusData, pending: statusPending } = useAsyncData<RoomStatus[]>(
-  async () => {
+const { data: statuses } = useQuery({
+  key: ["rooms", "status", "list"],
+  query: async () => {
     const response = await getApiRoomsStatuses({});
-    return (response.data?.data as RoomStatus[]) || [];
+    return response.data?.data || [];
   },
-  { default: () => [] as RoomStatus[] }
-);
+  placeholderData: [],
+});
 
-const { data: roomsData, pending } = useAsyncData(
-  async () => {
-    const response = await getApiRooms({ query: { limit: 500 } });
-    return (response.data?.data as Room[]) || [];
+const { data: allRooms, isLoading: pending } = useQuery({
+  key: ["rooms", "list"],
+  query: async () => {
+    const response = await getApiRooms({ query: { limit: -1 } });
+    return response.data?.data || [];
   },
-  { default: () => [] as Room[] }
-);
-
-const statuses = computed<RoomStatus[]>(() => statusData.value || []);
-
-const allRooms = computed<Room[]>(() => roomsData.value || []);
+  placeholderData: [],
+});
 
 const floors = computed(() => {
   const floorSet = new Set<number>();
-  allRooms.value.forEach((room) => {
+  allRooms.value?.forEach((room) => {
     if (room.floor) floorSet.add(room.floor);
   });
   return Array.from(floorSet).sort((a, b) => a - b);
@@ -343,13 +338,13 @@ const sortedFloors = computed(() => {
 
 const currentFloorRooms = computed(() => {
   return allRooms.value
-    .filter((room) => room.floor === currentFloor.value)
+    ?.filter((room) => room.floor === currentFloor.value)
     .sort((a, b) => {
       if (sortBy.value === "status") {
-        return (a.status?.name || "").localeCompare(b.status?.name || "");
+        return (a.status?.label || "").localeCompare(b.status?.label || "");
       }
       if (sortBy.value === "type") {
-        return (a.roomType?.name || "").localeCompare(b.roomType?.name || "");
+        return (a.roomType?.label || "").localeCompare(b.roomType?.label || "");
       }
       return (a.roomNumber || "").localeCompare(b.roomNumber || "");
     });
@@ -357,13 +352,13 @@ const currentFloorRooms = computed(() => {
 
 const currentFloorStatusCounts = computed(() => {
   const counts: Record<number, { id: number; name: string; colorHex?: string; count: number }> = {};
-  currentFloorRooms.value.forEach((room) => {
+  currentFloorRooms.value?.forEach((room) => {
     if (room.status) {
       const statusId = room.status.id || 0;
       if (!counts[statusId]) {
         counts[statusId] = {
           id: statusId,
-          name: room.status.name || "",
+          name: room.status.label || "",
           colorHex: room.status.colorHex,
           count: 0,
         };
@@ -378,13 +373,13 @@ const paginatedFloorList = computed(() => floors.value);
 
 const getRoomsByFloor = (floor: number) => {
   return allRooms.value
-    .filter((room) => room.floor === floor)
+    ?.filter((room) => room.floor === floor)
     .sort((a, b) => {
       if (sortBy.value === "status") {
-        return (a.status?.name || "").localeCompare(b.status?.name || "");
+        return (a.status?.label || "").localeCompare(b.status?.label || "");
       }
       if (sortBy.value === "type") {
-        return (a.roomType?.name || "").localeCompare(b.roomType?.name || "");
+        return (a.roomType?.label || "").localeCompare(b.roomType?.label || "");
       }
       return (a.roomNumber || "").localeCompare(b.roomNumber || "");
     });
@@ -416,7 +411,7 @@ watch(
 watch(
   allRooms,
   (rooms) => {
-    if (rooms.length > 0 && currentFloor.value < minFloor.value) {
+    if ((rooms?.length ?? 0) > 0 && currentFloor.value < minFloor.value) {
       currentFloor.value = minFloor.value;
     }
   },
