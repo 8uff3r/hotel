@@ -12,6 +12,7 @@ import (
 	"github.com/go-fuego/fuego"
 	"github.com/go-playground/validator/v10"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type (
@@ -206,14 +207,21 @@ func UpdateModel[T any](db *gorm.DB) FuegoHandler[T, T, any] {
 		}
 		idField.SetUint(uint64(id))
 
-		res := db.WithContext(c).Model(new(T)).Where("id = ?", id).Updates(body)
+		var updated T
+		res := db.WithContext(c).
+			Model(new(T)).
+			Where("id = ?", id).
+			Clauses(clause.Returning{}).
+			Updates(body).
+			Scan(&updated)
+
 		if res.Error != nil {
 			return zero, fuego.BadRequestError{Title: "update_failed"}
 		}
 		if res.RowsAffected == 0 {
 			return zero, fuego.NotFoundError{}
 		}
-		return body, nil
+		return updated, nil
 	}
 }
 
