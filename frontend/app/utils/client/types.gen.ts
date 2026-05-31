@@ -283,10 +283,10 @@ export type GuestWithReservationRequest = {
         durationOfStay?: number;
         entryDate?: string;
         fullBoard?: boolean;
-        guide?: boolean;
         notes?: string;
         numberOfPeople?: number;
         origin?: string;
+        parking?: boolean;
         purposeOfTravel?: string;
         reservationCode?: string;
         roomPrice?: number;
@@ -453,12 +453,12 @@ export type GuestWithReservationResponse = {
             postalCode?: string;
         };
         guestId?: number;
-        guide?: boolean;
         hotelId?: string;
         id?: number;
         notes?: string;
         numberOfPeople?: number;
         origin?: string;
+        parking?: boolean;
         payment?: {
             amount?: number;
             id?: number;
@@ -680,12 +680,12 @@ export type Income = {
             postalCode?: string;
         };
         guestId?: number;
-        guide?: boolean;
         hotelId?: string;
         id?: number;
         notes?: string;
         numberOfPeople?: number;
         origin?: string;
+        parking?: boolean;
         payment?: {
             amount?: number;
             id?: number;
@@ -1213,12 +1213,12 @@ export type PaginatedResponseModelsIncome = {
                 postalCode?: string;
             };
             guestId?: number;
-            guide?: boolean;
             hotelId?: string;
             id?: number;
             notes?: string;
             numberOfPeople?: number;
             origin?: string;
+            parking?: boolean;
             payment?: {
                 amount?: number;
                 id?: number;
@@ -1716,12 +1716,12 @@ export type PaginatedResponseModelsParkingTransaction = {
                 postalCode?: string;
             };
             guestId?: number;
-            guide?: boolean;
             hotelId?: string;
             id?: number;
             notes?: string;
             numberOfPeople?: number;
             origin?: string;
+            parking?: boolean;
             payment?: {
                 amount?: number;
                 id?: number;
@@ -1924,12 +1924,12 @@ export type PaginatedResponseModelsReservation = {
             postalCode?: string;
         };
         guestId?: number;
-        guide?: boolean;
         hotelId?: string;
         id?: number;
         notes?: string;
         numberOfPeople?: number;
         origin?: string;
+        parking?: boolean;
         payment?: {
             amount?: number;
             id?: number;
@@ -2123,12 +2123,12 @@ export type PaginatedResponseModelsRestaurantBill = {
                 postalCode?: string;
             };
             guestId?: number;
-            guide?: boolean;
             hotelId?: string;
             id?: number;
             notes?: string;
             numberOfPeople?: number;
             origin?: string;
+            parking?: boolean;
             payment?: {
                 amount?: number;
                 id?: number;
@@ -2684,12 +2684,12 @@ export type ParkingTransaction = {
             postalCode?: string;
         };
         guestId?: number;
-        guide?: boolean;
         hotelId?: string;
         id?: number;
         notes?: string;
         numberOfPeople?: number;
         origin?: string;
+        parking?: boolean;
         payment?: {
             amount?: number;
             id?: number;
@@ -2859,12 +2859,12 @@ export type Reservation = {
         postalCode?: string;
     };
     guestId?: number;
-    guide?: boolean;
     hotelId?: string;
     id?: number;
     notes?: string;
     numberOfPeople?: number;
     origin?: string;
+    parking?: boolean;
     payment?: {
         amount?: number;
         id?: number;
@@ -3052,12 +3052,12 @@ export type RestaurantBill = {
             postalCode?: string;
         };
         guestId?: number;
-        guide?: boolean;
         hotelId?: string;
         id?: number;
         notes?: string;
         numberOfPeople?: number;
         origin?: string;
+        parking?: boolean;
         payment?: {
             amount?: number;
             id?: number;

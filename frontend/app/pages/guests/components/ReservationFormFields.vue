@@ -9,7 +9,7 @@ const form = defineModel<Required<CreateRequest> & { roomIds: number[] }>({ defa
 
 const { data: rooms } = useAsyncData(async () => {
   const res = await getApiRooms({});
-  return res.data?.map((v) => ({
+  return res.data?.data?.map((v) => ({
     id: v.id,
     label: `${v.name ?? v.roomNumber}`,
   }));
@@ -86,8 +86,8 @@ const { data: rooms } = useAsyncData(async () => {
     <UCheckbox v-model="form.reservation.fullBoard" :disabled="loading" />
   </UFormField>
 
-  <UFormField :label="t('guest.guide')" name="reservation.guide">
-    <UCheckbox v-model="form.reservation.guide" :disabled="loading" />
+  <UFormField :label="t('guest.parking')" name="reservation.parking">
+    <UCheckbox v-model="form.reservation.parking" :disabled="loading" />
   </UFormField>
 
   <UFormField :label="t('guest.notes')" name="reservation.notes" class="md:col-span-3">

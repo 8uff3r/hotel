@@ -62,6 +62,8 @@
         {{ t("users.loadingPermissions") }}
       </div>
       <div v-else class="space-y-4">
+        <UButton>{{ t("users.allPermissions") }}</UButton>
+
         <UCollapsible
           v-for="category in permissionCategories"
           :key="category.key"

@@ -133,7 +133,12 @@
     "restaurant-serving:create": { "fa": "ثبت سفارش", "en": "Create Order" },
     "restaurant-serving:update": { "fa": "ویرایش سفارش", "en": "Update Order" },
     "restaurant-serving:delete": { "fa": "حذف سفارش", "en": "Delete Order" },
-    "restaurant-reports:read": { "fa": "مشاهده گزارشات", "en": "View Reports" }
+    "restaurant-reports:read": { "fa": "مشاهده گزارشات", "en": "View Reports" },
+
+    "travel-agencies:read": { "fa": "مشاهده آژانس مسافرتی", "en": "View Agencies" },
+    "travel-agencies:create": { "fa": "ایجاد آژانس مسافرتی", "en": "Create Agencies" },
+    "travel-agencies:update": { "fa": "ویرایش آژانس مسافرتی", "en": "Update Agencies" },
+    "travel-agencies:delete": { "fa": "حذف آژانس مسافرتی", "en": "Delete Agencies" }
   },
 
   "permission-category": {

@@ -850,9 +850,6 @@
 							"fullBoard": {
 								"type": "boolean"
 							},
-							"guide": {
-								"type": "boolean"
-							},
 							"notes": {
 								"type": "string"
 							},
@@ -861,6 +858,9 @@
 							},
 							"origin": {
 								"type": "string"
+							},
+							"parking": {
+								"type": "boolean"
 							},
 							"purposeOfTravel": {
 								"type": "string"
@@ -1413,9 +1413,6 @@
 								"minimum": 0,
 								"type": "integer"
 							},
-							"guide": {
-								"type": "boolean"
-							},
 							"hotelId": {
 								"nullable": true,
 								"type": "string"
@@ -1432,6 +1429,9 @@
 							},
 							"origin": {
 								"type": "string"
+							},
+							"parking": {
+								"type": "boolean"
 							},
 							"payment": {
 								"properties": {
@@ -2077,9 +2077,6 @@
 								"minimum": 0,
 								"type": "integer"
 							},
-							"guide": {
-								"type": "boolean"
-							},
 							"hotelId": {
 								"nullable": true,
 								"type": "string"
@@ -2096,6 +2093,9 @@
 							},
 							"origin": {
 								"type": "string"
+							},
+							"parking": {
+								"type": "boolean"
 							},
 							"payment": {
 								"properties": {
@@ -3685,9 +3685,6 @@
 											"minimum": 0,
 											"type": "integer"
 										},
-										"guide": {
-											"type": "boolean"
-										},
 										"hotelId": {
 											"nullable": true,
 											"type": "string"
@@ -3704,6 +3701,9 @@
 										},
 										"origin": {
 											"type": "string"
+										},
+										"parking": {
+											"type": "boolean"
 										},
 										"payment": {
 											"properties": {
@@ -5243,9 +5243,6 @@
 											"minimum": 0,
 											"type": "integer"
 										},
-										"guide": {
-											"type": "boolean"
-										},
 										"hotelId": {
 											"nullable": true,
 											"type": "string"
@@ -5262,6 +5259,9 @@
 										},
 										"origin": {
 											"type": "string"
+										},
+										"parking": {
+											"type": "boolean"
 										},
 										"payment": {
 											"properties": {
@@ -5918,9 +5918,6 @@
 									"minimum": 0,
 									"type": "integer"
 								},
-								"guide": {
-									"type": "boolean"
-								},
 								"hotelId": {
 									"nullable": true,
 									"type": "string"
@@ -5937,6 +5934,9 @@
 								},
 								"origin": {
 									"type": "string"
+								},
+								"parking": {
+									"type": "boolean"
 								},
 								"payment": {
 									"properties": {
@@ -6582,9 +6582,6 @@
 											"minimum": 0,
 											"type": "integer"
 										},
-										"guide": {
-											"type": "boolean"
-										},
 										"hotelId": {
 											"nullable": true,
 											"type": "string"
@@ -6601,6 +6598,9 @@
 										},
 										"origin": {
 											"type": "string"
+										},
+										"parking": {
+											"type": "boolean"
 										},
 										"payment": {
 											"properties": {
@@ -8339,9 +8339,6 @@
 								"minimum": 0,
 								"type": "integer"
 							},
-							"guide": {
-								"type": "boolean"
-							},
 							"hotelId": {
 								"nullable": true,
 								"type": "string"
@@ -8358,6 +8355,9 @@
 							},
 							"origin": {
 								"type": "string"
+							},
+							"parking": {
+								"type": "boolean"
 							},
 							"payment": {
 								"properties": {
@@ -8916,9 +8916,6 @@
 						"minimum": 0,
 						"type": "integer"
 					},
-					"guide": {
-						"type": "boolean"
-					},
 					"hotelId": {
 						"nullable": true,
 						"type": "string"
@@ -8935,6 +8932,9 @@
 					},
 					"origin": {
 						"type": "string"
+					},
+					"parking": {
+						"type": "boolean"
 					},
 					"payment": {
 						"properties": {
@@ -9559,9 +9559,6 @@
 								"minimum": 0,
 								"type": "integer"
 							},
-							"guide": {
-								"type": "boolean"
-							},
 							"hotelId": {
 								"nullable": true,
 								"type": "string"
@@ -9578,6 +9575,9 @@
 							},
 							"origin": {
 								"type": "string"
+							},
+							"parking": {
+								"type": "boolean"
 							},
 							"payment": {
 								"properties": {

@@ -86,10 +86,6 @@
                 <UFormField :label="t('guest.referrer')" name="payment.referrer">
                   <UInput v-model="form.payment.referrer" :disabled="loading" />
                 </UFormField>
-
-                <UFormField :label="t('guest.contractType')" name="payment.contractType">
-                  <UInput v-model="form.payment.contractType" :disabled="loading" />
-                </UFormField>
               </div>
             </template>
           </UCollapsible>

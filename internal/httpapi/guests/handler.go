@@ -48,7 +48,7 @@ type ReservationRequest struct {
 	Destination     string        `json:"destination"`
 	PurposeOfTravel string        `json:"purposeOfTravel"`
 	Breakfast       bool          `json:"breakfast"`
-	Guide           bool          `json:"guide"`
+	Parking         bool          `json:"parking"`
 	FullBoard       bool          `json:"fullBoard"`
 	RoomPrice       float64       `json:"roomPrice"`
 	Notes           string        `json:"notes"`
@@ -162,7 +162,7 @@ func (gm *GuestsModule) createGuestWithReservation(c fuego.ContextWithBody[Guest
 			PurposeOfTravel: body.Reservation.PurposeOfTravel,
 			Breakfast:       body.Reservation.Breakfast,
 			FullBoard:       body.Reservation.FullBoard,
-			Guide:           body.Reservation.Guide,
+			Parking:         body.Reservation.Parking,
 			RoomPrice:       body.Reservation.RoomPrice,
 			Notes:           body.Reservation.Notes,
 			Rooms:           body.Reservation.Rooms,

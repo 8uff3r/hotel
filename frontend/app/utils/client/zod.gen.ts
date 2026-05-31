@@ -281,10 +281,10 @@ export const zGuestWithReservationRequest = z.object({
         durationOfStay: z.int().optional(),
         entryDate: z.iso.datetime({ offset: true }).optional(),
         fullBoard: z.boolean().optional(),
-        guide: z.boolean().optional(),
         notes: z.string().optional(),
         numberOfPeople: z.int().optional(),
         origin: z.string().optional(),
+        parking: z.boolean().optional(),
         purposeOfTravel: z.string().optional(),
         reservationCode: z.string().optional(),
         roomPrice: z.number().optional(),
@@ -451,12 +451,12 @@ export const zGuestWithReservationResponse = z.object({
             postalCode: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
-        guide: z.boolean().optional(),
         hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         notes: z.string().optional(),
         numberOfPeople: z.int().optional(),
         origin: z.string().optional(),
+        parking: z.boolean().optional(),
         payment: z.object({
             amount: z.number().optional(),
             id: z.int().gte(0).optional(),
@@ -655,12 +655,12 @@ export const zIncome = z.object({
             postalCode: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
-        guide: z.boolean().optional(),
         hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         notes: z.string().optional(),
         numberOfPeople: z.int().optional(),
         origin: z.string().optional(),
+        parking: z.boolean().optional(),
         payment: z.object({
             amount: z.number().optional(),
             id: z.int().gte(0).optional(),
@@ -1188,12 +1188,12 @@ export const zPaginatedResponseModelsIncome = z.object({
                 postalCode: z.string().optional()
             }).optional(),
             guestId: z.int().gte(0).optional(),
-            guide: z.boolean().optional(),
             hotelId: z.string().optional(),
             id: z.int().gte(0).optional(),
             notes: z.string().optional(),
             numberOfPeople: z.int().optional(),
             origin: z.string().optional(),
+            parking: z.boolean().optional(),
             payment: z.object({
                 amount: z.number().optional(),
                 id: z.int().gte(0).optional(),
@@ -1691,12 +1691,12 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
                 postalCode: z.string().optional()
             }).optional(),
             guestId: z.int().gte(0).optional(),
-            guide: z.boolean().optional(),
             hotelId: z.string().optional(),
             id: z.int().gte(0).optional(),
             notes: z.string().optional(),
             numberOfPeople: z.int().optional(),
             origin: z.string().optional(),
+            parking: z.boolean().optional(),
             payment: z.object({
                 amount: z.number().optional(),
                 id: z.int().gte(0).optional(),
@@ -1899,12 +1899,12 @@ export const zPaginatedResponseModelsReservation = z.object({
             postalCode: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
-        guide: z.boolean().optional(),
         hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         notes: z.string().optional(),
         numberOfPeople: z.int().optional(),
         origin: z.string().optional(),
+        parking: z.boolean().optional(),
         payment: z.object({
             amount: z.number().optional(),
             id: z.int().gte(0).optional(),
@@ -2098,12 +2098,12 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
                 postalCode: z.string().optional()
             }).optional(),
             guestId: z.int().gte(0).optional(),
-            guide: z.boolean().optional(),
             hotelId: z.string().optional(),
             id: z.int().gte(0).optional(),
             notes: z.string().optional(),
             numberOfPeople: z.int().optional(),
             origin: z.string().optional(),
+            parking: z.boolean().optional(),
             payment: z.object({
                 amount: z.number().optional(),
                 id: z.int().gte(0).optional(),
@@ -2659,12 +2659,12 @@ export const zParkingTransaction = z.object({
             postalCode: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
-        guide: z.boolean().optional(),
         hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         notes: z.string().optional(),
         numberOfPeople: z.int().optional(),
         origin: z.string().optional(),
+        parking: z.boolean().optional(),
         payment: z.object({
             amount: z.number().optional(),
             id: z.int().gte(0).optional(),
@@ -2834,12 +2834,12 @@ export const zReservation = z.object({
         postalCode: z.string().optional()
     }).optional(),
     guestId: z.int().gte(0).optional(),
-    guide: z.boolean().optional(),
     hotelId: z.string().optional(),
     id: z.int().gte(0).optional(),
     notes: z.string().optional(),
     numberOfPeople: z.int().optional(),
     origin: z.string().optional(),
+    parking: z.boolean().optional(),
     payment: z.object({
         amount: z.number().optional(),
         id: z.int().gte(0).optional(),
@@ -3027,12 +3027,12 @@ export const zRestaurantBill = z.object({
             postalCode: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
-        guide: z.boolean().optional(),
         hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         notes: z.string().optional(),
         numberOfPeople: z.int().optional(),
         origin: z.string().optional(),
+        parking: z.boolean().optional(),
         payment: z.object({
             amount: z.number().optional(),
             id: z.int().gte(0).optional(),
