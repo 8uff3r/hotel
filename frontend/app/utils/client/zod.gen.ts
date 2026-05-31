@@ -3959,6 +3959,14 @@ export const zGetApiPermissionsUserUserIdPath = z.object({
     userId: z.string()
 });
 
+export const zPostApiPermissionsUserUserIdGrantAllHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zPostApiPermissionsUserUserIdGrantAllPath = z.object({
+    userId: z.string()
+});
+
 export const zPostApiPermissionsUserUserIdTemplateTemplateIdHeaders = z.object({
     Accept: z.string().optional()
 });

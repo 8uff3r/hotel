@@ -5415,6 +5415,41 @@ export type GetApiPermissionsUserUserIdResponses = {
 
 export type GetApiPermissionsUserUserIdResponse = GetApiPermissionsUserUserIdResponses[keyof GetApiPermissionsUserUserIdResponses];
 
+export type PostApiPermissionsUserUserIdGrantAllData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        userId: string;
+    };
+    query?: never;
+    url: '/api/permissions/user/{userId}/grant-all';
+};
+
+export type PostApiPermissionsUserUserIdGrantAllErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PostApiPermissionsUserUserIdGrantAllError = PostApiPermissionsUserUserIdGrantAllErrors[keyof PostApiPermissionsUserUserIdGrantAllErrors];
+
+export type PostApiPermissionsUserUserIdGrantAllResponses = {
+    /**
+     * OK
+     */
+    200: OkResponse;
+};
+
+export type PostApiPermissionsUserUserIdGrantAllResponse = PostApiPermissionsUserUserIdGrantAllResponses[keyof PostApiPermissionsUserUserIdGrantAllResponses];
+
 export type PostApiPermissionsUserUserIdTemplateTemplateIdData = {
     body?: never;
     headers?: {

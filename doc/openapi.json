@@ -15094,6 +15094,83 @@
 				]
 			}
 		},
+		"/api/permissions/user/{userId}/grant-all": {
+			"post": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/permissions.(*PermissionsModule).grantAllPermissionsToUser`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "POST_/api/permissions/user/:userId/grant-all",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/okResponse"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/okResponse"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "grant all permissions to user",
+				"tags": [
+					"/PERMISSIONS"
+				]
+			}
+		},
 		"/api/permissions/user/{userId}/template/{templateId}": {
 			"post": {
 				"description": "#### Controller: \n\n`hotel/internal/httpapi/permissions.(*PermissionsModule).applyTemplate`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",

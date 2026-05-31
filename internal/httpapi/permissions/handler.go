@@ -18,14 +18,15 @@ type permissionsResponse struct {
 	Data []models.Permission `json:"data"`
 }
 
-func (m PermissionsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
-	pm := PermissionsModule{api}
+func (pm PermissionsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
+	pm = PermissionsModule{api}
 
 	fuego.Get(s, "/", pm.permissionsList)
 	fuego.Get(s, "/templates", h.ListModel[models.PermissionTemplate](api.Db))
 	fuego.Get(s, "/user/{userId}", pm.userPermissions)
 	fuego.Post(s, "/user/{userId}/template/{templateId}", pm.applyTemplate)
 	fuego.Post(s, "/user/{userId}/{permissionId}", pm.setUserPermission)
+	fuego.Post(s, "/user/{userId}/grant-all", pm.grantAllPermissionsToUser)
 	fuego.Delete(s, "/user/{userId}/{permissionId}", pm.setUserPermission)
 }
 
@@ -39,9 +40,10 @@ func (pm *PermissionsModule) permissionsList(c fuego.ContextNoBody) (permissions
 
 	sortColumn := c.QueryParam("sort")
 	order := "category_id, resource, action"
-	if sortColumn == "page" {
+	switch sortColumn {
+	case "page":
 		order = "resource, category_id, action"
-	} else if sortColumn == "action" {
+	case "action":
 		order = "action, resource, category_id"
 	}
 
@@ -120,7 +122,8 @@ func (pm *PermissionsModule) setUserPermission(c fuego.ContextNoBody) (*okRespon
 	var existing models.UserPermission
 	result := pm.Db.Where("user_id = ? AND permission_id = ?", uid, pid).First(&existing)
 
-	if result.Error == gorm.ErrRecordNotFound {
+	switch result.Error {
+	case gorm.ErrRecordNotFound:
 		if shouldAdd {
 			newPerm := models.UserPermission{
 				UserID:       uint(uid),
@@ -131,7 +134,7 @@ func (pm *PermissionsModule) setUserPermission(c fuego.ContextNoBody) (*okRespon
 				return nil, fuego.InternalServerError{Title: "create_failed"}
 			}
 		}
-	} else if result.Error == nil {
+	case nil:
 		if !shouldAdd {
 			if err := pm.Db.Delete(&existing).Error; err != nil {
 				return nil, fuego.InternalServerError{Title: "delete_failed"}
@@ -142,8 +145,36 @@ func (pm *PermissionsModule) setUserPermission(c fuego.ContextNoBody) (*okRespon
 				return nil, fuego.InternalServerError{Title: "update_failed"}
 			}
 		}
-	} else {
+	default:
 		return nil, fuego.InternalServerError{Title: "query_failed"}
+	}
+
+	return &okResponse{Ok: true}, nil
+}
+
+func (pm *PermissionsModule) grantAllPermissionsToUser(c fuego.ContextNoBody) (*okResponse, error) {
+	userID := c.PathParam("userId")
+
+	uid, err := strconv.ParseUint(userID, 10, 32)
+	if err != nil {
+		return nil, fuego.BadRequestError{Title: "invalid_user_id"}
+	}
+
+	var allPermissions []models.Permission
+	if err := pm.Db.WithContext(c).Model(models.Permission{}).Find(&allPermissions).Error; err != nil {
+		return nil, fuego.InternalServerError{Err: err}
+	}
+
+	for _, v := range allPermissions {
+		newPerm := models.UserPermission{
+			UserID:       uint(uid),
+			PermissionID: v.ID,
+			Granted:      true,
+		}
+
+		if err := pm.Db.WithContext(c).Create(&newPerm).Error; err != nil {
+			return nil, fuego.InternalServerError{Title: "create_failed"}
+		}
 	}
 
 	return &okResponse{Ok: true}, nil

@@ -62,7 +62,7 @@
         {{ t("users.loadingPermissions") }}
       </div>
       <div v-else class="space-y-4">
-        <UButton>{{ t("users.allPermissions") }}</UButton>
+        <UButton @click="grantAllPermissions()">{{ t("users.allPermissions") }}</UButton>
 
         <UCollapsible
           v-for="category in permissionCategories"
@@ -109,12 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  PermissionsResponse,
-  GetApiPermissionsUserUserIdResponse,
-  PutApiUsersIdResponse,
-  SanitizedUser,
-} from "~/utils/client";
+import type { PermissionsResponse, GetApiPermissionsUserUserIdResponse } from "~/utils/client";
 
 definePageMeta({
   requiresPermission: PERMISSIONS.users.users.update,
@@ -213,6 +208,14 @@ const toggleCategory = (key: string, open: boolean) => {
   }
 };
 
+const grantAllPermissions = async () => {
+  await postApiPermissionsUserUserIdGrantAll({
+    path: {
+      userId: String(userId.value),
+    },
+  });
+  await fetchData();
+};
 const togglePermission = async (permissionId: number, granted: boolean) => {
   try {
     if (granted) {
