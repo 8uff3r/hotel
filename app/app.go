@@ -25,6 +25,7 @@ import (
 	"hotel/internal/httpapi/reservation"
 	"hotel/internal/httpapi/restaurant"
 	"hotel/internal/httpapi/rooms"
+	"hotel/internal/httpapi/travelagency"
 	sanahttp "hotel/internal/httpapi/sana"
 	"hotel/internal/httpapi/users"
 	"hotel/internal/httpapi/common"
@@ -130,7 +131,8 @@ func New(cfg config.Config) (*App, error) {
 		"/permissions": permissions.PermissionsModule{},
 		"/sana":        sanahttp.New(database, cfg.Sana),
 		"/restaurant":  restaurant.RestaurantModule{},
-		"/common":      common.CommonModule{},
+		"/common":           common.CommonModule{},
+		"/travel-agencies": travelagency.TravelAgencyModule{},
 	})
 
 	spaGroup := fuego.Group(srv, "/")

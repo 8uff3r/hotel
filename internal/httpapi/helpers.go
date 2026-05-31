@@ -32,6 +32,8 @@ func newPtr(model any) any {
 		return &models.Vehicle{}
 	case *models.ParkingTransaction:
 		return &models.ParkingTransaction{}
+	case *models.TravelAgency:
+		return &models.TravelAgency{}
 	default:
 		return nil
 	}
@@ -61,6 +63,8 @@ func newSlicePtr(model any) any {
 		return &[]models.Vehicle{}
 	case *models.ParkingTransaction:
 		return &[]models.ParkingTransaction{}
+	case *models.TravelAgency:
+		return &[]models.TravelAgency{}
 	default:
 		return &[]map[string]any{}
 	}

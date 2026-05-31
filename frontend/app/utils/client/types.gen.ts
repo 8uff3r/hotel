@@ -2353,6 +2353,25 @@ export type PaginatedResponseModelsSanitizedUser = {
 };
 
 /**
+ * PaginatedResponse_models.TravelAgency schema
+ */
+export type PaginatedResponseModelsTravelAgency = {
+    data?: Array<{
+        ceoFirstName?: string;
+        ceoLastName?: string;
+        city?: string;
+        id?: number;
+        name?: string;
+        province?: string;
+        status?: string;
+    }>;
+    limit?: number;
+    page?: number;
+    total?: number;
+    totalPages?: number;
+};
+
+/**
  * PaginatedResponse_models.Vehicle schema
  */
 export type PaginatedResponseModelsVehicle = {
@@ -3263,6 +3282,19 @@ export type SettleGuestRequest = {
     paymentMethod?: number;
     reference?: string;
     reservationIds?: Array<number>;
+};
+
+/**
+ * TravelAgency schema
+ */
+export type TravelAgency = {
+    ceoFirstName?: string;
+    ceoLastName?: string;
+    city?: string;
+    id?: number;
+    name?: string;
+    province?: string;
+    status?: string;
 };
 
 /**
@@ -7188,6 +7220,187 @@ export type GetApiSanaTravelReasonsResponses = {
 };
 
 export type GetApiSanaTravelReasonsResponse = GetApiSanaTravelReasonsResponses[keyof GetApiSanaTravelReasonsResponses];
+
+export type GetApiTravelAgenciesData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: {
+        limit?: number;
+        page?: number;
+        filters?: string;
+    };
+    url: '/api/travel-agencies/';
+};
+
+export type GetApiTravelAgenciesErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiTravelAgenciesError = GetApiTravelAgenciesErrors[keyof GetApiTravelAgenciesErrors];
+
+export type GetApiTravelAgenciesResponses = {
+    /**
+     * OK
+     */
+    200: PaginatedResponseModelsTravelAgency;
+};
+
+export type GetApiTravelAgenciesResponse = GetApiTravelAgenciesResponses[keyof GetApiTravelAgenciesResponses];
+
+export type PostApiTravelAgenciesData = {
+    /**
+     * Request body for models.TravelAgency
+     */
+    body: TravelAgency;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/travel-agencies/';
+};
+
+export type PostApiTravelAgenciesErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PostApiTravelAgenciesError = PostApiTravelAgenciesErrors[keyof PostApiTravelAgenciesErrors];
+
+export type PostApiTravelAgenciesResponses = {
+    /**
+     * OK
+     */
+    200: TravelAgency;
+};
+
+export type PostApiTravelAgenciesResponse = PostApiTravelAgenciesResponses[keyof PostApiTravelAgenciesResponses];
+
+export type DeleteApiTravelAgenciesIdData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/travel-agencies/{id}';
+};
+
+export type DeleteApiTravelAgenciesIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type DeleteApiTravelAgenciesIdError = DeleteApiTravelAgenciesIdErrors[keyof DeleteApiTravelAgenciesIdErrors];
+
+export type DeleteApiTravelAgenciesIdResponses = {
+    /**
+     * OK
+     */
+    200: OkResponse;
+};
+
+export type DeleteApiTravelAgenciesIdResponse = DeleteApiTravelAgenciesIdResponses[keyof DeleteApiTravelAgenciesIdResponses];
+
+export type GetApiTravelAgenciesIdData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/travel-agencies/{id}';
+};
+
+export type GetApiTravelAgenciesIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiTravelAgenciesIdError = GetApiTravelAgenciesIdErrors[keyof GetApiTravelAgenciesIdErrors];
+
+export type GetApiTravelAgenciesIdResponses = {
+    /**
+     * OK
+     */
+    200: TravelAgency;
+};
+
+export type GetApiTravelAgenciesIdResponse = GetApiTravelAgenciesIdResponses[keyof GetApiTravelAgenciesIdResponses];
+
+export type PutApiTravelAgenciesIdData = {
+    /**
+     * Request body for models.TravelAgency
+     */
+    body: TravelAgency;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/travel-agencies/{id}';
+};
+
+export type PutApiTravelAgenciesIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PutApiTravelAgenciesIdError = PutApiTravelAgenciesIdErrors[keyof PutApiTravelAgenciesIdErrors];
+
+export type PutApiTravelAgenciesIdResponses = {
+    /**
+     * OK
+     */
+    200: TravelAgency;
+};
+
+export type PutApiTravelAgenciesIdResponse = PutApiTravelAgenciesIdResponses[keyof PutApiTravelAgenciesIdResponses];
 
 export type GetApiUsersData = {
     body?: never;

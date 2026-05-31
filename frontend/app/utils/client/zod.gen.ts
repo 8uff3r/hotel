@@ -2328,6 +2328,25 @@ export const zPaginatedResponseModelsSanitizedUser = z.object({
 });
 
 /**
+ * PaginatedResponse_models.TravelAgency schema
+ */
+export const zPaginatedResponseModelsTravelAgency = z.object({
+    data: z.array(z.object({
+        ceoFirstName: z.string().optional(),
+        ceoLastName: z.string().optional(),
+        city: z.string().optional(),
+        id: z.int().gte(0).optional(),
+        name: z.string().optional(),
+        province: z.string().optional(),
+        status: z.string().optional()
+    })).optional(),
+    limit: z.int().optional(),
+    page: z.int().optional(),
+    total: z.coerce.bigint().min(BigInt('-9223372036854775808'), { error: 'Invalid value: Expected int64 to be >= -9223372036854775808' }).max(BigInt('9223372036854775807'), { error: 'Invalid value: Expected int64 to be <= 9223372036854775807' }).optional(),
+    totalPages: z.int().optional()
+});
+
+/**
  * PaginatedResponse_models.Vehicle schema
  */
 export const zPaginatedResponseModelsVehicle = z.object({
@@ -3238,6 +3257,19 @@ export const zSettleGuestRequest = z.object({
     paymentMethod: z.int().gte(0).optional(),
     reference: z.string().optional(),
     reservationIds: z.array(z.int().gte(0)).optional()
+});
+
+/**
+ * TravelAgency schema
+ */
+export const zTravelAgency = z.object({
+    ceoFirstName: z.string().optional(),
+    ceoLastName: z.string().optional(),
+    city: z.string().optional(),
+    id: z.int().gte(0).optional(),
+    name: z.string().optional(),
+    province: z.string().optional(),
+    status: z.string().optional()
 });
 
 /**
@@ -4338,6 +4370,54 @@ export const zPostApiSanaSyncAllHeaders = z.object({
 
 export const zGetApiSanaTravelReasonsHeaders = z.object({
     Accept: z.string().optional()
+});
+
+export const zGetApiTravelAgenciesHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zGetApiTravelAgenciesQuery = z.object({
+    limit: z.int().optional(),
+    page: z.int().optional(),
+    filters: z.string().optional()
+});
+
+/**
+ * Request body for models.TravelAgency
+ */
+export const zPostApiTravelAgenciesBody = zTravelAgency;
+
+export const zPostApiTravelAgenciesHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zDeleteApiTravelAgenciesIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zDeleteApiTravelAgenciesIdPath = z.object({
+    id: z.string()
+});
+
+export const zGetApiTravelAgenciesIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zGetApiTravelAgenciesIdPath = z.object({
+    id: z.string()
+});
+
+/**
+ * Request body for models.TravelAgency
+ */
+export const zPutApiTravelAgenciesIdBody = zTravelAgency;
+
+export const zPutApiTravelAgenciesIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zPutApiTravelAgenciesIdPath = z.object({
+    id: z.string()
 });
 
 export const zGetApiUsersHeaders = z.object({

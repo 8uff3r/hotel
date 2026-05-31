@@ -107,6 +107,15 @@ export const PERMISSIONS = {
     },
   },
 
+  travelAgencies: {
+    travelAgencies: {
+      read: "travel-agencies:read",
+      create: "travel-agencies:create",
+      update: "travel-agencies:update",
+      delete: "travel-agencies:delete",
+    },
+  },
+
   restaurant: {
     restaurant: {
       read: "restaurant:read",

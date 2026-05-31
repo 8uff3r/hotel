@@ -12,6 +12,7 @@ func AllForDB() []any {
 		&IncomeCategory{}, &ExpenseCategory{}, &PaymentStatus{}, &PaymentMethod{},
 		&InventoryItemCategory{}, &InventoryItemUnit{}, &InventoryItemStatus{}, &RestaurantBillStatus{},
 		&RoomType{}, &RoomStatus{}, &GuestCompanion{}, &PermissionCategory{}, &ReservationStatus{},
+		&TravelAgency{},
 	}
 }
 
@@ -53,5 +54,6 @@ func AllForTypeGen() []any {
 		RestaurantBill{},
 		MealTransaction{},
 		RestaurantStats{},
+		TravelAgency{},
 	}
 }

@@ -171,6 +171,12 @@ const items = computed(() =>
         permission: PERMISSIONS.guests.guests.read,
       },
       {
+        label: t("layout.nav.travelAgencies"),
+        icon: "i-lucide-building",
+        to: "/travel-agencies",
+        permission: PERMISSIONS.travelAgencies.travelAgencies.read,
+      },
+      {
         label: t("layout.nav.parking"),
         icon: "i-lucide-car",
         to: "/parking",
