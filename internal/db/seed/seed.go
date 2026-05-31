@@ -136,6 +136,7 @@ func seedRoomStatuses(db *gorm.DB) {
 		{TranslateBase: models.TranslateBase{Slug: "occupied", Translation: t["occupied"]}, ColorHex: "E74C3C"},       // red
 		{TranslateBase: models.TranslateBase{Slug: "reserved", Translation: t["reserved"]}, ColorHex: "F39C12"},       // orange
 		{TranslateBase: models.TranslateBase{Slug: "maintenance", Translation: t["maintenance"]}, ColorHex: "95A5A6"}, // gray
+		{TranslateBase: models.TranslateBase{Slug: "dirty", Translation: t["dirty"]}, ColorHex: "4a412a"},             // dark brown (aka ugliest color in the world)
 	}
 
 	seed(db, statuses)

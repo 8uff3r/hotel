@@ -41,6 +41,7 @@
     "available": { "fa": "در دسترس", "en": "Available" },
     "occupied": { "fa": "اشغال شده", "en": "Occupied" },
     "reserved": { "fa": "رزرو شده", "en": "Reserved" },
+    "dirty": { "fa": "نیاز به نظافت", "en": "Needs cleaning" },
     "maintenance": { "fa": "در حال تعمیر", "en": "Maintenance" }
   },
 
