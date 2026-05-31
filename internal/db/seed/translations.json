@@ -149,7 +149,8 @@
     "users": { "fa": "کاربران", "en": "Users" },
     "accounting": { "fa": "حسابداری", "en": "Accounting" },
     "parking": { "fa": "پارکینگ", "en": "Parking" },
-    "restaurant": { "fa": "رستوران", "en": "Restaurant" }
+    "restaurant": { "fa": "رستوران", "en": "Restaurant" },
+    "travel-agencies": { "fa": "آژانس مسافرتی", "en": "Travel Agencies" }
   },
 
   "permission-template": {
