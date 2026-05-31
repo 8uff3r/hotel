@@ -2455,6 +2455,66 @@
 							"lastName": {
 								"type": "string"
 							},
+							"roles": {
+								"items": {
+									"nullable": true,
+									"properties": {
+										"description": {
+											"type": "string"
+										},
+										"id": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"label": {
+											"type": "string"
+										},
+										"permissions": {
+											"items": {
+												"properties": {
+													"action": {
+														"type": "string"
+													},
+													"category": {
+														"properties": {
+															"id": {
+																"minimum": 0,
+																"type": "integer"
+															},
+															"label": {
+																"type": "string"
+															},
+															"slug": {
+																"type": "string"
+															}
+														},
+														"type": "object"
+													},
+													"categoryId": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"id": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"resource": {
+														"type": "string"
+													}
+												},
+												"type": "object"
+											},
+											"type": "array"
+										},
+										"slug": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								},
+								"nullable": true,
+								"type": "array"
+							},
 							"userHotels": {
 								"items": {
 									"properties": {
@@ -7250,6 +7310,66 @@
 								"lastName": {
 									"type": "string"
 								},
+								"roles": {
+									"items": {
+										"nullable": true,
+										"properties": {
+											"description": {
+												"type": "string"
+											},
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"label": {
+												"type": "string"
+											},
+											"permissions": {
+												"items": {
+													"properties": {
+														"action": {
+															"type": "string"
+														},
+														"category": {
+															"properties": {
+																"id": {
+																	"minimum": 0,
+																	"type": "integer"
+																},
+																"label": {
+																	"type": "string"
+																},
+																"slug": {
+																	"type": "string"
+																}
+															},
+															"type": "object"
+														},
+														"categoryId": {
+															"minimum": 0,
+															"type": "integer"
+														},
+														"id": {
+															"minimum": 0,
+															"type": "integer"
+														},
+														"resource": {
+															"type": "string"
+														}
+													},
+													"type": "object"
+												},
+												"type": "array"
+											},
+											"slug": {
+												"type": "string"
+											}
+										},
+										"type": "object"
+									},
+									"nullable": true,
+									"type": "array"
+								},
 								"userHotels": {
 									"items": {
 										"properties": {
@@ -10195,6 +10315,66 @@
 					"lastName": {
 						"type": "string"
 					},
+					"roles": {
+						"items": {
+							"nullable": true,
+							"properties": {
+								"description": {
+									"type": "string"
+								},
+								"id": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"label": {
+									"type": "string"
+								},
+								"permissions": {
+									"items": {
+										"properties": {
+											"action": {
+												"type": "string"
+											},
+											"category": {
+												"properties": {
+													"id": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"label": {
+														"type": "string"
+													},
+													"slug": {
+														"type": "string"
+													}
+												},
+												"type": "object"
+											},
+											"categoryId": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"resource": {
+												"type": "string"
+											}
+										},
+										"type": "object"
+									},
+									"type": "array"
+								},
+								"slug": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"nullable": true,
+						"type": "array"
+					},
 					"userHotels": {
 						"items": {
 							"properties": {
@@ -10589,6 +10769,66 @@
 							"lastName": {
 								"type": "string"
 							},
+							"roles": {
+								"items": {
+									"nullable": true,
+									"properties": {
+										"description": {
+											"type": "string"
+										},
+										"id": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"label": {
+											"type": "string"
+										},
+										"permissions": {
+											"items": {
+												"properties": {
+													"action": {
+														"type": "string"
+													},
+													"category": {
+														"properties": {
+															"id": {
+																"minimum": 0,
+																"type": "integer"
+															},
+															"label": {
+																"type": "string"
+															},
+															"slug": {
+																"type": "string"
+															}
+														},
+														"type": "object"
+													},
+													"categoryId": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"id": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"resource": {
+														"type": "string"
+													}
+												},
+												"type": "object"
+											},
+											"type": "array"
+										},
+										"slug": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								},
+								"nullable": true,
+								"type": "array"
+							},
 							"userHotels": {
 								"items": {
 									"properties": {
@@ -10714,6 +10954,14 @@
 					},
 					"password": {
 						"type": "string"
+					},
+					"roleIds": {
+						"items": {
+							"minimum": 0,
+							"type": "integer"
+						},
+						"nullable": true,
+						"type": "array"
 					}
 				},
 				"type": "object"

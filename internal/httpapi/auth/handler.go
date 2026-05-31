@@ -2,6 +2,7 @@ package auth
 
 import (
 	"fmt"
+
 	h "hotel/internal/httpapi"
 	"hotel/internal/models"
 

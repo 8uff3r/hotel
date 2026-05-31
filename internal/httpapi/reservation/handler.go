@@ -54,7 +54,15 @@ func (re *ReservationModule) getReservationDetails(c fuego.ContextNoBody) (model
 		return zero, err
 	}
 	var entity models.Reservation
-	if err := re.Db.WithContext(c).Model(new(models.Reservation)).Preload("Payment", "Payment.PaymentStatus", "Guest", "Rooms").Where("id = ?", id).First(&entity).Error; err != nil {
+	if err := re.Db.WithContext(c).
+		Model(new(models.Reservation)).
+		Preload("Payment").
+		Preload("Payment.PaymentStatus").
+		Preload("Guest").
+		Preload("Rooms").
+		Where("id = ?", id).
+		First(&entity).
+		Error; err != nil {
 		return zero, err
 	}
 

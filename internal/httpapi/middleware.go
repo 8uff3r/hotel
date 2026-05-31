@@ -4,9 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"hotel/internal/models"
 	"net/http"
 	"time"
+
+	"hotel/internal/models"
 
 	"gorm.io/gorm"
 )
@@ -88,7 +89,8 @@ func (a *API) RecoverAndLogMiddleware(next http.Handler) http.Handler {
 				WriteErr(w, http.StatusInternalServerError, "internal_error")
 			}
 
-			a.Logger.Info("request",
+			a.Logger.Info(
+				"request",
 				"method", r.Method,
 				"path", r.URL.Path,
 				"duration_ms", time.Since(start).Milliseconds(),
@@ -100,10 +102,12 @@ func (a *API) RecoverAndLogMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-type UserKey struct{}
-type HotelIDKey struct{}
-type UserHotelsKey struct{}
-type UserPermissionsKey struct{}
+type (
+	UserKey            struct{}
+	HotelIDKey         struct{}
+	UserHotelsKey      struct{}
+	UserPermissionsKey struct{}
+)
 
 func GetUserPermissionsFromContext(ctx context.Context) []models.UserPermissionInfo {
 	if perms, ok := ctx.Value(UserPermissionsKey{}).([]models.UserPermissionInfo); ok {
@@ -163,16 +167,20 @@ func (a *API) sessionUser(r *http.Request) (models.SanitizedUser, error) {
 	}
 
 	var s models.Session
-	if err := a.Db.WithContext(r.Context()).Preload("User.UserHotels.Hotel").Where("id = ? AND expires_at > ?", cookie.Value, time.Now().UTC()).First(&s).Error; err != nil {
+	if err := a.Db.WithContext(r.Context()).Preload("User.UserHotels.Hotel").Preload("User.Roles.Template").Where("id = ? AND expires_at > ?", cookie.Value, time.Now().UTC()).First(&s).Error; err != nil {
 		return zero, err
 	}
 	if !s.User.IsActive {
 		return zero, gorm.ErrRecordNotFound
 	}
-	return SanitizeUser(&s.User), nil
+	var roles []models.PermissionTemplate
+	for _, v := range s.User.Roles {
+		roles = append(roles, v.Template)
+	}
+	return SanitizeUser(&s.User, roles), nil
 }
 
-func SanitizeUser(u *models.User) models.SanitizedUser {
+func SanitizeUser(u *models.User, roles []models.PermissionTemplate) models.SanitizedUser {
 	var hotels []models.UserHotelInfo
 	for _, uh := range u.UserHotels {
 		hotels = append(hotels, models.UserHotelInfo{
@@ -180,5 +188,5 @@ func SanitizeUser(u *models.User) models.SanitizedUser {
 			Hotel:   uh.Hotel,
 		})
 	}
-	return models.SanitizedUser{ID: u.ID, Email: u.Email, FirstName: u.FirstName, LastName: u.LastName, UserHotels: hotels}
+	return models.SanitizedUser{ID: u.ID, Email: u.Email, FirstName: u.FirstName, LastName: u.LastName, UserHotels: hotels, Roles: roles}
 }

@@ -1,9 +1,10 @@
 package auth
 
 import (
+	"strings"
+
 	h "hotel/internal/httpapi"
 	"hotel/internal/models"
-	"strings"
 
 	"github.com/go-fuego/fuego"
 	"golang.org/x/crypto/bcrypt"
@@ -36,7 +37,12 @@ func (a *AuthModule) profileUpdate(c fuego.ContextWithBody[profileUpdateDto]) (m
 	}
 
 	var row models.User
-	if err := a.Db.WithContext(c).Model(&models.User{}).Preload("UserHotels").First(&row, sanitized.ID).Error; err != nil {
+	if err := a.Db.WithContext(c).
+		Model(&models.User{}).
+		Preload("UserHotels").
+		Preload("Roles.Template").
+		First(&row, sanitized.ID).
+		Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return zero, fuego.NotFoundError{Title: "not_found"}
 		}
@@ -57,7 +63,12 @@ func (a *AuthModule) profileUpdate(c fuego.ContextWithBody[profileUpdateDto]) (m
 		return zero, fuego.BadRequestError{Title: "update_failed"}
 	}
 
-	return h.SanitizeUser(&row), nil
+	var roles []models.PermissionTemplate
+	for _, v := range row.Roles {
+		roles = append(roles, v.Template)
+	}
+
+	return h.SanitizeUser(&row, roles), nil
 }
 
 func (a *AuthModule) profileChangePassword(c fuego.ContextWithBody[changePasswordDto]) (map[string]string, error) {

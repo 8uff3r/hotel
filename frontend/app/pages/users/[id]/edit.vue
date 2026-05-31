@@ -62,7 +62,12 @@
         {{ t("users.loadingPermissions") }}
       </div>
       <div v-else class="space-y-4">
-        <UButton @click="grantAllPermissions()">{{ t("users.allPermissions") }}</UButton>
+        <div class="flex gap-3">
+          <UButton @click="grantAllPermissions()">{{ t("users.allPermissions") }}</UButton>
+          <div class="w-80">
+            <HSelectMenu :items="templates" />
+          </div>
+        </div>
 
         <UCollapsible
           v-for="category in permissionCategories"
@@ -198,6 +203,14 @@ const permissionCategories = computed(() => {
     // openCategories.value.add(result[0]!.key);
   }
   return result;
+});
+
+const { data: templates } = useQuery({
+  key: ["users", "permissions", "templates"],
+  query: async () => {
+    const response = await getApiPermissionsTemplates({ query: { limit: -1 } });
+    return response.data?.data;
+  },
 });
 
 const toggleCategory = (key: string, open: boolean) => {

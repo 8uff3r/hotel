@@ -14,12 +14,13 @@ const (
 
 type User struct {
 	Base
-	Email        string      `gorm:"uniqueIndex;not null" json:"email"`
-	PasswordHash string      `gorm:"not null" json:"-"`
-	FirstName    string      `gorm:"not null" json:"firstName"`
-	LastName     string      `gorm:"not null" json:"lastName"`
-	UserHotels   []UserHotel `gorm:"foreignKey:UserID" json:"userHotels"`
-	IsActive     bool        `gorm:"not null;default:true" json:"isActive"`
+	Email        string         `gorm:"uniqueIndex;not null" json:"email"`
+	PasswordHash string         `gorm:"not null" json:"-"`
+	FirstName    string         `gorm:"not null" json:"firstName"`
+	LastName     string         `gorm:"not null" json:"lastName"`
+	UserHotels   []UserHotel    `gorm:"foreignKey:UserID" json:"userHotels"`
+	IsActive     bool           `gorm:"not null;default:true" json:"isActive"`
+	Roles        []UserTemplate `gorm:"foreignKey:UserID" json:"role,omitempty"`
 
 	Permissions []UserPermission `gorm:"foreignKey:UserID" json:"permissions,omitempty"`
 }
@@ -41,11 +42,12 @@ type Session struct {
 }
 
 type SanitizedUser struct {
-	ID         uint            `json:"id"`
-	Email      string          `json:"email"`
-	FirstName  string          `json:"firstName"`
-	LastName   string          `json:"lastName"`
-	UserHotels []UserHotelInfo `json:"userHotels"`
+	ID         uint                 `json:"id"`
+	Email      string               `json:"email"`
+	FirstName  string               `json:"firstName"`
+	LastName   string               `json:"lastName"`
+	UserHotels []UserHotelInfo      `json:"userHotels"`
+	Roles      []PermissionTemplate `json:"roles,omitempty"`
 }
 
 type UserHotelInfo struct {

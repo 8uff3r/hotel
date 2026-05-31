@@ -3,11 +3,12 @@ package auth
 import (
 	"context"
 	"errors"
-	h "hotel/internal/httpapi"
-	"hotel/internal/models"
 	"net/http"
 	"strings"
 	"time"
+
+	h "hotel/internal/httpapi"
+	"hotel/internal/models"
 
 	"github.com/go-fuego/fuego"
 	"golang.org/x/crypto/bcrypt"
@@ -43,7 +44,11 @@ func (a *AuthModule) loginHandler(c fuego.ContextWithBody[loginDto]) (loginRespo
 
 	userHotels, hotelID := a.getUserHotels(user.ID)
 
-	userResponse := h.SanitizeUser(user)
+	var roles []models.PermissionTemplate
+	for _, v := range user.Roles {
+		roles = append(roles, v.Template)
+	}
+	userResponse := h.SanitizeUser(user, roles)
 	userResponse.UserHotels = userHotels
 
 	permissions := a.getUserPermissions(user.ID, lang)
@@ -109,7 +114,7 @@ func (a *AuthModule) login(ctx context.Context, email, password string) (*models
 
 func (a *AuthModule) GetUserByEmail(ctx context.Context, email string) (*models.User, error) {
 	var user models.User
-	if err := a.Db.WithContext(ctx).Where("email = ? AND is_active = ?", email, true).First(&user).Error; err != nil {
+	if err := a.Db.WithContext(ctx).Where("email = ? AND is_active = ?", email, true).Preload("Roles.Template").First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
@@ -129,9 +134,11 @@ func (a *AuthModule) GetUserBySession(ctx context.Context, sessionID string) (*m
 func (a *AuthModule) CreateSession(ctx context.Context, session models.Session) error {
 	return a.Db.WithContext(ctx).Create(&session).Error
 }
+
 func (a *AuthModule) DeleteSession(ctx context.Context, sessionID string) error {
 	return a.Db.WithContext(ctx).Delete(&models.Session{}, "id = ?", sessionID).Error
 }
+
 func (a *AuthModule) CleanupExpired(ctx context.Context) error {
 	return a.Db.WithContext(ctx).Delete(&models.Session{}, "expires_at <= ?", time.Now().UTC()).Error
 }
