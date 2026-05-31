@@ -12,7 +12,7 @@
       <UForm @submit="handleSubmit" :state="form" class="space-y-6">
         <div class="flex flex-col gap-16">
           <div class="flex w-full gap-4 max-md:flex-col">
-            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+            <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-3">
               <UFormField :label="t('forms.email')" name="email" required>
                 <UInput
                   v-model="form.email"

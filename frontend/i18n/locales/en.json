@@ -657,6 +657,20 @@
     "perNight": "/ night",
     "unspecified": "Unspecified"
   },
+  "profile": {
+    "title": "Profile",
+    "personalInfo": "Personal Information",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "passwordMismatch": "New passwords do not match",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "passwordUpdated": "Password updated successfully",
+    "infoUpdated": "Profile updated successfully",
+    "updateFailed": "Failed to update profile",
+    "invalidCurrentPassword": "Current password is incorrect"
+  },
   "sana": {
     "title": "Sana Passenger Registration Sync",
     "syncAll": "Sync All",

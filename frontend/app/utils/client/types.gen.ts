@@ -3352,6 +3352,14 @@ export type Vehicle = {
 export type Bool = boolean;
 
 /**
+ * changePasswordDto schema
+ */
+export type ChangePasswordDto = {
+    currentPassword?: string;
+    newPassword?: string;
+};
+
+/**
  * loginDto schema
  */
 export type LoginDto = {
@@ -3405,6 +3413,15 @@ export type PermissionsResponse = {
         id?: number;
         resource?: string;
     }>;
+};
+
+/**
+ * profileUpdateDto schema
+ */
+export type ProfileUpdateDto = {
+    email?: string;
+    firstName?: string;
+    lastName?: string;
 };
 
 /**
@@ -3782,6 +3799,111 @@ export type GetApiAuthMeResponses = {
 };
 
 export type GetApiAuthMeResponse = GetApiAuthMeResponses[keyof GetApiAuthMeResponses];
+
+export type GetApiAuthProfileData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/auth/profile';
+};
+
+export type GetApiAuthProfileErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiAuthProfileError = GetApiAuthProfileErrors[keyof GetApiAuthProfileErrors];
+
+export type GetApiAuthProfileResponses = {
+    /**
+     * OK
+     */
+    200: SanitizedUser;
+};
+
+export type GetApiAuthProfileResponse = GetApiAuthProfileResponses[keyof GetApiAuthProfileResponses];
+
+export type PutApiAuthProfileData = {
+    /**
+     * Request body for auth.profileUpdateDto
+     */
+    body: ProfileUpdateDto;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/auth/profile';
+};
+
+export type PutApiAuthProfileErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PutApiAuthProfileError = PutApiAuthProfileErrors[keyof PutApiAuthProfileErrors];
+
+export type PutApiAuthProfileResponses = {
+    /**
+     * OK
+     */
+    200: SanitizedUser;
+};
+
+export type PutApiAuthProfileResponse = PutApiAuthProfileResponses[keyof PutApiAuthProfileResponses];
+
+export type PutApiAuthProfilePasswordData = {
+    /**
+     * Request body for auth.changePasswordDto
+     */
+    body: ChangePasswordDto;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/auth/profile/password';
+};
+
+export type PutApiAuthProfilePasswordErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PutApiAuthProfilePasswordError = PutApiAuthProfilePasswordErrors[keyof PutApiAuthProfilePasswordErrors];
+
+export type PutApiAuthProfilePasswordResponses = {
+    /**
+     * OK
+     */
+    200: String;
+};
+
+export type PutApiAuthProfilePasswordResponse = PutApiAuthProfilePasswordResponses[keyof PutApiAuthProfilePasswordResponses];
 
 export type GetApiCommonCountriesData = {
     body?: never;

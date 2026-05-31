@@ -3327,6 +3327,14 @@ export const zVehicle = z.object({
 export const zBool = z.boolean();
 
 /**
+ * changePasswordDto schema
+ */
+export const zChangePasswordDto = z.object({
+    currentPassword: z.string().optional(),
+    newPassword: z.string().optional()
+});
+
+/**
  * loginDto schema
  */
 export const zLoginDto = z.object({
@@ -3380,6 +3388,15 @@ export const zPermissionsResponse = z.object({
         id: z.int().gte(0).optional(),
         resource: z.string().optional()
     })).optional()
+});
+
+/**
+ * profileUpdateDto schema
+ */
+export const zProfileUpdateDto = z.object({
+    email: z.string().optional(),
+    firstName: z.string().optional(),
+    lastName: z.string().optional()
 });
 
 /**
@@ -3508,6 +3525,28 @@ export const zPostApiAuthLogoutHeaders = z.object({
 });
 
 export const zGetApiAuthMeHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zGetApiAuthProfileHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * Request body for auth.profileUpdateDto
+ */
+export const zPutApiAuthProfileBody = zProfileUpdateDto;
+
+export const zPutApiAuthProfileHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+/**
+ * Request body for auth.changePasswordDto
+ */
+export const zPutApiAuthProfilePasswordBody = zChangePasswordDto;
+
+export const zPutApiAuthProfilePasswordHeaders = z.object({
     Accept: z.string().optional()
 });
 

@@ -659,6 +659,20 @@
     "perNight": "/ شب",
     "unspecified": "نامشخص"
   },
+  "profile": {
+    "title": "پروفایل",
+    "personalInfo": "اطلاعات شخصی",
+    "changePassword": "تغییر رمز عبور",
+    "currentPassword": "رمز عبور فعلی",
+    "newPassword": "رمز عبور جدید",
+    "confirmNewPassword": "تکرار رمز عبور جدید",
+    "passwordMismatch": "رمزهای عبور جدید مطابقت ندارند",
+    "passwordTooShort": "رمز عبور باید حداقل ۶ کاراکتر باشد",
+    "passwordUpdated": "رمز عبور با موفقیت تغییر کرد",
+    "infoUpdated": "پروفایل با موفقیت به‌روز شد",
+    "updateFailed": "به‌روزرسانی پروفایل ناموفق بود",
+    "invalidCurrentPassword": "رمز عبور فعلی اشتباه است"
+  },
   "sana": {
     "title": "همگام‌سازی ثبت مسافرین",
     "syncAll": "همگام‌سازی همه",

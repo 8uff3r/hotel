@@ -19,6 +19,9 @@ func (m AuthModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Use(s, api.AuthMiddleware)
 	fuego.Post(s, "/logout", au.logout)
 	fuego.Get(s, "/me", me)
+	fuego.Get(s, "/profile", au.profileGet)
+	fuego.Put(s, "/profile", au.profileUpdate)
+	fuego.Put(s, "/profile/password", au.profileChangePassword)
 }
 
 type MeResponse struct {

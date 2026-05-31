@@ -224,6 +224,13 @@ const colorMode = useColorMode();
 const userMenuItems = computed<DropdownMenuItem[][]>(() => [
   [
     {
+      label: t("profile.title"),
+      icon: "i-lucide-user-circle",
+      to: "/profile",
+    },
+  ],
+  [
+    {
       label: t("layout.appearance"),
       icon: "i-lucide-sun-moon",
       children: [
