@@ -5,7 +5,7 @@ defineProps<{
 }>();
 
 const { t } = useI18n();
-const form = defineModel<Required<CreateRequest>>({ default: {} });
+const form = defineModel<CreateRequest>({ default: {} });
 
 const { data: rooms } = useAsyncData(async () => {
   const res = await getApiRooms({});
@@ -16,13 +16,14 @@ const { data: rooms } = useAsyncData(async () => {
 });
 </script>
 <template>
-  <UFormField
-    :label="t('guest.reservationCode')"
-    name="reservation.reservationCode"
-    class="md:col-span-3"
-  >
-    <UInput v-model="form.reservation.reservationCode" :disabled="true" />
-  </UFormField>
+  <div v-if="form.reservation">
+    <UFormField
+      :label="t('guest.reservationCode')"
+      name="reservation.reservationCode"
+      class="md:col-span-3"
+    >
+      <UInput v-model="form.reservation.reservationCode" :disabled="true" />
+    </UFormField>
 
   <UFormField :label="t('guest.entryDate')" name="reservation.entryDate" required>
     <HDate v-model="form.reservation.entryDate" />
@@ -93,4 +94,5 @@ const { data: rooms } = useAsyncData(async () => {
   <UFormField :label="t('guest.notes')" name="reservation.notes" class="md:col-span-3">
     <UTextarea v-model="form.reservation.notes" :rows="3" class="w-full" :disabled="loading" />
   </UFormField>
+  </div>
 </template>

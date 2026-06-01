@@ -39,7 +39,7 @@
           </UCollapsible>
 
           <!-- SECTION: Reservation -->
-          <UCollapsible>
+          <UCollapsible v-model:open="reservationSectionOpen">
             <template #default="{ open }">
               <UButton
                 :label="t('guest.reservationDetails')"
@@ -184,6 +184,8 @@ const { t } = useI18n();
 
 const loading = ref(false);
 
+const reservationSectionOpen = ref(false);
+
 const generateRegisterNumber = () => {
   const now = new Date();
   const y = now.getFullYear().toString().slice(-2);
@@ -195,19 +197,23 @@ const generateRegisterNumber = () => {
   return `${y}${m}${d}-${h}${min}${s}`;
 };
 
-const form = ref<Required<CreateRequest> & { roomIds: number[] }>({
-  roomIds: [],
-  reservation: {
-    rooms: [],
-    reservationCode: generateRegisterNumber(),
-    destination: t("guest.defaultDestination"),
-    purposeOfTravel: t("guest.defaultPurposeOfTravel"),
-  },
+const form = ref<NonNullable<CreateRequest> & { payment: {} }>({
   guest: {
     gender: "male",
   } as any,
   payment: {},
   companions: [],
+});
+
+watch(reservationSectionOpen, (open) => {
+  if (open && !form.value.reservation) {
+    form.value.reservation = {
+      rooms: [],
+      reservationCode: generateRegisterNumber(),
+      destination: t("guest.defaultDestination"),
+      purposeOfTravel: t("guest.defaultPurposeOfTravel"),
+    };
+  }
 });
 
 const companions = ref<Companion[]>([]);
