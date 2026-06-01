@@ -166,11 +166,11 @@
               {{ t("reservations.cancel_reservation") }}
             </UButton>
             <UButton
-              v-if="reservation.guestId"
+              v-if="reservation.guest?.id"
               color="success"
               variant="soft"
               block
-              :to="`/guests/${reservation.guestId}/settle`"
+              :to="`/guests/${reservation.guest.id}/settle`"
             >
               <UIcon name="i-lucide-credit-card" class="mr-2" />
               {{ t("reservations.settle_account") }}

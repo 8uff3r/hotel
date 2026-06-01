@@ -24,7 +24,7 @@
               <UCheckbox
                 v-if="settlement?.reservations?.length"
                 v-model="selectAllRoom"
-                @update:model-value="toggleSelectAll"
+                @update:model-value="(v) => v !== 'indeterminate' && toggleSelectAll(v)"
                 :label="t('accounting.selectAll')"
               />
             </div>
@@ -33,7 +33,7 @@
             <table class="w-full">
               <thead>
                 <tr class="border-b text-left text-sm text-gray-500">
-                  <th class="pb-2 w-10"></th>
+                  <th class="w-10 pb-2"></th>
                   <th class="pb-2">{{ t("reservations.code") }}</th>
                   <th class="pb-2">{{ t("reservations.checkIn") }}</th>
                   <th class="pb-2">{{ t("reservations.checkOut") }}</th>
@@ -74,7 +74,7 @@
               <UCheckbox
                 v-if="settlement?.parkingTransactions?.length"
                 v-model="selectAllParking"
-                @update:model-value="toggleSelectAllParking"
+                @update:model-value="(v) => v !== 'indeterminate' && toggleSelectAllParking"
                 :label="t('accounting.selectAll')"
               />
             </div>
@@ -83,7 +83,7 @@
             <table class="w-full">
               <thead>
                 <tr class="border-b text-left text-sm text-gray-500">
-                  <th class="pb-2 w-10"></th>
+                  <th class="w-10 pb-2"></th>
                   <th class="pb-2">{{ t("parking.licensePlate") }}</th>
                   <th class="pb-2">{{ t("parking.entryTime") }}</th>
                   <th class="pb-2">{{ t("parking.exitTime") }}</th>
@@ -122,7 +122,7 @@
               <UCheckbox
                 v-if="settlement?.restaurantBills?.length"
                 v-model="selectAllRestaurant"
-                @update:model-value="toggleSelectAllRestaurant"
+                @update:model-value="(v) => v !== 'indeterminate' && toggleSelectAllRestaurant(v)"
                 :label="t('accounting.selectAll')"
               />
             </div>
@@ -131,7 +131,7 @@
             <table class="w-full">
               <thead>
                 <tr class="border-b text-left text-sm text-gray-500">
-                  <th class="pb-2 w-10"></th>
+                  <th class="w-10 pb-2"></th>
                   <th class="pb-2">{{ t("accounting.billDate") }}</th>
                   <th class="pb-2">{{ t("accounting.amount") }}</th>
                   <th class="pb-2">{{ t("accounting.external") }}</th>
@@ -151,7 +151,7 @@
                     </UBadge>
                     <span v-else class="text-sm text-gray-500">---</span>
                   </td>
-                  <td class="py-3 max-w-xs truncate">{{ bill.notes || "---" }}</td>
+                  <td class="max-w-xs truncate py-3">{{ bill.notes || "---" }}</td>
                 </tr>
               </tbody>
             </table>
@@ -331,7 +331,7 @@ const selectAllRestaurant = ref(false);
 
 const toggleSelectAll = (val: boolean) => {
   if (val && settlement.value) {
-    selectedReservationIds.value = settlement.value.reservations.map(r => r.id);
+    selectedReservationIds.value = settlement.value.reservations.map((r) => r.id);
   } else {
     selectedReservationIds.value = [];
   }
@@ -339,7 +339,7 @@ const toggleSelectAll = (val: boolean) => {
 
 const toggleSelectAllParking = (val: boolean) => {
   if (val && settlement.value) {
-    selectedParkingTxnIds.value = settlement.value.parkingTransactions.map(p => p.id);
+    selectedParkingTxnIds.value = settlement.value.parkingTransactions.map((p) => p.id);
   } else {
     selectedParkingTxnIds.value = [];
   }
@@ -347,7 +347,7 @@ const toggleSelectAllParking = (val: boolean) => {
 
 const toggleSelectAllRestaurant = (val: boolean) => {
   if (val && settlement.value) {
-    selectedRestaurantBillIds.value = settlement.value.restaurantBills.map(b => b.id);
+    selectedRestaurantBillIds.value = settlement.value.restaurantBills.map((b) => b.id);
   } else {
     selectedRestaurantBillIds.value = [];
   }
@@ -383,7 +383,7 @@ const form = reactive({
 });
 
 const paymentMethodOptions = computed(() => {
-  return paymentMethods.value.map(pm => ({
+  return paymentMethods.value.map((pm) => ({
     value: pm.id,
     label: pm.label,
   }));
@@ -406,7 +406,7 @@ const fetchPaymentMethods = async () => {
     const res = await $fetch("/api/accounting/payment-methods");
     paymentMethods.value = (res as any).data || [];
     if (paymentMethods.value.length > 0) {
-      form.paymentMethod = paymentMethods.value[0].id;
+      form.paymentMethod = paymentMethods.value[0]?.id;
     }
   } catch (e) {
     console.error("Failed to fetch payment methods:", e);

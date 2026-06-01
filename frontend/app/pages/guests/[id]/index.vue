@@ -149,28 +149,28 @@
               <div v-if="guest.fatherName" class="flex items-center gap-3">
                 <UIcon name="i-lucide-users" class="h-6 w-6 text-primary" />
                 <div>
-                  <p class="text-sm text-gray-500">{{ t('guest.fatherName') }}</p>
+                  <p class="text-sm text-gray-500">{{ t("guest.fatherName") }}</p>
                   <p class="font-medium">{{ guest.fatherName }}</p>
                 </div>
               </div>
               <div v-if="guest.nationality" class="flex items-center gap-3">
                 <UIcon name="i-lucide-globe" class="h-6 w-6 text-primary" />
                 <div>
-                  <p class="text-sm text-gray-500">{{ t('guest.nationality') }}</p>
+                  <p class="text-sm text-gray-500">{{ t("guest.nationality") }}</p>
                   <p class="font-medium">{{ guest.nationality.label }}</p>
                 </div>
               </div>
               <div v-if="guest.phone" class="flex items-center gap-3">
                 <UIcon name="i-lucide-phone" class="h-6 w-6 text-primary" />
                 <div>
-                  <p class="text-sm text-gray-500">{{ t('guest.phone') }}</p>
+                  <p class="text-sm text-gray-500">{{ t("guest.phone") }}</p>
                   <p class="font-medium">{{ guest.phone }}</p>
                 </div>
               </div>
               <div v-if="guest.gender" class="flex items-center gap-3">
                 <UIcon name="i-lucide-venus-and-mars" class="h-6 w-6 text-primary" />
                 <div>
-                  <p class="text-sm text-gray-500">{{ t('guest.gender') }}</p>
+                  <p class="text-sm text-gray-500">{{ t("guest.gender") }}</p>
                   <p class="font-medium capitalize">{{ guest.gender }}</p>
                 </div>
               </div>
@@ -190,9 +190,7 @@
               >
                 <UIcon name="i-lucide-user" class="h-5 w-5 text-primary" />
                 <div>
-                  <p class="font-medium">
-                    {{ companion.firstName }} {{ companion.lastName }}
-                  </p>
+                  <p class="font-medium">{{ companion.firstName }} {{ companion.lastName }}</p>
                   <p v-if="companion.relation" class="text-sm text-gray-500">
                     {{ companion.relation.label }}
                   </p>
@@ -215,7 +213,7 @@
 
 <script setup lang="ts">
 import type { Guest } from "~/utils/client";
-import { useCountriesQuery } from "./queries";
+import { useCountriesQuery } from "../queries";
 
 definePageMeta({
   requiresPermission: PERMISSIONS.guests.guests.read,
