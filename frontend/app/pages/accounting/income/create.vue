@@ -119,25 +119,7 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  requiresRole: ["admin", "manager"],
-});
-
-const { t } = useI18n();
-const loading = ref(false);
-
-const form = reactive({
-  incomeDate: new Date().toISOString().split("T")[0],
-  description: "",
-  amount: 0,
-  category: "room_revenue" as string,
-  source: "",
-  reference: "",
-  paymentMethod: "cash" as string,
-  paymentStatus: "received" as string,
-  reservationId: undefined as number | undefined,
-  notes: "",
-});
+import { postApiAccountingIncome } from "~/utils/client";
 
 const categoryOptions = [
   { value: "room_revenue", label: "Room Revenue" },
@@ -169,8 +151,7 @@ const handleSubmit = async () => {
 
   loading.value = true;
   try {
-    await $fetch("/api/income", {
-      method: "POST",
+    await postApiAccountingIncome({
       body: {
         incomeDate: form.incomeDate,
         description: form.description,

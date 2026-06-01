@@ -104,10 +104,6 @@
 import type { PaginatedResponseModelsAccount } from "~/utils/client";
 import type { TableColumn } from "@nuxt/ui";
 
-definePageMeta({
-  requiresPermission: ["admin", "manager"],
-});
-
 type Account = NonNullable<PaginatedResponseModelsAccount["data"]>[0];
 const columns: TableColumn<Account>[] = [
   { accessorKey: "accountCode", header: "Code" },
@@ -166,10 +162,15 @@ const fetchAccounts = async () => {
     if (filters.accountType && filters.accountType !== "all")
       query["accountType"] = filters.accountType;
 
-    const response = await getApiAccountingAccounts({});
+    const response = await getApiAccountingAccounts({
+      query: {
+        page: pagination.page,
+        limit: pagination.limit,
+      },
+    });
     accounts.value = response.data?.data ?? [];
-    pagination.total = response.data?.data?.total ?? 0;
-    pagination.totalPages = response.data?.data?.totalPages ?? 1;
+    pagination.total = response.data?.total ?? 0;
+    pagination.totalPages = response.data?.totalPages ?? 1;
   } catch (error) {
     console.error("Failed to fetch accounts:", error);
   } finally {

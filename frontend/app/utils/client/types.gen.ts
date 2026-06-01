@@ -4394,6 +4394,41 @@ export type PostApiGuestsWithReservationResponses = {
 
 export type PostApiGuestsWithReservationResponse = PostApiGuestsWithReservationResponses[keyof PostApiGuestsWithReservationResponses];
 
+export type DeleteApiGuestsIdData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/guests/{id}';
+};
+
+export type DeleteApiGuestsIdErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type DeleteApiGuestsIdError = DeleteApiGuestsIdErrors[keyof DeleteApiGuestsIdErrors];
+
+export type DeleteApiGuestsIdResponses = {
+    /**
+     * OK
+     */
+    200: OkResponse;
+};
+
+export type DeleteApiGuestsIdResponse = DeleteApiGuestsIdResponses[keyof DeleteApiGuestsIdResponses];
+
 export type GetApiGuestsIdData = {
     body?: never;
     headers?: {

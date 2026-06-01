@@ -153,33 +153,16 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  requiresRole: ["admin", "manager"],
-});
+import { getApiAccountingIncome, getApiAccountingExpenses } from "~/utils/client";
+
 const { t } = useI18n();
-
-interface Income {
-  id: number;
-  description: string;
-  amount: string | number;
-  incomeDate: string;
-  paymentStatus: string;
-}
-
-interface Expense {
-  id: number;
-  description: string;
-  amount: string | number;
-  expenseDate: string;
-  paymentStatus: string;
-}
 
 const totalIncome = ref(0);
 const totalExpenses = ref(0);
 const netBalance = ref(0);
 const pendingPayments = ref(0);
-const recentIncome = ref<Income[]>([]);
-const recentExpenses = ref<Expense[]>([]);
+const recentIncome = ref<any[]>([]);
+const recentExpenses = ref<any[]>([]);
 
 const formatDate = (date: string) => {
   return new Date(date).toLocaleDateString("en-US", {
@@ -208,27 +191,26 @@ const getExpenseStatusColor = (status: string): "success" | "warning" | "error" 
 
 const fetchDashboardData = async () => {
   try {
-    // Fetch recent income
-    const incomeResponse = await $fetch("/api/income?limit=5");
-    recentIncome.value = incomeResponse.data;
+    const incomeResponse = await getApiAccountingIncome({ query: { limit: 5 } });
+    recentIncome.value = incomeResponse.data?.data ?? [];
 
-    // Fetch recent expenses
-    const expenseResponse = await $fetch("/api/expenses?limit=5");
-    recentExpenses.value = expenseResponse.data;
+    const expenseResponse = await getApiAccountingExpenses({ query: { limit: 5 } });
+    recentExpenses.value = expenseResponse.data?.data ?? [];
 
-    // Calculate totals
-    const allIncome = await $fetch<{ data: Income[] }>("/api/income?limit=1000");
-    const allExpenses = await $fetch<{ data: Expense[] }>("/api/expenses?limit=1000");
+    const allIncome = await getApiAccountingIncome({ query: { limit: 1000 } });
+    const allExpenses = await getApiAccountingExpenses({ query: { limit: 1000 } });
 
-    totalIncome.value = allIncome.data.reduce((sum, item) => sum + Number(item.amount), 0);
-    totalExpenses.value = allExpenses.data.reduce((sum, item) => sum + Number(item.amount), 0);
+    const incomeData = allIncome.data?.data ?? [];
+    const expenseData = allExpenses.data?.data ?? [];
+
+    totalIncome.value = incomeData.reduce((sum, item) => sum + Number(item.amount), 0);
+    totalExpenses.value = expenseData.reduce((sum, item) => sum + Number(item.amount), 0);
     netBalance.value = totalIncome.value - totalExpenses.value;
 
-    // Calculate pending payments
-    const pendingIncome = allIncome.data
+    const pendingIncome = incomeData
       .filter((i) => i.paymentStatus === "pending")
       .reduce((sum, item) => sum + Number(item.amount), 0);
-    const pendingExpenses = allExpenses.data
+    const pendingExpenses = expenseData
       .filter((e) => e.paymentStatus === "pending")
       .reduce((sum, item) => sum + Number(item.amount), 0);
     pendingPayments.value = pendingIncome + pendingExpenses;

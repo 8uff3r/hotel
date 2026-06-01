@@ -128,10 +128,6 @@
 import type { TableColumn } from "@nuxt/ui";
 import type { PaginatedResponseModelsExpense } from "~/utils/client";
 
-definePageMeta({
-  requiresRole: ["admin", "manager"],
-});
-
 type Expense = NonNullable<PaginatedResponseModelsExpense["data"]>[0];
 
 const columns: TableColumn<Expense>[] = [
@@ -217,8 +213,8 @@ const fetchExpenses = async () => {
       },
     });
     expensesList.value = response.data?.data ?? [];
-    pagination.total = response.data?.data?.total ?? 0;
-    pagination.totalPages = response.data?.data?.totalPages ?? 1;
+    pagination.total = response.data?.total ?? 0;
+    pagination.totalPages = response.data?.totalPages ?? 1;
   } catch (error) {
     console.error("Failed to fetch expenses:", error);
   } finally {

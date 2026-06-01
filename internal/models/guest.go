@@ -2,6 +2,8 @@ package models
 
 import (
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Guest struct {
@@ -28,6 +30,8 @@ type Guest struct {
 	Nationality   Country `gorm:"foreignKey:NationalityID" json:"nationality,omitzero"`
 
 	Companions []GuestCompanion `gorm:"foreignKey:GuestID" json:"companions,omitempty"`
+
+	DeletedAt gorm.DeletedAt
 }
 
 type GuestCompanion struct {

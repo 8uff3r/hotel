@@ -180,10 +180,6 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
 
-definePageMeta({
-  requiresRole: ["admin", "manager", "receptionist"],
-});
-
 interface Transaction {
   id: number;
   licensePlate: string;

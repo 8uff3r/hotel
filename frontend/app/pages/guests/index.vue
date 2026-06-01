@@ -83,10 +83,6 @@
 import type { TableColumn } from "@nuxt/ui";
 import type { Guest } from "~/utils/client";
 
-definePageMeta({
-  requiresRole: ["admin", "manager", "receptionist"],
-});
-
 const { t } = useI18n();
 const columns = computed<TableColumn<Guest>[]>(() => [
   { accessorKey: "id", header: t("guests.columns.id") },
@@ -157,11 +153,11 @@ const confirmDelete = async (guest: Guest) => {
   }
 };
 
-//FIXME: this route doesn't exist
 const deleteGuest = async (guest: Guest) => {
   deleting.value = true;
   try {
     await $fetch(`/api/guests/${guest.id}`, { method: "DELETE" });
+    refresh();
   } catch (error) {
     console.error("Failed to delete guest:", error);
   } finally {

@@ -132,10 +132,6 @@ hotel/app/pages/accounting/income/index.vue ``` ```vue
 import type { TableColumn } from "@nuxt/ui";
 import type { PaginatedResponseModelsIncome } from "~/utils/client";
 
-definePageMeta({
-  requiresRole: ["admin", "manager"],
-});
-
 type Income = NonNullable<PaginatedResponseModelsIncome["data"]>[0];
 
 const columns: TableColumn<Income>[] = [
@@ -215,8 +211,8 @@ const fetchIncome = async () => {
       },
     });
     incomeList.value = response.data?.data ?? [];
-    pagination.total = response.data?.data?.total ?? 0;
-    pagination.totalPages = response.data?.data?.totalPages ?? 1;
+    pagination.total = response.data?.total ?? 0;
+    pagination.totalPages = response.data?.totalPages ?? 1;
   } catch (error) {
     console.error("Failed to fetch income:", error);
   } finally {

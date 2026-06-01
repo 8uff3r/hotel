@@ -259,10 +259,6 @@
 <script setup lang="ts">
 import type { Reservation } from "~/utils/client";
 
-definePageMeta({
-  requiresRole: ["admin", "manager", "receptionist"],
-});
-
 const { t } = useI18n();
 const route = useRoute();
 const reservationId = route.params.id as string;

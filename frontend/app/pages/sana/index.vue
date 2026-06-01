@@ -129,10 +129,6 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
 
-definePageMeta({
-  requiresRole: ["admin", "manager"],
-});
-
 const { t } = useI18n();
 
 interface SanaGuest {

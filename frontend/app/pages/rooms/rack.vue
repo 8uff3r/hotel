@@ -257,7 +257,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-  requiresPermission: PERMISSIONS.rooms.rooms.read,
+  requiresPermission: PERMISSIONS.rooms.roomsRack.read,
 });
 
 import type { RackFiltersState } from "~/composables/useRoomRackData";

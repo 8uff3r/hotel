@@ -258,10 +258,6 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  requiresRole: ["admin", "manager", "receptionist"],
-});
-
 const { t } = useI18n();
 const route = useRoute();
 const guestId = route.params.id as string;

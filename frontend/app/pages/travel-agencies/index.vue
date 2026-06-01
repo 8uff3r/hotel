@@ -102,10 +102,6 @@
 import type { TableColumn } from "@nuxt/ui";
 import { getApiTravelAgencies } from "~/utils/client";
 
-definePageMeta({
-  requiresRole: ["admin", "manager", "receptionist"],
-});
-
 const { t } = useI18n();
 
 const columns: TableColumn<any>[] = [

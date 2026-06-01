@@ -75,10 +75,6 @@
               <div
                 class="mt-2 grid grid-cols-1 gap-6 rounded-md p-4 ring ring-accented/40 ring-inset md:grid-cols-2"
               >
-                <UFormField :label="t('guest.cash')" name="payment.isCash">
-                  <UCheckbox v-model="form.payment.isCash" :disabled="loading" />
-                </UFormField>
-
                 <UFormField :label="t('guest.agency')" name="payment.agency">
                   <UCheckbox v-model="form.payment.agency" :disabled="loading" />
                 </UFormField>
@@ -176,9 +172,6 @@ import { type Companion, type CreateRequest, createSchema } from "./utils";
 import StickySummary from "./components/StickySummary.vue";
 import GuestFormFields from "./components/GuestFormFields.vue";
 import ReservationFormFields from "./components/ReservationFormFields.vue";
-definePageMeta({
-  requiresRole: ["admin", "manager"],
-});
 
 const { t } = useI18n();
 

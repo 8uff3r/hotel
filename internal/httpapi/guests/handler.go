@@ -73,6 +73,7 @@ func (gm GuestsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Post(s, "/with-reservation", gm.createGuestWithReservation)
 	fuego.Get(s, "/{id}", h.GetModel[models.Guest](api.Db))
 	fuego.Put(s, "/{id}", h.UpdateModel[models.Guest](api.Db))
+	fuego.Delete(s, "/{id}", h.DeleteModel[models.Guest](api.Db))
 
 	fuego.Get(s, "/{id}/settle", gm.getGuestSettlementHandler)
 	fuego.Post(s, "/{id}/settle", gm.settleGuestAccount)
@@ -480,6 +481,12 @@ func (gm *GuestsModule) getGuestSettlementHandler(c fuego.ContextNoBody) (GuestS
 	if err != nil {
 		return GuestSettlementResponse{}, fuego.BadRequestError{Title: "invalid_id"}
 	}
+
+	var guest models.Guest
+	if err := gm.Db.First(&guest, id).Error; err != nil {
+		return GuestSettlementResponse{}, fuego.NotFoundError{}
+	}
+
 	return gm.getGuestSettlement(id)
 }
 

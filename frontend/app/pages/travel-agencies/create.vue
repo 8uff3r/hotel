@@ -60,10 +60,6 @@
 <script setup lang="ts">
 import { postApiTravelAgencies } from "~/utils/client";
 
-definePageMeta({
-  requiresRole: ["admin", "manager", "receptionist"],
-});
-
 const { t } = useI18n();
 const router = useRouter();
 const loading = ref(false);

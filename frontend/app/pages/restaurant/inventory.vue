@@ -237,8 +237,8 @@ const {
       "/api/restaurant/inventory",
       { query: params }
     );
-    pagination.total = response.data?.data?.total ?? 0;
-    pagination.totalPages = response.data?.data?.totalPages ?? 0;
+    pagination.total = response.total ?? 0;
+    pagination.totalPages = response.totalPages ?? 0;
     return response.data?.data;
   },
   { watch: [() => pagination.page] }

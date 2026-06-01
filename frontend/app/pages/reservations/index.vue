@@ -167,10 +167,6 @@
 import type { TableColumn } from "@nuxt/ui";
 import type { Reservation } from "~/utils/client";
 
-definePageMeta({
-  requiresRole: ["admin", "manager", "receptionist"],
-});
-
 type ReservationRow = Reservation;
 
 const columns: TableColumn<ReservationRow>[] = [

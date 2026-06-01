@@ -118,8 +118,5 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  requiresRole: ["admin", "manager", "receptionist", "staff"],
-});
 const { t } = useI18n();
 </script>

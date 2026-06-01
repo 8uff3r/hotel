@@ -78,10 +78,6 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  requiresRole: ["admin", "manager"],
-});
-
 const { t } = useI18n();
 const loading = ref(false);
 

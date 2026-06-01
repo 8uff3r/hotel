@@ -100,10 +100,6 @@ import type { TableColumn } from "@nuxt/ui";
 import type z from "zod";
 import type { zParkingLot } from "~/utils/client/zod.gen";
 
-definePageMeta({
-  requiresRole: ["admin", "manager"],
-});
-
 type ParkingLot = NonNullable<z.output<typeof zParkingLot>>;
 
 const { t } = useI18n();

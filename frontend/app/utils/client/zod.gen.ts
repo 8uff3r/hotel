@@ -3823,6 +3823,14 @@ export const zPostApiGuestsWithReservationHeaders = z.object({
     Accept: z.string().optional()
 });
 
+export const zDeleteApiGuestsIdHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zDeleteApiGuestsIdPath = z.object({
+    id: z.string()
+});
+
 export const zGetApiGuestsIdHeaders = z.object({
     Accept: z.string().optional()
 });

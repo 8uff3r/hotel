@@ -118,25 +118,7 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  requiresRole: ["admin", "manager"],
-});
-
-const { t } = useI18n();
-const loading = ref(false);
-
-const form = reactive({
-  expenseDate: new Date().toISOString().split("T")[0],
-  description: "",
-  amount: 0,
-  category: "other" as string,
-  vendor: "",
-  reference: "",
-  paymentMethod: "cash" as string,
-  paymentStatus: "pending" as string,
-  receiptNumber: "",
-  notes: "",
-});
+import { postApiAccountingExpenses } from "~/utils/client";
 
 const categoryOptions = [
   { value: "food_beverage", label: "Food & Beverage" },
@@ -174,8 +156,7 @@ const handleSubmit = async () => {
 
   loading.value = true;
   try {
-    await $fetch("/api/expenses", {
-      method: "POST",
+    await postApiAccountingExpenses({
       body: {
         expenseDate: form.expenseDate,
         description: form.description,

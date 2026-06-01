@@ -111,10 +111,6 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  requiresRole: ["admin", "manager", "receptionist"],
-});
-
 const form = reactive({
   licensePlate: "",
   lotId: "",

@@ -71,10 +71,6 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  requiresRole: ["admin", "manager"],
-});
-
 const form = reactive({
   lotId: 0,
   spotNumber: "",

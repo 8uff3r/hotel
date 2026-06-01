@@ -2,10 +2,6 @@
 import type { TableColumn } from "@nuxt/ui";
 import type { Guest } from "~/utils/client";
 
-definePageMeta({
-  requiresRole: ["admin", "manager", "receptionist"],
-});
-
 const { t } = useI18n();
 const columns = computed<TableColumn<Guest>[]>(() => [
   { accessorKey: "id", header: t("guests.columns.id") },
@@ -143,7 +139,7 @@ const deleteGuest = async () => {
             <UButton variant="ghost" size="sm" :to="`/guests/${row.original.id}`">
               <UIcon name="i-lucide-eye" class="h-4 w-4" />
             </UButton>
-            <UButton variant="ghost" size="sm" :to="`/guests/${row.original.id}/edit`">
+            <UButton variant="ghost" size="sm" :to="`/guests/${row.original.id}`">
               <UIcon name="i-lucide-pencil" class="h-4 w-4" />
             </UButton>
             <UButton variant="ghost" size="sm" color="error" @click="confirmDelete(row.original)">
