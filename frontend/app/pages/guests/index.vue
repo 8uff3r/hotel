@@ -58,9 +58,6 @@
             <UButton variant="ghost" size="sm" :to="`/guests/${row.original.id}`">
               <UIcon name="i-lucide-eye" class="h-4 w-4" />
             </UButton>
-            <UButton variant="ghost" size="sm" :to="`/guests/${row.original.id}/edit`">
-              <UIcon name="i-lucide-pencil" class="h-4 w-4" />
-            </UButton>
             <UButton variant="ghost" size="sm" color="error" @click="confirmDelete(row.original)">
               <UIcon name="i-lucide-trash-2" class="h-4 w-4" />
             </UButton>
@@ -168,9 +165,16 @@ const clearFilters = () => {
   refresh();
 };
 
+const confirm = useConfirmDialog();
 const confirmDelete = (guest: Guest) => {
   selectedGuest.value = guest;
-  deleteModalOpen.value = true;
+  confirm({
+    title: t("actions.confirmDelete"),
+    description: t("guests.confirmDelete", {
+      name: `${guest.firstName} ${guest.lastName}`,
+    }),
+  });
+  // deleteModalOpen.value = true;
 };
 
 const deleteGuest = async () => {

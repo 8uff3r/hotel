@@ -24,7 +24,7 @@
     </div>
 
     <div v-if="loading" class="flex justify-center py-12">
-      <ULoader size="lg" />
+      <UIcon name="i-lucide-loader" size="lg" />
     </div>
 
     <div v-else-if="reservation" class="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -203,56 +203,15 @@ definePageMeta({
 });
 const { t } = useI18n();
 
-interface Guest {
-  id: number;
-  firstName: string | null;
-  lastName: string | null;
-  email: string | null;
-  phone: string | null;
-  address: string | null;
-  city: string | null;
-  country: string | null;
-}
-
-interface Room {
-  id: number;
-  roomNumber: string | null;
-  roomType: string | null;
-  floor: number | null;
-  capacity: number | null;
-  basePrice: number | null;
-  amenities: string | null;
-}
-
-interface Reservation {
-  id: number;
-  guestId: number;
-  roomId: number;
-  checkInDate: string;
-  entryDate: string;
-  actualCheckIn: string | null;
-  actualCheckOut: string | null;
-  status: string;
-  totalAmount: number;
-  paidAmount: number;
-  paymentStatus: string;
-  numberOfGuests: number;
-  specialRequests: string | null;
-  createdAt: string;
-  updatedAt: string;
-  guest?: Guest;
-  room?: Room;
-}
-
 const route = useRoute();
-const reservationId = computed(() => route.params.id as string);
+const reservationId = computed(() => "7");
 
 const {
   data: reservation,
   isLoading: loading,
   refetch,
 } = useQuery({
-  key: () => ["reservations", "get", reservationId],
+  key: () => ["reservations", "get", reservationId.value],
   query: async () => {
     const response = await getApiReservationIdDetailed({
       path: {
@@ -280,37 +239,6 @@ const formatDateTime = (date: string) => {
     hour: "2-digit",
     minute: "2-digit",
   });
-};
-
-const getStatusColor = (status: string): "success" | "warning" | "info" | "error" | "neutral" => {
-  const colors: Record<string, "success" | "warning" | "info" | "error" | "neutral"> = {
-    pending: "warning",
-    confirmed: "info",
-    checked_in: "success",
-    checked_out: "neutral",
-    cancelled: "error",
-    no_show: "error",
-  };
-  return colors[status] || "neutral";
-};
-
-const getPaymentColor = (status: string): "success" | "warning" | "info" | "error" | "neutral" => {
-  const colors: Record<string, "success" | "warning" | "info" | "error" | "neutral"> = {
-    pending: "warning",
-    partial: "info",
-    paid: "success",
-    refunded: "error",
-  };
-  return colors[status] || "neutral";
-};
-
-const parseAmenities = (amenities: string | undefined | null) => {
-  if (!amenities) return [];
-  try {
-    return JSON.parse(amenities);
-  } catch {
-    return amenities.split(",").map((a: string) => a.trim());
-  }
 };
 
 const { mutate: handleCheckIn, isLoading: processingCheckIn } = useMutation({

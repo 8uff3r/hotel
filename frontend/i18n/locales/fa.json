@@ -10,6 +10,7 @@
     "cancel": "لغو",
     "delete": "حذف",
     "confirmDelete": "تأیید حذف",
+    "confirm": "تایید",
     "editGuest": "ویرایش مهمان",
     "saveChanges": "ذخیره تغییرات"
   },
@@ -244,6 +245,7 @@
     "idType": "نوع شناسه",
     "idNumber": "شماره شناسه",
     "idNumberPlaceholder": "شماره شناسه",
+    "confirmDelete": "آیا از حذف {name} مطمئن هستید؟",
     "information": "اطلاعات مهمان",
     "quickInfo": "اطلاعات سریع",
     "fullName": "نام کامل",

@@ -98,7 +98,7 @@
 
         <template #status-cell="{ row }">
           <UBadge :style="{ backgroundColor: `#${row.original.status?.colorHex}` }" variant="soft">
-            {{ row.original.status }}
+            {{ row.original.status?.label }}
           </UBadge>
         </template>
 

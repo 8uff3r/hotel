@@ -5,6 +5,7 @@ interface ConfirmDialogProps {
 }
 
 defineProps<ConfirmDialogProps>();
+const { t } = useI18n();
 
 const emits = defineEmits<{
   close: [value: boolean];
@@ -19,8 +20,13 @@ const emits = defineEmits<{
     :ui="{ footer: 'justify-end' }"
   >
     <template #footer>
-      <UButton label="Cancel" color="neutral" variant="outline" @click="emits('close', false)" />
-      <UButton label="Confirm" color="neutral" @click="emits('close', true)" />
+      <UButton
+        :label="t('actions.cancel')"
+        color="neutral"
+        variant="outline"
+        @click="emits('close', false)"
+      />
+      <UButton :label="t('actions.confirm')" color="neutral" @click="emits('close', true)" />
     </template>
   </UModal>
 </template>
