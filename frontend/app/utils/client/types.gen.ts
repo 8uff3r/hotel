@@ -2486,6 +2486,90 @@ export type PaginatedResponseModelsVehicle = {
 };
 
 /**
+ * PaginatedResponse_rooms.RackRoom schema
+ */
+export type PaginatedResponseRoomsRackRoom = {
+    data?: Array<{
+        amenities?: Array<{
+            id?: number;
+            label?: string;
+            slug?: string;
+        }>;
+        basePrice?: number;
+        capacity?: number;
+        currentReservation?: {
+            breakfast?: boolean;
+            departureDate?: string;
+            durationOfStay?: number;
+            entryDate?: string;
+            fullBoard?: boolean;
+            guest?: {
+                address?: string;
+                companions?: Array<{
+                    firstName?: string;
+                    id?: number;
+                    lastName?: string;
+                    relation?: {
+                        id?: number;
+                        label?: string;
+                        sanaId?: string;
+                        sanaName?: string;
+                        slug?: string;
+                    };
+                }>;
+                dateOfBirth?: string;
+                email?: string;
+                fatherName?: string;
+                firstName?: string;
+                gender?: string;
+                id?: number;
+                idNumber?: string;
+                landline?: string;
+                lastName?: string;
+                nationalId?: string;
+                nationality?: {
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                occupation?: string;
+                phone?: string;
+                placeOfBirth?: string;
+            };
+            id?: number;
+            notes?: string;
+            numberOfPeople?: number;
+            origin?: string;
+            parking?: boolean;
+            purposeOfTravel?: string;
+            roomPrice?: number;
+        };
+        description?: string;
+        floor?: number;
+        id?: number;
+        roomNumber?: string;
+        roomType?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        roomTypeId?: number;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
+    }>;
+    limit?: number;
+    page?: number;
+    total?: number;
+    totalPages?: number;
+};
+
+/**
  * ParkingLot schema
  */
 export type ParkingLot = {
@@ -3496,9 +3580,7 @@ export type LoginResponse = {
 /**
  * okResponse schema
  */
-export type OkResponse = {
-    ok?: boolean;
-};
+export type OkResponse = unknown;
 
 /**
  * permissionsResponse schema
@@ -6819,6 +6901,43 @@ export type GetApiRoomsAmenitiesResponses = {
 };
 
 export type GetApiRoomsAmenitiesResponse = GetApiRoomsAmenitiesResponses[keyof GetApiRoomsAmenitiesResponses];
+
+export type GetApiRoomsRackData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: {
+        limit?: number;
+        page?: number;
+        filters?: string;
+    };
+    url: '/api/rooms/rack';
+};
+
+export type GetApiRoomsRackErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiRoomsRackError = GetApiRoomsRackErrors[keyof GetApiRoomsRackErrors];
+
+export type GetApiRoomsRackResponses = {
+    /**
+     * OK
+     */
+    200: PaginatedResponseRoomsRackRoom;
+};
+
+export type GetApiRoomsRackResponse = GetApiRoomsRackResponses[keyof GetApiRoomsRackResponses];
 
 export type GetApiRoomsStatusesData = {
     body?: never;

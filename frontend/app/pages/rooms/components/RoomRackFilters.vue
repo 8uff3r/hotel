@@ -57,11 +57,12 @@
 
 <script setup lang="ts">
 import type { RackFiltersState } from "~/composables/useRoomRackData";
+import type { Country, Room, TravelAgency } from "~/utils/client";
 
 const props = defineProps<{
-  roomTypes: any[];
-  countries: any[];
-  agencies: any[];
+  roomTypes: NonNullable<Room["roomType"]>[];
+  countries: Country[];
+  agencies: TravelAgency[];
 }>();
 
 const modelValue = defineModel<RackFiltersState>("filters", {

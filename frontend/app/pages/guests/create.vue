@@ -251,16 +251,17 @@ const handleSubmit = async (event: FormSubmitEvent<CreateRequest>) => {
           ? new Date(event.data.guest.dateOfBirth).toISOString()
           : undefined,
       } as CreateRequest["guest"],
-      reservation: event.data.reservation,
-      payment: event.data.payment,
+      reservation:
+        Object.keys(event.data.reservation ?? {}).length === 0 ? undefined : event.data.reservation,
+      payment: Object.keys(event.data.payment ?? {}).length === 0 ? undefined : event.data.payment,
       companions: companions.value,
-    } as unknown as CreateRequest;
+    };
 
-    await postApiGuestsWithReservation({
+    const res = await postApiGuestsWithReservation({
       body,
     });
 
-    navigateTo("/guests");
+    if (res.data) navigateTo("/guests");
   } catch (error) {
     console.error("Failed to create guest:", error);
   } finally {

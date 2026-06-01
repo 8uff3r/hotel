@@ -1,6 +1,7 @@
 <template>
   <div
-    class="group relative flex cursor-pointer flex-col rounded-lg border border-gray-200 p-3 transition-all hover:scale-105 hover:shadow-lg dark:border-gray-700"
+    class="group relative flex cursor-pointer flex-col rounded-lg border-2 p-3 transition-all hover:scale-105 hover:shadow-lg"
+    :class="borderClass"
     :style="{
       backgroundColor: bgColor,
       borderColor: borderColor,
@@ -8,14 +9,29 @@
     @click="$emit('select', room)"
     @contextmenu.prevent="openContextMenu($event)"
   >
+    <!-- Departure overdue indicator -->
+    <div v-if="isDepartureOverdue" class="absolute -top-1 -right-1 z-10">
+      <UBadge :color="isDepartureToday ? 'warning' : 'error'" variant="solid" size="xs">
+        <UIcon
+          :name="isDepartureToday ? 'i-lucide-clock' : 'i-lucide-alert-triangle'"
+          class="mr-0.5 h-3 w-3"
+        />
+        {{
+          isDepartureToday
+            ? t("rooms.roomRack.departureToday")
+            : t("rooms.roomRack.departureOverdue")
+        }}
+      </UBadge>
+    </div>
+
     <!-- Status bar -->
     <div
-      class="absolute left-0 right-0 top-0 h-1.5 rounded-t-lg"
+      class="absolute top-0 right-0 left-0 h-1.5 rounded-t-lg"
       :style="{ backgroundColor: barColor }"
     />
 
     <!-- Status icon top-right -->
-    <div class="absolute right-1.5 top-2.5">
+    <div class="absolute top-2.5 right-1.5">
       <UIcon :name="statusIcon" class="h-4 w-4 opacity-60" :style="{ color: barColor }" />
     </div>
 
@@ -30,7 +46,10 @@
     </span>
 
     <!-- Guest info when occupied -->
-    <div v-if="hasReservation" class="mt-2 space-y-1 border-t border-gray-200 pt-2 dark:border-gray-600">
+    <div
+      v-if="hasReservation"
+      class="mt-2 space-y-1 border-t border-gray-200 pt-2 dark:border-gray-600"
+    >
       <!-- Guest name -->
       <div class="flex items-center gap-1 text-xs text-gray-700 dark:text-gray-300">
         <UIcon name="i-lucide-user" class="h-3 w-3 shrink-0" />
@@ -40,7 +59,7 @@
       <!-- Guest count -->
       <div class="flex items-center gap-1 text-xs text-gray-500">
         <UIcon name="i-lucide-users" class="h-3 w-3 shrink-0" />
-        <span>{{ guestCount }}</span>
+        <span>{{ guestCount }} {{ t("rooms.roomRack.residentCount") }}</span>
       </div>
 
       <!-- Agency indicator -->
@@ -91,7 +110,7 @@
         <div class="mb-4 space-y-1 text-xs text-gray-600 dark:text-gray-400">
           <div class="flex items-center gap-2">
             <UIcon name="i-lucide-layout-grid" class="h-3 w-3" />
-            <span>{{ t('rooms.columns.floor') }}: {{ room.floor }}</span>
+            <span>{{ t("rooms.columns.floor") }}: {{ room.floor }}</span>
           </div>
           <div class="flex items-center gap-2">
             <UIcon name="i-lucide-arrow-left-right" class="h-3 w-3" />
@@ -102,7 +121,7 @@
         <!-- Change Status Button -->
         <UButton color="primary" size="lg" class="w-full" @click.stop="handleChangeStatus">
           <UIcon name="i-lucide-rotate-ccw" class="mr-2 h-4 w-4" />
-          {{ t('rooms.roomRack.changeStatus') }}
+          {{ t("rooms.roomRack.changeStatus") }}
         </UButton>
       </div>
     </Teleport>
@@ -110,63 +129,94 @@
 </template>
 
 <script setup lang="ts">
+import type { RoomRack } from "../types";
+
 const props = defineProps<{
-  room: any
-}>()
+  room: RoomRack;
+}>();
 
 const emit = defineEmits<{
-  select: [room: any]
-  'change-status': [room: any]
-}>()
+  select: [room: RoomRack];
+  "change-status": [room: RoomRack];
+}>();
 
-const { t } = useI18n()
+const { t } = useI18n();
 
-const contextMenuVisible = ref(false)
-const contextMenuX = ref(0)
-const contextMenuY = ref(0)
+const contextMenuVisible = ref(false);
+const contextMenuX = ref(0);
+const contextMenuY = ref(0);
 
-const hex = computed(() => `#${props.room.status?.colorHex || '94a3b8'}`)
-const bgColor = computed(() => `${hex.value}15`)
-const borderColor = computed(() => hex.value)
-const barColor = computed(() => hex.value)
+const hex = computed(() => `#${props.room.status?.colorHex || "94a3b8"}`);
+const bgColor = computed(() => `${hex.value}15`);
+const borderColor = computed(() => hex.value);
+const barColor = computed(() => hex.value);
 
-const hasReservation = computed(() => !!props.room.currentReservation?.guest)
+const hasReservation = computed(() => !!props.room.currentReservation?.guest);
 const guestName = computed(() => {
-  const g = props.room.currentReservation?.guest
-  return g ? `${g.firstName} ${g.lastName}` : ''
-})
-const guestCount = computed(() => props.room.currentReservation?.numberOfPeople ?? 1)
-const isAgency = computed(() => !!props.room.currentReservation?.origin)
-const agencyName = computed(() => props.room.currentReservation?.origin || '')
-const guestNationality = computed(() => props.room.currentReservation?.guest?.nationality?.label || '')
-const guestPhone = computed(() => props.room.currentReservation?.guest?.phone || '')
+  const g = props.room.currentReservation?.guest;
+  return g ? `${g.firstName} ${g.lastName}` : "";
+});
+const guestCount = computed(() => props.room.currentReservation?.numberOfPeople ?? 1);
+
+const isDepartureOverdue = computed(() => {
+  if (!props.room.currentReservation?.departureDate) return false;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const departure = new Date(props.room.currentReservation.departureDate);
+  departure.setHours(0, 0, 0, 0);
+  return departure <= today;
+});
+
+const isDepartureToday = computed(() => {
+  if (!props.room.currentReservation?.departureDate) return false;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const departure = new Date(props.room.currentReservation.departureDate);
+  departure.setHours(0, 0, 0, 0);
+  return departure.getTime() === today.getTime();
+});
+
+const borderClass = computed(() => {
+  if (!isDepartureOverdue.value) return "border-gray-200 dark:border-gray-700";
+  if (isDepartureToday.value) {
+    return "border-amber-400 dark:border-amber-500 ring-2 ring-amber-300/50 dark:ring-amber-600/50";
+  }
+  return "border-red-400 dark:border-red-500 ring-2 ring-red-300/50 dark:ring-red-600/50";
+});
+
+const isAgency = computed(() => !!props.room.currentReservation?.origin);
+const agencyName = computed(() => props.room.currentReservation?.origin || "");
+const guestNationality = computed(
+  () => props.room.currentReservation?.guest?.nationality?.label || ""
+);
+const guestPhone = computed(() => props.room.currentReservation?.guest?.phone || "");
 
 const statusIcon = computed(() => {
-  const slug = props.room.status?.slug
+  const slug = props.room.status?.slug;
   const icons: Record<string, string> = {
-    available: 'i-lucide-check-circle',
-    occupied: 'i-lucide-door-open',
-    maintenance: 'i-lucide-wrench',
-    out_of_order: 'i-lucide-x-circle',
-    cleaning: 'i-lucide-sparkles',
-  }
-  return icons[slug as string] || 'i-lucide-circle'
-})
+    available: "i-lucide-check-circle",
+    occupied: "i-lucide-door-open",
+    maintenance: "i-lucide-wrench",
+    out_of_order: "i-lucide-x-circle",
+    cleaning: "i-lucide-sparkles",
+  };
+  return icons[slug as string] || "i-lucide-circle";
+});
 
 function openContextMenu(event: MouseEvent) {
-  contextMenuX.value = event.clientX
-  contextMenuY.value = event.clientY
-  contextMenuVisible.value = true
+  contextMenuX.value = event.clientX;
+  contextMenuY.value = event.clientY;
+  contextMenuVisible.value = true;
 
-    const close = () => {
-    contextMenuVisible.value = false
-    document.removeEventListener('click', close)
-  }
-    setTimeout(() => document.addEventListener('click', close), 0)
+  const close = () => {
+    contextMenuVisible.value = false;
+    document.removeEventListener("click", close);
+  };
+  setTimeout(() => document.addEventListener("click", close), 0);
 }
 
 function handleChangeStatus() {
-  contextMenuVisible.value = false
-  emit('change-status', props.room)
+  contextMenuVisible.value = false;
+  emit("change-status", props.room);
 }
 </script>

@@ -1,13 +1,45 @@
 <template>
   <UModal v-model:open="open">
     <template #title>
-      {{ t('rooms.roomRack.changeStatusFor', { room: room?.roomNumber }) }}
+      {{ t("rooms.roomRack.changeStatusFor", { room: room?.roomNumber }) }}
     </template>
 
     <template #content>
       <div class="space-y-4 p-4">
+        <!-- Guest Info -->
+        <div
+          v-if="room.currentReservation?.guest"
+          class="rounded-lg border border-primary/20 bg-primary/5 p-3"
+        >
+          <h4 class="mb-2 text-sm font-semibold text-gray-900 dark:text-white">
+            <UIcon name="i-lucide-user" class="mr-1 inline h-4 w-4" />
+            {{ t("common.guest") }}
+          </h4>
+          <div class="space-y-1 text-sm text-gray-700 dark:text-gray-300">
+            <p class="font-medium">
+              {{ room.currentReservation.guest.firstName }}
+              {{ room.currentReservation.guest.lastName }}
+            </p>
+            <div class="flex items-center gap-1 text-xs text-gray-500">
+              <UIcon name="i-lucide-globe" class="h-3 w-3" />
+              <span>{{ room.currentReservation.guest.nationality?.label || "—" }}</span>
+            </div>
+            <div class="flex items-center gap-1 text-xs text-gray-500">
+              <UIcon name="i-lucide-phone" class="h-3 w-3" />
+              <span>{{ room.currentReservation.guest.phone || "—" }}</span>
+            </div>
+            <div class="flex items-center gap-1 text-xs text-gray-500">
+              <UIcon name="i-lucide-calendar" class="h-3 w-3" />
+              <span
+                >{{ formatDate(room.currentReservation.entryDate) }} →
+                {{ formatDate(room.currentReservation.departureDate) }}</span
+              >
+            </div>
+          </div>
+        </div>
+
         <p class="text-sm text-gray-600 dark:text-gray-400">
-          {{ t('rooms.roomRack.selectNewStatus') }}
+          {{ t("rooms.roomRack.selectNewStatus") }}
         </p>
         <div class="grid grid-cols-2 gap-3">
           <UButton
@@ -34,45 +66,57 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
-  room: any
-  statuses: any[]
-}>()
+import type { RoomRack, RoomStatus } from "../types";
 
-const open = defineModel<boolean>('open', { default: false })
+const props = defineProps<{
+  room: RoomRack;
+  statuses: RoomStatus[];
+}>();
+
+const open = defineModel<boolean>("open", { default: false });
 
 const emit = defineEmits<{
-  'status-changed': [roomId: number, statusId: number]
-}>()
+  "status-changed": [roomId: number, statusId: number];
+}>();
 
-const { t } = useI18n()
-const updating = ref(false)
+const { t } = useI18n();
+const updating = ref(false);
 
-function getStatusIcon(slug: string) {
-  const icons: Record<string, string> = {
-    available: 'i-lucide-check-circle',
-    occupied: 'i-lucide-door-open',
-    maintenance: 'i-lucide-wrench',
-    out_of_order: 'i-lucide-x-circle',
-    cleaning: 'i-lucide-sparkles',
-  }
-  return icons[slug] || 'i-lucide-circle'
+function formatDate(date: string | undefined) {
+  if (!date) return "—";
+  return new Date(date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 }
 
-async function changeStatus(status: any) {
-  if (updating.value) return
-  updating.value = true
+function getStatusIcon(slug: string | undefined) {
+  if (!slug) return "";
+  const icons: Record<string, string> = {
+    available: "i-lucide-check-circle",
+    occupied: "i-lucide-door-open",
+    maintenance: "i-lucide-wrench",
+    out_of_order: "i-lucide-x-circle",
+    cleaning: "i-lucide-sparkles",
+  };
+  return icons[slug] || "i-lucide-circle";
+}
+
+async function changeStatus(status: RoomStatus) {
+  if (updating.value || !props.room.id || !status.id) return;
+  updating.value = true;
   try {
     await $fetch(`/api/rooms/${props.room.id}`, {
-      method: 'PUT',
+      method: "PUT",
       body: { statusId: status.id },
-    })
-    emit('status-changed', props.room.id, status.id)
-    open.value = false
+    });
+    emit("status-changed", props.room.id, status.id);
+    open.value = false;
   } catch {
     // error handled by UI
   } finally {
-    updating.value = false
+    updating.value = false;
   }
 }
 </script>

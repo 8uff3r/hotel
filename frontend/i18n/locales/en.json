@@ -367,7 +367,19 @@
       },
       "changeStatus": "Change room status",
       "allTypes": "All Types",
-      "selectNewStatus": "Select new status"
+      "selectNewStatus": "Select new status",
+      "guestEmail": "Email",
+      "guestAddress": "Address",
+      "guestLandline": "Landline",
+      "guestDateOfBirth": "Date of Birth",
+      "guestPlaceOfBirth": "Place of Birth",
+      "purposeOfTravel": "Purpose of Travel",
+      "roomPrice": "Room Price",
+      "services": "Services",
+      "companions": "Companions",
+      "departureToday": "Departure today",
+      "departureOverdue": "Departure overdue",
+      "residentCount": "Residents"
     }
   },
   "parking": {

@@ -265,6 +265,8 @@ import RoomRackCard from "./components/RoomRackCard.vue";
 import RoomRackFilters from "./components/RoomRackFilters.vue";
 import RoomDetailModal from "./components/RoomDetailModal.vue";
 import RoomStatusChangeModal from "./components/RoomStatusChangeModal.vue";
+import type { GetApiRoomsRackResponse } from "~/utils/client";
+import type { RoomRack } from "./types";
 
 const { t } = useI18n();
 
@@ -309,45 +311,45 @@ const filteredRooms = computed(() => {
   let rooms = allRooms.value || [];
 
   if (filters.value.roomTypeId) {
-    rooms = rooms.filter((r: any) => r.roomType?.id === filters.value.roomTypeId);
+    rooms = rooms.filter((r) => r.roomType?.id === filters.value.roomTypeId);
   }
 
   if (filters.value.nationalityId) {
     rooms = rooms.filter(
-      (r: any) => r.currentReservation?.guest?.nationality?.id === filters.value.nationalityId
+      (r) => r.currentReservation?.guest?.nationality?.id === filters.value.nationalityId
     );
   }
 
   if (filters.value.agencyId) {
-    const agency = agencies.value?.find((a: any) => a.id === filters.value.agencyId);
+    const agency = agencies.value?.find((a) => a.id === filters.value.agencyId);
     if (agency) {
-      rooms = rooms.filter((r: any) => r.currentReservation?.origin === agency.name);
+      rooms = rooms.filter((r) => r.currentReservation?.origin === agency.name);
     }
   }
 
   if (filters.value.entryDateFrom) {
-    rooms = rooms.filter((r: any) => {
+    rooms = rooms.filter((r) => {
       const d = r.currentReservation?.entryDate;
       return d && d >= filters.value.entryDateFrom;
     });
   }
 
   if (filters.value.entryDateTo) {
-    rooms = rooms.filter((r: any) => {
+    rooms = rooms.filter((r) => {
       const d = r.currentReservation?.entryDate;
       return d && d <= filters.value.entryDateTo;
     });
   }
 
   if (filters.value.departureDateFrom) {
-    rooms = rooms.filter((r: any) => {
+    rooms = rooms.filter((r) => {
       const d = r.currentReservation?.departureDate;
       return d && d >= filters.value.departureDateFrom;
     });
   }
 
   if (filters.value.departureDateTo) {
-    rooms = rooms.filter((r: any) => {
+    rooms = rooms.filter((r) => {
       const d = r.currentReservation?.departureDate;
       return d && d <= filters.value.departureDateTo;
     });
@@ -358,7 +360,7 @@ const filteredRooms = computed(() => {
 
 const floors = computed(() => {
   const floorSet = new Set<number>();
-  filteredRooms.value?.forEach((room: any) => {
+  filteredRooms.value?.forEach((room) => {
     if (room.floor) floorSet.add(room.floor);
   });
   return Array.from(floorSet).sort((a, b) => a - b);
@@ -373,8 +375,8 @@ const sortedFloors = computed(() => {
 
 const currentFloorRooms = computed(() => {
   return filteredRooms.value
-    ?.filter((room: any) => room.floor === currentFloor.value)
-    .sort((a: any, b: any) => {
+    ?.filter((room) => room.floor === currentFloor.value)
+    .sort((a, b) => {
       if (sortBy.value === "status") {
         return (a.status?.label || "").localeCompare(b.status?.label || "");
       }
@@ -387,7 +389,7 @@ const currentFloorRooms = computed(() => {
 
 const currentFloorStatusCounts = computed(() => {
   const counts: Record<number, { id: number; name: string; colorHex?: string; count: number }> = {};
-  currentFloorRooms.value?.forEach((room: any) => {
+  currentFloorRooms.value?.forEach((room) => {
     if (room.status) {
       const statusId = room.status.id || 0;
       if (!counts[statusId]) {
@@ -408,8 +410,8 @@ const paginatedFloorList = computed(() => floors.value);
 
 const getRoomsByFloor = (floor: number) => {
   return filteredRooms.value
-    ?.filter((room: any) => room.floor === floor)
-    .sort((a: any, b: any) => {
+    ?.filter((room) => room.floor === floor)
+    .sort((a, b) => {
       if (sortBy.value === "status") {
         return (a.status?.label || "").localeCompare(b.status?.label || "");
       }
@@ -453,26 +455,26 @@ watch(
   { immediate: true }
 );
 
-const selectedRoom = ref<any>(null);
+const selectedRoom = ref<RoomRack>();
 const detailModalOpen = ref(false);
 const statusModalOpen = ref(false);
 
-function openDetail(room: any) {
+function openDetail(room: RoomRack) {
   selectedRoom.value = room;
   detailModalOpen.value = true;
 }
 
-function openStatusChange(room: any) {
+function openStatusChange(room: RoomRack) {
   selectedRoom.value = room;
   detailModalOpen.value = false;
   statusModalOpen.value = true;
 }
 
 function onStatusChanged(roomId: number, statusId: number) {
-  const room = allRooms.value?.find((r: any) => r.id === roomId);
+  const room = allRooms.value?.find((r) => r.id === roomId);
   if (room) {
     room.statusId = statusId;
-    const newStatus = statuses.value?.find((s: any) => s.id === statusId);
+    const newStatus = statuses.value?.find((s) => s.id === statusId);
     if (newStatus) {
       room.status = newStatus;
     }

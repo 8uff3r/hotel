@@ -17,10 +17,10 @@ type GuestsModule struct {
 type okResponse struct{ ok bool }
 
 type GuestWithReservationRequest struct {
-	Guest       models.Guest       `json:"guest"`
-	Reservation ReservationRequest `json:"reservation"`
-	Payment     models.Payment     `json:"payment"`
-	Companions  []CompanionRequest `json:"companions"`
+	Guest       models.Guest        `json:"guest"`
+	Reservation *ReservationRequest `json:"reservation,omitzero"`
+	Payment     *models.Payment     `json:"payment,omitzero"`
+	Companions  *[]CompanionRequest `json:"companions,omitzero"`
 }
 
 type CompanionRequest struct {
@@ -131,50 +131,58 @@ func (gm *GuestsModule) createGuestWithReservation(c fuego.ContextWithBody[Guest
 			return err
 		}
 
-		for _, comp := range body.Companions {
-			companion := models.GuestCompanion{
-				GuestID:       body.Guest.ID,
-				FirstName:     comp.FirstName,
-				LastName:      comp.LastName,
-				NationalID:    comp.NationalID,
-				IDNumber:      comp.IDNumber,
-				RelationID:    comp.Relation,
-				FatherName:    comp.FatherName,
-				Gender:        comp.Gender,
-				DateOfBirth:   comp.DateOfBirth,
-				NationalityID: comp.NationalityID,
-				Phone:         comp.Phone,
+		if body.Companions != nil {
+			for _, comp := range *body.Companions {
+				companion := models.GuestCompanion{
+					GuestID:       body.Guest.ID,
+					FirstName:     comp.FirstName,
+					LastName:      comp.LastName,
+					NationalID:    comp.NationalID,
+					IDNumber:      comp.IDNumber,
+					RelationID:    comp.Relation,
+					FatherName:    comp.FatherName,
+					Gender:        comp.Gender,
+					DateOfBirth:   comp.DateOfBirth,
+					NationalityID: comp.NationalityID,
+					Phone:         comp.Phone,
+				}
+				if err := tx.Create(&companion).Error; err != nil {
+					return err
+				}
 			}
-			if err := tx.Create(&companion).Error; err != nil {
+		}
+
+		var reservation models.Reservation
+		if body.Reservation != nil {
+			reservation = models.Reservation{
+				GuestID:         body.Guest.ID,
+				ReservationCode: body.Reservation.ReservationCode,
+				EntryDate:       body.Reservation.EntryDate,
+				DepartureDate:   body.Reservation.DepartureDate,
+				DurationOfStay:  body.Reservation.DurationOfStay,
+				NumberOfPeople:  body.Reservation.NumberOfPeople,
+				Origin:          body.Reservation.Origin,
+				Destination:     body.Reservation.Destination,
+				PurposeOfTravel: body.Reservation.PurposeOfTravel,
+				Breakfast:       body.Reservation.Breakfast,
+				FullBoard:       body.Reservation.FullBoard,
+				Parking:         body.Reservation.Parking,
+				RoomPrice:       body.Reservation.RoomPrice,
+				Notes:           body.Reservation.Notes,
+				Rooms:           body.Reservation.Rooms,
+			}
+			if err := tx.Create(&reservation).Error; err != nil {
 				return err
 			}
 		}
 
-		reservation := models.Reservation{
-			GuestID:         body.Guest.ID,
-			ReservationCode: body.Reservation.ReservationCode,
-			EntryDate:       body.Reservation.EntryDate,
-			DepartureDate:   body.Reservation.DepartureDate,
-			DurationOfStay:  body.Reservation.DurationOfStay,
-			NumberOfPeople:  body.Reservation.NumberOfPeople,
-			Origin:          body.Reservation.Origin,
-			Destination:     body.Reservation.Destination,
-			PurposeOfTravel: body.Reservation.PurposeOfTravel,
-			Breakfast:       body.Reservation.Breakfast,
-			FullBoard:       body.Reservation.FullBoard,
-			Parking:         body.Reservation.Parking,
-			RoomPrice:       body.Reservation.RoomPrice,
-			Notes:           body.Reservation.Notes,
-			Rooms:           body.Reservation.Rooms,
-		}
-		if err := tx.Create(&reservation).Error; err != nil {
-			return err
-		}
-
-		payment := body.Payment
-		payment.ID = 0
-		if err := tx.Create(&payment).Error; err != nil {
-			return err
+		var payment models.Payment
+		if body.Payment != nil {
+			payment = *body.Payment
+			payment.ID = 0
+			if err := tx.Create(&payment).Error; err != nil {
+				return err
+			}
 		}
 
 		result.Guest = body.Guest

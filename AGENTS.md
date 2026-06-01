@@ -68,6 +68,7 @@ Nuxt config:
 - Generic CRUD handlers live in `internal/httpapi/resource_helpers.go` and are reused across modules.
 - Error responses use `{"error":"..."}` with stable error keys (for example `invalid_id`, `not_found`, `update_failed`).
 - Auth uses cookie-based sessions (`SESSION_COOKIE`, default `auth_session`).
+- Data is retrieved by utilizing heyAPI generated api functions and pinia-colada for the fetching layer and async state management
 
 ## Auth and authorization behavior
 

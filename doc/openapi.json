@@ -607,6 +607,7 @@
 							},
 							"type": "object"
 						},
+						"nullable": true,
 						"type": "array"
 					},
 					"guest": {
@@ -780,6 +781,7 @@
 						"type": "object"
 					},
 					"payment": {
+						"nullable": true,
 						"properties": {
 							"amount": {
 								"format": "double",
@@ -842,6 +844,7 @@
 						"type": "object"
 					},
 					"reservation": {
+						"nullable": true,
 						"properties": {
 							"breakfast": {
 								"type": "boolean"
@@ -7687,6 +7690,274 @@
 				},
 				"type": "object"
 			},
+			"PaginatedResponse_rooms.RackRoom": {
+				"description": "PaginatedResponse_rooms.RackRoom schema",
+				"properties": {
+					"data": {
+						"items": {
+							"properties": {
+								"amenities": {
+									"items": {
+										"nullable": true,
+										"properties": {
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"label": {
+												"type": "string"
+											},
+											"slug": {
+												"type": "string"
+											}
+										},
+										"type": "object"
+									},
+									"nullable": true,
+									"type": "array"
+								},
+								"basePrice": {
+									"format": "double",
+									"type": "number"
+								},
+								"capacity": {
+									"type": "integer"
+								},
+								"currentReservation": {
+									"nullable": true,
+									"properties": {
+										"breakfast": {
+											"type": "boolean"
+										},
+										"departureDate": {
+											"format": "date-time",
+											"type": "string"
+										},
+										"durationOfStay": {
+											"type": "integer"
+										},
+										"entryDate": {
+											"format": "date-time",
+											"type": "string"
+										},
+										"fullBoard": {
+											"type": "boolean"
+										},
+										"guest": {
+											"properties": {
+												"address": {
+													"type": "string"
+												},
+												"companions": {
+													"items": {
+														"nullable": true,
+														"properties": {
+															"firstName": {
+																"type": "string"
+															},
+															"id": {
+																"minimum": 0,
+																"type": "integer"
+															},
+															"lastName": {
+																"type": "string"
+															},
+															"relation": {
+																"nullable": true,
+																"properties": {
+																	"id": {
+																		"minimum": 0,
+																		"type": "integer"
+																	},
+																	"label": {
+																		"type": "string"
+																	},
+																	"sanaId": {
+																		"type": "string"
+																	},
+																	"sanaName": {
+																		"type": "string"
+																	},
+																	"slug": {
+																		"type": "string"
+																	}
+																},
+																"type": "object"
+															}
+														},
+														"type": "object"
+													},
+													"nullable": true,
+													"type": "array"
+												},
+												"dateOfBirth": {
+													"format": "date-time",
+													"type": "string"
+												},
+												"email": {
+													"type": "string"
+												},
+												"fatherName": {
+													"type": "string"
+												},
+												"firstName": {
+													"type": "string"
+												},
+												"gender": {
+													"type": "string"
+												},
+												"id": {
+													"minimum": 0,
+													"type": "integer"
+												},
+												"idNumber": {
+													"type": "string"
+												},
+												"landline": {
+													"type": "string"
+												},
+												"lastName": {
+													"type": "string"
+												},
+												"nationalId": {
+													"type": "string"
+												},
+												"nationality": {
+													"nullable": true,
+													"properties": {
+														"id": {
+															"minimum": 0,
+															"type": "integer"
+														},
+														"label": {
+															"type": "string"
+														},
+														"slug": {
+															"type": "string"
+														}
+													},
+													"type": "object"
+												},
+												"occupation": {
+													"type": "string"
+												},
+												"phone": {
+													"type": "string"
+												},
+												"placeOfBirth": {
+													"type": "string"
+												}
+											},
+											"type": "object"
+										},
+										"id": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"notes": {
+											"type": "string"
+										},
+										"numberOfPeople": {
+											"type": "integer"
+										},
+										"origin": {
+											"type": "string"
+										},
+										"parking": {
+											"type": "boolean"
+										},
+										"purposeOfTravel": {
+											"type": "string"
+										},
+										"roomPrice": {
+											"format": "double",
+											"type": "number"
+										}
+									},
+									"type": "object"
+								},
+								"description": {
+									"type": "string"
+								},
+								"floor": {
+									"type": "integer"
+								},
+								"id": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"roomNumber": {
+									"type": "string"
+								},
+								"roomType": {
+									"nullable": true,
+									"properties": {
+										"colorHex": {
+											"nullable": true,
+											"type": "string"
+										},
+										"id": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"label": {
+											"type": "string"
+										},
+										"slug": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								},
+								"roomTypeId": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"status": {
+									"nullable": true,
+									"properties": {
+										"colorHex": {
+											"nullable": true,
+											"type": "string"
+										},
+										"id": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"label": {
+											"type": "string"
+										},
+										"slug": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								},
+								"statusId": {
+									"minimum": 0,
+									"type": "integer"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"limit": {
+						"type": "integer"
+					},
+					"page": {
+						"type": "integer"
+					},
+					"total": {
+						"format": "int64",
+						"type": "integer"
+					},
+					"totalPages": {
+						"type": "integer"
+					}
+				},
+				"type": "object"
+			},
 			"ParkingLot": {
 				"description": "ParkingLot schema",
 				"properties": {
@@ -10819,13 +11090,7 @@
 				"type": "object"
 			},
 			"okResponse": {
-				"description": "okResponse schema",
-				"properties": {
-					"ok": {
-						"type": "boolean"
-					}
-				},
-				"type": "object"
+				"description": "okResponse schema"
 			},
 			"permissionsResponse": {
 				"description": "permissionsResponse schema",
@@ -18237,7 +18502,7 @@
 		},
 		"/api/rooms/amenities": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.ListModel[...].func9`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.ListModel[...].func10`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/rooms/amenities",
 				"parameters": [
 					{
@@ -18319,7 +18584,97 @@
 						"description": ""
 					}
 				},
-				"summary": "func9",
+				"summary": "func10",
+				"tags": [
+					"/ROOMS"
+				]
+			}
+		},
+		"/api/rooms/rack": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.RoomsModule.rackHandler.func5`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/rooms/rack",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"schema": {
+							"type": "integer"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"schema": {
+							"type": "integer"
+						}
+					},
+					{
+						"in": "query",
+						"name": "filters",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PaginatedResponse_rooms.RackRoom"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/PaginatedResponse_rooms.RackRoom"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func5",
 				"tags": [
 					"/ROOMS"
 				]
@@ -18327,7 +18682,7 @@
 		},
 		"/api/rooms/statuses": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.ListModel[...].func13`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.ListModel[...].func14`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/rooms/statuses",
 				"parameters": [
 					{
@@ -18409,7 +18764,7 @@
 						"description": ""
 					}
 				},
-				"summary": "func13",
+				"summary": "func14",
 				"tags": [
 					"/ROOMS"
 				]
@@ -18417,7 +18772,7 @@
 		},
 		"/api/rooms/types": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.ListModel[...].func11`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.ListModel[...].func12`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/rooms/types",
 				"parameters": [
 					{
@@ -18499,7 +18854,7 @@
 						"description": ""
 					}
 				},
-				"summary": "func11",
+				"summary": "func12",
 				"tags": [
 					"/ROOMS"
 				]
@@ -18507,7 +18862,7 @@
 		},
 		"/api/rooms/{id}": {
 			"delete": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.DeleteModel[...].func7`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.DeleteModel[...].func8`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "DELETE_/api/rooms/:id",
 				"parameters": [
 					{
@@ -18576,13 +18931,13 @@
 						"description": ""
 					}
 				},
-				"summary": "func7",
+				"summary": "func8",
 				"tags": [
 					"/ROOMS"
 				]
 			},
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.GetModel[...].func5`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.GetModel[...].func6`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/rooms/:id",
 				"parameters": [
 					{
@@ -18651,13 +19006,13 @@
 						"description": ""
 					}
 				},
-				"summary": "func5",
+				"summary": "func6",
 				"tags": [
 					"/ROOMS"
 				]
 			},
 			"put": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.UpdateModel[...].func6`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.UpdateModel[...].func7`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "PUT_/api/rooms/:id",
 				"parameters": [
 					{
@@ -18737,7 +19092,7 @@
 						"description": ""
 					}
 				},
-				"summary": "func6",
+				"summary": "func7",
 				"tags": [
 					"/ROOMS"
 				]

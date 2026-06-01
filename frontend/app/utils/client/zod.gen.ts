@@ -2461,6 +2461,90 @@ export const zPaginatedResponseModelsVehicle = z.object({
 });
 
 /**
+ * PaginatedResponse_rooms.RackRoom schema
+ */
+export const zPaginatedResponseRoomsRackRoom = z.object({
+    data: z.array(z.object({
+        amenities: z.array(z.object({
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        })).optional(),
+        basePrice: z.number().optional(),
+        capacity: z.int().optional(),
+        currentReservation: z.object({
+            breakfast: z.boolean().optional(),
+            departureDate: z.iso.datetime({ offset: true }).optional(),
+            durationOfStay: z.int().optional(),
+            entryDate: z.iso.datetime({ offset: true }).optional(),
+            fullBoard: z.boolean().optional(),
+            guest: z.object({
+                address: z.string().optional(),
+                companions: z.array(z.object({
+                    firstName: z.string().optional(),
+                    id: z.int().gte(0).optional(),
+                    lastName: z.string().optional(),
+                    relation: z.object({
+                        id: z.int().gte(0).optional(),
+                        label: z.string().optional(),
+                        sanaId: z.string().optional(),
+                        sanaName: z.string().optional(),
+                        slug: z.string().optional()
+                    }).optional()
+                })).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                email: z.string().optional(),
+                fatherName: z.string().optional(),
+                firstName: z.string().optional(),
+                gender: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                idNumber: z.string().optional(),
+                landline: z.string().optional(),
+                lastName: z.string().optional(),
+                nationalId: z.string().optional(),
+                nationality: z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                occupation: z.string().optional(),
+                phone: z.string().optional(),
+                placeOfBirth: z.string().optional()
+            }).optional(),
+            id: z.int().gte(0).optional(),
+            notes: z.string().optional(),
+            numberOfPeople: z.int().optional(),
+            origin: z.string().optional(),
+            parking: z.boolean().optional(),
+            purposeOfTravel: z.string().optional(),
+            roomPrice: z.number().optional()
+        }).optional(),
+        description: z.string().optional(),
+        floor: z.int().optional(),
+        id: z.int().gte(0).optional(),
+        roomNumber: z.string().optional(),
+        roomType: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        roomTypeId: z.int().gte(0).optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional()
+    })).optional(),
+    limit: z.int().optional(),
+    page: z.int().optional(),
+    total: z.coerce.bigint().min(BigInt('-9223372036854775808'), { error: 'Invalid value: Expected int64 to be >= -9223372036854775808' }).max(BigInt('9223372036854775807'), { error: 'Invalid value: Expected int64 to be <= 9223372036854775807' }).optional(),
+    totalPages: z.int().optional()
+});
+
+/**
  * ParkingLot schema
  */
 export const zParkingLot = z.object({
@@ -3471,9 +3555,7 @@ export const zLoginResponse = z.object({
 /**
  * okResponse schema
  */
-export const zOkResponse = z.object({
-    ok: z.boolean().optional()
-});
+export const zOkResponse = z.unknown();
 
 /**
  * permissionsResponse schema
@@ -4366,6 +4448,16 @@ export const zGetApiRoomsAmenitiesHeaders = z.object({
 });
 
 export const zGetApiRoomsAmenitiesQuery = z.object({
+    limit: z.int().optional(),
+    page: z.int().optional(),
+    filters: z.string().optional()
+});
+
+export const zGetApiRoomsRackHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zGetApiRoomsRackQuery = z.object({
     limit: z.int().optional(),
     page: z.int().optional(),
     filters: z.string().optional()

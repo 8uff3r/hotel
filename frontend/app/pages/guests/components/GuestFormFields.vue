@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { getApiCommonCountries } from "~/utils/client";
 import type { CreateRequest } from "../utils";
+import { useCountriesQuery } from "../queries";
 
 defineProps<{
   loading: boolean;
@@ -8,10 +8,7 @@ defineProps<{
 const form = defineModel<Required<CreateRequest>>({ default: {} });
 const { t } = useI18n();
 
-const { data: countries } = useAsyncData("countries", async () => {
-  const res = await getApiCommonCountries({ query: { limit: -1 } });
-  return res.data;
-});
+const { data: countries } = useCountriesQuery();
 </script>
 <template>
   <UFormField :label="t('forms.firstName')" name="guest.firstName" required>

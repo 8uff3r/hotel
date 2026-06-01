@@ -1,7 +1,7 @@
 package rooms
 
 import (
-	h "hotel/internal/httpapi"
+	"hotel/internal/httpapi"
 	"hotel/internal/models"
 
 	"github.com/go-fuego/fuego"
@@ -9,50 +9,53 @@ import (
 
 type RoomsModule struct{}
 
-func (m RoomsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
+func (m RoomsModule) RegisterRoutes(api *httpapi.API, s *fuego.Server) {
 	fuego.Get(
 		s,
 		"/",
-		h.ListModel[models.Room](
+		httpapi.ListModel[models.Room](
 			api.Db,
-			h.WithPreload("Amenities", "Type", "Status"),
-			h.WithTranslation[models.Room](),
+			httpapi.WithPreload("Amenities", "Type", "Status"),
+			httpapi.WithTranslation[models.Room](),
 		),
 	)
-	fuego.Post(s, "/", h.CreateModel[models.Room](api.Db))
+	fuego.Post(s, "/", httpapi.CreateModel[models.Room](api.Db))
+
+	fuego.Get(s, "/rack", m.rackHandler(api))
+
 	fuego.Get(
 		s,
 		"/{id}",
-		h.GetModel[models.Room](
+		httpapi.GetModel[models.Room](
 			api.Db,
 			"Amenities", "Type", "Status",
 		),
 	)
-	fuego.Put(s, "/{id}", h.UpdateModel[models.Room](api.Db))
-	fuego.Delete(s, "/{id}", h.DeleteModel[models.Room](api.Db))
+	fuego.Put(s, "/{id}", httpapi.UpdateModel[models.Room](api.Db))
+	fuego.Delete(s, "/{id}", httpapi.DeleteModel[models.Room](api.Db))
 
 	fuego.Get(
 		s,
 		"/amenities",
-		h.ListModel[models.Amenity](
+		httpapi.ListModel[models.Amenity](
 			api.Db,
-			h.WithTranslation[models.Amenity](),
+			httpapi.WithTranslation[models.Amenity](),
 		),
 	)
 	fuego.Get(
 		s,
 		"/types",
-		h.ListModel[models.RoomType](
+		httpapi.ListModel[models.RoomType](
 			api.Db,
-			h.WithTranslation[models.RoomType](),
+			httpapi.WithTranslation[models.RoomType](),
 		),
 	)
 	fuego.Get(
 		s,
 		"/statuses",
-		h.ListModel[models.RoomStatus](
+		httpapi.ListModel[models.RoomStatus](
 			api.Db,
-			h.WithTranslation[models.RoomStatus](),
+			httpapi.WithTranslation[models.RoomStatus](),
 		),
 	)
 }
