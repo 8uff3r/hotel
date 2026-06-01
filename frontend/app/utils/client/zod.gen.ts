@@ -295,35 +295,7 @@ export const zGuestWithReservationRequest = z.object({
         purposeOfTravel: z.string().optional(),
         reservationCode: z.string().optional(),
         roomPrice: z.number().optional(),
-        rooms: z.array(z.object({
-            amenities: z.array(z.object({
-                id: z.int().gte(0).optional(),
-                label: z.string().optional(),
-                slug: z.string().optional()
-            })).optional(),
-            basePrice: z.number().optional(),
-            capacity: z.int().optional(),
-            description: z.string().optional(),
-            floor: z.int().optional(),
-            hotelId: z.int().gte(0).optional(),
-            id: z.int().gte(0).optional(),
-            name: z.string().optional(),
-            roomNumber: z.string().optional(),
-            roomType: z.object({
-                colorHex: z.string().optional(),
-                id: z.int().gte(0).optional(),
-                label: z.string().optional(),
-                slug: z.string().optional()
-            }).optional(),
-            roomTypeId: z.int().gte(0).optional(),
-            status: z.object({
-                colorHex: z.string().optional(),
-                id: z.int().gte(0).optional(),
-                label: z.string().optional(),
-                slug: z.string().optional()
-            }).optional(),
-            statusId: z.int().gte(0).optional()
-        })).optional()
+        rooms: z.array(z.int().gte(0)).optional()
     }).optional()
 });
 

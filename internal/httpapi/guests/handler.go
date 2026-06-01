@@ -39,20 +39,20 @@ type CompanionRequest struct {
 }
 
 type ReservationRequest struct {
-	ReservationCode string        `json:"reservationCode"`
-	EntryDate       time.Time     `json:"entryDate"`
-	DepartureDate   time.Time     `json:"departureDate"`
-	DurationOfStay  int           `json:"durationOfStay"`
-	NumberOfPeople  int           `json:"numberOfPeople"`
-	Origin          string        `json:"origin"`
-	Destination     string        `json:"destination"`
-	PurposeOfTravel string        `json:"purposeOfTravel"`
-	Breakfast       bool          `json:"breakfast"`
-	Parking         bool          `json:"parking"`
-	FullBoard       bool          `json:"fullBoard"`
-	RoomPrice       float64       `json:"roomPrice"`
-	Notes           string        `json:"notes"`
-	Rooms           []models.Room `json:"rooms"`
+	ReservationCode string    `json:"reservationCode"`
+	EntryDate       time.Time `json:"entryDate"`
+	DepartureDate   time.Time `json:"departureDate"`
+	DurationOfStay  int       `json:"durationOfStay"`
+	NumberOfPeople  int       `json:"numberOfPeople"`
+	Origin          string    `json:"origin"`
+	Destination     string    `json:"destination"`
+	PurposeOfTravel string    `json:"purposeOfTravel"`
+	Breakfast       bool      `json:"breakfast"`
+	Parking         bool      `json:"parking"`
+	FullBoard       bool      `json:"fullBoard"`
+	RoomPrice       float64   `json:"roomPrice"`
+	Notes           string    `json:"notes"`
+	Rooms           []uint    `json:"rooms"`
 }
 
 func (gm GuestsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
@@ -154,6 +154,11 @@ func (gm *GuestsModule) createGuestWithReservation(c fuego.ContextWithBody[Guest
 
 		var reservation models.Reservation
 		if body.Reservation != nil {
+			rooms := []models.Room{}
+			for _, v := range body.Reservation.Rooms {
+				rooms = append(rooms, models.Room{Base: models.Base{ID: v}})
+			}
+
 			reservation = models.Reservation{
 				GuestID:         body.Guest.ID,
 				ReservationCode: body.Reservation.ReservationCode,
@@ -169,7 +174,7 @@ func (gm *GuestsModule) createGuestWithReservation(c fuego.ContextWithBody[Guest
 				Parking:         body.Reservation.Parking,
 				RoomPrice:       body.Reservation.RoomPrice,
 				Notes:           body.Reservation.Notes,
-				Rooms:           body.Reservation.Rooms,
+				Rooms:           rooms,
 			}
 			if err := tx.Create(&reservation).Error; err != nil {
 				return err

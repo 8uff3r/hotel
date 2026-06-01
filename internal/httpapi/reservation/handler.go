@@ -21,7 +21,7 @@ func (m ReservationModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 		"/",
 		h.ListModel[models.Reservation](
 			api.Db,
-			h.WithPreload("Rooms", "Guest", "Payment", "Payment.PaymentStatus"),
+			h.WithPreload("Rooms", "Guest", "Payment", "Payment.Status"),
 			h.WithTranslation[models.Translation](),
 			h.WithAllowedFilters("status", "payment_status", "entry_date", "departure_date"),
 		),

@@ -5,7 +5,7 @@ defineProps<{
 }>();
 
 const { t } = useI18n();
-const form = defineModel<Required<CreateRequest> & { roomIds: number[] }>({ default: {} });
+const form = defineModel<Required<CreateRequest>>({ default: {} });
 
 const { data: rooms } = useAsyncData(async () => {
   const res = await getApiRooms({});
@@ -75,7 +75,7 @@ const { data: rooms } = useAsyncData(async () => {
   </UFormField>
 
   <UFormField :label="t('guest.selectRoom')" name="reservation.rooms">
-    <HSelect v-model="form.roomIds" :items="rooms ?? []" multiple :disabled="loading" />
+    <HSelect v-model="form.reservation.rooms" :items="rooms ?? []" multiple :disabled="loading" />
   </UFormField>
 
   <UFormField :label="t('guest.breakfast')" name="reservation.breakfast">

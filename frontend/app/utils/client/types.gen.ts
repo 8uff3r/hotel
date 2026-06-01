@@ -297,35 +297,7 @@ export type GuestWithReservationRequest = {
         purposeOfTravel?: string;
         reservationCode?: string;
         roomPrice?: number;
-        rooms?: Array<{
-            amenities?: Array<{
-                id?: number;
-                label?: string;
-                slug?: string;
-            }>;
-            basePrice?: number;
-            capacity?: number;
-            description?: string;
-            floor?: number;
-            hotelId?: number;
-            id?: number;
-            name?: string;
-            roomNumber?: string;
-            roomType?: {
-                colorHex?: string;
-                id?: number;
-                label?: string;
-                slug?: string;
-            };
-            roomTypeId?: number;
-            status?: {
-                colorHex?: string;
-                id?: number;
-                label?: string;
-                slug?: string;
-            };
-            statusId?: number;
-        }>;
+        rooms?: Array<number>;
     };
 };
 
