@@ -76,26 +76,6 @@
         </div>
       </template>
     </UCard>
-
-    <!-- Delete Confirmation Modal -->
-    <UModal v-model="deleteModalOpen">
-      <template #header>
-        <h2 class="text-lg font-semibold">{{ t("actions.confirmDelete") }}</h2>
-      </template>
-      <template #body>
-        <p>{{ t("guests.confirmDelete", { name: selectedGuest?.firstName }) }}</p>
-      </template>
-      <template #footer>
-        <div class="flex justify-end gap-3">
-          <UButton variant="outline" @click="deleteModalOpen = false">{{
-            t("actions.cancel")
-          }}</UButton>
-          <UButton color="error" :loading="deleting" @click="deleteGuest">{{
-            t("actions.delete")
-          }}</UButton>
-        </div>
-      </template>
-    </UModal>
   </div>
 </template>
 
@@ -116,8 +96,6 @@ const columns = computed<TableColumn<Guest>[]>(() => [
 ]);
 
 const deleting = ref(false);
-const deleteModalOpen = ref(false);
-const selectedGuest = ref<Guest | null>(null);
 const page = ref(1);
 
 const filters = reactive({
@@ -166,24 +144,24 @@ const clearFilters = () => {
 };
 
 const confirm = useConfirmDialog();
-const confirmDelete = (guest: Guest) => {
-  selectedGuest.value = guest;
-  confirm({
+const confirmDelete = async (guest: Guest) => {
+  const confirmed = await confirm({
     title: t("actions.confirmDelete"),
     description: t("guests.confirmDelete", {
       name: `${guest.firstName} ${guest.lastName}`,
     }),
   });
-  // deleteModalOpen.value = true;
+
+  if (confirmed) {
+    deleteGuest(guest);
+  }
 };
 
-const deleteGuest = async () => {
-  if (!selectedGuest.value) return;
-
+//FIXME: this route doesn't exist
+const deleteGuest = async (guest: Guest) => {
   deleting.value = true;
   try {
-    await $fetch(`/api/guests/${selectedGuest.value.id}`, { method: "DELETE" });
-    deleteModalOpen.value = false;
+    await $fetch(`/api/guests/${guest.id}`, { method: "DELETE" });
   } catch (error) {
     console.error("Failed to delete guest:", error);
   } finally {
