@@ -559,7 +559,11 @@
     "destination": "مقصد",
     "purpose_of_travel": "هدف از سفر",
     "checked_in_at": "تاریخ ورود",
-    "checked_out_at": "تاریخ خروج"
+    "checked_out_at": "تاریخ خروج",
+    "code": "کد",
+    "checkIn": "ورود",
+    "checkOut": "خروج",
+    "status": "وضعیت"
   },
   "accounting": {
     "accounting": "حسابداری",
@@ -630,7 +634,13 @@
     "paid": "پرداخت شده",
     "processPayment": "پرداخت و تسویه",
     "receiptNumber": "شماره رسید",
-    "settlementAmount": "مبلغ قابل پرداخت"
+    "settlementAmount": "مبلغ قابل پرداخت",
+    "restaurantCharges": "هزینه‌های رستوران",
+    "noRestaurantCharges": "هیچ صورتحسابی برای رستوران یافت نشد",
+    "restaurantTotal": "مجموع رستوران",
+    "selectAll": "انتخاب همه",
+    "billDate": "تاریخ صورتحساب",
+    "external": "خارجی"
   },
   "guest": {
     "personalInfo": "اطلاعات شخصی مهمان",

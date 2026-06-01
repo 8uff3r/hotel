@@ -174,20 +174,24 @@ export const zGuestSettlementResponse = z.object({
     reservations: z.array(z.object({
         checkInDate: z.string().optional(),
         checkOutDate: z.string().optional(),
-        checkedOut: z.object({
-            colorHex: z.string().optional(),
-            id: z.int().gte(0).optional(),
-            label: z.string().optional(),
-            slug: z.string().optional()
-        }).optional(),
         id: z.int().gte(0).optional(),
         paidAmount: z.number().optional(),
         reservationCode: z.string().optional(),
-        roomPrice: z.number().optional()
+        roomPrice: z.number().optional(),
+        status: z.string().optional(),
+        statusLabel: z.string().optional()
+    })).optional(),
+    restaurantBills: z.array(z.object({
+        billDate: z.string().optional(),
+        id: z.int().gte(0).optional(),
+        isExternal: z.boolean().optional(),
+        notes: z.string().optional(),
+        totalAmount: z.number().optional()
     })).optional(),
     totalDue: z.number().optional(),
     totalPaid: z.number().optional(),
     totalParking: z.number().optional(),
+    totalRestaurant: z.number().optional(),
     totalRoom: z.number().optional()
 });
 
@@ -1806,6 +1810,37 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
 });
 
 /**
+ * PaginatedResponse_models.PaymentMethod schema
+ */
+export const zPaginatedResponseModelsPaymentMethod = z.object({
+    data: z.array(z.object({
+        id: z.int().gte(0).optional(),
+        label: z.string().optional(),
+        slug: z.string().optional()
+    })).optional(),
+    limit: z.int().optional(),
+    page: z.int().optional(),
+    total: z.coerce.bigint().min(BigInt('-9223372036854775808'), { error: 'Invalid value: Expected int64 to be >= -9223372036854775808' }).max(BigInt('9223372036854775807'), { error: 'Invalid value: Expected int64 to be <= 9223372036854775807' }).optional(),
+    totalPages: z.int().optional()
+});
+
+/**
+ * PaginatedResponse_models.PaymentStatus schema
+ */
+export const zPaginatedResponseModelsPaymentStatus = z.object({
+    data: z.array(z.object({
+        colorHex: z.string().optional(),
+        id: z.int().gte(0).optional(),
+        label: z.string().optional(),
+        slug: z.string().optional()
+    })).optional(),
+    limit: z.int().optional(),
+    page: z.int().optional(),
+    total: z.coerce.bigint().min(BigInt('-9223372036854775808'), { error: 'Invalid value: Expected int64 to be >= -9223372036854775808' }).max(BigInt('9223372036854775807'), { error: 'Invalid value: Expected int64 to be <= 9223372036854775807' }).optional(),
+    totalPages: z.int().optional()
+});
+
+/**
  * PaginatedResponse_models.PermissionTemplate schema
  */
 export const zPaginatedResponseModelsPermissionTemplate = z.object({
@@ -3366,7 +3401,8 @@ export const zSettleGuestRequest = z.object({
     parkingTxnIds: z.array(z.int().gte(0)).optional(),
     paymentMethod: z.int().gte(0).optional(),
     reference: z.string().optional(),
-    reservationIds: z.array(z.int().gte(0)).optional()
+    reservationIds: z.array(z.int().gte(0)).optional(),
+    restaurantBillIds: z.array(z.int().gte(0)).optional()
 });
 
 /**
@@ -3527,7 +3563,9 @@ export const zLoginResponse = z.object({
 /**
  * okResponse schema
  */
-export const zOkResponse = z.unknown();
+export const zOkResponse = z.object({
+    ok: z.boolean().optional()
+});
 
 /**
  * permissionsResponse schema
@@ -3666,6 +3704,26 @@ export const zPostApiAccountingIncomeBody = zIncome;
 
 export const zPostApiAccountingIncomeHeaders = z.object({
     Accept: z.string().optional()
+});
+
+export const zGetApiAccountingPaymentMethodsHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zGetApiAccountingPaymentMethodsQuery = z.object({
+    limit: z.int().optional(),
+    page: z.int().optional(),
+    filters: z.string().optional()
+});
+
+export const zGetApiAccountingPaymentStatusesHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zGetApiAccountingPaymentStatusesQuery = z.object({
+    limit: z.int().optional(),
+    page: z.int().optional(),
+    filters: z.string().optional()
 });
 
 /**

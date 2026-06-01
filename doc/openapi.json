@@ -492,25 +492,6 @@
 								"checkOutDate": {
 									"type": "string"
 								},
-								"checkedOut": {
-									"properties": {
-										"colorHex": {
-											"nullable": true,
-											"type": "string"
-										},
-										"id": {
-											"minimum": 0,
-											"type": "integer"
-										},
-										"label": {
-											"type": "string"
-										},
-										"slug": {
-											"type": "string"
-										}
-									},
-									"type": "object"
-								},
 								"id": {
 									"minimum": 0,
 									"type": "integer"
@@ -523,6 +504,37 @@
 									"type": "string"
 								},
 								"roomPrice": {
+									"format": "double",
+									"type": "number"
+								},
+								"status": {
+									"type": "string"
+								},
+								"statusLabel": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"restaurantBills": {
+						"items": {
+							"properties": {
+								"billDate": {
+									"type": "string"
+								},
+								"id": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"isExternal": {
+									"type": "boolean"
+								},
+								"notes": {
+									"type": "string"
+								},
+								"totalAmount": {
 									"format": "double",
 									"type": "number"
 								}
@@ -540,6 +552,10 @@
 						"type": "number"
 					},
 					"totalParking": {
+						"format": "double",
+						"type": "number"
+					},
+					"totalRestaurant": {
 						"format": "double",
 						"type": "number"
 					},
@@ -5603,6 +5619,84 @@
 				},
 				"type": "object"
 			},
+			"PaginatedResponse_models.PaymentMethod": {
+				"description": "PaginatedResponse_models.PaymentMethod schema",
+				"properties": {
+					"data": {
+						"items": {
+							"properties": {
+								"id": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"label": {
+									"type": "string"
+								},
+								"slug": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"limit": {
+						"type": "integer"
+					},
+					"page": {
+						"type": "integer"
+					},
+					"total": {
+						"format": "int64",
+						"type": "integer"
+					},
+					"totalPages": {
+						"type": "integer"
+					}
+				},
+				"type": "object"
+			},
+			"PaginatedResponse_models.PaymentStatus": {
+				"description": "PaginatedResponse_models.PaymentStatus schema",
+				"properties": {
+					"data": {
+						"items": {
+							"properties": {
+								"colorHex": {
+									"nullable": true,
+									"type": "string"
+								},
+								"id": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"label": {
+									"type": "string"
+								},
+								"slug": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"limit": {
+						"type": "integer"
+					},
+					"page": {
+						"type": "integer"
+					},
+					"total": {
+						"format": "int64",
+						"type": "integer"
+					},
+					"totalPages": {
+						"type": "integer"
+					}
+				},
+				"type": "object"
+			},
 			"PaginatedResponse_models.PermissionTemplate": {
 				"description": "PaginatedResponse_models.PermissionTemplate schema",
 				"properties": {
@@ -10570,6 +10664,13 @@
 							"type": "integer"
 						},
 						"type": "array"
+					},
+					"restaurantBillIds": {
+						"items": {
+							"minimum": 0,
+							"type": "integer"
+						},
+						"type": "array"
 					}
 				},
 				"type": "object"
@@ -11678,6 +11779,186 @@
 					}
 				},
 				"summary": "func6",
+				"tags": [
+					"/ACCOUNTING"
+				]
+			}
+		},
+		"/api/accounting/payment-methods/": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.ListModel[...].func8`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/accounting/payment-methods/",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"schema": {
+							"type": "integer"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"schema": {
+							"type": "integer"
+						}
+					},
+					{
+						"in": "query",
+						"name": "filters",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PaginatedResponse_models.PaymentMethod"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/PaginatedResponse_models.PaymentMethod"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func8",
+				"tags": [
+					"/ACCOUNTING"
+				]
+			}
+		},
+		"/api/accounting/payment-statuses/": {
+			"get": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/accounting.AccountingModule.RegisterRoutes.ListModel[...].func10`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "GET_/api/accounting/payment-statuses/",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"schema": {
+							"type": "integer"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"schema": {
+							"type": "integer"
+						}
+					},
+					{
+						"in": "query",
+						"name": "filters",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PaginatedResponse_models.PaymentStatus"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/PaginatedResponse_models.PaymentStatus"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func10",
 				"tags": [
 					"/ACCOUNTING"
 				]

@@ -1,6 +1,7 @@
 package guests
 
 import (
+	"strconv"
 	"time"
 
 	h "hotel/internal/httpapi"
@@ -88,21 +89,24 @@ type GuestWithReservationResponse struct {
 type GuestSettlementResponse struct {
 	Reservations []ReservationSettlement `json:"reservations"`
 	ParkingTxns  []ParkingSettlement     `json:"parkingTransactions"`
+	RestaurantBills []RestaurantSettlement `json:"restaurantBills"`
 	TotalRoom    float64                 `json:"totalRoom"`
 	TotalParking float64                 `json:"totalParking"`
+	TotalRestaurant float64              `json:"totalRestaurant"`
 	TotalDue     float64                 `json:"totalDue"`
 	TotalPaid    float64                 `json:"totalPaid"`
 	Balance      float64                 `json:"balance"`
 }
 
 type ReservationSettlement struct {
-	ID              uint                     `json:"id"`
-	ReservationCode string                   `json:"reservationCode"`
-	CheckInDate     string                   `json:"checkInDate"`
-	CheckOutDate    string                   `json:"checkOutDate"`
-	Status          models.ReservationStatus `json:"checkedOut"`
-	RoomPrice       float64                  `json:"roomPrice"`
-	PaidAmount      float64                  `json:"paidAmount"`
+	ID              uint   `json:"id"`
+	ReservationCode string `json:"reservationCode"`
+	CheckInDate     string `json:"checkInDate"`
+	CheckOutDate    string `json:"checkOutDate"`
+	Status          string `json:"status"`
+	StatusLabel     string `json:"statusLabel"`
+	RoomPrice       float64 `json:"roomPrice"`
+	PaidAmount      float64 `json:"paidAmount"`
 }
 
 type ParkingSettlement struct {
@@ -115,6 +119,14 @@ type ParkingSettlement struct {
 	AmountDue    float64 `json:"amountDue"`
 	AmountPaid   float64 `json:"amountPaid"`
 	Status       string  `json:"status"`
+}
+
+type RestaurantSettlement struct {
+	ID          uint    `json:"id"`
+	BillDate    string  `json:"billDate"`
+	TotalAmount float64 `json:"totalAmount"`
+	Notes       string  `json:"notes"`
+	IsExternal  bool    `json:"isExternal"`
 }
 
 func (gm *GuestsModule) createGuestWithReservation(c fuego.ContextWithBody[GuestWithReservationRequest]) (GuestWithReservationResponse, error) {
@@ -204,12 +216,13 @@ func (gm *GuestsModule) createGuestWithReservation(c fuego.ContextWithBody[Guest
 }
 
 type SettleGuestRequest struct {
-	ReservationIDs []uint  `json:"reservationIds"`
-	ParkingTxnIDs  []uint  `json:"parkingTxnIds"`
-	Amount         float64 `json:"amount"`
-	PaymentMethod  uint    `json:"paymentMethod"`
-	Reference      string  `json:"reference"`
-	Notes          string  `json:"notes"`
+	ReservationIDs  []uint  `json:"reservationIds"`
+	ParkingTxnIDs   []uint  `json:"parkingTxnIds"`
+	RestaurantBillIDs []uint `json:"restaurantBillIds"`
+	Amount          float64 `json:"amount"`
+	PaymentMethod   uint    `json:"paymentMethod"`
+	Reference       string  `json:"reference"`
+	Notes           string  `json:"notes"`
 }
 
 func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRequest]) (okResponse, error) {
@@ -233,6 +246,8 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 		return zero, fuego.NotFoundError{}
 	}
 
+	receivedStatusID := resolvePaymentStatus(gm.Db, "received")
+
 	err = gm.Db.WithContext(c).Transaction(func(tx *gorm.DB) error {
 		for _, resID := range body.ReservationIDs {
 			var res models.Reservation
@@ -242,20 +257,41 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 			if res.GuestID != id {
 				continue
 			}
+
 			income := models.Income{
 				IncomeDate:      time.Now().UTC(),
 				Description:     "Room payment - Reservation " + res.ReservationCode,
-				Amount:          body.Amount * (res.RoomPrice / (res.RoomPrice + 1)),
+				Amount:          res.RoomPrice,
 				Source:          guest.FirstName + " " + guest.LastName,
 				PaymentMethodID: body.PaymentMethod,
 				Notes:           body.Notes,
 			}
 			income.CategoryID = resolveIncomeCategory(tx, "room_revenue")
-			income.PaymentStatusID = resolvePaymentStatus(tx, "received")
+			income.PaymentStatusID = receivedStatusID
 			income.AccountID = resolveAccount(tx, "1000")
 			income.ReservationID = &resID
 			if err := tx.Create(&income).Error; err != nil {
 				return err
+			}
+
+			var payment models.Payment
+			if err := tx.Where("reservation_id = ?", resID).First(&payment).Error; err != nil {
+				payment = models.Payment{
+					ReservationID: resID,
+					Amount:        res.RoomPrice,
+					MethodID:      body.PaymentMethod,
+					StatusID:      receivedStatusID,
+				}
+				if err := tx.Create(&payment).Error; err != nil {
+					return err
+				}
+			} else {
+				payment.Amount += res.RoomPrice
+				payment.MethodID = body.PaymentMethod
+				payment.StatusID = receivedStatusID
+				if err := tx.Save(&payment).Error; err != nil {
+					return err
+				}
 			}
 		}
 
@@ -282,8 +318,43 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 				Notes:           body.Notes,
 			}
 			income.CategoryID = resolveIncomeCategory(tx, "parking")
-			income.PaymentStatusID = resolvePaymentStatus(tx, "received")
+			income.PaymentStatusID = receivedStatusID
 			income.AccountID = resolveAccount(tx, "1000")
+			if err := tx.Create(&income).Error; err != nil {
+				return err
+			}
+		}
+
+		for _, billID := range body.RestaurantBillIDs {
+			var bill models.RestaurantBill
+			if err := tx.First(&bill, billID).Error; err != nil {
+				continue
+			}
+			if bill.GuestID == nil || *bill.GuestID != id {
+				continue
+			}
+
+			now := time.Now().UTC()
+			bill.Settled = true
+			bill.SettledAt = &now
+			if err := tx.Save(&bill).Error; err != nil {
+				return err
+			}
+
+			income := models.Income{
+				IncomeDate:      now,
+				Description:     "Restaurant payment - Bill #" + formatID(bill.ID),
+				Amount:          bill.TotalAmount,
+				Source:          guest.FirstName + " " + guest.LastName,
+				PaymentMethodID: body.PaymentMethod,
+				Notes:           body.Notes,
+			}
+			income.CategoryID = resolveIncomeCategory(tx, "restaurant")
+			income.PaymentStatusID = receivedStatusID
+			income.AccountID = resolveAccount(tx, "1000")
+			if bill.ReservationID != nil {
+				income.ReservationID = bill.ReservationID
+			}
 			if err := tx.Create(&income).Error; err != nil {
 				return err
 			}
@@ -298,11 +369,15 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 	return okResponse{ok: true}, nil
 }
 
+func formatID(id uint) string {
+	return strconv.FormatUint(uint64(id), 10)
+}
+
 func (gm *GuestsModule) getGuestSettlement(id uint) (GuestSettlementResponse, error) {
 	var zero GuestSettlementResponse
 
 	var reservations []models.Reservation
-	if err := gm.Db.Where("guest_id = ?", id).Find(&reservations).Error; err != nil {
+	if err := gm.Db.Preload("Status").Where("guest_id = ?", id).Find(&reservations).Error; err != nil {
 		return zero, err
 	}
 
@@ -311,24 +386,39 @@ func (gm *GuestsModule) getGuestSettlement(id uint) (GuestSettlementResponse, er
 		return zero, err
 	}
 
+	var bills []models.RestaurantBill
+	if err := gm.Db.Where("guest_id = ? AND settled = ?", id, false).Find(&bills).Error; err != nil {
+		return zero, err
+	}
+
 	var resp GuestSettlementResponse
 	resp.Reservations = make([]ReservationSettlement, 0, len(reservations))
 	resp.ParkingTxns = make([]ParkingSettlement, 0, len(parkingTxns))
+	resp.RestaurantBills = make([]RestaurantSettlement, 0, len(bills))
 
-	var totalRoom, totalParking, totalPaid float64
+	var totalRoom, totalParking, totalRestaurant, totalPaid float64
 
 	for _, r := range reservations {
 		var paid float64
-		var income models.Income
-		gm.Db.Where("reservation_id = ?", r.ID).First(&income)
-		paid = income.Amount
+		gm.Db.Model(&models.Income{}).
+			Select("COALESCE(SUM(amount), 0)").
+			Where("reservation_id = ?", r.ID).
+			Scan(&paid)
+
+		statusSlug := ""
+		statusLabel := ""
+		if r.Status.Slug != "" {
+			statusSlug = r.Status.Slug
+			statusLabel = r.Status.Label
+		}
 
 		s := ReservationSettlement{
 			ID:              r.ID,
 			ReservationCode: r.ReservationCode,
 			CheckInDate:     r.EntryDate.Format(time.RFC3339),
 			CheckOutDate:    r.DepartureDate.Format(time.RFC3339),
-			Status:          r.Status,
+			Status:          statusSlug,
+			StatusLabel:     statusLabel,
 			RoomPrice:       r.RoomPrice,
 			PaidAmount:      paid,
 		}
@@ -363,11 +453,24 @@ func (gm *GuestsModule) getGuestSettlement(id uint) (GuestSettlementResponse, er
 		totalPaid += p.AmountPaid
 	}
 
+	for _, b := range bills {
+		s := RestaurantSettlement{
+			ID:          b.ID,
+			BillDate:    b.BillDate.Format(time.RFC3339),
+			TotalAmount: b.TotalAmount,
+			Notes:       b.Notes,
+			IsExternal:  b.IsExternal,
+		}
+		resp.RestaurantBills = append(resp.RestaurantBills, s)
+		totalRestaurant += b.TotalAmount
+	}
+
 	resp.TotalRoom = totalRoom
 	resp.TotalParking = totalParking
-	resp.TotalDue = totalRoom + totalParking
+	resp.TotalRestaurant = totalRestaurant
+	resp.TotalDue = totalRoom + totalParking + totalRestaurant
 	resp.TotalPaid = totalPaid
-	resp.Balance = (totalRoom + totalParking) - totalPaid
+	resp.Balance = resp.TotalDue - totalPaid
 
 	return resp, nil
 }

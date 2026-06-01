@@ -176,20 +176,24 @@ export type GuestSettlementResponse = {
     reservations?: Array<{
         checkInDate?: string;
         checkOutDate?: string;
-        checkedOut?: {
-            colorHex?: string;
-            id?: number;
-            label?: string;
-            slug?: string;
-        };
         id?: number;
         paidAmount?: number;
         reservationCode?: string;
         roomPrice?: number;
+        status?: string;
+        statusLabel?: string;
+    }>;
+    restaurantBills?: Array<{
+        billDate?: string;
+        id?: number;
+        isExternal?: boolean;
+        notes?: string;
+        totalAmount?: number;
     }>;
     totalDue?: number;
     totalPaid?: number;
     totalParking?: number;
+    totalRestaurant?: number;
     totalRoom?: number;
 };
 
@@ -1831,6 +1835,37 @@ export type PaginatedResponseModelsParkingTransaction = {
 };
 
 /**
+ * PaginatedResponse_models.PaymentMethod schema
+ */
+export type PaginatedResponseModelsPaymentMethod = {
+    data?: Array<{
+        id?: number;
+        label?: string;
+        slug?: string;
+    }>;
+    limit?: number;
+    page?: number;
+    total?: number;
+    totalPages?: number;
+};
+
+/**
+ * PaginatedResponse_models.PaymentStatus schema
+ */
+export type PaginatedResponseModelsPaymentStatus = {
+    data?: Array<{
+        colorHex?: string;
+        id?: number;
+        label?: string;
+        slug?: string;
+    }>;
+    limit?: number;
+    page?: number;
+    total?: number;
+    totalPages?: number;
+};
+
+/**
  * PaginatedResponse_models.PermissionTemplate schema
  */
 export type PaginatedResponseModelsPermissionTemplate = {
@@ -3392,6 +3427,7 @@ export type SettleGuestRequest = {
     paymentMethod?: number;
     reference?: string;
     reservationIds?: Array<number>;
+    restaurantBillIds?: Array<number>;
 };
 
 /**
@@ -3552,7 +3588,9 @@ export type LoginResponse = {
 /**
  * okResponse schema
  */
-export type OkResponse = unknown;
+export type OkResponse = {
+    ok?: boolean;
+};
 
 /**
  * permissionsResponse schema
@@ -3854,6 +3892,80 @@ export type PostApiAccountingIncomeResponses = {
 };
 
 export type PostApiAccountingIncomeResponse = PostApiAccountingIncomeResponses[keyof PostApiAccountingIncomeResponses];
+
+export type GetApiAccountingPaymentMethodsData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: {
+        limit?: number;
+        page?: number;
+        filters?: string;
+    };
+    url: '/api/accounting/payment-methods/';
+};
+
+export type GetApiAccountingPaymentMethodsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiAccountingPaymentMethodsError = GetApiAccountingPaymentMethodsErrors[keyof GetApiAccountingPaymentMethodsErrors];
+
+export type GetApiAccountingPaymentMethodsResponses = {
+    /**
+     * OK
+     */
+    200: PaginatedResponseModelsPaymentMethod;
+};
+
+export type GetApiAccountingPaymentMethodsResponse = GetApiAccountingPaymentMethodsResponses[keyof GetApiAccountingPaymentMethodsResponses];
+
+export type GetApiAccountingPaymentStatusesData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: {
+        limit?: number;
+        page?: number;
+        filters?: string;
+    };
+    url: '/api/accounting/payment-statuses/';
+};
+
+export type GetApiAccountingPaymentStatusesErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiAccountingPaymentStatusesError = GetApiAccountingPaymentStatusesErrors[keyof GetApiAccountingPaymentStatusesErrors];
+
+export type GetApiAccountingPaymentStatusesResponses = {
+    /**
+     * OK
+     */
+    200: PaginatedResponseModelsPaymentStatus;
+};
+
+export type GetApiAccountingPaymentStatusesResponse = GetApiAccountingPaymentStatusesResponses[keyof GetApiAccountingPaymentStatusesResponses];
 
 export type PostApiAuthLoginData = {
     /**

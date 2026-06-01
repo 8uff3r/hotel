@@ -22,4 +22,10 @@ func (m AccountingModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	incomeGroup := fuego.Group(s, "/income")
 	fuego.Get(incomeGroup, "/", h.ListModel[models.Income](api.Db))
 	fuego.Post(incomeGroup, "/", h.CreateModel[models.Income](api.Db))
+
+	paymentMethodsGroup := fuego.Group(s, "/payment-methods")
+	fuego.Get(paymentMethodsGroup, "/", h.ListModel[models.PaymentMethod](api.Db, h.WithTranslation[models.PaymentMethod]()))
+
+	paymentStatusesGroup := fuego.Group(s, "/payment-statuses")
+	fuego.Get(paymentStatusesGroup, "/", h.ListModel[models.PaymentStatus](api.Db, h.WithTranslation[models.PaymentStatus]()))
 }

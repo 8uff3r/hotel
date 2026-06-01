@@ -568,7 +568,11 @@
     "destination": "Destination",
     "purpose_of_travel": "Purpose of Travel",
     "checked_in_at": "Checked in at",
-    "checked_out_at": "Checked out at"
+    "checked_out_at": "Checked out at",
+    "code": "Code",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "status": "Status"
   },
   "accounting": {
     "accounting": "Accounting",
@@ -639,7 +643,13 @@
     "paid": "Paid",
     "processPayment": "Process Payment",
     "receiptNumber": "Receipt number",
-    "settlementAmount": "Amount to Pay"
+    "settlementAmount": "Amount to Pay",
+    "restaurantCharges": "Restaurant Charges",
+    "noRestaurantCharges": "No restaurant bills found",
+    "restaurantTotal": "Restaurant Total",
+    "selectAll": "Select All",
+    "billDate": "Bill Date",
+    "external": "External"
   },
   "guest": {
     "personalInfo": "Guest Personal Info",
