@@ -553,7 +553,22 @@
     "address": "Address",
     "street_address": "Street address",
     "city": "City",
-    "country": "Country"
+    "country": "Country",
+    "stay_information": "Stay Information",
+    "actions": "Actions",
+    "check_in_guest": "Check In Guest",
+    "check_out_guest": "Check Out Guest",
+    "cancel_reservation": "Cancel Reservation",
+    "mark_as_arrived": "Mark as Arrived",
+    "settle_account": "Settle Account",
+    "room_details": "Room Details",
+    "edit": "Edit Reservation",
+    "not_found": "Reservation not found",
+    "origin": "Origin",
+    "destination": "Destination",
+    "purpose_of_travel": "Purpose of Travel",
+    "checked_in_at": "Checked in at",
+    "checked_out_at": "Checked out at"
   },
   "accounting": {
     "accounting": "Accounting",

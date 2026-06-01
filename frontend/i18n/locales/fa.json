@@ -510,6 +510,8 @@
     "capacity": "ظرفیت"
   },
   "reservations": {
+    "edit": "ویرایش رزرو",
+    "stay_information": "اطلاعات اقامت",
     "reservations": "رزروها",
     "new_reservation": "رزرو جدید",
     "search_by_guest_name": "جستجو بر اساس نام مهمان...",
@@ -544,7 +546,20 @@
     "address": "آدرس",
     "street_address": "آدرس خیابان",
     "city": "شهر",
-    "country": "کشور"
+    "country": "کشور",
+    "actions": "عملیات",
+    "check_in_guest": "ورود مهمان",
+    "check_out_guest": "خروج مهمان",
+    "cancel_reservation": "لغو رزرو",
+    "mark_as_arrived": "علامت به عنوان واردشده",
+    "settle_account": "تسویه حساب",
+    "room_details": "جزئیات اتاق",
+    "not_found": "رزرو پیدا نشد",
+    "origin": "مبدا",
+    "destination": "مقصد",
+    "purpose_of_travel": "هدف از سفر",
+    "checked_in_at": "تاریخ ورود",
+    "checked_out_at": "تاریخ خروج"
   },
   "accounting": {
     "accounting": "حسابداری",

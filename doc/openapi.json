@@ -10997,7 +10997,13 @@
 				"type": "object"
 			},
 			"okResponse": {
-				"description": "okResponse schema"
+				"description": "okResponse schema",
+				"properties": {
+					"ok": {
+						"type": "boolean"
+					}
+				},
+				"type": "object"
 			},
 			"permissionsResponse": {
 				"description": "permissionsResponse schema",

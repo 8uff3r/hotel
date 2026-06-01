@@ -57,7 +57,7 @@ func (re *ReservationModule) getReservationDetails(c fuego.ContextNoBody) (model
 	if err := re.Db.WithContext(c).
 		Model(new(models.Reservation)).
 		Preload("Payment").
-		Preload("Payment.PaymentStatus").
+		Preload("Payment.Status").
 		Preload("Guest").
 		Preload("Rooms").
 		Where("id = ?", id).
