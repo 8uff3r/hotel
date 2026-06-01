@@ -3496,7 +3496,9 @@ export type LoginResponse = {
 /**
  * okResponse schema
  */
-export type OkResponse = unknown;
+export type OkResponse = {
+    ok?: boolean;
+};
 
 /**
  * permissionsResponse schema

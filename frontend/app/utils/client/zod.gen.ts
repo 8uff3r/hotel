@@ -3471,7 +3471,9 @@ export const zLoginResponse = z.object({
 /**
  * okResponse schema
  */
-export const zOkResponse = z.unknown();
+export const zOkResponse = z.object({
+    ok: z.boolean().optional()
+});
 
 /**
  * permissionsResponse schema
