@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	spa "hotel"
 	"log/slog"
@@ -18,6 +19,7 @@ import (
 	system "hotel/internal/httpapi/_system"
 	"hotel/internal/httpapi/accounting"
 	"hotel/internal/httpapi/auth"
+	"hotel/internal/httpapi/common"
 	"hotel/internal/httpapi/guests"
 	"hotel/internal/httpapi/hotels"
 	"hotel/internal/httpapi/parking"
@@ -25,10 +27,9 @@ import (
 	"hotel/internal/httpapi/reservation"
 	"hotel/internal/httpapi/restaurant"
 	"hotel/internal/httpapi/rooms"
-	"hotel/internal/httpapi/travelagency"
 	sanahttp "hotel/internal/httpapi/sana"
+	"hotel/internal/httpapi/travelagency"
 	"hotel/internal/httpapi/users"
-	"hotel/internal/httpapi/common"
 	"hotel/internal/models"
 
 	fuego "github.com/go-fuego/fuego"
@@ -191,51 +192,63 @@ func ensureAdmin(db *gorm.DB, cfg config.Config) error {
 		}
 	}
 
-	var userCount int64
-	if err := db.Model(&models.User{}).Where("email = ?", cfg.SeedAdminEmail).Count(&userCount).Error; err != nil {
-		return fmt.Errorf("check admin user: %w", err)
-	}
-	if userCount > 0 {
-		return nil
+	var user models.User
+	if err := db.Where("email = ?", cfg.SeedAdminEmail).First(&user).Error; err != nil {
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			return fmt.Errorf("check admin user: %w", err)
+		}
+
+		hash, err := bcrypt.GenerateFromPassword([]byte(cfg.SeedAdminPass), bcrypt.DefaultCost)
+		if err != nil {
+			return fmt.Errorf("hash admin password: %w", err)
+		}
+
+		user = models.User{
+			Email:        cfg.SeedAdminEmail,
+			PasswordHash: string(hash),
+			FirstName:    cfg.SeedAdminFName,
+			LastName:     cfg.SeedAdminLName,
+			IsActive:     true,
+		}
+		if err := db.Create(&user).Error; err != nil {
+			return fmt.Errorf("create admin user: %w", err)
+		}
 	}
 
-	hash, err := bcrypt.GenerateFromPassword([]byte(cfg.SeedAdminPass), bcrypt.DefaultCost)
-	if err != nil {
-		return fmt.Errorf("hash admin password: %w", err)
+	var uhCount int64
+	if err := db.Model(&models.UserHotel{}).Where("user_id = ? AND hotel_id = ?", user.ID, cfg.SeedHotelCodeName).Count(&uhCount).Error; err != nil {
+		return fmt.Errorf("check user-hotel link: %w", err)
+	}
+	if uhCount == 0 {
+		if err := db.Create(&models.UserHotel{
+			UserID:  user.ID,
+			HotelID: cfg.SeedHotelCodeName,
+		}).Error; err != nil {
+			return fmt.Errorf("create user-hotel link: %w", err)
+		}
 	}
 
-	user := &models.User{
-		Email:        cfg.SeedAdminEmail,
-		PasswordHash: string(hash),
-		FirstName:    cfg.SeedAdminFName,
-		LastName:     cfg.SeedAdminLName,
-		IsActive:     true,
-	}
-	if err := db.Create(user).Error; err != nil {
-		return fmt.Errorf("create admin user: %w", err)
+	var allPermissions []models.Permission
+	if err := db.Find(&allPermissions).Error; err != nil {
+		return fmt.Errorf("find all permissions: %w", err)
 	}
 
-	if err := db.Create(&models.UserHotel{
-		UserID:  user.ID,
-		HotelID: cfg.SeedHotelCodeName,
-	}).Error; err != nil {
-		return fmt.Errorf("create user-hotel link: %w", err)
+	if err := db.Where("user_id = ? AND hotel_id = ?", user.ID, cfg.SeedHotelCodeName).Delete(&models.UserPermission{}).Error; err != nil {
+		return fmt.Errorf("clear admin permissions: %w", err)
 	}
 
-	var usersPermissions []models.Permission
-	if err := db.Where("resource = ?", "users").Find(&usersPermissions).Error; err != nil {
-		return fmt.Errorf("couldn't find permissions for the `users` resource")
-	}
-
-	var userPermissions []models.UserPermission
-	for _, p := range usersPermissions {
+	userPermissions := make([]models.UserPermission, 0, len(allPermissions))
+	for _, p := range allPermissions {
 		userPermissions = append(userPermissions, models.UserPermission{
 			UserID:       user.ID,
 			HotelID:      &cfg.SeedHotelCodeName,
 			PermissionID: p.ID,
+			Granted:      true,
 		})
 	}
-	db.CreateInBatches(userPermissions, len(userPermissions))
+	if err := db.CreateInBatches(userPermissions, len(userPermissions)).Error; err != nil {
+		return fmt.Errorf("grant admin permissions: %w", err)
+	}
 
 	return nil
 }
