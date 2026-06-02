@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	spa "hotel"
 	"log/slog"
 	"net/http"
 	"os"
@@ -12,6 +11,8 @@ import (
 	"strings"
 	"syscall"
 	"time"
+
+	spa "hotel"
 
 	"hotel/internal/config"
 	"hotel/internal/db"
@@ -47,9 +48,9 @@ type App struct {
 	stopJobs context.CancelFunc
 }
 
-func openAPIHandler(specUrl string) http.Handler {
+func openAPIHandler(specURL string) http.Handler {
 	return httpSwagger.Handler(
-		httpSwagger.URL(specUrl),
+		httpSwagger.URL(specURL),
 		httpSwagger.Layout(httpSwagger.BaseLayout),
 		httpSwagger.PersistAuthorization(true),
 	)
@@ -122,17 +123,17 @@ func New(cfg config.Config) (*App, error) {
 
 	fuego.Use(apiGroup, api.AuthMiddleware)
 	SetupRouter(&api, apiGroup, PathModuleMap{
-		"/users":       users.UsersModule{},
-		"/rooms":       rooms.RoomsModule{},
-		"/guests":      guests.GuestsModule{},
-		"/parking":     parking.ParkingModule{},
-		"/accounting":  accounting.AccountingModule{},
-		"/reservation": reservation.ReservationModule{},
-		"/hotels":      hotels.HotelsModule{},
-		"/permissions": permissions.PermissionsModule{},
-		"/sana":        sanahttp.New(database, cfg.Sana),
-		"/restaurant":  restaurant.RestaurantModule{},
-		"/common":           common.CommonModule{},
+		"/users":           users.UsersModule{},
+		"/rooms":           rooms.RoomsModule{},
+		"/guests":          guests.GuestsModule{},
+		"/parking":         parking.ParkingModule{},
+		"/accounting":      accounting.AccountingModule{},
+		"/reservation":     reservation.ReservationModule{},
+		"/hotels":          hotels.HotelsModule{},
+		"/permissions":     permissions.PermissionsModule{},
+		"/sana":            sanahttp.New(database, cfg.Sana),
+		"/restaurant":      restaurant.RestaurantModule{},
+		"/common":          common.CommonModule{},
 		"/travel-agencies": travelagency.TravelAgencyModule{},
 	})
 
@@ -148,7 +149,7 @@ func New(cfg config.Config) (*App, error) {
 func (a *App) Run() error {
 	go func() {
 		a.logger.Info("server starting", "addr", a.cfg.Addr)
-		a.server.Run()
+		_ = a.server.Run()
 	}()
 
 	sigCtx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
