@@ -42,6 +42,8 @@ export default defineNuxtRouteMiddleware((to) => {
     return navigateTo("/login");
   }
 
+  // Admins with no specific hotels (super admin) can access all hotels
+  // Admins with specific hotels behave like users
   if (
     !authStore.currentHotelId &&
     authStore.availableHotels.length > 0 &&

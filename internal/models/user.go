@@ -2,6 +2,8 @@ package models
 
 import (
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type UserStatus string
@@ -18,9 +20,14 @@ type User struct {
 	PasswordHash string         `gorm:"not null" json:"-"`
 	FirstName    string         `gorm:"not null" json:"firstName"`
 	LastName     string         `gorm:"not null" json:"lastName"`
+	Username     string         `gorm:"uniqueIndex" json:"username"`
+	ContactNumber string        `json:"contactNumber"`
+	Role         string         `json:"role"`
+	Status       string         `gorm:"not null;default:'active'" json:"status"`
 	UserHotels   []UserHotel    `gorm:"foreignKey:UserID" json:"userHotels"`
 	IsActive     bool           `gorm:"not null;default:true" json:"isActive"`
 	Roles        []UserTemplate `gorm:"foreignKey:UserID" json:"role,omitempty"`
+	DeletedAt    gorm.DeletedAt
 
 	Permissions []UserPermission `gorm:"foreignKey:UserID" json:"permissions,omitempty"`
 }
@@ -37,8 +44,11 @@ type Session struct {
 	ID        string    `gorm:"primaryKey" json:"id"`
 	UserID    uint      `gorm:"not null;index" json:"userId"`
 	User      User      `gorm:"constraint:OnDelete:CASCADE" json:"-"`
+	AdminID   *uint     `gorm:"index" json:"adminId"`
+	Admin     *Admin    `gorm:"constraint:OnDelete:CASCADE" json:"-"`
 	ExpiresAt time.Time `gorm:"not null;index" json:"expiresAt"`
 	CreatedAt time.Time `json:"createdAt"`
+	IsAdmin   bool      `gorm:"not null;default:false" json:"isAdmin"`
 }
 
 type SanitizedUser struct {
@@ -46,8 +56,14 @@ type SanitizedUser struct {
 	Email      string               `json:"email"`
 	FirstName  string               `json:"firstName"`
 	LastName   string               `json:"lastName"`
+	Username   string               `json:"username"`
+	ContactNumber string            `json:"contactNumber"`
+	Role       string               `json:"role"`
+	Status     string               `json:"status"`
 	UserHotels []UserHotelInfo      `json:"userHotels"`
 	Roles      []PermissionTemplate `json:"roles,omitempty"`
+	IsAdmin    bool                 `json:"isAdmin"`
+	AdminHotels []AdminHotelInfo    `json:"adminHotels,omitempty"`
 }
 
 type UserHotelInfo struct {

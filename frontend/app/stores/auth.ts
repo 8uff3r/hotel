@@ -9,6 +9,7 @@ export const useAuthStore = defineStore(
     const loading = ref(true);
     const currentRole = ref<any>();
     const userHotels = ref<UserHotelInfo[]>([]);
+    const adminHotels = ref<AdminHotelInfo[]>([]);
     const currentHotelId = ref<string>("");
     const permissions = ref<string[] | undefined>([]);
     const permissionsSet = computed(() => new Set(permissions.value ?? []));
@@ -19,7 +20,7 @@ export const useAuthStore = defineStore(
       return roles.some((role) => currentRole.value?.name === role);
     };
 
-    const isAdmin = computed(() => hasRole("admin"));
+    const isAdmin = computed(() => user.value?.isAdmin ?? false);
 
     const isManager = computed(() => hasRole("manager"));
 
@@ -28,6 +29,9 @@ export const useAuthStore = defineStore(
     );
 
     const availableHotels = computed(() => {
+      if (isAdmin.value) {
+        return (adminHotels.value ?? []) as any[];
+      }
       return userHotels.value ?? [];
     });
 
@@ -37,6 +41,7 @@ export const useAuthStore = defineStore(
     });
 
     const can = (permission: string) => {
+      if (isAdmin.value) return true;
       return permissionsSet.value?.has(permission);
     };
 
@@ -56,11 +61,16 @@ export const useAuthStore = defineStore(
     async function login(email: string, password: string) {
       try {
         const response = await postApiAuthLogin({ body: { email, password } });
-        const { user: u, hotelId, permissions: perms } = response.data ?? {};
+        const { user: u, hotelId, permissions: perms, isAdmin: adminFlag } = response.data ?? {};
         if (!u) throw Error("Couldn't login");
 
         user.value = u as SanitizedUser;
-        userHotels.value = (u.userHotels as UserHotelInfo[]) ?? [];
+        if (adminFlag) {
+          user.value.isAdmin = true;
+          adminHotels.value = (u.adminHotels as AdminHotelInfo[]) ?? [];
+        } else {
+          userHotels.value = (u.userHotels as UserHotelInfo[]) ?? [];
+        }
         currentHotelId.value = hotelId ?? "";
         permissions.value = perms ?? [];
 
@@ -85,6 +95,7 @@ export const useAuthStore = defineStore(
         isAuthenticated.value = false;
         currentRole.value = undefined;
         userHotels.value = [];
+        adminHotels.value = [];
         currentHotelId.value = "";
         permissions.value = [];
 
@@ -97,12 +108,17 @@ export const useAuthStore = defineStore(
     async function fetchUser() {
       try {
         loading.value = true;
-        const { user: u, hotelId, permissions: perms } = (await getApiAuthMe({})).data ?? {};
+        const { user: u, hotelId, permissions: perms, isAdmin: adminFlag } = (await getApiAuthMe({})).data ?? {};
 
         if (!u) throw Error("Couldn't fetch user");
 
         user.value = u as SanitizedUser;
-        userHotels.value = (u.userHotels as UserHotelInfo[]) ?? [];
+        if (adminFlag) {
+          user.value.isAdmin = true;
+          adminHotels.value = (u.adminHotels as AdminHotelInfo[]) ?? [];
+        } else {
+          userHotels.value = (u.userHotels as UserHotelInfo[]) ?? [];
+        }
         currentHotelId.value = hotelId ?? "";
         permissions.value = perms ?? [];
 
@@ -112,6 +128,7 @@ export const useAuthStore = defineStore(
         currentRole.value = undefined;
         isAuthenticated.value = false;
         userHotels.value = [];
+        adminHotels.value = [];
         currentHotelId.value = "";
         permissions.value = [];
         if (e.status === 401) navigateTo("/login");
@@ -141,6 +158,7 @@ export const useAuthStore = defineStore(
       loading,
       currentRole,
       userHotels,
+      adminHotels,
       currentHotelId,
       permissions,
       hasRole,
@@ -171,6 +189,7 @@ export const useAuthStore = defineStore(
         "user",
         "currentRole",
         "userHotels",
+        "adminHotels",
         "currentHotelId",
         "permissions",
       ],

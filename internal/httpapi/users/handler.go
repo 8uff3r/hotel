@@ -91,6 +91,18 @@ func (u *UsersModule) userUpdate(c fuego.ContextWithBody[userUpdateDto]) (models
 	if body.LastName != "" {
 		row.LastName = strings.TrimSpace(body.LastName)
 	}
+	if body.Username != "" {
+		row.Username = strings.TrimSpace(body.Username)
+	}
+	if body.ContactNumber != "" {
+		row.ContactNumber = strings.TrimSpace(body.ContactNumber)
+	}
+	if body.Role != "" {
+		row.Role = body.Role
+	}
+	if body.Status != "" {
+		row.Status = body.Status
+	}
 
 	if err := u.Db.WithContext(c).Save(&row).Error; err != nil {
 		return zero, fuego.BadRequestError{Title: "update_failed"}
@@ -137,20 +149,29 @@ func (u *UsersModule) usersList(c fuego.ContextNoBody) (h.PaginatedResponse[mode
 }
 
 type userCreateDto struct {
-	Email     string  `json:"email"`
-	Password  string  `json:"password"`
-	FirstName string  `json:"firstName"`
-	LastName  string  `json:"lastName"`
-	RoleIDs   *[]uint `json:"roleIds"`
+	Email         string   `json:"email"`
+	Password      string   `json:"password"`
+	FirstName     string   `json:"firstName"`
+	LastName      string   `json:"lastName"`
+	Username      string   `json:"username"`
+	ContactNumber string   `json:"contactNumber"`
+	Role          string   `json:"role"`
+	Status        string   `json:"status"`
+	HotelID       string   `json:"hotelId"`
+	RoleIDs       *[]uint  `json:"roleIds"`
 }
 type userCreateResponse struct {
 	ID uint `json:"id"`
 }
 
 type userUpdateDto struct {
-	Email     string `json:"email"`
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
+	Email         string `json:"email"`
+	FirstName     string `json:"firstName"`
+	LastName      string `json:"lastName"`
+	Username      string `json:"username"`
+	ContactNumber string `json:"contactNumber"`
+	Role          string `json:"role"`
+	Status        string `json:"status"`
 }
 
 func (u *UsersModule) usersCreate(c fuego.ContextWithBody[userCreateDto]) (userCreateResponse, error) {
@@ -165,20 +186,38 @@ func (u *UsersModule) usersCreate(c fuego.ContextWithBody[userCreateDto]) (userC
 	}
 
 	var roles []models.UserTemplate
-	for _, v := range *body.RoleIDs {
-		roles = append(roles, models.UserTemplate{TemplateID: v})
+	if body.RoleIDs != nil {
+		for _, v := range *body.RoleIDs {
+			roles = append(roles, models.UserTemplate{TemplateID: v})
+		}
 	}
+
+	status := body.Status
+	if status == "" {
+		status = string(models.StatusActive)
+	}
+
 	user := &models.User{
-		Email:        strings.TrimSpace(body.Email),
-		PasswordHash: string(hash),
-		FirstName:    strings.TrimSpace(body.FirstName),
-		LastName:     strings.TrimSpace(body.LastName),
-		Roles:        roles,
-		IsActive:     true,
+		Email:         strings.TrimSpace(body.Email),
+		PasswordHash:  string(hash),
+		FirstName:     strings.TrimSpace(body.FirstName),
+		LastName:      strings.TrimSpace(body.LastName),
+		Username:      strings.TrimSpace(body.Username),
+		ContactNumber: strings.TrimSpace(body.ContactNumber),
+		Role:          body.Role,
+		Status:        status,
+		Roles:         roles,
+		IsActive:      true,
 	}
 	if err := u.Db.WithContext(c).Create(user).Error; err != nil {
 		return userCreateResponse{}, err
 	}
+
+	// Enforce single hotel
+	if body.HotelID != "" {
+		u.Db.Create(&models.UserHotel{UserID: user.ID, HotelID: body.HotelID})
+	}
+
 	c.SetStatus(201)
 	return userCreateResponse{ID: user.ID}, nil
 }

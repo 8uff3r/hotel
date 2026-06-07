@@ -31,13 +31,15 @@ type Reservation struct {
 	Breakfast bool `gorm:"not null;default:false" json:"breakfast"`
 	Parking   bool `gorm:"not null;default:false" json:"parking"`
 	FullBoard bool `gorm:"not null;default:false" json:"fullBoard"`
+	HalfBoard bool `gorm:"not null;default:false" json:"halfBoard"`
 
 	RoomPrice float64 `gorm:"not null;default:0" json:"roomPrice"`
 
 	StatusID *uint             `json:"statusId"`
 	Status   ReservationStatus `gorm:"foreignKey:StatusID" json:"status"`
 
-	Notes string `json:"notes"`
+	PaymentDeadline *time.Time `json:"paymentDeadline"` // reservation expires if not paid by this time
+	Notes         string     `json:"notes"`
 
 	Payment Payment `gorm:"foreignKey:ReservationID" json:"payment"`
 }

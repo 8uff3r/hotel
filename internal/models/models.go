@@ -4,7 +4,7 @@ package models
 
 func AllForDB() []any {
 	return []any{
-		&User{}, &Session{}, &Hotel{}, &Room{}, &Guest{}, &Reservation{}, &Payment{}, &Account{},
+		&User{}, &Session{}, &Hotel{}, &HotelPicture{}, &HotelSetting{}, &Room{}, &Guest{}, &Reservation{}, &Payment{}, &Account{},
 		&Expense{}, &Income{}, &ParkingLot{}, &ParkingSpot{}, &Vehicle{}, &ParkingTransaction{}, &Amenity{},
 		&ParkingLotStatus{}, &ParkingSpotType{}, &ParkingSpotStatus{}, &UserHotel{}, &Permission{}, &PermissionTemplate{}, &UserPermission{}, &UserTemplate{}, &SanaGuest{}, &SanaRoomRack{},
 		&TravelReason{}, &FamilyRelationship{}, &Nationality{}, &Country{}, &SanaCity{}, &Occupation{},
@@ -13,6 +13,10 @@ func AllForDB() []any {
 		&InventoryItemCategory{}, &InventoryItemUnit{}, &InventoryItemStatus{}, &RestaurantBillStatus{},
 		&RoomType{}, &RoomStatus{}, &GuestCompanion{}, &PermissionCategory{}, &ReservationStatus{},
 		&TravelAgency{},
+		&Admin{}, &AdminHotel{},
+		&Stay{}, &StayStatus{},
+		&Invoice{}, &InvoiceItem{}, &Service{},
+		&Floor{}, &RoomPicture{},
 	}
 }
 
@@ -55,5 +59,14 @@ func AllForTypeGen() []any {
 		MealTransaction{},
 		RestaurantStats{},
 		TravelAgency{},
+		Admin{},
+		SanitizedAdmin{},
+		Stay{},
+		StayStatus{},
+		Invoice{},
+		InvoiceItem{},
+		Service{},
+		Floor{},
+		HotelSetting{},
 	}
 }

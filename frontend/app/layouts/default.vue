@@ -159,6 +159,12 @@ const items = computed(() =>
         permission: PERMISSIONS.reservations.reservations.read,
       },
       {
+        label: "پذیرش",
+        icon: "i-lucide-door-open",
+        to: "/stays",
+        permission: PERMISSIONS.guests.guests.read,
+      },
+      {
         label: t("layout.nav.rooms"),
         icon: "i-lucide-bed",
         to: "/rooms",
@@ -206,6 +212,7 @@ const adminMenuItems = (state: "collapsed" | "expanded"): NavigationMenuItem[] =
 
   if (authStore.isAdmin) {
     items.push({ label: t("layout.admin.users"), icon: "i-lucide-users", to: "/users" });
+    items.push({ label: "مدیران سیستم", icon: "i-lucide-shield", to: "/admins" });
   }
 
   items.push(

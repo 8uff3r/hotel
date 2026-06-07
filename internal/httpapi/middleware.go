@@ -23,7 +23,7 @@ func (a *API) TimeoutMiddleware(next http.Handler) http.Handler {
 
 func (a *API) AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		user, err := a.sessionUser(r)
+		user, isAdmin, err := a.sessionUser(r)
 		fmt.Printf("%s", user)
 		if err != nil {
 			WriteErr(w, http.StatusUnauthorized, "unauthorized")
@@ -34,13 +34,28 @@ func (a *API) AuthMiddleware(next http.Handler) http.Handler {
 			lang = "fa"
 		}
 
-		userHotels := a.getUserHotelsFromDB(user.ID)
-		hotelID := a.resolveHotelID(r, userHotels)
-		permissions := a.getUserPermissionsFromDB(user.ID, lang)
+		var userHotels []models.UserHotelInfo
+		var adminHotels []models.AdminHotelInfo
+		var permissions []models.UserPermissionInfo
+		var hotelID string
+
+		if isAdmin {
+			adminHotels = a.getAdminHotelsFromDB(user.ID)
+			hotelID = a.resolveAdminHotelID(r, adminHotels)
+			// Admins get all permissions implicitly (or could be loaded from a template)
+			permissions = []models.UserPermissionInfo{}
+			user.IsAdmin = true
+			user.AdminHotels = adminHotels
+		} else {
+			userHotels = a.getUserHotelsFromDB(user.ID)
+			hotelID = a.resolveHotelID(r, userHotels)
+			permissions = a.getUserPermissionsFromDB(user.ID, lang)
+		}
 
 		ctx := r.Context()
 		ctx = context.WithValue(ctx, UserKey{}, user)
 		ctx = context.WithValue(ctx, UserHotelsKey{}, userHotels)
+		ctx = context.WithValue(ctx, AdminHotelsKey{}, adminHotels)
 		ctx = context.WithValue(ctx, HotelIDKey{}, hotelID)
 		ctx = context.WithValue(ctx, UserPermissionsKey{}, permissions)
 		next.ServeHTTP(w, r.WithContext(ctx))
@@ -63,6 +78,21 @@ func (a *API) getUserHotelsFromDB(userID uint) []models.UserHotelInfo {
 	return result
 }
 
+func (a *API) getAdminHotelsFromDB(adminID uint) []models.AdminHotelInfo {
+	var adminHotels []models.AdminHotel
+	if err := a.Db.Preload("Hotel").Where("admin_id = ?", adminID).Find(&adminHotels).Error; err != nil {
+		return nil
+	}
+	result := make([]models.AdminHotelInfo, 0, len(adminHotels))
+	for _, ah := range adminHotels {
+		result = append(result, models.AdminHotelInfo{
+			HotelID: ah.HotelID,
+			Hotel:   ah.Hotel,
+		})
+	}
+	return result
+}
+
 func (a *API) resolveHotelID(r *http.Request, userHotels []models.UserHotelInfo) string {
 	cookie, err := r.Cookie(a.HotelCookie)
 	if err == nil && cookie.Value != "" {
@@ -75,6 +105,22 @@ func (a *API) resolveHotelID(r *http.Request, userHotels []models.UserHotelInfo)
 
 	if len(userHotels) > 0 {
 		return userHotels[0].HotelID
+	}
+	return ""
+}
+
+func (a *API) resolveAdminHotelID(r *http.Request, adminHotels []models.AdminHotelInfo) string {
+	cookie, err := r.Cookie(a.HotelCookie)
+	if err == nil && cookie.Value != "" {
+		for _, ah := range adminHotels {
+			if ah.HotelID == cookie.Value {
+				return cookie.Value
+			}
+		}
+	}
+
+	if len(adminHotels) > 0 {
+		return adminHotels[0].HotelID
 	}
 	return ""
 }
@@ -106,6 +152,7 @@ type (
 	UserKey            struct{}
 	HotelIDKey         struct{}
 	UserHotelsKey      struct{}
+	AdminHotelsKey     struct{}
 	UserPermissionsKey struct{}
 )
 
@@ -159,25 +206,50 @@ func (a *API) MustGetHotelIDFromCookie(r *http.Request) string {
 	return hotelID
 }
 
-func (a *API) sessionUser(r *http.Request) (models.SanitizedUser, error) {
+func (a *API) sessionUser(r *http.Request) (models.SanitizedUser, bool, error) {
 	var zero models.SanitizedUser
 	cookie, err := r.Cookie(a.SessionCookie)
 	if err != nil || cookie.Value == "" {
-		return zero, errors.New("missing session")
+		return zero, false, errors.New("missing session")
 	}
 
 	var s models.Session
-	if err := a.Db.WithContext(r.Context()).Preload("User.UserHotels.Hotel").Preload("User.Roles.Template").Where("id = ? AND expires_at > ?", cookie.Value, time.Now().UTC()).First(&s).Error; err != nil {
-		return zero, err
+	if err := a.Db.WithContext(r.Context()).Preload("User.UserHotels.Hotel").Preload("User.Roles.Template").Preload("Admin.AdminHotels").Where("id = ? AND expires_at > ?", cookie.Value, time.Now().UTC()).First(&s).Error; err != nil {
+		return zero, false, err
 	}
-	if !s.User.IsActive {
-		return zero, gorm.ErrRecordNotFound
+
+	if s.IsAdmin && s.Admin != nil {
+		if !s.Admin.IsActive {
+			return zero, false, gorm.ErrRecordNotFound
+		}
+		var hotels []models.AdminHotelInfo
+		for _, ah := range s.Admin.AdminHotels {
+			hotels = append(hotels, models.AdminHotelInfo{
+				HotelID: ah.HotelID,
+				Hotel:   ah.Hotel,
+			})
+		}
+		return models.SanitizedUser{
+			ID:            s.Admin.ID,
+			FirstName:     s.Admin.FirstName,
+			LastName:      s.Admin.LastName,
+			Email:         s.Admin.Email,
+			Username:      s.Admin.Username,
+			ContactNumber: s.Admin.ContactNumber,
+			Role:          s.Admin.Role,
+			IsAdmin:       true,
+			AdminHotels:   hotels,
+		}, true, nil
+	}
+
+	if s.User.ID == 0 || !s.User.IsActive {
+		return zero, false, gorm.ErrRecordNotFound
 	}
 	var roles []models.PermissionTemplate
 	for _, v := range s.User.Roles {
 		roles = append(roles, v.Template)
 	}
-	return SanitizeUser(&s.User, roles), nil
+	return SanitizeUser(&s.User, roles), false, nil
 }
 
 func SanitizeUser(u *models.User, roles []models.PermissionTemplate) models.SanitizedUser {
@@ -188,5 +260,5 @@ func SanitizeUser(u *models.User, roles []models.PermissionTemplate) models.Sani
 			Hotel:   uh.Hotel,
 		})
 	}
-	return models.SanitizedUser{ID: u.ID, Email: u.Email, FirstName: u.FirstName, LastName: u.LastName, UserHotels: hotels, Roles: roles}
+	return models.SanitizedUser{ID: u.ID, Email: u.Email, FirstName: u.FirstName, LastName: u.LastName, Username: u.Username, ContactNumber: u.ContactNumber, Role: u.Role, Status: u.Status, UserHotels: hotels, Roles: roles}
 }

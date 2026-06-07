@@ -41,8 +41,8 @@
     "available": { "fa": "در دسترس", "en": "Available" },
     "occupied": { "fa": "اشغال شده", "en": "Occupied" },
     "reserved": { "fa": "رزرو شده", "en": "Reserved" },
-    "dirty": { "fa": "نیاز به نظافت", "en": "Needs cleaning" },
-    "maintenance": { "fa": "در حال تعمیر", "en": "Maintenance" }
+    "cleaning": { "fa": "در حال نظافت", "en": "Cleaning" },
+    "under_repair": { "fa": "در حال تعمیر", "en": "Under Repair" }
   },
 
   "room-type": {
@@ -256,12 +256,35 @@
     "van": { "fa": "ون", "en": "Van" },
     "other": { "fa": "سایر", "en": "Other" }
   },
-  "reservation-stratus": {
-    "pending": { "fa": "در انتظار", "en": "Pending" },
-    "confirmed": { "fa": "تأیید شده", "en": "Confirmed" },
-    "checked_in": { "fa": "ورود انجام شد", "en": "Checked In" },
+  "reservation-status": {
+    "awaiting_payment": { "fa": "در انتظار پرداخت", "en": "Awaiting Payment" },
+    "verified": { "fa": "تأیید شده", "en": "Verified" },
+    "accepted": { "fa": "پذیرفته شده", "en": "Accepted" },
+    "cancelled": { "fa": "لغو شده", "en": "Cancelled" },
+    "absence": { "fa": "عدم حضور", "en": "Absence" },
+    "expired": { "fa": "منقضی شده", "en": "Expired" }
+  },
+  "stay-status": {
+    "waiting": { "fa": "در انتظار", "en": "Waiting" },
+    "resident": { "fa": "مقیم", "en": "Resident" },
     "checked_out": { "fa": "خروج انجام شد", "en": "Checked Out" },
     "cancelled": { "fa": "لغو شده", "en": "Cancelled" },
     "no_show": { "fa": "عدم حضور", "en": "No Show" }
+  },
+  "guest-status": {
+    "waiting": { "fa": "در انتظار پذیرش", "en": "Waiting for Acceptance" },
+    "resident": { "fa": "مقیم", "en": "Resident" },
+    "checked_out": { "fa": "خروج انجام شد", "en": "Checked Out" },
+    "cancelled": { "fa": "لغو شده", "en": "Cancelled" },
+    "absence": { "fa": "عدم حضور", "en": "Absence" }
+  },
+  "invoice-item-type": {
+    "room_charge": { "fa": "هزینه اتاق", "en": "Room Charge" },
+    "breakfast": { "fa": "صبحانه", "en": "Breakfast" },
+    "half_board": { "fa": "نیم‌برد", "en": "Half Board" },
+    "full_board": { "fa": "فول‌برد", "en": "Full Board" },
+    "parking": { "fa": "پارکینگ", "en": "Parking" },
+    "room_service": { "fa": "سرویس اتاق", "en": "Room Service" },
+    "other": { "fa": "سایر", "en": "Other" }
   }
 }

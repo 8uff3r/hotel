@@ -81,8 +81,14 @@ type Income struct {
 	AccountID *uint   `gorm:"not null" json:"accountId"`
 	Account   Account `gorm:"foreignKey:AccountID" json:"account,omitzero"`
 
-	ReservationID *uint       `gorm:"not null" json:"reservationId"`
-	Reservation   Reservation `gorm:"foreignKey:ReservationID" json:"reservation"`
+	ReservationID *uint       `json:"reservationId"`
+	Reservation   *Reservation `gorm:"foreignKey:ReservationID" json:"reservation,omitempty"`
+
+	StayID *uint  `json:"stayId"`
+	Stay   *Stay  `gorm:"foreignKey:StayID" json:"stay,omitempty"`
+
+	InvoiceID *uint  `json:"invoiceId"`
+	Invoice   *Invoice `gorm:"foreignKey:InvoiceID" json:"invoice,omitempty"`
 
 	PaymentStatusID uint          `gorm:"not null" json:"paymentStatusId"`
 	PaymentStatus   PaymentStatus `gorm:"foreignKey:PaymentStatusID" json:"paymentStatus,omitzero"`

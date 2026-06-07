@@ -50,6 +50,9 @@ func Seed(db *gorm.DB, cfg config.Config) {
 	seedRestaurantReferenceData(db)
 	seedAllReferenceData(db)
 	seedReservationStatuses(db)
+	seedStayStatuses(db)
+	seedInvoiceItemTypes(db)
+	seedServices(db)
 }
 
 type Seedable interface {
@@ -135,8 +138,8 @@ func seedRoomStatuses(db *gorm.DB) {
 		{TranslateBase: models.TranslateBase{Slug: "available", Translation: t["available"]}, ColorHex: "2ECC71"},     // green
 		{TranslateBase: models.TranslateBase{Slug: "occupied", Translation: t["occupied"]}, ColorHex: "E74C3C"},       // red
 		{TranslateBase: models.TranslateBase{Slug: "reserved", Translation: t["reserved"]}, ColorHex: "F39C12"},       // orange
-		{TranslateBase: models.TranslateBase{Slug: "maintenance", Translation: t["maintenance"]}, ColorHex: "95A5A6"}, // gray
-		{TranslateBase: models.TranslateBase{Slug: "dirty", Translation: t["dirty"]}, ColorHex: "4a412a"},             // dark brown (aka ugliest color in the world)
+		{TranslateBase: models.TranslateBase{Slug: "under_repair", Translation: t["under_repair"]}, ColorHex: "95A5A6"}, // gray
+		{TranslateBase: models.TranslateBase{Slug: "cleaning", Translation: t["cleaning"]}, ColorHex: "4a412a"},      // dark brown
 	}
 
 	seed(db, statuses)
@@ -181,16 +184,52 @@ func seedCountries(db *gorm.DB) {
 }
 
 func seedReservationStatuses(db *gorm.DB) {
-	t := Translations["reservation-stratus"]
+	t := Translations["reservation-status"]
 
 	statuses := []models.ReservationStatus{
-		{TranslateBase: models.TranslateBase{Slug: "pending", Translation: t["pending"]}, ColorHex: "FFA500"},         // Amber
-		{TranslateBase: models.TranslateBase{Slug: "confirmed", Translation: t["confirmed"]}, ColorHex: "2E8B57"},     // Forest Green
-		{TranslateBase: models.TranslateBase{Slug: "checked_in", Translation: t["checked_in"]}, ColorHex: "1E90FF"},   // Dodger Blue
-		{TranslateBase: models.TranslateBase{Slug: "checked_out", Translation: t["checked_out"]}, ColorHex: "708090"}, // Slate Gray
-		{TranslateBase: models.TranslateBase{Slug: "cancelled", Translation: t["cancelled"]}, ColorHex: "DC143C"},     // Crimson
-		{TranslateBase: models.TranslateBase{Slug: "no_show", Translation: t["no_show"]}, ColorHex: "8B0000"},         // Dark Red
+		{TranslateBase: models.TranslateBase{Slug: "awaiting_payment", Translation: t["awaiting_payment"]}, ColorHex: "FFA500"}, // Amber
+		{TranslateBase: models.TranslateBase{Slug: "verified", Translation: t["verified"]}, ColorHex: "2E8B57"},                  // Forest Green
+		{TranslateBase: models.TranslateBase{Slug: "accepted", Translation: t["accepted"]}, ColorHex: "1E90FF"},                  // Dodger Blue
+		{TranslateBase: models.TranslateBase{Slug: "cancelled", Translation: t["cancelled"]}, ColorHex: "DC143C"},                 // Crimson
+		{TranslateBase: models.TranslateBase{Slug: "absence", Translation: t["absence"]}, ColorHex: "8B0000"},                   // Dark Red
+		{TranslateBase: models.TranslateBase{Slug: "expired", Translation: t["expired"]}, ColorHex: "708090"},                     // Slate Gray
 	}
 
 	seed(db, statuses)
+}
+
+func seedStayStatuses(db *gorm.DB) {
+	t := Translations["stay-status"]
+
+	statuses := []models.StayStatus{
+		{TranslateBase: models.TranslateBase{Slug: "waiting", Translation: t["waiting"]}, ColorHex: "FFA500"},
+		{TranslateBase: models.TranslateBase{Slug: "resident", Translation: t["resident"]}, ColorHex: "2ECC71"},
+		{TranslateBase: models.TranslateBase{Slug: "checked_out", Translation: t["checked_out"]}, ColorHex: "708090"},
+		{TranslateBase: models.TranslateBase{Slug: "cancelled", Translation: t["cancelled"]}, ColorHex: "DC143C"},
+		{TranslateBase: models.TranslateBase{Slug: "no_show", Translation: t["no_show"]}, ColorHex: "8B0000"},
+	}
+
+	seed(db, statuses)
+}
+
+func seedInvoiceItemTypes(db *gorm.DB) {
+	t := Translations["invoice-item-type"]
+
+	types := []models.TranslateBase{
+		{Slug: "room_charge", Translation: t["room_charge"]},
+		{Slug: "breakfast", Translation: t["breakfast"]},
+		{Slug: "half_board", Translation: t["half_board"]},
+		{Slug: "full_board", Translation: t["full_board"]},
+		{Slug: "parking", Translation: t["parking"]},
+		{Slug: "room_service", Translation: t["room_service"]},
+		{Slug: "other", Translation: t["other"]},
+	}
+
+	// These are not stored in DB as a separate table; they are string enums
+	// But we seed them as reference data for consistency if needed in future
+	_ = types
+}
+
+func seedServices(db *gorm.DB) {
+	// No-op for now; services are hotel-specific and created via UI
 }

@@ -104,10 +104,14 @@ func (m RoomsModule) rackHandler(api *httpapi.API) httpapi.FuegoHandler[httpapi.
 		result := make([]RackRoom, 0, len(rooms))
 		for i := range rooms {
 			room := rooms[i]
+			floorNum := 0
+			if room.Floor != nil {
+				floorNum = room.Floor.Number
+			}
 			rr := RackRoom{
 				ID:          room.ID,
 				RoomNumber:  room.RoomNumber,
-				Floor:       room.Floor,
+				Floor:       floorNum,
 				Capacity:    room.Capacity,
 				BasePrice:   room.BasePrice,
 				Description: room.Description,

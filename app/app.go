@@ -19,6 +19,7 @@ import (
 	"hotel/internal/httpapi"
 	system "hotel/internal/httpapi/_system"
 	"hotel/internal/httpapi/accounting"
+	"hotel/internal/httpapi/admins"
 	"hotel/internal/httpapi/auth"
 	"hotel/internal/httpapi/common"
 	"hotel/internal/httpapi/guests"
@@ -29,6 +30,8 @@ import (
 	"hotel/internal/httpapi/restaurant"
 	"hotel/internal/httpapi/rooms"
 	sanahttp "hotel/internal/httpapi/sana"
+	"hotel/internal/httpapi/services"
+	"hotel/internal/httpapi/stays"
 	"hotel/internal/httpapi/travelagency"
 	"hotel/internal/httpapi/users"
 	"hotel/internal/models"
@@ -135,6 +138,9 @@ func New(cfg config.Config) (*App, error) {
 		"/restaurant":      restaurant.RestaurantModule{},
 		"/common":          common.CommonModule{},
 		"/travel-agencies": travelagency.TravelAgencyModule{},
+		"/admins":          admins.AdminsModule{},
+		"/stays":           stays.StaysModule{},
+		"/services":        services.ServicesModule{},
 	})
 
 	spaGroup := fuego.Group(srv, "/")
@@ -183,8 +189,9 @@ func ensureAdmin(db *gorm.DB, cfg config.Config) error {
 	}
 	if hotelCount == 0 {
 		if err := db.Create(&models.Hotel{
-			ID:      cfg.SeedHotelCodeName,
-			Name:    cfg.SeedHotelName,
+			ID:   cfg.SeedHotelCodeName,
+			Code: cfg.SeedHotelCodeName,
+			Name: cfg.SeedHotelName,
 			Address: cfg.SeedHotelAddress,
 			Phone:   cfg.SeedHotelPhone,
 			Email:   cfg.SeedHotelEmail,
@@ -251,6 +258,33 @@ func ensureAdmin(db *gorm.DB, cfg config.Config) error {
 		return fmt.Errorf("grant admin permissions: %w", err)
 	}
 
+	// Also create an Admin record for the seed admin
+	var adminCount int64
+	if err := db.Model(&models.Admin{}).Where("email = ?", cfg.SeedAdminEmail).Count(&adminCount).Error; err != nil {
+		return fmt.Errorf("check admin record: %w", err)
+	}
+	if adminCount == 0 {
+		hash, err := bcrypt.GenerateFromPassword([]byte(cfg.SeedAdminPass), bcrypt.DefaultCost)
+		if err != nil {
+			return fmt.Errorf("hash admin password: %w", err)
+		}
+		admin := models.Admin{
+			FirstName:    cfg.SeedAdminFName,
+			LastName:     cfg.SeedAdminLName,
+			Email:        cfg.SeedAdminEmail,
+			Username:     cfg.SeedAdminEmail,
+			PasswordHash: string(hash),
+			IsActive:     true,
+			IsSuperAdmin: true,
+			AdminHotels: []models.AdminHotel{
+				{HotelID: cfg.SeedHotelCodeName},
+			},
+		}
+		if err := db.Create(&admin).Error; err != nil {
+			return fmt.Errorf("create admin record: %w", err)
+		}
+	}
+
 	return nil
 }
 
@@ -265,8 +299,33 @@ func cleanupExpiredSessions(ctx context.Context, db *gorm.DB, logger *slog.Logge
 			if err := db.WithContext(ctx).Delete(&models.Session{}, "expires_at <= ?", time.Now().UTC()).Error; err != nil {
 				logger.Warn("cleanup sessions failed", "err", err.Error())
 			}
+			if err := expireUnpaidReservations(db, logger); err != nil {
+				logger.Warn("expire reservations failed", "err", err.Error())
+			}
 		}
 	}
+}
+
+func expireUnpaidReservations(db *gorm.DB, logger *slog.Logger) error {
+	var awaitingPaymentStatus models.ReservationStatus
+	if err := db.Where("slug = ?", "awaiting_payment").First(&awaitingPaymentStatus).Error; err != nil {
+		return err
+	}
+	var expiredStatus models.ReservationStatus
+	if err := db.Where("slug = ?", "expired").First(&expiredStatus).Error; err != nil {
+		return err
+	}
+
+	res := db.Model(&models.Reservation{}).
+		Where("status_id = ? AND payment_deadline IS NOT NULL AND payment_deadline < ?", awaitingPaymentStatus.ID, time.Now().UTC()).
+		Update("status_id", expiredStatus.ID)
+	if res.Error != nil {
+		return res.Error
+	}
+	if res.RowsAffected > 0 {
+		logger.Info("expired reservations", "count", res.RowsAffected)
+	}
+	return nil
 }
 
 type ModuleRouter interface {

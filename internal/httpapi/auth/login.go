@@ -36,10 +36,31 @@ func (a *AuthModule) loginHandler(c fuego.ContextWithBody[loginDto]) (loginRespo
 	if err != nil {
 		return zero, nil
 	}
-	user, sid, expires, err := a.login(c, req.Email, req.Password)
+
+	// Try user login first, then admin
+	user, sid, expires, err := a.loginUser(c, req.Email, req.Password)
 	if err != nil {
-		return zero, fuego.UnauthorizedError{Title: "invalid_credentials"}
+		admin, adminSid, adminExpires, adminErr := a.loginAdmin(c, req.Email, req.Password)
+		if adminErr != nil {
+			return zero, fuego.UnauthorizedError{Title: "invalid_credentials"}
+		}
+		c.SetCookie(http.Cookie{Name: a.SessionCookie, Value: adminSid, Path: "/", HttpOnly: true, SameSite: http.SameSiteLaxMode, Expires: adminExpires})
+
+		adminHotels, hotelID := a.getAdminHotels(admin.ID)
+		userResponse := models.SanitizedUser{
+			ID:            admin.ID,
+			FirstName:     admin.FirstName,
+			LastName:      admin.LastName,
+			Email:         admin.Email,
+			Username:      admin.Username,
+			ContactNumber: admin.ContactNumber,
+			Role:          admin.Role,
+			IsAdmin:       true,
+			AdminHotels:   adminHotels,
+		}
+		return loginResponse{User: userResponse, HotelID: hotelID, Permissions: []string{}}, nil
 	}
+
 	c.SetCookie(http.Cookie{Name: a.SessionCookie, Value: sid, Path: "/", HttpOnly: true, SameSite: http.SameSiteLaxMode, Expires: expires})
 
 	userHotels, hotelID := a.getUserHotels(user.ID)
@@ -96,7 +117,26 @@ func (a *AuthModule) getUserHotels(userID uint) ([]models.UserHotelInfo, string)
 	return result, defaultHotelID
 }
 
-func (a *AuthModule) login(ctx context.Context, email, password string) (*models.User, string, time.Time, error) {
+func (a *AuthModule) getAdminHotels(adminID uint) ([]models.AdminHotelInfo, string) {
+	var adminHotels []models.AdminHotel
+	if err := a.Db.Preload("Hotel").Where("admin_id = ?", adminID).Find(&adminHotels).Error; err != nil {
+		return nil, ""
+	}
+	result := make([]models.AdminHotelInfo, len(adminHotels))
+	var defaultHotelID string
+	for i, ah := range adminHotels {
+		result[i] = models.AdminHotelInfo{
+			HotelID: ah.HotelID,
+			Hotel:   ah.Hotel,
+		}
+		if i == 0 {
+			defaultHotelID = ah.HotelID
+		}
+	}
+	return result, defaultHotelID
+}
+
+func (a *AuthModule) loginUser(ctx context.Context, email, password string) (*models.User, string, time.Time, error) {
 	user, err := a.GetUserByEmail(ctx, strings.TrimSpace(email))
 	if err != nil || bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password)) != nil {
 		return nil, "", time.Time{}, errors.New("invalid credentials")
@@ -106,10 +146,29 @@ func (a *AuthModule) login(ctx context.Context, email, password string) (*models
 		return nil, "", time.Time{}, err
 	}
 	expires := time.Now().UTC().Add(a.SessionTTL)
-	if err := a.CreateSession(ctx, models.Session{ID: token, UserID: user.ID, ExpiresAt: expires}); err != nil {
+	if err := a.CreateSession(ctx, models.Session{ID: token, UserID: user.ID, ExpiresAt: expires, IsAdmin: false}); err != nil {
 		return nil, "", time.Time{}, err
 	}
 	return user, token, expires, nil
+}
+
+func (a *AuthModule) loginAdmin(ctx context.Context, email, password string) (*models.Admin, string, time.Time, error) {
+	var admin models.Admin
+	if err := a.Db.WithContext(ctx).Where("email = ? AND is_active = ?", strings.TrimSpace(email), true).First(&admin).Error; err != nil {
+		return nil, "", time.Time{}, err
+	}
+	if bcrypt.CompareHashAndPassword([]byte(admin.PasswordHash), []byte(password)) != nil {
+		return nil, "", time.Time{}, errors.New("invalid credentials")
+	}
+	token, err := h.RandomToken()
+	if err != nil {
+		return nil, "", time.Time{}, err
+	}
+	expires := time.Now().UTC().Add(a.SessionTTL)
+	if err := a.CreateSession(ctx, models.Session{ID: token, AdminID: &admin.ID, ExpiresAt: expires, IsAdmin: true}); err != nil {
+		return nil, "", time.Time{}, err
+	}
+	return &admin, token, expires, nil
 }
 
 func (a *AuthModule) GetUserByEmail(ctx context.Context, email string) (*models.User, error) {

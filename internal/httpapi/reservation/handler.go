@@ -1,6 +1,7 @@
 package reservation
 
 import (
+	"fmt"
 	"time"
 
 	h "hotel/internal/httpapi"
@@ -36,6 +37,7 @@ func (m ReservationModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Get(s, "/{id}", h.GetModel[models.Reservation](api.Db))
 	fuego.Put(s, "/{id}", h.UpdateModel[models.Reservation](api.Db))
 
+	fuego.Post(s, "/{id}/accept", re.reservationsAccept)
 	fuego.Post(s, "/{id}/check-in", re.reservationsCheckIn)
 	fuego.Post(s, "/{id}/check-out", re.reservationsCheckOut)
 }
@@ -87,20 +89,240 @@ func (re *ReservationModule) getReservationDetails(c fuego.ContextNoBody) (model
 	return resp, nil
 }
 
-func (re *ReservationModule) reservationsCheckIn(c fuego.ContextNoBody) (okResponse, error) {
-	var zero okResponse
+func (re *ReservationModule) reservationsAccept(c fuego.ContextNoBody) (models.Stay, error) {
+	var zero models.Stay
 	id, err := h.ParseID(c.PathParam("id"))
 	if err != nil {
 		return zero, fuego.BadRequestError{Title: "invalid_id"}
 	}
-	res := re.Db.WithContext(c).Model(&models.Reservation{}).Where("id = ?", id).Updates(map[string]any{"status": "checked_in", "actual_check_in": time.Now().UTC()})
-	if res.Error != nil {
-		return zero, fuego.InternalServerError{Title: "update_failed"}
-	}
-	if res.RowsAffected == 0 {
+
+	var reservation models.Reservation
+	if err := re.Db.WithContext(c).Preload("Guest").Preload("Rooms").First(&reservation, id).Error; err != nil {
 		return zero, fuego.NotFoundError{}
 	}
-	return okResponse{ok: true}, nil
+
+	// Get accepted status
+	var acceptedStatus models.ReservationStatus
+	if err := re.Db.Where("slug = ?", "accepted").First(&acceptedStatus).Error; err != nil {
+		return zero, fuego.InternalServerError{Title: "status_not_found"}
+	}
+	reservation.StatusID = &acceptedStatus.ID
+	re.Db.Save(&reservation)
+
+	// Create stay from reservation
+	return re.createStayFromReservation(c, &reservation)
+}
+
+func (re *ReservationModule) reservationsCheckIn(c fuego.ContextNoBody) (models.Stay, error) {
+	var zero models.Stay
+	id, err := h.ParseID(c.PathParam("id"))
+	if err != nil {
+		return zero, fuego.BadRequestError{Title: "invalid_id"}
+	}
+
+	var reservation models.Reservation
+	if err := re.Db.WithContext(c).Preload("Guest").Preload("Rooms").First(&reservation, id).Error; err != nil {
+		return zero, fuego.NotFoundError{}
+	}
+
+	// Check early check-in
+	var hotel models.Hotel
+	re.Db.First(&hotel, reservation.HotelID)
+	if hotel.Setting != nil && hotel.Setting.StandardCheckInTime != "" {
+		checkInTime, parseErr := time.Parse("15:04", hotel.Setting.StandardCheckInTime)
+		if parseErr == nil {
+			currentTime := time.Now()
+			standardCheckIn := time.Date(currentTime.Year(), currentTime.Month(), currentTime.Day(), checkInTime.Hour(), checkInTime.Minute(), 0, 0, currentTime.Location())
+			if currentTime.Before(standardCheckIn) {
+				// Early check-in logic: could return a warning, but for now proceed
+			}
+		}
+	}
+
+	stay, err := re.createStayFromReservation(c, &reservation)
+	if err != nil {
+		return zero, err
+	}
+
+	// Update reservation to accepted
+	var acceptedStatus models.ReservationStatus
+	if err := re.Db.Where("slug = ?", "accepted").First(&acceptedStatus).Error; err == nil {
+		re.Db.Model(&reservation).Update("status_id", acceptedStatus.ID)
+	}
+
+	// Update guest status
+	re.Db.Model(&models.Guest{}).Where("id = ?", reservation.GuestID).Update("status", string(models.GuestStatusResident))
+
+	return stay, nil
+}
+
+func (re *ReservationModule) createStayFromReservation(ctx fuego.ContextNoBody, reservation *models.Reservation) (models.Stay, error) {
+	var zero models.Stay
+
+	// Get resident status
+	var residentStatus models.StayStatus
+	if err := re.Db.Where("slug = ?", "resident").First(&residentStatus).Error; err != nil {
+		return zero, fuego.InternalServerError{Title: "stay_status_not_found"}
+	}
+
+	roomID := uint(0)
+	if len(reservation.Rooms) > 0 {
+		roomID = reservation.Rooms[0].ID
+	}
+	if roomID == 0 {
+		return zero, fuego.BadRequestError{Title: "no_room_assigned"}
+	}
+
+	stay := models.Stay{
+		HotelID:                *reservation.HotelID,
+		GuestID:                reservation.GuestID,
+		RoomID:                 roomID,
+		ReservationID:          &reservation.ID,
+		AcceptanceID:           fmt.Sprintf("STY-%d", time.Now().Unix()),
+		StayType:               string(models.StayTypeNormal),
+		EntryDate:              reservation.EntryDate,
+		DepartureDate:          reservation.DepartureDate,
+		ScheduledEntryDate:     reservation.EntryDate,
+		ScheduledDepartureDate: reservation.DepartureDate,
+		ActualCheckIn:          func() *time.Time { t := time.Now().UTC(); return &t }(),
+		DurationOfStay:         reservation.DurationOfStay,
+		NumberOfPeople:         reservation.NumberOfPeople,
+		Origin:                 reservation.Origin,
+		Destination:            reservation.Destination,
+		PurposeOfTravel:        reservation.PurposeOfTravel,
+		RoomPrice:              reservation.RoomPrice,
+		Breakfast:              reservation.Breakfast,
+		HalfBoard:              reservation.HalfBoard,
+		FullBoard:              reservation.FullBoard,
+		Parking:                reservation.Parking,
+		Notes:                  reservation.Notes,
+		StatusID:               residentStatus.ID,
+	}
+
+	if err := re.Db.WithContext(ctx).Create(&stay).Error; err != nil {
+		return zero, fuego.BadRequestError{Title: "stay_create_failed"}
+	}
+
+	// Generate invoice
+	if err := re.generateInvoiceForStay(&stay); err != nil {
+		// Log but don't fail
+	}
+
+	// Update room status to occupied
+	var occupiedStatus models.RoomStatus
+	if err := re.Db.Where("slug = ?", "occupied").First(&occupiedStatus).Error; err == nil {
+		re.Db.Model(&models.Room{}).Where("id = ?", roomID).Update("status_id", occupiedStatus.ID)
+	}
+
+	return stay, nil
+}
+
+func (re *ReservationModule) generateInvoiceForStay(stay *models.Stay) error {
+	nights := stay.DurationOfStay
+	if nights <= 0 {
+		nights = 1
+	}
+
+	invoice := models.Invoice{
+		StayID:          stay.ID,
+		HotelID:         stay.HotelID,
+		TotalAmount:     0,
+		PaidAmount:      0,
+		RemainingAmount: 0,
+		PaymentStatus:   string(models.PaymentStatusUnpaid),
+	}
+	if err := re.Db.Create(&invoice).Error; err != nil {
+		return err
+	}
+
+	var items []models.InvoiceItem
+
+	roomTotal := stay.RoomPrice * float64(nights)
+	items = append(items, models.InvoiceItem{
+		InvoiceID:       invoice.ID,
+		StayID:          stay.ID,
+		ItemType:        string(models.InvoiceItemTypeRoomCharge),
+		Quantity:        nights,
+		UnitPrice:       stay.RoomPrice,
+		TotalPrice:      roomTotal,
+		Description:     "Room charge",
+		RemainingAmount: roomTotal,
+		PaymentStatus:   string(models.PaymentStatusUnpaid),
+	})
+	invoice.TotalAmount += roomTotal
+
+	if stay.Breakfast {
+		breakfastTotal := 10.0 * float64(nights)
+		items = append(items, models.InvoiceItem{
+			InvoiceID:       invoice.ID,
+			StayID:          stay.ID,
+			ItemType:        string(models.InvoiceItemTypeBreakfast),
+			Quantity:        nights,
+			UnitPrice:       10.0,
+			TotalPrice:      breakfastTotal,
+			Description:     "Breakfast",
+			RemainingAmount: breakfastTotal,
+			PaymentStatus:   string(models.PaymentStatusUnpaid),
+		})
+		invoice.TotalAmount += breakfastTotal
+	}
+
+	if stay.HalfBoard {
+		halfBoardTotal := 20.0 * float64(nights)
+		items = append(items, models.InvoiceItem{
+			InvoiceID:       invoice.ID,
+			StayID:          stay.ID,
+			ItemType:        string(models.InvoiceItemTypeHalfBoard),
+			Quantity:        nights,
+			UnitPrice:       20.0,
+			TotalPrice:      halfBoardTotal,
+			Description:     "Half board",
+			RemainingAmount: halfBoardTotal,
+			PaymentStatus:   string(models.PaymentStatusUnpaid),
+		})
+		invoice.TotalAmount += halfBoardTotal
+	}
+
+	if stay.FullBoard {
+		fullBoardTotal := 35.0 * float64(nights)
+		items = append(items, models.InvoiceItem{
+			InvoiceID:       invoice.ID,
+			StayID:          stay.ID,
+			ItemType:        string(models.InvoiceItemTypeFullBoard),
+			Quantity:        nights,
+			UnitPrice:       35.0,
+			TotalPrice:      fullBoardTotal,
+			Description:     "Full board",
+			RemainingAmount: fullBoardTotal,
+			PaymentStatus:   string(models.PaymentStatusUnpaid),
+		})
+		invoice.TotalAmount += fullBoardTotal
+	}
+
+	if stay.Parking {
+		parkingTotal := 5.0 * float64(nights)
+		items = append(items, models.InvoiceItem{
+			InvoiceID:       invoice.ID,
+			StayID:          stay.ID,
+			ItemType:        string(models.InvoiceItemTypeParking),
+			Quantity:        nights,
+			UnitPrice:       5.0,
+			TotalPrice:      parkingTotal,
+			Description:     "Parking",
+			RemainingAmount: parkingTotal,
+			PaymentStatus:   string(models.PaymentStatusUnpaid),
+		})
+		invoice.TotalAmount += parkingTotal
+	}
+
+	if len(items) > 0 {
+		if err := re.Db.CreateInBatches(items, len(items)).Error; err != nil {
+			return err
+		}
+	}
+
+	invoice.RemainingAmount = invoice.TotalAmount
+	return re.Db.Save(&invoice).Error
 }
 
 func (re *ReservationModule) reservationsCheckOut(c fuego.ContextNoBody) (okResponse, error) {
@@ -109,7 +331,7 @@ func (re *ReservationModule) reservationsCheckOut(c fuego.ContextNoBody) (okResp
 	if err != nil {
 		return zero, fuego.BadRequestError{Title: "invalid_id"}
 	}
-	res := re.Db.WithContext(c).Model(&models.Reservation{}).Where("id = ?", id).Updates(map[string]any{"status": "checked_out", "actual_check_out": time.Now().UTC()})
+	res := re.Db.WithContext(c).Model(&models.Reservation{}).Where("id = ?", id).Updates(map[string]any{"status": "checked_out"})
 	if res.Error != nil {
 		return zero, fuego.InternalServerError{Title: "update_failed"}
 	}

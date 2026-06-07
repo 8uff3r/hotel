@@ -29,6 +29,7 @@ type MeResponse struct {
 	User        models.SanitizedUser `json:"user"`
 	HotelID     string               `json:"hotelId"`
 	Permissions []string             `json:"permissions"`
+	IsAdmin     bool                 `json:"isAdmin"`
 }
 
 func me(c fuego.ContextNoBody) (MeResponse, error) {
@@ -36,7 +37,7 @@ func me(c fuego.ContextNoBody) (MeResponse, error) {
 	hotelID := c.Value(h.HotelIDKey{}).(string)
 	permissions := h.GetUserPermissionsFromContext(c)
 
-	return MeResponse{User: user, HotelID: hotelID, Permissions: tokenizePermissions(permissions)}, nil
+	return MeResponse{User: user, HotelID: hotelID, Permissions: tokenizePermissions(permissions), IsAdmin: user.IsAdmin}, nil
 }
 
 func tokenizePermissions(permissions []models.UserPermissionInfo) []string {
