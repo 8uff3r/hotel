@@ -276,6 +276,7 @@
 
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
+import { getApiRestaurantBills, postApiRestaurantBillsIdSettle } from "~/utils/client";
 import type {
   PaginatedResponseModelsRestaurantBill,
   RestaurantBill,
@@ -333,28 +334,27 @@ const {
   data: billsData,
   pending,
   refresh: fetchBills,
-} = useAsyncData(
+} = useAsyncData<RestaurantBill[]>(
   "restaurant-bills",
   async () => {
     const params: any = { page: pagination.page, limit: pagination.limit };
     if (filters.search) params.search = filters.search;
     if (filters.status) params.status = filters.status;
 
-    const response = await $fetch<PaginatedResponseModelsRestaurantBill>("/api/restaurant/bills", {
-      query: params,
-    });
-    pagination.total = response.total ?? 0;
-    pagination.totalPages = response.totalPages ?? 0;
-    return response.data?.data;
+    const response = await getApiRestaurantBills({ query: params });
+    pagination.total = response.data?.total ?? 0;
+    pagination.totalPages = response.data?.totalPages ?? 0;
+    return (response.data?.data ?? []) as RestaurantBill[];
   },
   { watch: [() => pagination.page] }
 );
 
 const bills = computed(() => billsData.value ?? []);
 
-const { data: stats } = useAsyncData<RestaurantStats>("restaurant-stats", () =>
-  getApiRestaurantStats({})
-);
+const { data: stats } = useAsyncData<RestaurantStats>("restaurant-stats", async () => {
+  const response = await getApiRestaurantStats({});
+  return response.data as RestaurantStats;
+});
 
 const internalPercentage = computed(() => {
   if (!stats.value || stats.value.totalRevenue === 0) return 0;
@@ -374,7 +374,7 @@ const confirmSettle = async () => {
   if (!selectedBill.value) return;
   settling.value = true;
   try {
-    await $fetch(`/api/restaurant/bills/${selectedBill.value.id}/settle`, { method: "POST" });
+    await postApiRestaurantBillsIdSettle({ path: { id: String(selectedBill.value.id) } });
     detailModalOpen.value = false;
     await fetchBills();
   } catch (error) {

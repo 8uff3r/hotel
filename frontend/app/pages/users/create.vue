@@ -46,6 +46,49 @@
                   :disabled="loading"
                 />
               </UFormField>
+
+              <UFormField label="نام کاربری" name="username">
+                <UInput
+                  v-model="form.username"
+                  placeholder="نام کاربری"
+                  :disabled="loading"
+                />
+              </UFormField>
+
+              <UFormField label="شماره تماس" name="contactNumber">
+                <UInput
+                  v-model="form.contactNumber"
+                  placeholder="شماره تماس"
+                  :disabled="loading"
+                />
+              </UFormField>
+
+              <UFormField label="نقش" name="role">
+                <USelect
+                  v-model="form.role"
+                  :options="roleOptions"
+                  placeholder="نقش"
+                  :disabled="loading"
+                />
+              </UFormField>
+
+              <UFormField label="وضعیت" name="status">
+                <USelect
+                  v-model="form.status"
+                  :options="statusOptions"
+                  placeholder="وضعیت"
+                  :disabled="loading"
+                />
+              </UFormField>
+
+              <UFormField label="هتل" name="hotelId" required>
+                <USelect
+                  v-model="form.hotelId"
+                  :options="hotelOptions"
+                  placeholder="انتخاب هتل"
+                  :disabled="loading"
+                />
+              </UFormField>
             </div>
           </div>
         </div>
@@ -60,11 +103,29 @@
         </div>
       </UForm>
     </UCard>
+
+    <UCard class="mt-6">
+      <template #header>
+        <h2 class="text-lg font-semibold">{{ t("users.permissions") }}</h2>
+      </template>
+      <div class="space-y-4">
+        <div class="flex gap-3 items-center">
+          <span class="text-sm text-gray-600 dark:text-gray-400">قالب دسترسی:</span>
+          <div class="w-80">
+            <HSelectMenu :items="templates" multiple v-model="selectedTemplates" />
+          </div>
+        </div>
+      </div>
+    </UCard>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { PostApiUsersResponse } from "~/utils/client";
+import { useQuery } from "@pinia/colada";
+import { useToast } from "@nuxt/ui/composables";
+import { useI18n } from "vue-i18n";
+import { PERMISSIONS } from "~/utils/permissions.gen";
+import type { Hotel, SanitizedUser, UserCreateResponse } from "~/utils/client";
 
 definePageMeta({
   requiresPermission: PERMISSIONS.users.users.create,
@@ -81,15 +142,52 @@ const form = ref({
   password: "",
   firstName: "",
   lastName: "",
+  username: "",
+  contactNumber: "",
+  role: "",
+  status: "active",
+  hotelId: "",
 });
 
-const resolveCreatedUserId = async (response: PostApiUsersResponse): Promise<number | null> => {
-  const maybeId = Number((response as any)?.id);
+const roleOptions = [
+  { label: t("users.manager"), value: "manager" },
+  { label: t("users.receptionist"), value: "receptionist" },
+  { label: t("users.accountant"), value: "accountant" },
+  { label: t("users.housekeeping"), value: "housekeeping" },
+];
+
+const statusOptions = [
+  { label: t("users.active"), value: "active" },
+  { label: t("users.inactive"), value: "inactive" },
+];
+
+const { data: hotels } = useFetch("/api/hotels", {
+  key: "hotels-list",
+  transform: (res) => (res as { data?: Hotel[] })?.data ?? [],
+});
+
+const hotelOptions = computed(() =>
+  (hotels.value ?? []).map((h) => ({ label: h.name ?? "", value: h.id ?? "" }))
+);
+
+const { data: templates } = useQuery({
+  key: ["users", "permissions", "templates"],
+  query: async () => {
+    const response = await getApiPermissionsTemplates({ query: { limit: -1 } });
+    return response.data?.data;
+  },
+});
+
+const selectedTemplates = ref<number[]>([]);
+
+const resolveCreatedUserId = async (response: { data?: UserCreateResponse }): Promise<number | null> => {
+  const maybeId = Number(response.data?.id);
   if (Number.isFinite(maybeId) && maybeId > 0) return maybeId;
 
   const usersResp = await getApiUsers({});
-  const matched = (usersResp.data ?? []).find(
-    (u) => u.email?.toLowerCase() === form.value.email.toLowerCase()
+  const users = usersResp.data?.data ?? [];
+  const matched = users.find(
+    (u: SanitizedUser) => u.email?.toLowerCase() === form.value.email.toLowerCase()
   );
   return matched?.id ?? null;
 };
@@ -103,18 +201,35 @@ const handleSubmit = async () => {
         password: form.value.password,
         firstName: form.value.firstName,
         lastName: form.value.lastName,
+        username: form.value.username,
+        contactNumber: form.value.contactNumber,
+        role: form.value.role,
+        status: form.value.status,
+        hotelId: form.value.hotelId,
       },
     });
 
     const userId = await resolveCreatedUserId(created);
 
+    if (userId && selectedTemplates.value.length > 0) {
+      try {
+        await postApiPermissionsUserUserIdGrantRole({
+          path: { userId: String(userId) },
+          body: { roleIds: selectedTemplates.value },
+        });
+      } catch (e) {
+        console.error("Failed to apply permission templates:", e);
+      }
+    }
+
     toast.add({ title: t("users.created"), color: "success" });
     router.push("/users");
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Failed to create user:", error);
+    const err = error as { data?: { error?: string }; message?: string };
     toast.add({
       title: t("users.createFailed"),
-      description: error?.data?.error || error?.message || t("users.createFailed"),
+      description: err.data?.error || err.message || t("users.createFailed"),
       color: "error",
     });
   } finally {

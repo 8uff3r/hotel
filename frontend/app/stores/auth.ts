@@ -1,4 +1,8 @@
 import { defineStore } from "pinia";
+import type { LoginResponse, MeResponse, SanitizedUser } from "~/utils/client";
+
+type UserHotelInfo = NonNullable<SanitizedUser["userHotels"]>[number];
+type AdminHotelInfo = NonNullable<SanitizedUser["adminHotels"]>[number];
 
 export const useAuthStore = defineStore(
   "auth",
@@ -7,17 +11,17 @@ export const useAuthStore = defineStore(
     const user = ref<SanitizedUser | null>(null);
     const isAuthenticated = ref(false);
     const loading = ref(true);
-    const currentRole = ref<any>();
+    const currentRole = ref<string | undefined>(undefined);
     const userHotels = ref<UserHotelInfo[]>([]);
     const adminHotels = ref<AdminHotelInfo[]>([]);
     const currentHotelId = ref<string>("");
-    const permissions = ref<string[] | undefined>([]);
+    const permissions = ref<string[]>([]);
     const permissionsSet = computed(() => new Set(permissions.value ?? []));
 
     // getters
     const hasRole = (...roles: string[]) => {
       if (!currentRole.value) return false;
-      return roles.some((role) => currentRole.value?.name === role);
+      return roles.some((role) => currentRole.value === role);
     };
 
     const isAdmin = computed(() => user.value?.isAdmin ?? false);
@@ -30,13 +34,13 @@ export const useAuthStore = defineStore(
 
     const availableHotels = computed(() => {
       if (isAdmin.value) {
-        return (adminHotels.value ?? []) as any[];
+        return adminHotels.value ?? [];
       }
       return userHotels.value ?? [];
     });
 
     const currentHotelName = computed(() => {
-      const hotel = availableHotels.value.find((h: any) => h.hotelId === currentHotelId.value);
+      const hotel = availableHotels.value.find((h) => h.hotelId === currentHotelId.value);
       return hotel?.hotel?.name ?? "";
     });
 
@@ -61,15 +65,19 @@ export const useAuthStore = defineStore(
     async function login(email: string, password: string) {
       try {
         const response = await postApiAuthLogin({ body: { email, password } });
-        const { user: u, hotelId, permissions: perms, isAdmin: adminFlag } = response.data ?? {};
+        const data = response.data as LoginResponse | undefined;
+        const u = data?.user;
+        const hotelId = data?.hotelId;
+        const perms = data?.permissions;
+        const adminFlag = u?.isAdmin;
         if (!u) throw Error("Couldn't login");
 
-        user.value = u as SanitizedUser;
+        user.value = u;
         if (adminFlag) {
           user.value.isAdmin = true;
-          adminHotels.value = (u.adminHotels as AdminHotelInfo[]) ?? [];
+          adminHotels.value = u.adminHotels ?? [];
         } else {
-          userHotels.value = (u.userHotels as UserHotelInfo[]) ?? [];
+          userHotels.value = u.userHotels ?? [];
         }
         currentHotelId.value = hotelId ?? "";
         permissions.value = perms ?? [];
@@ -108,16 +116,21 @@ export const useAuthStore = defineStore(
     async function fetchUser() {
       try {
         loading.value = true;
-        const { user: u, hotelId, permissions: perms, isAdmin: adminFlag } = (await getApiAuthMe({})).data ?? {};
+        const response = await getApiAuthMe({});
+        const data = response.data as MeResponse | undefined;
+        const u = data?.user;
+        const hotelId = data?.hotelId;
+        const perms = data?.permissions;
+        const adminFlag = data?.isAdmin;
 
         if (!u) throw Error("Couldn't fetch user");
 
-        user.value = u as SanitizedUser;
+        user.value = u;
         if (adminFlag) {
           user.value.isAdmin = true;
-          adminHotels.value = (u.adminHotels as AdminHotelInfo[]) ?? [];
+          adminHotels.value = u.adminHotels ?? [];
         } else {
-          userHotels.value = (u.userHotels as UserHotelInfo[]) ?? [];
+          userHotels.value = u.userHotels ?? [];
         }
         currentHotelId.value = hotelId ?? "";
         permissions.value = perms ?? [];
@@ -138,7 +151,7 @@ export const useAuthStore = defineStore(
     }
 
     async function switchHotel(hotelId: string) {
-      const hotel = availableHotels.value.find((h: any) => h.hotelId === hotelId);
+      const hotel = availableHotels.value.find((h) => h.hotelId === hotelId);
       if (hotel) {
         currentHotelId.value = hotelId;
         setHotelCookie(hotelId);

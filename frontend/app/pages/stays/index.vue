@@ -1,38 +1,49 @@
 <template>
   <div class="p-6">
-    <div class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-bold">پذیرش / اقامت‌ها</h1>
-      <UButton to="/stays/create" icon="i-lucide-plus">
-        ثبت پذیرش جدید
-      </UButton>
+    <div class="mb-6 flex items-center justify-between">
+      <h1 class="text-2xl font-bold">{{ t("stays.title") }}</h1>
+      <UButton to="/stays/create" icon="i-lucide-plus"> {{ t("stays.create") }} </UButton>
     </div>
 
-    <UTable :rows="stays" :columns="columns" :loading="pending">
-      <template #actions-data="{ row }">
-        <UButton variant="ghost" icon="i-lucide-eye" size="xs" :to="`/stays/${row.id}`" />
+    <UCard>
+      <template #header>
+        <div class="flex items-center justify-between">
+          <span class="text-lg font-semibold">{{ t("stays.list") }}</span>
+          <span class="text-sm text-gray-500">{{ (stays ?? []).length }} {{ t("stays.count") }}</span>
+        </div>
       </template>
-    </UTable>
+      <UTable :rows="stays" :columns="columns" :loading="pending">
+        <template #actions-data="{ row }">
+          <UButton variant="ghost" icon="i-lucide-eye" size="xs" :to="`/stays/${row.id}`" />
+        </template>
+      </UTable>
+    </UCard>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+import type { Stay } from "~/utils/client";
+
 definePageMeta({
   requiresPermission: "guests:read",
 });
 
+const { t } = useI18n();
+
 const columns = [
-  { key: "acceptanceId", label: "شناسه پذیرش" },
-  { key: "guest.firstName", label: "نام مهمان" },
-  { key: "guest.lastName", label: "نام خانوادگی" },
-  { key: "room.roomNumber", label: "شماره اتاق" },
-  { key: "entryDate", label: "تاریخ ورود" },
-  { key: "departureDate", label: "تاریخ خروج" },
-  { key: "status.label", label: "وضعیت" },
-  { key: "actions", label: "عملیات" },
+  { accessorKey: "acceptanceId", header: t("stays.acceptanceId") },
+  { accessorKey: "guest.firstName", header: t("stays.guestFirstName") },
+  { accessorKey: "guest.lastName", header: t("stays.guestLastName") },
+  { accessorKey: "room.roomNumber", header: t("stays.roomNumber") },
+  { accessorKey: "entryDate", header: t("stays.entryDate") },
+  { accessorKey: "departureDate", header: t("stays.departureDate") },
+  { accessorKey: "status.label", header: t("stays.status") },
+  { id: "actions", header: t("actions.actions") },
 ];
 
 const { data: stays, pending } = useFetch("/api/stays", {
   key: "stays-list",
-  transform: (res: any) => res?.data ?? [],
+  transform: (res) => (res as { data?: Stay[] })?.data ?? [],
 });
 </script>

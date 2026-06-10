@@ -35,9 +35,7 @@ const formatDate = (date: string | undefined) => {
       </div>
       <div>
         <strong>{{ t("guest.payment") }}:</strong>
-        <span v-if="value.payment?.isCash">{{ t("guest.cash") }}</span>
-        <span v-else-if="value.payment?.agency">{{ t("guest.agency") }}</span>
-        <span v-else>{{ t("guest.unspecified") }}</span>
+        <span>{{ value.payment?.method?.label ?? t("guest.unspecified") }}</span>
       </div>
     </div>
   </UCard>

@@ -117,7 +117,8 @@ const navItems = computed(() =>
 const { data: stats, pending: statsPending } = useAsyncData<RestaurantStats>(
   "restaurant-stats",
   async () => {
-    return await getApiRestaurantStats({});
+    const response = await getApiRestaurantStats({});
+    return response.data as RestaurantStats;
   }
 );
 </script>

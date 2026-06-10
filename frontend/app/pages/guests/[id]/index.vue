@@ -84,6 +84,16 @@
                   <UInput v-model="form.idNumber" :disabled="saving" />
                 </UFormField>
 
+                <!-- Passport -->
+                <UFormField label="پاسپورت" name="passport">
+                  <UInput v-model="form.passport" :disabled="saving" />
+                </UFormField>
+
+                <!-- Status -->
+                <UFormField label="وضعیت" name="status">
+                  <UInput v-model="form.status" disabled />
+                </UFormField>
+
                 <!-- Occupation -->
                 <UFormField :label="t('guest.occupation')" name="occupation">
                   <UInput
@@ -243,6 +253,8 @@ const { data: guest, pending } = useAsyncData(async () => {
     placeOfBirth: response.data?.placeOfBirth ?? "",
     nationalId: response.data?.nationalId ?? "",
     idNumber: response.data?.idNumber ?? "",
+    passport: response.data?.passport ?? "",
+    status: response.data?.status ?? "",
     occupation: response.data?.occupation ?? "",
     phone: response.data?.phone ?? "",
     email: response.data?.email ?? "",

@@ -1,37 +1,49 @@
 <template>
   <div class="p-6">
     <div class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-bold">مدیریت مدیران سیستم</h1>
+      <h1 class="text-2xl font-bold">{{ t("admins.title") }}</h1>
       <UButton to="/admins/create" icon="i-lucide-plus">
-        افزودن مدیر
+        {{ t("admins.create") }}
       </UButton>
     </div>
 
-    <UTable :rows="admins" :columns="columns" :loading="pending">
-      <template #actions-data="{ row }">
-        <UButton variant="ghost" icon="i-lucide-pencil" size="xs" :to="`/admins/${row.id}`" />
+    <UCard>
+      <template #header>
+        <div class="flex items-center justify-between">
+          <span class="text-lg font-semibold">{{ t("admins.list") }}</span>
+          <span class="text-sm text-gray-500">{{ (admins ?? []).length }} {{ t("admins.count") }}</span>
+        </div>
       </template>
-    </UTable>
+      <UTable :rows="admins" :columns="columns" :loading="pending">
+        <template #actions-data="{ row }">
+          <UButton variant="ghost" icon="i-lucide-pencil" size="xs" :to="`/admins/${row.id}`" />
+        </template>
+      </UTable>
+    </UCard>
   </div>
 </template>
 
 <script setup lang="ts">
+import type { SanitizedAdmin } from "~/utils/client";
+
 definePageMeta({
   requiresPermission: "users:read",
 });
 
+const { t } = useI18n();
+
 const columns = [
-  { key: "firstName", label: "نام" },
-  { key: "lastName", label: "نام خانوادگی" },
-  { key: "email", label: "ایمیل" },
-  { key: "username", label: "نام کاربری" },
-  { key: "role", label: "نقش" },
-  { key: "isSuperAdmin", label: "سوپر ادمین" },
-  { key: "actions", label: "عملیات" },
+  { accessorKey: "firstName", header: t("admins.firstName") },
+  { accessorKey: "lastName", header: t("admins.lastName") },
+  { accessorKey: "email", header: t("admins.email") },
+  { accessorKey: "username", header: t("admins.username") },
+  { accessorKey: "role", header: t("admins.role") },
+  { accessorKey: "isSuperAdmin", header: t("admins.isSuperAdmin") },
+  { id: "actions", header: t("actions.actions") },
 ];
 
 const { data: admins, pending } = useFetch("/api/admins", {
   key: "admins-list",
-  transform: (res: any) => res?.data ?? [],
+  transform: (res) => (res as { data?: SanitizedAdmin[] })?.data ?? [],
 });
 </script>

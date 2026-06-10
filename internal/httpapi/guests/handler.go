@@ -493,10 +493,14 @@ func (gm *GuestsModule) getGuestSettlementHandler(c fuego.ContextNoBody) (GuestS
 func (gm *GuestsModule) getArchivedGuestsHandler(c fuego.ContextWithParams[h.Params]) (h.PaginatedResponse[models.Guest], error) {
 	var zeroResponse h.PaginatedResponse[models.Guest]
 
-	q := gm.Db.Joins("JOIN reservations ON reservations.guest_id = guests.id").
-		Joins("JOIN reservation_statuses ON reservation_statuses.id = reservations.status_id").
-		Group("guests.id").
-		Having("COUNT(*) = COUNT(CASE WHEN reservation_statuses.slug = ? THEN 1 END)", "checked_out")
+	status := c.QueryParam("status")
+	q := gm.Db.Model(&models.Guest{})
+
+	if status != "" {
+		q = q.Where("status = ?", status)
+	} else {
+		q = q.Where("status IN ?", []string{string(models.GuestStatusCheckedOut), string(models.GuestStatusCancelled), string(models.GuestStatusAbsence)})
+	}
 
 	var total int64
 	if err := q.Count(&total).Error; err != nil {

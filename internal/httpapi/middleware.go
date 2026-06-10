@@ -110,6 +110,15 @@ func (a *API) resolveHotelID(r *http.Request, userHotels []models.UserHotelInfo)
 }
 
 func (a *API) resolveAdminHotelID(r *http.Request, adminHotels []models.AdminHotelInfo) string {
+	// Null/empty hotels = all hotels (super admin access)
+	if len(adminHotels) == 0 {
+		cookie, err := r.Cookie(a.HotelCookie)
+		if err == nil && cookie.Value != "" {
+			return cookie.Value
+		}
+		return ""
+	}
+
 	cookie, err := r.Cookie(a.HotelCookie)
 	if err == nil && cookie.Value != "" {
 		for _, ah := range adminHotels {
@@ -260,5 +269,5 @@ func SanitizeUser(u *models.User, roles []models.PermissionTemplate) models.Sani
 			Hotel:   uh.Hotel,
 		})
 	}
-	return models.SanitizedUser{ID: u.ID, Email: u.Email, FirstName: u.FirstName, LastName: u.LastName, Username: u.Username, ContactNumber: u.ContactNumber, Role: u.Role, Status: u.Status, UserHotels: hotels, Roles: roles}
+	return models.SanitizedUser{ID: u.ID, Email: u.Email, FirstName: u.FirstName, LastName: u.LastName, Username: u.Username, ContactNumber: u.ContactNumber, Role: u.Role, Status: u.Status, HotelID: u.HotelID, UserHotels: hotels, Roles: roles}
 }

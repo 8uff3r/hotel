@@ -86,10 +86,13 @@
 </template>
 
 <script setup lang="ts">
+import { getApiParkingVehiclesId, putApiParkingVehiclesId } from "~/utils/client";
+import type { Guest, Vehicle } from "~/utils/client";
+
 const { t } = useI18n();
 
 const route = useRoute();
-const vehicleId = Number(route.params.id);
+const vehicleId = String(route.params.id);
 
 const vehicle = ref<any>(null);
 const loading = ref(true);
@@ -98,7 +101,7 @@ const guests = ref<any[]>([]);
 
 const form = reactive({
   licensePlate: "",
-  guestId: "",
+  guestId: undefined as string | undefined,
   vehicleType: "car",
   make: "",
   model: "",
@@ -120,21 +123,21 @@ const typeOptions = [
 const fetchData = async () => {
   try {
     const [vehicleRes, guestsRes] = await Promise.all([
-      $fetch(`/api/parking/vehicles/${vehicleId}`),
-      $fetch("/api/guests"),
+      getApiParkingVehiclesId({ path: { id: vehicleId } }),
+      $fetch<{ data?: Guest[] }>("/api/guests"),
     ]);
 
-    vehicle.value = vehicleRes;
-    guests.value = guestsRes.data;
+    vehicle.value = vehicleRes.data;
+    guests.value = guestsRes.data ?? [];
 
-    guestOptions.value = guests.value.map((g: any) => ({
-      value: g.id.toString(),
-      label: `${g.firstName} ${g.lastName}`,
+    guestOptions.value = guests.value.map((g) => ({
+      value: String(g.id ?? ""),
+      label: `${g.firstName ?? ""} ${g.lastName ?? ""}`,
     }));
 
     form.licensePlate = vehicle.value.licensePlate || "";
-    form.guestId = vehicle.value.guestId?.toString() || "";
-    form.vehicleType = vehicle.value.vehicleType || "car";
+    form.guestId = vehicle.value.guestId ? String(vehicle.value.guestId) : undefined;
+    form.vehicleType = (vehicle.value.vehicle as { slug?: string } | undefined)?.slug ?? "car";
     form.make = vehicle.value.make || "";
     form.model = vehicle.value.model || "";
     form.color = vehicle.value.color || "";
@@ -150,18 +153,19 @@ const fetchData = async () => {
 const updateVehicle = async () => {
   saving.value = true;
   try {
-    await $fetch(`/api/parking/vehicles/${vehicleId}`, {
-      method: "PUT",
+    await putApiParkingVehiclesId({
+      requestValidator: undefined,
+      path: { id: vehicleId },
       body: {
         licensePlate: form.licensePlate.toUpperCase(),
-        guestId: form.guestId ? parseInt(form.guestId) : null,
-        vehicleType: form.vehicleType,
-        make: form.make || null,
-        model: form.model || null,
-        color: form.color || null,
+        guestId: form.guestId ? parseInt(form.guestId) : undefined,
+        vehicle: { slug: form.vehicleType },
+        make: form.make || undefined,
+        model: form.model || undefined,
+        color: form.color || undefined,
         isRegistered: form.isRegistered,
-        notes: form.notes || null,
-      },
+        notes: form.notes || undefined,
+      } as any,
     });
     await fetchData();
   } catch (error) {

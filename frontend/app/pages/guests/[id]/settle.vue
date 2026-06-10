@@ -258,6 +258,8 @@
 </template>
 
 <script setup lang="ts">
+import { getApiAccountingPaymentMethods, getApiGuestsIdSettle, postApiGuestsIdSettle } from "~/utils/client";
+
 const { t } = useI18n();
 const route = useRoute();
 const guestId = route.params.id as string;
@@ -310,9 +312,9 @@ interface Settlement {
 }
 
 interface PaymentMethod {
-  id: number;
-  slug: string;
-  label: string;
+  id?: number;
+  slug?: string;
+  label?: string;
 }
 
 const settlement = ref<Settlement | null>(null);
@@ -399,8 +401,8 @@ const getStatusColor = (status: string): "success" | "warning" | "info" | "error
 
 const fetchPaymentMethods = async () => {
   try {
-    const res = await $fetch("/api/accounting/payment-methods");
-    paymentMethods.value = (res as any).data || [];
+    const res = await getApiAccountingPaymentMethods();
+    paymentMethods.value = res.data?.data ?? [];
     if (paymentMethods.value.length > 0) {
       form.paymentMethod = paymentMethods.value[0]?.id;
     }
@@ -412,8 +414,8 @@ const fetchPaymentMethods = async () => {
 const fetchSettlement = async () => {
   loading.value = true;
   try {
-    const response: any = await $fetch(`/api/guests/${guestId}/settle`);
-    settlement.value = response as Settlement;
+    const response = await getApiGuestsIdSettle({ path: { id: guestId } });
+    settlement.value = response.data as Settlement;
   } catch (error) {
     console.error("Failed to fetch settlement:", error);
   } finally {
@@ -432,8 +434,8 @@ const handleSettle = async () => {
 
   settling.value = true;
   try {
-    await $fetch(`/api/guests/${guestId}/settle`, {
-      method: "POST",
+    await postApiGuestsIdSettle({
+      path: { id: guestId },
       body: {
         reservationIds: selectedReservationIds.value,
         parkingTxnIds: selectedParkingTxnIds.value,

@@ -33,13 +33,15 @@ func (m ReservationModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 		re.getReservationDetails,
 	)
 
-	fuego.Post(s, "/", h.CreateModel[models.Reservation](api.Db))
+	fuego.Post(s, "/", re.reservationsCreate)
 	fuego.Get(s, "/{id}", h.GetModel[models.Reservation](api.Db))
 	fuego.Put(s, "/{id}", h.UpdateModel[models.Reservation](api.Db))
 
 	fuego.Post(s, "/{id}/accept", re.reservationsAccept)
 	fuego.Post(s, "/{id}/check-in", re.reservationsCheckIn)
 	fuego.Post(s, "/{id}/check-out", re.reservationsCheckOut)
+
+	fuego.Get(s, "/check-availability", re.checkReservationAvailability)
 }
 
 type okResponse struct{ ok bool }
@@ -87,6 +89,67 @@ func (re *ReservationModule) getReservationDetails(c fuego.ContextNoBody) (model
 	resp.Guest = guests[0]
 
 	return resp, nil
+}
+
+type createReservationResponse struct {
+	models.Reservation
+	Warnings []string `json:"warnings"`
+}
+
+func (re *ReservationModule) reservationsCreate(c fuego.ContextWithBody[models.Reservation]) (createReservationResponse, error) {
+	var zero createReservationResponse
+	body, err := c.Body()
+	if err != nil {
+		return zero, fuego.BadRequestError{}
+	}
+
+	var warnings []string
+
+	// Validate room availability for each room
+	for _, room := range body.Rooms {
+		occupied, err := re.isRoomOccupied(room.ID, body.EntryDate, body.DepartureDate, 0)
+		if err != nil {
+			return zero, fuego.InternalServerError{Title: "availability_check_failed"}
+		}
+		if occupied {
+			return zero, fuego.BadRequestError{Title: "room_occupied"}
+		}
+	}
+
+	if err := re.Db.WithContext(c).Create(&body).Error; err != nil {
+		return zero, fuego.BadRequestError{Title: "create_failed"}
+	}
+	c.SetStatus(201)
+	return createReservationResponse{Reservation: body, Warnings: warnings}, nil
+}
+
+func (re *ReservationModule) isRoomOccupied(roomID uint, entryDate, departureDate time.Time, excludeReservationID uint) (bool, error) {
+	// Check active stays
+	q := re.Db.Model(&models.Stay{}).
+		Where("room_id = ? AND status_id IN (SELECT id FROM stay_statuses WHERE slug IN ('waiting', 'resident'))", roomID).
+		Where("(entry_date <= ? AND (departure_date IS NULL OR departure_date >= ?))", departureDate, entryDate)
+	var stayCount int64
+	if err := q.Count(&stayCount).Error; err != nil {
+		return false, err
+	}
+	if stayCount > 0 {
+		return true, nil
+	}
+
+	// Check overlapping reservations
+	q2 := re.Db.Model(&models.Reservation{}).
+		Joins("JOIN reservation_rooms ON reservation_rooms.reservation_id = reservations.id").
+		Where("reservation_rooms.room_id = ?", roomID).
+		Where("reservations.status_id IN (SELECT id FROM reservation_statuses WHERE slug IN ('awaiting_payment', 'verified', 'accepted'))").
+		Where("(reservations.entry_date <= ? AND (reservations.departure_date IS NULL OR reservations.departure_date >= ?))", departureDate, entryDate)
+	if excludeReservationID > 0 {
+		q2 = q2.Where("reservations.id != ?", excludeReservationID)
+	}
+	var resCount int64
+	if err := q2.Count(&resCount).Error; err != nil {
+		return false, err
+	}
+	return resCount > 0, nil
 }
 
 func (re *ReservationModule) reservationsAccept(c fuego.ContextNoBody) (models.Stay, error) {
@@ -315,6 +378,38 @@ func (re *ReservationModule) generateInvoiceForStay(stay *models.Stay) error {
 		invoice.TotalAmount += parkingTotal
 	}
 
+	// Early check-in fee
+	if stay.EarlyCheckInFee > 0 {
+		items = append(items, models.InvoiceItem{
+			InvoiceID:       invoice.ID,
+			StayID:          stay.ID,
+			ItemType:        string(models.InvoiceItemTypeOther),
+			Quantity:        1,
+			UnitPrice:       stay.EarlyCheckInFee,
+			TotalPrice:      stay.EarlyCheckInFee,
+			Description:     "Early check-in fee",
+			RemainingAmount: stay.EarlyCheckInFee,
+			PaymentStatus:   string(models.PaymentStatusUnpaid),
+		})
+		invoice.TotalAmount += stay.EarlyCheckInFee
+	}
+
+	// Half day fee
+	if stay.HalfDayFee > 0 {
+		items = append(items, models.InvoiceItem{
+			InvoiceID:       invoice.ID,
+			StayID:          stay.ID,
+			ItemType:        string(models.InvoiceItemTypeOther),
+			Quantity:        1,
+			UnitPrice:       stay.HalfDayFee,
+			TotalPrice:      stay.HalfDayFee,
+			Description:     "Half day fee",
+			RemainingAmount: stay.HalfDayFee,
+			PaymentStatus:   string(models.PaymentStatusUnpaid),
+		})
+		invoice.TotalAmount += stay.HalfDayFee
+	}
+
 	if len(items) > 0 {
 		if err := re.Db.CreateInBatches(items, len(items)).Error; err != nil {
 			return err
@@ -339,4 +434,51 @@ func (re *ReservationModule) reservationsCheckOut(c fuego.ContextNoBody) (okResp
 		return zero, fuego.NotFoundError{}
 	}
 	return okResponse{ok: true}, nil
+}
+
+type availabilityResponse struct {
+	Available bool   `json:"available"`
+	Message   string `json:"message,omitempty"`
+}
+
+func (re *ReservationModule) checkReservationAvailability(c fuego.ContextNoBody) (availabilityResponse, error) {
+	roomIDStr := c.QueryParam("roomId")
+	entryDateStr := c.QueryParam("entryDate")
+	departureDateStr := c.QueryParam("departureDate")
+	excludeReservationIDStr := c.QueryParam("excludeReservationId")
+
+	roomID, err := h.ParseID(roomIDStr)
+	if err != nil {
+		return availabilityResponse{}, fuego.BadRequestError{Title: "invalid_room_id"}
+	}
+
+	entryDate, err := time.Parse(time.RFC3339, entryDateStr)
+	if err != nil {
+		entryDate, err = time.Parse("2006-01-02", entryDateStr)
+		if err != nil {
+			return availabilityResponse{}, fuego.BadRequestError{Title: "invalid_entry_date"}
+		}
+	}
+	departureDate, err := time.Parse(time.RFC3339, departureDateStr)
+	if err != nil {
+		departureDate, err = time.Parse("2006-01-02", departureDateStr)
+		if err != nil {
+			return availabilityResponse{}, fuego.BadRequestError{Title: "invalid_departure_date"}
+		}
+	}
+
+	excludeReservationID := uint(0)
+	if excludeReservationIDStr != "" {
+		excludeReservationID, _ = h.ParseID(excludeReservationIDStr)
+	}
+
+	occupied, err := re.isRoomOccupied(roomID, entryDate, departureDate, excludeReservationID)
+	if err != nil {
+		return availabilityResponse{}, fuego.InternalServerError{Title: "availability_check_failed"}
+	}
+
+	if occupied {
+		return availabilityResponse{Available: false, Message: "Room is occupied for the selected date range"}, nil
+	}
+	return availabilityResponse{Available: true, Message: "Room is available"}, nil
 }

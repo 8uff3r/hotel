@@ -67,6 +67,11 @@
                 />
               </UFormField>
 
+              <!-- Payment Deadline -->
+              <UFormField label="مهلت پرداخت" name="paymentDeadline">
+                <HDate v-model="form.paymentDeadline" :disabled="saving" />
+              </UFormField>
+
               <!-- Origin -->
               <UFormField :label="t('reservations.origin')" name="origin">
                 <UInput v-model="form.origin" :disabled="saving" />
@@ -133,9 +138,17 @@
           </template>
           <div class="space-y-3">
             <UButton
-              v-if="
-                reservation.status?.slug === 'confirmed' || reservation.status?.slug === 'no_show'
-              "
+              v-if="['awaiting_payment', 'verified'].includes(reservation.status?.slug ?? '')"
+              color="primary"
+              block
+              :loading="processing"
+              @click="handleAccept()"
+            >
+              <UIcon name="i-lucide-check" class="mr-2" />
+              {{ t("reservations.accept") }}
+            </UButton>
+            <UButton
+              v-if="reservation.status?.slug === 'accepted'"
               color="success"
               block
               :loading="processing"
@@ -155,7 +168,7 @@
               {{ t("reservations.check_out_guest") }}
             </UButton>
             <UButton
-              v-if="reservation.status?.slug === 'confirmed'"
+              v-if="['awaiting_payment', 'verified', 'accepted'].includes(reservation.status?.slug ?? '')"
               color="error"
               variant="outline"
               block
@@ -258,6 +271,7 @@
 
 <script setup lang="ts">
 import type { Reservation } from "~/utils/client";
+import { getApiReservationIdDetailed, postApiReservationIdAccept, postApiReservationIdCheckIn, postApiReservationIdCheckOut, putApiReservationId } from "~/utils/client";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -312,6 +326,17 @@ const handleSubmit = async () => {
   }
 };
 
+const { mutate: handleAccept, isLoading: processingAccept } = useMutation({
+  mutation: async () => {
+    await postApiReservationIdAccept({
+      path: { id: reservationId },
+    });
+  },
+  onSettled: () => {
+    refetch();
+  },
+});
+
 const { mutate: handleCheckIn, isLoading: processingCheckIn } = useMutation({
   mutation: async () => {
     await postApiReservationIdCheckIn({
@@ -336,10 +361,7 @@ const { mutate: handleCheckOut, isLoading: processingCheckOut } = useMutation({
 
 const { mutate: handleCancel, isLoading: processingCancel } = useMutation({
   mutation: async () => {
-    await $fetch(`/api/reservation/${reservationId}`, {
-      method: "PUT",
-      body: { status: "cancelled" },
-    });
+    await putApiReservationId({ path: { id: reservationId }, body: { status: { slug: "cancelled" } } });
   },
   onSettled: () => {
     refetch();
@@ -347,6 +369,6 @@ const { mutate: handleCancel, isLoading: processingCancel } = useMutation({
 });
 
 const processing = computed(
-  () => processingCheckIn.value || processingCheckOut.value || processingCancel.value
+  () => processingAccept.value || processingCheckIn.value || processingCheckOut.value || processingCancel.value
 );
 </script>

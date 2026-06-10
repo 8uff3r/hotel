@@ -76,6 +76,8 @@
 </template>
 
 <script setup lang="ts">
+import { postApiParkingLots } from "~/utils/client";
+
 const form = reactive({
   name: "",
   location: "",
@@ -99,16 +101,16 @@ const router = useRouter();
 const createParkingLot = async () => {
   loading.value = true;
   try {
-    await $fetch("/api/parking/lots", {
-      method: "POST",
+    await postApiParkingLots({
+      requestValidator: undefined,
       body: {
         name: form.name,
-        location: form.location || null,
+        location: form.location || undefined,
         totalSpots: Number.parseInt(form.totalSpots) || 0,
-        hourlyRate: Number.parseInt(form.hourlyRate) || 0,
-        dailyRate: Number.parseInt(form.dailyRate) || 0,
-        status: form.status,
-        description: form.description || null,
+        hourlyRate: parseFloat(form.hourlyRate) || 0,
+        dailyRate: parseFloat(form.dailyRate) || 0,
+        status: { slug: form.status },
+        description: form.description || undefined,
       },
     });
     router.push("/parking/lots");

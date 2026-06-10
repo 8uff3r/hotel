@@ -208,10 +208,10 @@ const fetchDashboardData = async () => {
     netBalance.value = totalIncome.value - totalExpenses.value;
 
     const pendingIncome = incomeData
-      .filter((i) => i.paymentStatus === "pending")
+      .filter((i) => i.paymentStatus?.slug === "pending")
       .reduce((sum, item) => sum + Number(item.amount), 0);
     const pendingExpenses = expenseData
-      .filter((e) => e.paymentStatus === "pending")
+      .filter((e) => e.paymentStatus?.slug === "pending")
       .reduce((sum, item) => sum + Number(item.amount), 0);
     pendingPayments.value = pendingIncome + pendingExpenses;
   } catch (error) {

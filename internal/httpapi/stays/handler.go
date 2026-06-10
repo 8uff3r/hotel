@@ -30,6 +30,10 @@ func (m StaysModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Get(s, "/{id}/invoice", sm.stayGetInvoice)
 	fuego.Post(s, "/{id}/invoice/items", sm.stayAddInvoiceItem)
 	fuego.Post(s, "/{id}/invoice/pay", sm.stayPayInvoice)
+
+	// Validation endpoints
+	fuego.Get(s, "/check-availability", sm.checkAvailability)
+	fuego.Get(s, "/check-capacity", sm.checkCapacity)
 }
 
 func (sm *StaysModule) staysList(c fuego.ContextNoBody) (h.PaginatedResponse[models.Stay], error) {
@@ -51,6 +55,14 @@ func (sm *StaysModule) staysList(c fuego.ContextNoBody) (h.PaginatedResponse[mod
 	}
 	if to := c.QueryParam("to"); to != "" {
 		q = q.Where("departure_date <= ?", to)
+	}
+	if settlement := c.QueryParam("settlement"); settlement != "" {
+		q = q.Joins("LEFT JOIN invoices ON invoices.stay_id = stays.id")
+		if settlement == "cleared" {
+			q = q.Where("invoices.payment_status = ? OR invoices.id IS NULL", "cleared")
+		} else if settlement == "unsettled" {
+			q = q.Where("invoices.payment_status != ? AND invoices.id IS NOT NULL", "cleared")
+		}
 	}
 
 	var total int64
@@ -95,12 +107,39 @@ func (sm *StaysModule) stayView(c fuego.ContextNoBody) (models.Stay, error) {
 	return stay, nil
 }
 
-func (sm *StaysModule) staysCreate(c fuego.ContextWithBody[models.Stay]) (models.Stay, error) {
-	var zero models.Stay
+type createStayResponse struct {
+	models.Stay
+	Warnings []string `json:"warnings"`
+}
+
+func (sm *StaysModule) staysCreate(c fuego.ContextWithBody[models.Stay]) (createStayResponse, error) {
+	var zero createStayResponse
 	body, err := c.Body()
 	if err != nil {
 		return zero, fuego.BadRequestError{}
 	}
+
+	var warnings []string
+
+	// Validate room availability
+	if body.RoomID > 0 {
+		occupied, err := sm.isRoomOccupied(body.RoomID, body.EntryDate, body.DepartureDate, 0)
+		if err != nil {
+			return zero, fuego.InternalServerError{Title: "availability_check_failed"}
+		}
+		if occupied {
+			return zero, fuego.BadRequestError{Title: "room_occupied"}
+		}
+
+		// Capacity warning (not hard block)
+		var room models.Room
+		if err := sm.Db.First(&room, body.RoomID).Error; err == nil {
+			if room.Capacity < body.NumberOfPeople {
+				warnings = append(warnings, "room_capacity_warning")
+			}
+		}
+	}
+
 	body.AcceptanceID = generateAcceptanceID()
 	if err := sm.Db.WithContext(c).Create(&body).Error; err != nil {
 		return zero, fuego.BadRequestError{Title: "create_failed"}
@@ -110,7 +149,21 @@ func (sm *StaysModule) staysCreate(c fuego.ContextWithBody[models.Stay]) (models
 		// Log but don't fail
 	}
 	c.SetStatus(201)
-	return body, nil
+	return createStayResponse{Stay: body, Warnings: warnings}, nil
+}
+
+func (sm *StaysModule) isRoomOccupied(roomID uint, entryDate, departureDate time.Time, excludeStayID uint) (bool, error) {
+	q := sm.Db.Model(&models.Stay{}).
+		Where("room_id = ? AND status_id IN (SELECT id FROM stay_statuses WHERE slug IN ('waiting', 'resident'))", roomID).
+		Where("(entry_date <= ? AND (departure_date IS NULL OR departure_date >= ?))", departureDate, entryDate)
+	if excludeStayID > 0 {
+		q = q.Where("id != ?", excludeStayID)
+	}
+	var count int64
+	if err := q.Count(&count).Error; err != nil {
+		return false, err
+	}
+	return count > 0, nil
 }
 
 func (sm *StaysModule) stayUpdate(c fuego.ContextWithBody[models.Stay]) (models.Stay, error) {
@@ -136,8 +189,14 @@ func (sm *StaysModule) stayUpdate(c fuego.ContextWithBody[models.Stay]) (models.
 	return updated, nil
 }
 
-func (sm *StaysModule) stayCheckIn(c fuego.ContextWithBody[map[string]any]) (models.Stay, error) {
-	var zero models.Stay
+type checkInResponse struct {
+	models.Stay
+	EarlyCheckInPrompt bool     `json:"earlyCheckInPrompt"`
+	PromptMessage      string   `json:"promptMessage,omitempty"`
+}
+
+func (sm *StaysModule) stayCheckIn(c fuego.ContextWithBody[checkInDto]) (checkInResponse, error) {
+	var zero checkInResponse
 	id, err := h.ParseID(c.PathParam("id"))
 	if err != nil {
 		return zero, fuego.BadRequestError{Title: "invalid_id"}
@@ -151,16 +210,20 @@ func (sm *StaysModule) stayCheckIn(c fuego.ContextWithBody[map[string]any]) (mod
 	now := time.Now().UTC()
 	stay.ActualCheckIn = &now
 
-	// Check early check-in
 	var hotel models.Hotel
 	sm.Db.First(&hotel, stay.HotelID)
+
+	earlyCheckInPrompt := false
+	promptMessage := ""
+
 	if hotel.Setting != nil && hotel.Setting.StandardCheckInTime != "" {
 		checkInTime, parseErr := time.Parse("15:04", hotel.Setting.StandardCheckInTime)
 		if parseErr == nil {
 			currentTime := time.Now()
 			standardCheckIn := time.Date(currentTime.Year(), currentTime.Month(), currentTime.Day(), checkInTime.Hour(), checkInTime.Minute(), 0, 0, currentTime.Location())
 			if currentTime.Before(standardCheckIn) {
-				// Early check-in: could set stay_type or return a flag
+				earlyCheckInPrompt = true
+				promptMessage = "The current time is before the standard check-in time. Specify how the stay is calculated."
 				stay.StayType = string(models.StayTypeEarlyCheckIn)
 			}
 		}
@@ -193,10 +256,10 @@ func (sm *StaysModule) stayCheckIn(c fuego.ContextWithBody[map[string]any]) (mod
 		sm.generateInvoiceForStay(&stay)
 	}
 
-	return stay, nil
+	return checkInResponse{Stay: stay, EarlyCheckInPrompt: earlyCheckInPrompt, PromptMessage: promptMessage}, nil
 }
 
-func (sm *StaysModule) stayCheckOut(c fuego.ContextWithBody[map[string]any]) (models.Stay, error) {
+func (sm *StaysModule) stayCheckOut(c fuego.ContextWithBody[checkOutDto]) (models.Stay, error) {
 	var zero models.Stay
 	id, err := h.ParseID(c.PathParam("id"))
 	if err != nil {
@@ -239,6 +302,10 @@ func (sm *StaysModule) stayCheckOut(c fuego.ContextWithBody[map[string]any]) (mo
 	return stay, nil
 }
 
+type checkInDto struct{}
+
+type checkOutDto struct{}
+
 type changeRoomDto struct {
 	NewRoomID uint `json:"newRoomId"`
 }
@@ -267,6 +334,15 @@ func (sm *StaysModule) stayChangeRoom(c fuego.ContextWithBody[changeRoomDto]) (m
 
 	if newRoom.Capacity < stay.NumberOfPeople {
 		return zero, fuego.BadRequestError{Title: "room_capacity_insufficient"}
+	}
+
+	// Check availability for new room
+	occupied, err := sm.isRoomOccupied(body.NewRoomID, stay.EntryDate, stay.DepartureDate, stay.ID)
+	if err != nil {
+		return zero, fuego.InternalServerError{Title: "availability_check_failed"}
+	}
+	if occupied {
+		return zero, fuego.BadRequestError{Title: "room_occupied"}
 	}
 
 	oldRoomID := stay.RoomID
@@ -393,7 +469,47 @@ func (sm *StaysModule) staySettle(c fuego.ContextWithBody[settleDto]) (models.In
 	if err := sm.Db.Save(&invoice).Error; err != nil {
 		return zero, fuego.BadRequestError{Title: "settlement_failed"}
 	}
+
+	// Create income record for traceability
+	var stay models.Stay
+	if err := sm.Db.First(&stay, id).Error; err == nil {
+		var guest models.Guest
+		if err := sm.Db.First(&guest, stay.GuestID).Error; err == nil {
+			sm.createIncomeRecord(stay.HotelID, body.Amount, guest.FirstName+" "+guest.LastName, body.PaymentMethod, "Stay settlement - "+stay.AcceptanceID)
+		}
+	}
+
 	return invoice, nil
+}
+
+func (sm *StaysModule) createIncomeRecord(hotelID string, amount float64, source string, paymentMethodID uint, description string) {
+	income := models.Income{
+		IncomeDate:  time.Now().UTC(),
+		Description: description,
+		Amount:      amount,
+		Source:      source,
+	}
+	if paymentMethodID > 0 {
+		income.PaymentMethodID = paymentMethodID
+	}
+	// Try to resolve category and account
+	var cat models.IncomeCategory
+	if err := sm.Db.Where("slug = ?", "room_revenue").First(&cat).Error; err == nil {
+		income.CategoryID = cat.ID
+	}
+	var account models.Account
+	if err := sm.Db.Where("account_code = ?", "1000").First(&account).Error; err == nil {
+		income.AccountID = &account.ID
+	}
+	var ps models.PaymentStatus
+	if err := sm.Db.Where("slug = ?", "received").First(&ps).Error; err == nil {
+		income.PaymentStatusID = ps.ID
+	}
+	// Parse hotelID to uint
+	var hotelIDUint uint
+	fmt.Sscanf(hotelID, "%d", &hotelIDUint)
+	income.HotelID = &hotelIDUint
+	sm.Db.Create(&income)
 }
 
 func (sm *StaysModule) stayGetInvoice(c fuego.ContextNoBody) (models.Invoice, error) {
@@ -603,6 +719,38 @@ func (sm *StaysModule) generateInvoiceForStay(stay *models.Stay) error {
 		invoice.TotalAmount += parkingTotal
 	}
 
+	// Early check-in fee
+	if stay.EarlyCheckInFee > 0 {
+		items = append(items, models.InvoiceItem{
+			InvoiceID:       invoice.ID,
+			StayID:          stay.ID,
+			ItemType:        string(models.InvoiceItemTypeOther),
+			Quantity:        1,
+			UnitPrice:       stay.EarlyCheckInFee,
+			TotalPrice:      stay.EarlyCheckInFee,
+			Description:     "Early check-in fee",
+			RemainingAmount: stay.EarlyCheckInFee,
+			PaymentStatus:   string(models.PaymentStatusUnpaid),
+		})
+		invoice.TotalAmount += stay.EarlyCheckInFee
+	}
+
+	// Half day fee
+	if stay.HalfDayFee > 0 {
+		items = append(items, models.InvoiceItem{
+			InvoiceID:       invoice.ID,
+			StayID:          stay.ID,
+			ItemType:        string(models.InvoiceItemTypeOther),
+			Quantity:        1,
+			UnitPrice:       stay.HalfDayFee,
+			TotalPrice:      stay.HalfDayFee,
+			Description:     "Half day fee",
+			RemainingAmount: stay.HalfDayFee,
+			PaymentStatus:   string(models.PaymentStatusUnpaid),
+		})
+		invoice.TotalAmount += stay.HalfDayFee
+	}
+
 	if len(items) > 0 {
 		if err := sm.Db.CreateInBatches(items, len(items)).Error; err != nil {
 			return err
@@ -615,4 +763,88 @@ func (sm *StaysModule) generateInvoiceForStay(stay *models.Stay) error {
 
 func generateAcceptanceID() string {
 	return fmt.Sprintf("STY-%d", time.Now().Unix())
+}
+
+// Validation endpoints
+
+type availabilityResponse struct {
+	Available bool   `json:"available"`
+	Message   string `json:"message,omitempty"`
+}
+
+func (sm *StaysModule) checkAvailability(c fuego.ContextNoBody) (availabilityResponse, error) {
+	roomIDStr := c.QueryParam("roomId")
+	entryDateStr := c.QueryParam("entryDate")
+	departureDateStr := c.QueryParam("departureDate")
+	excludeStayIDStr := c.QueryParam("excludeStayId")
+
+	roomID, err := h.ParseID(roomIDStr)
+	if err != nil {
+		return availabilityResponse{}, fuego.BadRequestError{Title: "invalid_room_id"}
+	}
+
+	entryDate, err := time.Parse(time.RFC3339, entryDateStr)
+	if err != nil {
+		entryDate, err = time.Parse("2006-01-02", entryDateStr)
+		if err != nil {
+			return availabilityResponse{}, fuego.BadRequestError{Title: "invalid_entry_date"}
+		}
+	}
+	departureDate, err := time.Parse(time.RFC3339, departureDateStr)
+	if err != nil {
+		departureDate, err = time.Parse("2006-01-02", departureDateStr)
+		if err != nil {
+			return availabilityResponse{}, fuego.BadRequestError{Title: "invalid_departure_date"}
+		}
+	}
+
+	excludeStayID := uint(0)
+	if excludeStayIDStr != "" {
+		excludeStayID, _ = h.ParseID(excludeStayIDStr)
+	}
+
+	occupied, err := sm.isRoomOccupied(roomID, entryDate, departureDate, excludeStayID)
+	if err != nil {
+		return availabilityResponse{}, fuego.InternalServerError{Title: "availability_check_failed"}
+	}
+
+	if occupied {
+		return availabilityResponse{Available: false, Message: "Room is occupied for the selected date range"}, nil
+	}
+	return availabilityResponse{Available: true, Message: "Room is available"}, nil
+}
+
+type capacityResponse struct {
+	OK       bool   `json:"ok"`
+	Warning  string `json:"warning,omitempty"`
+	Capacity int    `json:"capacity"`
+	Guests   int    `json:"guests"`
+}
+
+func (sm *StaysModule) checkCapacity(c fuego.ContextNoBody) (capacityResponse, error) {
+	roomIDStr := c.QueryParam("roomId")
+	guestsStr := c.QueryParam("guests")
+
+	roomID, err := h.ParseID(roomIDStr)
+	if err != nil {
+		return capacityResponse{}, fuego.BadRequestError{Title: "invalid_room_id"}
+	}
+
+	guests := 1
+	if guestsStr != "" {
+		g, err := h.ParseID(guestsStr)
+		if err == nil {
+			guests = int(g)
+		}
+	}
+
+	var room models.Room
+	if err := sm.Db.First(&room, roomID).Error; err != nil {
+		return capacityResponse{}, fuego.NotFoundError{Title: "room_not_found"}
+	}
+
+	if room.Capacity < guests {
+		return capacityResponse{OK: false, Warning: "Room capacity is less than number of guests", Capacity: room.Capacity, Guests: guests}, nil
+	}
+	return capacityResponse{OK: true, Capacity: room.Capacity, Guests: guests}, nil
 }

@@ -60,12 +60,30 @@
             <span class="text-sm">{{ status.label }}</span>
           </UButton>
         </div>
+
+        <!-- Housekeeping review for checked-out (cleaning) rooms -->
+        <div v-if="room.status?.slug === 'cleaning'" class="border-t pt-4 mt-4">
+          <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            بازبینی خدمات
+          </p>
+          <div class="flex gap-3">
+            <UButton color="success" variant="soft" block @click="confirmCleaning">
+              <UIcon name="i-lucide-check" class="mr-2" />
+              تایید نظافت
+            </UButton>
+            <UButton color="warning" variant="soft" block @click="markRepairNeeded">
+              <UIcon name="i-lucide-wrench" class="mr-2" />
+              نیاز به تعمیر
+            </UButton>
+          </div>
+        </div>
       </div>
     </template>
   </UModal>
 </template>
 
 <script setup lang="ts">
+import { putApiRoomsId } from "~/utils/client";
 import type { RoomRack, RoomStatus } from "../types";
 
 const props = defineProps<{
@@ -107,16 +125,27 @@ async function changeStatus(status: RoomStatus) {
   if (updating.value || !props.room.id || !status.id) return;
   updating.value = true;
   try {
-    await $fetch(`/api/rooms/${props.room.id}`, {
-      method: "PUT",
-      body: { statusId: status.id },
-    });
+    await putApiRoomsId({ path: { id: String(props.room.id) }, body: { statusId: status.id } });
     emit("status-changed", props.room.id, status.id);
     open.value = false;
   } catch {
     // error handled by UI
   } finally {
     updating.value = false;
+  }
+}
+
+async function confirmCleaning() {
+  const availableStatus = props.statuses.find((s) => s.slug === "available");
+  if (availableStatus) {
+    await changeStatus(availableStatus);
+  }
+}
+
+async function markRepairNeeded() {
+  const repairStatus = props.statuses.find((s) => s.slug === "under_repair");
+  if (repairStatus) {
+    await changeStatus(repairStatus);
   }
 }
 </script>

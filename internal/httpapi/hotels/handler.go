@@ -22,6 +22,10 @@ func (m HotelsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Delete(s, "/{id}", hotelsDelete(api.Db))
 	fuego.Get(s, "/{id}/settings", hotelSettingsGet(api.Db))
 	fuego.Put(s, "/{id}/settings", hotelSettingsUpdate(api.Db))
+
+	fuego.Get(s, "/{id}/pictures", hotelPicturesGet(api.Db))
+	fuego.Post(s, "/{id}/pictures", hotelPicturesAdd(api.Db))
+	fuego.Delete(s, "/{id}/pictures/{pictureId}", hotelPicturesDelete(api.Db))
 }
 
 func hotelsCreate(db *gorm.DB) h.FuegoHandler[models.Hotel, models.Hotel, any] {
@@ -142,5 +146,72 @@ func hotelSettingsUpdate(db *gorm.DB) h.FuegoHandler[models.HotelSetting, models
 			return zero, fuego.BadRequestError{Title: "update_failed"}
 		}
 		return body, nil
+	}
+}
+
+type hotelPicturesResponse struct {
+	Data []models.HotelPicture `json:"data"`
+}
+
+func hotelPicturesGet(db *gorm.DB) func(c fuego.ContextNoBody) (hotelPicturesResponse, error) {
+	return func(c fuego.ContextNoBody) (hotelPicturesResponse, error) {
+		id := c.PathParam("id")
+		if id == "" {
+			return hotelPicturesResponse{}, fuego.BadRequestError{Title: "invalid_id"}
+		}
+		var pictures []models.HotelPicture
+		if err := db.Where("hotel_id = ?", id).Find(&pictures).Error; err != nil {
+			return hotelPicturesResponse{}, fuego.InternalServerError{Title: "query_failed"}
+		}
+		return hotelPicturesResponse{Data: pictures}, nil
+	}
+}
+
+type hotelPictureDto struct {
+	URL         string `json:"url"`
+	Description string `json:"description"`
+}
+
+func hotelPicturesAdd(db *gorm.DB) func(c fuego.ContextWithBody[hotelPictureDto]) (models.HotelPicture, error) {
+	return func(c fuego.ContextWithBody[hotelPictureDto]) (models.HotelPicture, error) {
+		var zero models.HotelPicture
+		id := c.PathParam("id")
+		if id == "" {
+			return zero, fuego.BadRequestError{Title: "invalid_id"}
+		}
+		body, err := c.Body()
+		if err != nil {
+			return zero, fuego.BadRequestError{}
+		}
+		if body.URL == "" {
+			return zero, fuego.BadRequestError{Title: "url_required"}
+		}
+		picture := models.HotelPicture{
+			HotelID:     id,
+			URL:         body.URL,
+			Description: body.Description,
+		}
+		if err := db.Create(&picture).Error; err != nil {
+			return zero, fuego.BadRequestError{Title: "create_failed"}
+		}
+		return picture, nil
+	}
+}
+
+func hotelPicturesDelete(db *gorm.DB) func(c fuego.ContextNoBody) (deleteResponse, error) {
+	return func(c fuego.ContextNoBody) (deleteResponse, error) {
+		var zero deleteResponse
+		pictureID := c.PathParam("pictureId")
+		if pictureID == "" {
+			return zero, fuego.BadRequestError{Title: "invalid_id"}
+		}
+		res := db.Delete(&models.HotelPicture{}, pictureID)
+		if res.Error != nil {
+			return zero, fuego.InternalServerError{Title: "delete_failed"}
+		}
+		if res.RowsAffected == 0 {
+			return zero, fuego.NotFoundError{}
+		}
+		return deleteResponse{Ok: true}, nil
 	}
 }

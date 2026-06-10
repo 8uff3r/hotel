@@ -3,7 +3,7 @@ package rooms
 import (
 	"time"
 
-	"hotel/internal/httpapi"
+	h "hotel/internal/httpapi"
 	"hotel/internal/models"
 
 	"github.com/go-fuego/fuego"
@@ -12,61 +12,65 @@ import (
 
 type RoomsModule struct{}
 
-func (m RoomsModule) RegisterRoutes(api *httpapi.API, s *fuego.Server) {
+func (m RoomsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Get(
 		s,
 		"/",
-		httpapi.ListModel[models.Room](
-			api.Db,
-			httpapi.WithPreload("Amenities", "Type", "Status", "Floor"),
-			httpapi.WithTranslation[models.Room](),
-		),
-	)
-	fuego.Post(s, "/", httpapi.CreateModel[models.Room](api.Db))
+			h.ListModel[models.Room](
+				api.Db,
+				h.WithPreload("Amenities", "Type", "Status", "Floor"),
+				h.WithTranslation[models.Room](),
+			),
+		)
+		fuego.Post(s, "/", h.CreateModel[models.Room](api.Db))
 
-	fuego.Get(s, "/rack", m.rackHandler(api))
-	fuego.Get(s, "/{id}/status", roomDynamicStatus(api.Db))
+		fuego.Get(s, "/rack", m.rackHandler(api))
+		fuego.Get(s, "/{id}/status", roomDynamicStatus(api.Db))
 
-	fuego.Get(
-		s,
-		"/{id}",
-		httpapi.GetModel[models.Room](
-			api.Db,
-			"Amenities", "Type", "Status", "Floor", "Pictures",
-		),
-	)
-	fuego.Put(s, "/{id}", httpapi.UpdateModel[models.Room](api.Db))
-	fuego.Delete(s, "/{id}", httpapi.DeleteModel[models.Room](api.Db))
+		fuego.Get(
+			s,
+			"/{id}",
+			h.GetModel[models.Room](
+				api.Db,
+				"Amenities", "Type", "Status", "Floor", "Pictures",
+			),
+		)
+		fuego.Put(s, "/{id}", h.UpdateModel[models.Room](api.Db))
+		fuego.Delete(s, "/{id}", h.DeleteModel[models.Room](api.Db))
 
-	fuego.Get(
-		s,
-		"/amenities",
-		httpapi.ListModel[models.Amenity](
-			api.Db,
-			httpapi.WithTranslation[models.Amenity](),
-		),
-	)
-	fuego.Get(
-		s,
-		"/types",
-		httpapi.ListModel[models.RoomType](
-			api.Db,
-			httpapi.WithTranslation[models.RoomType](),
-		),
-	)
-	fuego.Get(
-		s,
-		"/statuses",
-		httpapi.ListModel[models.RoomStatus](
-			api.Db,
-			httpapi.WithTranslation[models.RoomStatus](),
-		),
-	)
-	fuego.Get(
-		s,
-		"/floors",
-		httpapi.ListModel[models.Floor](api.Db),
-	)
+		fuego.Get(
+			s,
+			"/amenities",
+			h.ListModel[models.Amenity](
+				api.Db,
+				h.WithTranslation[models.Amenity](),
+			),
+		)
+		fuego.Get(
+			s,
+			"/types",
+			h.ListModel[models.RoomType](
+				api.Db,
+				h.WithTranslation[models.RoomType](),
+			),
+		)
+		fuego.Get(
+			s,
+			"/statuses",
+			h.ListModel[models.RoomStatus](
+				api.Db,
+				h.WithTranslation[models.RoomStatus](),
+			),
+		)
+		fuego.Get(
+			s,
+			"/floors",
+			h.ListModel[models.Floor](api.Db),
+		)
+
+	fuego.Get(s, "/{id}/pictures", roomPicturesGet(api.Db))
+	fuego.Post(s, "/{id}/pictures", roomPicturesAdd(api.Db))
+	fuego.Delete(s, "/{id}/pictures/{pictureId}", roomPicturesDelete(api.Db))
 }
 
 type RoomDynamicStatus struct {
@@ -78,7 +82,7 @@ type RoomDynamicStatus struct {
 
 func roomDynamicStatus(db *gorm.DB) func(c fuego.ContextNoBody) (RoomDynamicStatus, error) {
 	return func(c fuego.ContextNoBody) (RoomDynamicStatus, error) {
-		id, err := httpapi.ParseID(c.PathParam("id"))
+		id, err := h.ParseID(c.PathParam("id"))
 		if err != nil {
 			return RoomDynamicStatus{}, fuego.BadRequestError{Title: "invalid_id"}
 		}
@@ -123,5 +127,76 @@ func roomDynamicStatus(db *gorm.DB) func(c fuego.ContextNoBody) (RoomDynamicStat
 		}
 
 		return RoomDynamicStatus{Status: "Available", StatusSlug: "available"}, nil
+	}
+}
+
+type roomPicturesResponse struct {
+	Data []models.RoomPicture `json:"data"`
+}
+
+func roomPicturesGet(db *gorm.DB) func(c fuego.ContextNoBody) (roomPicturesResponse, error) {
+	return func(c fuego.ContextNoBody) (roomPicturesResponse, error) {
+		id, err := h.ParseID(c.PathParam("id"))
+		if err != nil {
+			return roomPicturesResponse{}, fuego.BadRequestError{Title: "invalid_id"}
+		}
+		var pictures []models.RoomPicture
+		if err := db.Where("room_id = ?", id).Find(&pictures).Error; err != nil {
+			return roomPicturesResponse{}, fuego.InternalServerError{Title: "query_failed"}
+		}
+		return roomPicturesResponse{Data: pictures}, nil
+	}
+}
+
+type roomPictureDto struct {
+	URL         string `json:"url"`
+	Description string `json:"description"`
+}
+
+func roomPicturesAdd(db *gorm.DB) func(c fuego.ContextWithBody[roomPictureDto]) (models.RoomPicture, error) {
+	return func(c fuego.ContextWithBody[roomPictureDto]) (models.RoomPicture, error) {
+		var zero models.RoomPicture
+		id, err := h.ParseID(c.PathParam("id"))
+		if err != nil {
+			return zero, fuego.BadRequestError{Title: "invalid_id"}
+		}
+		body, err := c.Body()
+		if err != nil {
+			return zero, fuego.BadRequestError{}
+		}
+		if body.URL == "" {
+			return zero, fuego.BadRequestError{Title: "url_required"}
+		}
+		picture := models.RoomPicture{
+			RoomID:      id,
+			URL:         body.URL,
+			Description: body.Description,
+		}
+		if err := db.Create(&picture).Error; err != nil {
+			return zero, fuego.BadRequestError{Title: "create_failed"}
+		}
+		return picture, nil
+	}
+}
+
+type roomDeleteResponse struct {
+	Ok bool `json:"ok"`
+}
+
+func roomPicturesDelete(db *gorm.DB) func(c fuego.ContextNoBody) (roomDeleteResponse, error) {
+	return func(c fuego.ContextNoBody) (roomDeleteResponse, error) {
+		var zero roomDeleteResponse
+		pictureID := c.PathParam("pictureId")
+		if pictureID == "" {
+			return zero, fuego.BadRequestError{Title: "invalid_id"}
+		}
+		res := db.Delete(&models.RoomPicture{}, pictureID)
+		if res.Error != nil {
+			return zero, fuego.InternalServerError{Title: "delete_failed"}
+		}
+		if res.RowsAffected == 0 {
+			return zero, fuego.NotFoundError{}
+		}
+		return roomDeleteResponse{Ok: true}, nil
 	}
 }

@@ -75,10 +75,6 @@
               <div
                 class="mt-2 grid grid-cols-1 gap-6 rounded-md p-4 ring ring-accented/40 ring-inset md:grid-cols-2"
               >
-                <UFormField :label="t('guest.agency')" name="payment.agency">
-                  <UCheckbox v-model="form.payment.agency" :disabled="loading" />
-                </UFormField>
-
                 <UFormField :label="t('guest.referrer')" name="payment.referrer">
                   <UInput v-model="form.payment.referrer" :disabled="loading" />
                 </UFormField>
@@ -190,13 +186,16 @@ const generateRegisterNumber = () => {
   return `${y}${m}${d}-${h}${min}${s}`;
 };
 
-const form = ref<NonNullable<CreateRequest> & { payment: {} }>({
+const form = ref<CreateRequest & { guest: NonNullable<CreateRequest["guest"]>; payment: NonNullable<CreateRequest["payment"]> }>({
   guest: {
     gender: "male",
-  } as any,
+    firstName: "",
+    lastName: "",
+    nationalityID: 0,
+  },
   payment: {},
   companions: [],
-});
+} as unknown as CreateRequest & { guest: NonNullable<CreateRequest["guest"]>; payment: NonNullable<CreateRequest["payment"]> });
 
 watch(reservationSectionOpen, (open) => {
   if (open && !form.value.reservation) {

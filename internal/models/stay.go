@@ -55,6 +55,9 @@ type Stay struct {
 	TravelAgencyID *uint         `json:"travelAgencyId"`
 	TravelAgency   *TravelAgency `gorm:"foreignKey:TravelAgencyID" json:"travelAgency,omitempty"`
 
+	EarlyCheckInFee float64 `gorm:"not null;default:0" json:"earlyCheckInFee"`
+	HalfDayFee      float64 `gorm:"not null;default:0" json:"halfDayFee"`
+
 	StatusID uint       `gorm:"not null" json:"statusId"`
 	Status   StayStatus `gorm:"foreignKey:StatusID" json:"status,omitzero" translate:"true"`
 

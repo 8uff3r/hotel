@@ -94,7 +94,7 @@
 
         <template #paymentStatus-cell="{ row }">
           <UBadge :color="getStatusColor(row.original.paymentStatus)" variant="soft">
-            {{ row.original.paymentStatus }}
+            {{ row.original.paymentStatus?.label }}
           </UBadge>
         </template>
 
@@ -243,7 +243,7 @@ const formatDate = (date: string | undefined) => {
   });
 };
 
-const formatCategory = (category: string | undefined): string => {
+const formatCategory = (category: { slug?: string; label?: string } | undefined): string => {
   if (!category) return "";
   const categories: Record<string, string> = {
     food_beverage: "Food & Beverage",
@@ -258,11 +258,11 @@ const formatCategory = (category: string | undefined): string => {
     rent: "Rent",
     other: "Other",
   };
-  return categories[category] || category;
+  return categories[category.slug ?? ""] || category.label || "";
 };
 
 const getStatusColor = (
-  status: string | undefined
+  status: { slug?: string; label?: string } | undefined
 ): "success" | "warning" | "error" | "neutral" => {
   if (!status) return "neutral";
   const colors: Record<string, "success" | "warning" | "error"> = {
@@ -270,7 +270,7 @@ const getStatusColor = (
     pending: "warning",
     cancelled: "error",
   };
-  return colors[status] || "warning";
+  return colors[status.slug ?? ""] || "warning";
 };
 
 onMounted(fetchExpenses);

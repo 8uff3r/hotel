@@ -121,7 +121,16 @@
               <UIcon name="i-lucide-eye" class="h-4 w-4" />
             </UButton>
             <UButton
-              v-if="row.original.status?.slug === 'confirmed'"
+              v-if="['awaiting_payment', 'verified'].includes(row.original.status?.slug ?? '')"
+              variant="ghost"
+              size="sm"
+              color="primary"
+              @click="acceptReservation(row.original)"
+            >
+              پذیرش
+            </UButton>
+            <UButton
+              v-if="row.original.status?.slug === 'accepted'"
               variant="ghost"
               size="sm"
               color="success"
@@ -130,16 +139,7 @@
               <UIcon name="i-lucide-log-in" class="h-4 w-4" />
             </UButton>
             <UButton
-              v-if="row.original.status?.slug === 'checked_in'"
-              variant="ghost"
-              size="sm"
-              color="warning"
-              @click="checkOut(row.original)"
-            >
-              <UIcon name="i-lucide-log-out" class="h-4 w-4" />
-            </UButton>
-            <UButton
-              v-if="row.original.status?.slug === 'confirmed'"
+              v-if="row.original.status?.slug === 'accepted'"
               variant="ghost"
               size="sm"
               color="error"
@@ -166,6 +166,7 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
 import type { Reservation } from "~/utils/client";
+import { getApiReservation, postApiReservationIdAccept, postApiReservationIdCheckIn, postApiReservationIdCheckOut, putApiReservationId } from "~/utils/client";
 
 type ReservationRow = Reservation;
 
@@ -182,12 +183,12 @@ const columns: TableColumn<ReservationRow>[] = [
 
 const statusOptions = [
   { value: "all", label: "All Statuses" },
-  { value: "pending", label: "Pending" },
-  { value: "confirmed", label: "Confirmed" },
-  { value: "checked_in", label: "Checked In" },
-  { value: "checked_out", label: "Checked Out" },
+  { value: "awaiting_payment", label: "Awaiting Payment" },
+  { value: "verified", label: "Verified" },
+  { value: "accepted", label: "Accepted" },
   { value: "cancelled", label: "Cancelled" },
-  { value: "no_show", label: "No Show" },
+  { value: "absence", label: "Absence" },
+  { value: "expired", label: "Expired" },
 ];
 
 const paymentStatusOptions = [
@@ -293,9 +294,20 @@ const getPaymentColor = (status: string): "success" | "warning" | "info" | "erro
   return colors[status] || "neutral";
 };
 
-const checkIn = async (reservation: ReservationRow) => {
+const acceptReservation = async (reservation: ReservationRow) => {
+  if (!reservation.id) return;
   try {
-    await $fetch(`/api/reservations/${reservation.id}/check-in`, { method: "POST" });
+    await postApiReservationIdAccept({ path: { id: String(reservation.id) } });
+    refetch();
+  } catch (error) {
+    console.error("Failed to accept reservation:", error);
+  }
+};
+
+const checkIn = async (reservation: ReservationRow) => {
+  if (!reservation.id) return;
+  try {
+    await postApiReservationIdCheckIn({ path: { id: String(reservation.id) } });
     refetch();
   } catch (error) {
     console.error("Failed to check in:", error);
@@ -303,8 +315,9 @@ const checkIn = async (reservation: ReservationRow) => {
 };
 
 const checkOut = async (reservation: ReservationRow) => {
+  if (!reservation.id) return;
   try {
-    await $fetch(`/api/reservations/${reservation.id}/check-out`, { method: "POST" });
+    await postApiReservationIdCheckOut({ path: { id: String(reservation.id) } });
     refetch();
   } catch (error) {
     console.error("Failed to check out:", error);
@@ -312,14 +325,13 @@ const checkOut = async (reservation: ReservationRow) => {
 };
 
 const cancelReservation = async (reservation: ReservationRow) => {
+  if (!reservation.id) return;
   try {
-    await $fetch(`/api/reservations/${reservation.id}`, {
-      method: "PUT" as any,
-      body: { status: "cancelled" },
-    });
+    await putApiReservationId({ path: { id: String(reservation.id) }, body: { status: { slug: "cancelled" } } });
     refetch();
   } catch (error) {
-    console.error("Failed to cancel reservation:", error);
+    console.error("Failed to cancel:", error);
   }
 };
+
 </script>

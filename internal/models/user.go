@@ -24,6 +24,8 @@ type User struct {
 	ContactNumber string        `json:"contactNumber"`
 	Role         string         `json:"role"`
 	Status       string         `gorm:"not null;default:'active'" json:"status"`
+	HotelID      string         `gorm:"not null;index" json:"hotelId"`
+	Hotel        Hotel          `gorm:"foreignKey:HotelID" json:"hotel,omitempty"`
 	UserHotels   []UserHotel    `gorm:"foreignKey:UserID" json:"userHotels"`
 	IsActive     bool           `gorm:"not null;default:true" json:"isActive"`
 	Roles        []UserTemplate `gorm:"foreignKey:UserID" json:"role,omitempty"`
@@ -52,18 +54,19 @@ type Session struct {
 }
 
 type SanitizedUser struct {
-	ID         uint                 `json:"id"`
-	Email      string               `json:"email"`
-	FirstName  string               `json:"firstName"`
-	LastName   string               `json:"lastName"`
-	Username   string               `json:"username"`
-	ContactNumber string            `json:"contactNumber"`
-	Role       string               `json:"role"`
-	Status     string               `json:"status"`
-	UserHotels []UserHotelInfo      `json:"userHotels"`
-	Roles      []PermissionTemplate `json:"roles,omitempty"`
-	IsAdmin    bool                 `json:"isAdmin"`
-	AdminHotels []AdminHotelInfo    `json:"adminHotels,omitempty"`
+	ID            uint                 `json:"id"`
+	Email         string               `json:"email"`
+	FirstName     string               `json:"firstName"`
+	LastName      string               `json:"lastName"`
+	Username      string               `json:"username"`
+	ContactNumber string               `json:"contactNumber"`
+	Role          string               `json:"role"`
+	Status        string               `json:"status"`
+	HotelID       string               `json:"hotelId"`
+	UserHotels    []UserHotelInfo      `json:"userHotels"`
+	Roles         []PermissionTemplate `json:"roles,omitempty"`
+	IsAdmin       bool                 `json:"isAdmin"`
+	AdminHotels   []AdminHotelInfo     `json:"adminHotels,omitempty"`
 }
 
 type UserHotelInfo struct {

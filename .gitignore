@@ -26,3 +26,4 @@ data/*
 
 legacy_nuxt_server/
 tmp/
+/server

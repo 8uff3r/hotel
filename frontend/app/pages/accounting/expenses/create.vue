@@ -84,15 +84,6 @@
             />
           </UFormField>
 
-          <!-- Receipt Number -->
-          <UFormField :label="t('accounting.receipt_number')" name="receiptNumber">
-            <UInput
-              v-model="form.receiptNumber"
-              :placeholder="t('accounting.receipt_number_2')"
-              :disabled="loading"
-            />
-          </UFormField>
-
           <!-- Notes -->
           <UFormField :label="t('common.notes')" name="notes" class="md:col-span-2">
             <UTextarea
@@ -119,6 +110,8 @@
 
 <script setup lang="ts">
 import { postApiAccountingExpenses } from "~/utils/client";
+
+const { t } = useI18n();
 
 const categoryOptions = [
   { value: "food_beverage", label: "Food & Beverage" },
@@ -149,6 +142,20 @@ const paymentMethodOptions = [
   { value: "other", label: "Other" },
 ];
 
+const form = reactive({
+  expenseDate: "",
+  description: "",
+  amount: 0,
+  category: "",
+  vendor: "",
+  reference: "",
+  paymentMethod: "",
+  paymentStatus: "",
+  notes: "",
+});
+
+const loading = ref(false);
+
 const handleSubmit = async () => {
   if (!form.description || form.amount <= 0) {
     return;
@@ -161,12 +168,11 @@ const handleSubmit = async () => {
         expenseDate: form.expenseDate,
         description: form.description,
         amount: form.amount,
-        category: form.category,
+        category: form.category ? { slug: form.category } : undefined,
         vendor: form.vendor || undefined,
         reference: form.reference || undefined,
-        paymentMethod: form.paymentMethod,
-        paymentStatus: form.paymentStatus,
-        receiptNumber: form.receiptNumber || undefined,
+        paymentMethod: form.paymentMethod ? { slug: form.paymentMethod } : undefined,
+        paymentStatus: form.paymentStatus ? { slug: form.paymentStatus } : undefined,
         notes: form.notes || undefined,
       },
     });

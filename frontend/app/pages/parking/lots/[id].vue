@@ -104,6 +104,8 @@
 </template>
 
 <script setup lang="ts">
+import { getApiParkingLotsId, putApiParkingLotsId } from "~/utils/client";
+
 const { t } = useI18n();
 
 const route = useRoute();
@@ -131,14 +133,15 @@ const statusOptions = [
 
 const fetchParkingLot = async () => {
   try {
-    parkingLot.value = await $fetch(`/api/parking/lots/${parkingLotId}`);
-    form.name = parkingLot.value.name;
-    form.location = parkingLot.value.location || "";
-    form.totalSpots = parkingLot.value.totalSpots?.toString() || "";
-    form.hourlyRate = parkingLot.value.hourlyRate || "";
-    form.dailyRate = parkingLot.value.dailyRate || "";
-    form.status = parkingLot.value.status;
-    form.description = parkingLot.value.description || "";
+    const res = await getApiParkingLotsId({ path: { id: String(parkingLotId) } });
+    parkingLot.value = res.data;
+    form.name = res.data?.name || "";
+    form.location = res.data?.location || "";
+    form.totalSpots = String(res.data?.totalSpots ?? "");
+    form.hourlyRate = String(res.data?.hourlyRate ?? "");
+    form.dailyRate = String(res.data?.dailyRate ?? "");
+    form.status = (res.data?.status as { slug?: string } | undefined)?.slug ?? "active";
+    form.description = res.data?.description || "";
   } catch (error) {
     console.error("Failed to fetch parking lot:", error);
   } finally {
@@ -149,16 +152,17 @@ const fetchParkingLot = async () => {
 const updateParkingLot = async () => {
   saving.value = true;
   try {
-    await $fetch(`/api/parking/lots/${parkingLotId}`, {
-      method: "PUT",
+    await putApiParkingLotsId({
+      requestValidator: undefined,
+      path: { id: String(parkingLotId) },
       body: {
         name: form.name,
-        location: form.location || null,
+        location: form.location || undefined,
         totalSpots: parseInt(form.totalSpots) || 0,
-        hourlyRate: form.hourlyRate,
-        dailyRate: form.dailyRate,
-        status: form.status,
-        description: form.description || null,
+        hourlyRate: parseFloat(form.hourlyRate) || 0,
+        dailyRate: parseFloat(form.dailyRate) || 0,
+        status: { slug: form.status },
+        description: form.description || undefined,
       },
     });
     await fetchParkingLot();

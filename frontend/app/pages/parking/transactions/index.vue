@@ -179,17 +179,19 @@
 
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
+import { getApiParkingTransactions, postApiParkingTransactionsIdCheckOut } from "~/utils/client";
+import type { PaginatedResponseModelsParkingTransaction } from "~/utils/client";
 
 interface Transaction {
-  id: number;
-  licensePlate: string;
-  entryTime: string;
-  exitTime: string | null;
-  hoursParked: number | null;
-  amountDue: number;
-  amountPaid: number;
-  status: string;
-  paymentStatus: string;
+  id?: number;
+  licensePlate?: string;
+  entryTime?: string;
+  exitTime?: string | null;
+  hoursParked?: number | null;
+  amountDue?: number;
+  amountPaid?: number;
+  status?: string;
+  paymentStatus?: string;
 }
 
 const transactions = ref<Transaction[]>([]);
@@ -262,19 +264,19 @@ const debouncedSearch = () => {
 const fetchTransactions = async () => {
   loading.value = true;
   try {
-    const params = new URLSearchParams();
-    params.append("page", pagination.page.toString());
-    params.append("limit", pagination.limit.toString());
-
-    if (filters.search) params.append("search", filters.search);
-    if (filters.status && filters.status !== "all") params.append("status", filters.status);
+    const query: Record<string, any> = {
+      page: pagination.page.toString(),
+      limit: pagination.limit.toString(),
+    };
+    if (filters.search) query.search = filters.search;
+    if (filters.status && filters.status !== "all") query.status = filters.status;
     if (filters.paymentStatus && filters.paymentStatus !== "all")
-      params.append("paymentStatus", filters.paymentStatus);
+      query.paymentStatus = filters.paymentStatus;
 
-    const response = await $fetch(`/api/parking/transactions?${params.toString()}`);
-    transactions.value = response.data?.data;
-    pagination.total = response.pagination.total ?? 0;
-    pagination.totalPages = response.pagination.totalPages ?? 0;
+    const response = await getApiParkingTransactions({ query });
+    transactions.value = response.data?.data ?? [];
+    pagination.total = response.data?.total ?? 0;
+    pagination.totalPages = response.data?.totalPages ?? 0;
   } catch (error) {
     console.error("Failed to fetch transactions:", error);
   } finally {
@@ -321,26 +323,27 @@ const confirmCheckout = async () => {
   }
 };
 
-const formatDate = (date: string) => {
+const formatDate = (date: string | undefined) => {
+  if (!date) return "-";
   return new Date(date).toLocaleString();
 };
 
-const getStatusColor = (status: string) => {
+const getStatusColor = (status: string | undefined) => {
   const colors: Record<string, string> = {
     active: "info",
     completed: "success",
     cancelled: "error",
   };
-  return colors[status] || "neutral";
+  return colors[status ?? ""] || "neutral";
 };
 
-const getPaymentColor = (status: string) => {
+const getPaymentColor = (status: string | undefined) => {
   const colors: Record<string, string> = {
     pending: "warning",
     paid: "success",
     waived: "info",
   };
-  return colors[status] || "neutral";
+  return colors[status ?? ""] || "neutral";
 };
 
 onMounted(fetchTransactions);

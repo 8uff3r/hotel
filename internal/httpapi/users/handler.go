@@ -103,6 +103,9 @@ func (u *UsersModule) userUpdate(c fuego.ContextWithBody[userUpdateDto]) (models
 	if body.Status != "" {
 		row.Status = body.Status
 	}
+	if body.HotelID != "" {
+		row.HotelID = body.HotelID
+	}
 
 	if err := u.Db.WithContext(c).Save(&row).Error; err != nil {
 		return zero, fuego.BadRequestError{Title: "update_failed"}
@@ -172,6 +175,7 @@ type userUpdateDto struct {
 	ContactNumber string `json:"contactNumber"`
 	Role          string `json:"role"`
 	Status        string `json:"status"`
+	HotelID       string `json:"hotelId"`
 }
 
 func (u *UsersModule) usersCreate(c fuego.ContextWithBody[userCreateDto]) (userCreateResponse, error) {
@@ -197,6 +201,11 @@ func (u *UsersModule) usersCreate(c fuego.ContextWithBody[userCreateDto]) (userC
 		status = string(models.StatusActive)
 	}
 
+	// HotelID is required
+	if body.HotelID == "" {
+		return zero, fuego.BadRequestError{Title: "hotel_id_required"}
+	}
+
 	user := &models.User{
 		Email:         strings.TrimSpace(body.Email),
 		PasswordHash:  string(hash),
@@ -206,6 +215,7 @@ func (u *UsersModule) usersCreate(c fuego.ContextWithBody[userCreateDto]) (userC
 		ContactNumber: strings.TrimSpace(body.ContactNumber),
 		Role:          body.Role,
 		Status:        status,
+		HotelID:       body.HotelID,
 		Roles:         roles,
 		IsActive:      true,
 	}
@@ -213,10 +223,8 @@ func (u *UsersModule) usersCreate(c fuego.ContextWithBody[userCreateDto]) (userC
 		return userCreateResponse{}, err
 	}
 
-	// Enforce single hotel
-	if body.HotelID != "" {
-		u.Db.Create(&models.UserHotel{UserID: user.ID, HotelID: body.HotelID})
-	}
+	// Also create UserHotel join record for compatibility
+	u.Db.Create(&models.UserHotel{UserID: user.ID, HotelID: body.HotelID})
 
 	c.SetStatus(201)
 	return userCreateResponse{ID: user.ID}, nil

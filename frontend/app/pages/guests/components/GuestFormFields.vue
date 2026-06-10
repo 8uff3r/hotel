@@ -2,10 +2,12 @@
 import type { CreateRequest } from "../utils";
 import { useCountriesQuery } from "../queries";
 
+type FormWithGuest = CreateRequest & { guest: NonNullable<CreateRequest["guest"]> };
+
 defineProps<{
   loading: boolean;
 }>();
-const form = defineModel<Required<CreateRequest>>({ default: {} });
+const form = defineModel<FormWithGuest>({ default: { guest: {} } as FormWithGuest });
 const { t } = useI18n();
 
 const { data: countries } = useCountriesQuery();

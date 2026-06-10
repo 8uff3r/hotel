@@ -37,6 +37,49 @@
                   :disabled="loading"
                 />
               </UFormField>
+
+              <UFormField label="نام کاربری" name="username">
+                <UInput
+                  v-model="form.username"
+                  placeholder="نام کاربری"
+                  :disabled="loading"
+                />
+              </UFormField>
+
+              <UFormField label="شماره تماس" name="contactNumber">
+                <UInput
+                  v-model="form.contactNumber"
+                  placeholder="شماره تماس"
+                  :disabled="loading"
+                />
+              </UFormField>
+
+              <UFormField label="نقش" name="role">
+                <USelect
+                  v-model="form.role"
+                  :options="roleOptions"
+                  placeholder="نقش"
+                  :disabled="loading"
+                />
+              </UFormField>
+
+              <UFormField label="وضعیت" name="status">
+                <USelect
+                  v-model="form.status"
+                  :options="statusOptions"
+                  placeholder="وضعیت"
+                  :disabled="loading"
+                />
+              </UFormField>
+
+              <UFormField label="هتل" name="hotelId">
+                <USelect
+                  v-model="form.hotelId"
+                  :options="hotelOptions"
+                  placeholder="انتخاب هتل"
+                  :disabled="loading"
+                />
+              </UFormField>
             </div>
           </div>
         </div>
@@ -96,15 +139,23 @@
           />
 
           <template #content>
-            <div class="grid gap-2 py-2 sm:grid-cols-2 lg:grid-cols-3">
-              <HToggleButton
-                v-for="permission in category.permissions"
-                :key="permission.id"
-                v-model="selectedPermissionIds[permission.id]"
-                @update:model-value="togglePermission(permission.id, $event)"
-              >
-                {{ permission.label }}
-              </HToggleButton>
+            <div class="p-2">
+              <UCheckbox
+                :model-value="isCategoryFullyGranted(category)"
+                @update:model-value="toggleCategoryFullAccess(category, $event)"
+                label="دسترسی کامل"
+                class="mb-2"
+              />
+              <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                <HToggleButton
+                  v-for="permission in category.permissions"
+                  :key="permission.id"
+                  v-model="selectedPermissionIds[permission.id]"
+                  @update:model-value="togglePermission(permission.id, $event)"
+                >
+                  {{ permission.label }}
+                </HToggleButton>
+              </div>
             </div>
           </template>
         </UCollapsible>
@@ -114,6 +165,10 @@
 </template>
 
 <script setup lang="ts">
+import { useQuery } from "@pinia/colada";
+import { useToast } from "@nuxt/ui/composables";
+import { useI18n } from "vue-i18n";
+import { PERMISSIONS } from "~/utils/permissions.gen";
 import type { PermissionsResponse, GetApiPermissionsUserUserIdResponse } from "~/utils/client";
 
 definePageMeta({
@@ -134,6 +189,11 @@ const form = ref({
   email: "",
   firstName: "",
   lastName: "",
+  username: "",
+  contactNumber: "",
+  role: "",
+  status: "",
+  hotelId: "",
 });
 
 type Permission = NonNullable<PermissionsResponse["data"]>[0];
@@ -157,6 +217,11 @@ const fetchData = async () => {
     form.value.email = user?.email ?? "";
     form.value.firstName = user?.firstName ?? "";
     form.value.lastName = user?.lastName ?? "";
+    form.value.username = user?.username ?? "";
+    form.value.contactNumber = user?.contactNumber ?? "";
+    form.value.role = user?.role ?? "";
+    form.value.status = user?.status ?? "";
+    form.value.hotelId = user?.hotelId ?? "";
 
     allPermissions.value = allPermsResp.data?.data ?? [];
     userPermissions.value = userPermsResp.data?.permissions ?? [];
@@ -253,6 +318,40 @@ const togglePermission = async (permissionId: number, granted: boolean) => {
   }
 };
 
+const roleOptions = [
+  { label: "مدیر", value: "manager" },
+  { label: "پذیرش", value: "receptionist" },
+  { label: "حسابدار", value: "accountant" },
+  { label: "خدمات", value: "housekeeping" },
+];
+
+const statusOptions = [
+  { label: "فعال", value: "active" },
+  { label: "غیرفعال", value: "inactive" },
+];
+
+const { data: hotels } = useFetch("/api/hotels", {
+  key: "hotels-list",
+  transform: (res: any) => res?.data ?? [],
+});
+
+const hotelOptions = computed(() =>
+  (hotels.value ?? []).map((h: any) => ({ label: h.name, value: h.id }))
+);
+
+const isCategoryFullyGranted = (category: { permissions: { id: number }[] }) => {
+  if (!category.permissions.length) return false;
+  return category.permissions.every((p) => selectedPermissionIds[p.id]);
+};
+
+const toggleCategoryFullAccess = async (category: { permissions: { id: number }[] }, granted: boolean | string) => {
+  const flag = Boolean(granted);
+  for (const permission of category.permissions) {
+    selectedPermissionIds[permission.id] = flag;
+    await togglePermission(permission.id, flag);
+  }
+};
+
 const handleSubmit = async () => {
   loading.value = true;
   try {
@@ -262,6 +361,11 @@ const handleSubmit = async () => {
         email: form.value.email,
         firstName: form.value.firstName,
         lastName: form.value.lastName,
+        username: form.value.username,
+        contactNumber: form.value.contactNumber,
+        role: form.value.role,
+        status: form.value.status,
+        hotelId: form.value.hotelId,
       },
     });
 

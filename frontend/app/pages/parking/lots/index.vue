@@ -97,6 +97,7 @@
 
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
+import { deleteApiParkingLotsId } from "~/utils/client";
 import type z from "zod";
 import type { zParkingLot } from "~/utils/client/zod.gen";
 
@@ -150,7 +151,7 @@ const deleteLot = async () => {
 
   deleting.value = true;
   try {
-    await $fetch(`/api/parking/lots/${selectedLot.value.id}`, { method: "DELETE" });
+    await deleteApiParkingLotsId({ path: { id: String(selectedLot.value.id) } });
     deleteModalOpen.value = false;
     refetch();
   } catch (error) {

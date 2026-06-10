@@ -14,20 +14,30 @@
     <div v-else-if="room">
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <!-- Room Details -->
-        <div class="lg:col-span-2">
+        <div class="lg:col-span-2 space-y-6">
           <UCard>
             <template #header>
               <div class="flex items-center justify-between">
                 <span class="text-lg font-semibold">{{ t("common.room_details") }}</span>
-                <UBadge
-                  color="neutral"
-                  :style="{
-                    color: `#${room.status?.colorHex}`,
-                  }"
-                  variant="soft"
-                >
-                  {{ room.status?.label }}
-                </UBadge>
+                <div class="flex items-center gap-2">
+                  <UBadge
+                    v-if="dynamicStatus"
+                    color="neutral"
+                    variant="soft"
+                    class="text-xs"
+                  >
+                    {{ dynamicStatus.status }}
+                  </UBadge>
+                  <UBadge
+                    color="neutral"
+                    :style="{
+                      color: `#${room.status?.colorHex}`,
+                    }"
+                    variant="soft"
+                  >
+                    {{ room.status?.label }}
+                  </UBadge>
+                </div>
               </div>
             </template>
 
@@ -48,13 +58,8 @@
                 </UFormField>
 
                 <!-- Floor -->
-                <UFormField :label="t('common.floor')" name="floor">
-                  <UInput
-                    v-model.number="form.floor"
-                    type="number"
-                    :placeholder="t('rooms.e_g_1_2')"
-                    :disabled="saving"
-                  />
+                <UFormField :label="t('common.floor')" name="floorId">
+                  <HSelect v-model="form.floorId" :items="floors" :disabled="saving" />
                 </UFormField>
 
                 <!-- Capacity -->
@@ -124,6 +129,56 @@
               </div>
             </form>
           </UCard>
+
+          <!-- Pictures Section -->
+          <UCard>
+            <template #header>
+              <div class="flex items-center justify-between">
+                <span class="text-lg font-semibold">{{ t("rooms.pictures") }}</span>
+              </div>
+            </template>
+            <div class="space-y-4">
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div v-for="pic in pictures" :key="pic.id" class="relative group">
+                  <img :src="pic.url" :alt="pic.description" class="w-full h-24 object-cover rounded-lg border" />
+                  <UButton
+                    variant="ghost"
+                    size="xs"
+                    color="error"
+                    class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    @click="removePicture(pic.id)"
+                  >
+                    <UIcon name="i-lucide-trash" class="h-3 w-3" />
+                  </UButton>
+                </div>
+                <div class="flex items-center justify-center h-24 rounded-lg border border-dashed border-gray-300 dark:border-gray-600">
+                  <UButton variant="ghost" size="sm" @click="showAddPicture = true">
+                    <UIcon name="i-lucide-plus" class="mr-1 h-4 w-4" />
+                    افزودن تصویر
+                  </UButton>
+                </div>
+              </div>
+            </div>
+          </UCard>
+
+          <!-- Add Picture Modal -->
+          <UModal v-model:open="showAddPicture">
+            <template #title>افزودن تصویر</template>
+            <template #content>
+              <div class="p-4 space-y-4">
+                <UFormField label="آدرس تصویر (URL)" required>
+                  <UInput v-model="newPicture.url" placeholder="https://..." />
+                </UFormField>
+                <UFormField label="توضیحات">
+                  <UInput v-model="newPicture.description" placeholder="توضیحات تصویر" />
+                </UFormField>
+                <div class="flex justify-end gap-2">
+                  <UButton variant="outline" size="sm" @click="showAddPicture = false">انصراف</UButton>
+                  <UButton size="sm" color="primary" :loading="addingPicture" @click="addPicture">ذخیره</UButton>
+                </div>
+              </div>
+            </template>
+          </UModal>
         </div>
 
         <!-- Sidebar Info -->
@@ -175,12 +230,20 @@
 
 <script setup lang="ts">
 import type z from "zod";
+import {
+  getApiRoomsIdStatus,
+  getApiRoomsIdPictures,
+  postApiRoomsIdPictures,
+  deleteApiRoomsIdPicturesPictureId,
+  putApiRoomsId,
+} from "~/utils/client";
 import { zRoom } from "~/utils/client/zod.gen";
 
 definePageMeta({
   requiresPermission: PERMISSIONS.rooms.rooms.read,
 });
 const { t } = useI18n();
+const toast = useToast();
 
 const route = useRoute();
 const roomId = route.params.id as string;
@@ -205,6 +268,10 @@ const { data: types } = useAsyncData("room-types", async () => {
   const res = await getApiRoomsTypes({});
   return res.data?.data;
 });
+const { data: floors } = useAsyncData("room-floors", async () => {
+  const res = await getApiRoomsFloors({});
+  return res.data?.data?.map((f: any) => ({ ...f, label: `Floor ${f.number}${f.description ? ` - ${f.description}` : ""}` })) ?? [];
+});
 
 const toggleAmenity = (amenityId: number) => {
   const index = form.value.amenities?.findIndex((a) => a.id === amenityId);
@@ -227,6 +294,57 @@ const { data: room, pending } = useAsyncData(async () => {
   form.value = response.data ?? ({ amenities: [] } as any);
   return response.data;
 });
+
+const { data: dynamicStatus } = useAsyncData(
+  `room-dynamic-status-${roomId}`,
+  async () => {
+    const res = await getApiRoomsIdStatus({ path: { id: roomId } });
+    return res.data;
+  }
+);
+
+const { data: pictures, refresh: refreshPictures } = useAsyncData(
+  `room-pictures-${roomId}`,
+  async () => {
+    const res = await getApiRoomsIdPictures({ path: { id: roomId } });
+    return res.data?.data ?? [];
+  }
+);
+
+const showAddPicture = ref(false);
+const addingPicture = ref(false);
+const newPicture = reactive({ url: "", description: "" });
+
+const addPicture = async () => {
+  if (!newPicture.url) return;
+  addingPicture.value = true;
+  try {
+    await postApiRoomsIdPictures({
+      path: { id: roomId },
+      body: { url: newPicture.url, description: newPicture.description },
+    });
+    toast.add({ title: "تصویر اضافه شد", color: "success" });
+    newPicture.url = "";
+    newPicture.description = "";
+    showAddPicture.value = false;
+    await refreshPictures();
+  } catch (e) {
+    toast.add({ title: "خطا در افزودن تصویر", color: "error" });
+  } finally {
+    addingPicture.value = false;
+  }
+};
+
+const removePicture = async (pictureId: number | undefined) => {
+  if (!pictureId) return;
+  try {
+    await deleteApiRoomsIdPicturesPictureId({ path: { id: String(roomId), pictureId: String(pictureId) } });
+    toast.add({ title: "تصویر حذف شد", color: "success" });
+    await refreshPictures();
+  } catch (e) {
+    toast.add({ title: "خطا در حذف تصویر", color: "error" });
+  }
+};
 
 const handleSubmit = async () => {
   saving.value = true;

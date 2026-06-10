@@ -78,6 +78,7 @@
 </template>
 
 <script setup lang="ts">
+import { postApiAccountingAccounts } from "~/utils/client";
 const { t } = useI18n();
 const loading = ref(false);
 
@@ -110,8 +111,7 @@ const handleSubmit = async () => {
 
   loading.value = true;
   try {
-    await $fetch("/api/accounts", {
-      method: "POST",
+    await postApiAccountingAccounts({
       body: {
         accountCode: form.accountCode,
         accountName: form.accountName,
@@ -120,6 +120,7 @@ const handleSubmit = async () => {
         description: form.description || undefined,
         isActive: form.isActive,
       },
+      requestValidator: undefined,
     });
 
     await navigateTo("/accounting/accounts");

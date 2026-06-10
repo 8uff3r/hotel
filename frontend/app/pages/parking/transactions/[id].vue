@@ -148,10 +148,12 @@
 </template>
 
 <script setup lang="ts">
+import { getApiParkingTransactionsId, postApiParkingTransactionsIdCheckOut } from "~/utils/client";
+
 const { t } = useI18n();
 
 const route = useRoute();
-const transactionId = Number(route.params.id);
+const transactionId = String(route.params.id);
 
 const transaction = ref<any>(null);
 const loading = ref(true);
@@ -172,8 +174,9 @@ const paymentMethods = [
 
 const fetchTransaction = async () => {
   try {
-    transaction.value = await $fetch(`/api/parking/transactions/${transactionId}`);
-    checkoutForm.amountPaid = transaction.value.amountDue?.toString() || "0";
+    const res = await getApiParkingTransactionsId({ path: { id: transactionId } });
+    transaction.value = res.data;
+    checkoutForm.amountPaid = res.data?.amountDue?.toString() || "0";
   } catch (error) {
     console.error("Failed to fetch transaction:", error);
   } finally {

@@ -16,7 +16,7 @@ const { data: rooms } = useAsyncData(async () => {
 });
 </script>
 <template>
-  <div v-if="form.reservation">
+  <template v-if="form.reservation">
     <UFormField
       :label="t('guest.reservationCode')"
       name="reservation.reservationCode"
@@ -99,5 +99,5 @@ const { data: rooms } = useAsyncData(async () => {
     <UFormField :label="t('guest.notes')" name="reservation.notes" class="md:col-span-3">
       <UTextarea v-model="form.reservation.notes" :rows="3" class="w-full" :disabled="loading" />
     </UFormField>
-  </div>
+  </template>
 </template>

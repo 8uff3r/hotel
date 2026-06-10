@@ -121,6 +121,8 @@
 <script setup lang="ts">
 import { postApiAccountingIncome } from "~/utils/client";
 
+const { t } = useI18n();
+
 const categoryOptions = [
   { value: "room_revenue", label: "Room Revenue" },
   { value: "food_beverage", label: "Food & Beverage" },
@@ -144,6 +146,21 @@ const paymentMethodOptions = [
   { value: "other", label: "Other" },
 ];
 
+const form = reactive({
+  incomeDate: "",
+  description: "",
+  amount: 0,
+  category: "",
+  source: "",
+  reference: "",
+  paymentMethod: "",
+  paymentStatus: "",
+  reservationId: undefined as number | undefined,
+  notes: "",
+});
+
+const loading = ref(false);
+
 const handleSubmit = async () => {
   if (!form.description || form.amount <= 0) {
     return;
@@ -156,11 +173,11 @@ const handleSubmit = async () => {
         incomeDate: form.incomeDate,
         description: form.description,
         amount: form.amount,
-        category: form.category,
+        category: form.category ? { slug: form.category } : undefined,
         source: form.source || undefined,
         reference: form.reference || undefined,
-        paymentMethod: form.paymentMethod,
-        paymentStatus: form.paymentStatus,
+        paymentMethod: form.paymentMethod ? { slug: form.paymentMethod } : undefined,
+        paymentStatus: form.paymentStatus ? { slug: form.paymentStatus } : undefined,
         reservationId: form.reservationId,
         notes: form.notes || undefined,
       },

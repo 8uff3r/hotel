@@ -127,6 +127,7 @@
 </template>
 
 <script setup lang="ts">
+import { deleteApiRoomsId } from "~/utils/client";
 import type { TableColumn } from "@nuxt/ui";
 import type { PaginatedResponseModelsRoom } from "~/utils/client";
 
@@ -220,7 +221,7 @@ const deleteRoom = async () => {
 
   deleting.value = true;
   try {
-    await $fetch(`/api/rooms/${selectedRoom.value.id}`, { method: "DELETE" });
+    await deleteApiRoomsId({ path: { id: String(selectedRoom.value.id) } });
     deleteModalOpen.value = false;
     // await fetchRooms();
   } catch (error) {

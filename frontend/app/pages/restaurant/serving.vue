@@ -285,6 +285,14 @@
 
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
+import {
+  getApiRestaurantBills,
+  postApiRestaurantBills,
+  postApiRestaurantBillsIdSettle,
+  getApiRestaurantTransactions,
+  postApiRestaurantTransactions,
+  deleteApiRestaurantTransactionsId,
+} from "~/utils/client";
 import type {
   PaginatedResponseModelsRestaurantBill,
   RestaurantBill,
@@ -350,7 +358,7 @@ const {
   data: billsData,
   pending,
   refresh: fetchBills,
-} = useAsyncData(
+} = useAsyncData<RestaurantBill[]>(
   "restaurant-bills-serving",
   async () => {
     const params: any = { page: pagination.page, limit: pagination.limit };
@@ -358,12 +366,10 @@ const {
     if (filters.status) params.status = filters.status;
     else params.status = "open";
 
-    const response = await $fetch<PaginatedResponseModelsRestaurantBill>("/api/restaurant/bills", {
-      query: params,
-    });
-    pagination.total = response.total ?? 0;
-    pagination.totalPages = response.totalPages ?? 0;
-    return response.data?.data;
+    const response = await getApiRestaurantBills({ query: params });
+    pagination.total = response.data?.total ?? 0;
+    pagination.totalPages = response.data?.totalPages ?? 0;
+    return (response.data?.data ?? []) as RestaurantBill[];
   },
   { watch: [() => pagination.page], immediate: true }
 );
@@ -419,8 +425,7 @@ const billForm = reactive({
 
 const createBill = async () => {
   try {
-    await $fetch("/api/restaurant/bills", {
-      method: "POST",
+    await postApiRestaurantBills({
       body: {
         billDate: new Date().toISOString(),
         guestId: billForm.guestId,
@@ -445,8 +450,9 @@ const selectBill = (bill: RestaurantBill) => {
 };
 
 const settleBill = async (bill: RestaurantBill) => {
+  if (!bill.id) return;
   try {
-    await $fetch(`/api/restaurant/bills/${bill.id}/settle`, { method: "POST" });
+    await postApiRestaurantBillsIdSettle({ path: { id: String(bill.id) } });
     await fetchBills();
   } catch (error) {
     console.error("Failed to settle bill:", error);
@@ -491,8 +497,7 @@ const addMeal = async () => {
 
   savingMeal.value = true;
   try {
-    await $fetch("/api/restaurant/transactions", {
-      method: "POST",
+    await postApiRestaurantTransactions({
       body: {
         billId: selectedBill.value.id,
         inventoryItemId: mealForm.inventoryItemId,
@@ -524,20 +529,17 @@ const viewTransactions = async (bill: RestaurantBill) => {
 };
 
 const fetchTransactions = async () => {
-  if (!selectedBill.value) return;
-  const response = await $fetch<PaginatedResponseModelsMealTransaction>(
-    "/api/restaurant/transactions",
-    {
-      query: { billId: selectedBill.value.id },
-    }
-  );
+  if (!selectedBill.value?.id) return;
+  const response = await getApiRestaurantTransactions({
+    query: { page: 1, limit: 100, filters: `billId:${selectedBill.value.id}` },
+  });
   transactions.value = response.data?.data ?? [];
 };
 
 const deleteTransaction = async (transaction: MealTransaction) => {
-  if (!transaction) return;
+  if (!transaction?.id) return;
   try {
-    await $fetch(`/api/restaurant/transactions/${transaction.id}`, { method: "DELETE" });
+    await deleteApiRestaurantTransactionsId({ path: { id: String(transaction.id) } });
     await fetchTransactions();
     await fetchBills();
   } catch (error) {

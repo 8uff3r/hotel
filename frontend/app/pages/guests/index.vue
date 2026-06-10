@@ -82,12 +82,15 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
 import type { Guest } from "~/utils/client";
+import { deleteApiGuestsId, getApiGuests } from "~/utils/client";
 
 const { t } = useI18n();
 const columns = computed<TableColumn<Guest>[]>(() => [
   { accessorKey: "id", header: t("guests.columns.id") },
   { accessorKey: "name", header: t("guests.columns.name") },
   { accessorKey: "phone", header: t("guests.columns.phone") },
+  { accessorKey: "passport", header: "پاسپورت" },
+  { accessorKey: "status", header: "وضعیت" },
   { accessorKey: "actions", header: t("guests.columns.actions") },
 ]);
 
@@ -156,7 +159,8 @@ const confirmDelete = async (guest: Guest) => {
 const deleteGuest = async (guest: Guest) => {
   deleting.value = true;
   try {
-    await $fetch(`/api/guests/${guest.id}`, { method: "DELETE" });
+    if (!guest.id) return;
+    await deleteApiGuestsId({ path: { id: String(guest.id) } });
     refresh();
   } catch (error) {
     console.error("Failed to delete guest:", error);

@@ -17,8 +17,8 @@
       <template #header>
         <div class="flex items-center justify-between">
           <span class="font-semibold">{{ t("parking.edit_parking_spot") }}</span>
-          <UBadge :color="getStatusColor(spot.status) as any" variant="soft">
-            {{ spot.status }}
+          <UBadge :color="getStatusColor(spot.status?.slug) as any" variant="soft">
+            {{ spot.status?.label }}
           </UBadge>
         </div>
       </template>
@@ -73,6 +73,9 @@
 </template>
 
 <script setup lang="ts">
+import { getApiParkingLots, getApiParkingSpotsId, putApiParkingSpotsId } from "~/utils/client";
+import type { ParkingLot, ParkingSpot } from "~/utils/client";
+
 const { t } = useI18n();
 
 const route = useRoute();
@@ -80,7 +83,7 @@ const spotId = Number(route.params.id);
 
 const saving = ref(false);
 
-const form = reactive<ParkingSpot>({
+const form = reactive({
   lotId: 0,
   spotNumber: "",
   floor: "",
@@ -91,17 +94,17 @@ const form = reactive<ParkingSpot>({
 });
 
 const { data: spotTypeOptions } = useAsyncData("parking-spot-types", async () => {
-  const res = await $fetch<{ data: ParkingSpotType[] }>("/api/parking/spots/types");
+  const res = await $fetch<{ data: Array<{ label: string; value: string }> }>("/api/parking/spots/types");
   return res.data;
 });
-const { data: statusOptions } = useAsyncData("parking-spot-types", async () => {
-  const res = await $fetch<{ data: ParkingSpotStatus[] }>("/api/parking/spots/types");
+const { data: statusOptions } = useAsyncData("parking-spot-statuses", async () => {
+  const res = await $fetch<{ data: Array<{ label: string; value: string }> }>("/api/parking/spots/types");
   return res.data;
 });
 
 const { data: lotOptions } = useAsyncData("parking-lots", async () => {
-  const res = await $fetch<{ data: ParkingLot[] }>("/api/parking/lots");
-  return res.data;
+  const res = await getApiParkingLots();
+  return res.data?.data;
 });
 
 const {
@@ -109,31 +112,32 @@ const {
   pending,
   refresh,
 } = useAsyncData(async () => {
-  const res = await $fetch<ParkingSpot>(`/api/parking/spots/${spotId}`);
+  const res = await getApiParkingSpotsId({ path: { id: String(spotId) } });
 
-  form.lotId = res.lotId;
-  form.spotNumber = res.spotNumber || "";
-  form.floor = res.floor || "";
-  form.spotType = res.spotType || "standard";
-  form.status = res.status || "available";
-  form.isCovered = res.isCovered || false;
-  form.description = res.description || "";
-  return res;
+  form.lotId = res.data?.lotId ?? 0;
+  form.spotNumber = res.data?.spotNumber || "";
+  form.floor = res.data?.floor || "";
+  form.spotType = (res.data?.spotType as { slug?: string } | undefined)?.slug ?? "standard";
+  form.status = (res.data?.status as { slug?: string } | undefined)?.slug ?? "available";
+  form.isCovered = res.data?.isCovered || false;
+  form.description = res.data?.description || "";
+  return res.data;
 });
 
 const updateSpot = async () => {
   saving.value = true;
   try {
-    await $fetch(`/api/parking/spots/${spotId}`, {
-      method: "PUT",
+    await putApiParkingSpotsId({
+      requestValidator: undefined,
+      path: { id: String(spotId) },
       body: {
         lotId: parseInt(form.lotId?.toString() ?? ""),
         spotNumber: form.spotNumber,
-        floor: form.floor || null,
-        spotType: form.spotType,
-        status: form.status,
+        floor: form.floor || undefined,
+        spotType: form.spotType ? { slug: form.spotType } : undefined,
+        status: form.status ? { slug: form.status } : undefined,
         isCovered: form.isCovered,
-        description: form.description || null,
+        description: form.description || undefined,
       },
     });
     refresh();
@@ -144,13 +148,13 @@ const updateSpot = async () => {
   }
 };
 
-const getStatusColor = (status: string) => {
+const getStatusColor = (status: string | undefined) => {
   const colors: Record<string, string> = {
     available: "success",
     occupied: "warning",
     reserved: "info",
     maintenance: "error",
   };
-  return colors[status] || "neutral";
+  return colors[status ?? ""] || "neutral";
 };
 </script>

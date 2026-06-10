@@ -111,6 +111,9 @@
 </template>
 
 <script setup lang="ts">
+import { getApiParkingLots, getApiParkingSpots, getApiParkingTransactions, postApiParkingTransactions } from "~/utils/client";
+import type { Guest, PaginatedResponseModelsParkingSpot, PaginatedResponseModelsParkingTransaction, ParkingLot, Reservation } from "~/utils/client";
+
 const form = reactive({
   licensePlate: "",
   lotId: "",
@@ -142,24 +145,24 @@ const rateOptions = [
 const fetchInitialData = async () => {
   try {
     const [lotsRes, guestsRes, resRes] = await Promise.all([
-      $fetch("/api/parking/lots"),
-      $fetch("/api/guests"),
-      $fetch("/api/reservations"),
+      getApiParkingLots(),
+      $fetch<{ data?: Guest[] }>("/api/guests"),
+      $fetch<{ data?: Reservation[] }>("/api/reservations"),
     ]);
 
-    lotOptions.value = (lotsRes.data as any[]).map((l) => ({
-      value: l.id.toString(),
-      label: l.name,
+    lotOptions.value = (lotsRes.data?.data ?? []).map((l) => ({
+      value: String(l.id ?? ""),
+      label: l.name ?? "",
     }));
 
-    guestOptions.value = (guestsRes.data as any[]).map((g: any) => ({
-      value: g.id.toString(),
-      label: `${g.firstName} ${g.lastName}`,
+    guestOptions.value = (guestsRes.data ?? []).map((g) => ({
+      value: String(g.id ?? ""),
+      label: `${g.firstName ?? ""} ${g.lastName ?? ""}`,
     }));
 
-    reservationOptions.value = (resRes.data as any[]).map((r: any) => ({
-      value: r.id.toString(),
-      label: `Res #${r.id} - ${r.guestId}`,
+    reservationOptions.value = (resRes.data ?? []).map((r) => ({
+      value: String(r.id ?? ""),
+      label: `Res #${r.id} - ${r.guestId ?? ""}`,
     }));
 
     await fetchStats();
@@ -172,12 +175,16 @@ const loadSpots = async () => {
   if (!form.lotId) return;
 
   try {
-    const res = await $fetch(`/api/parking/spots?lotId=${form.lotId}&status=available`);
+    const res = await getApiParkingSpots({
+      query: {
+        filters: `lotId:${form.lotId},status:available`,
+      },
+    });
     spotOptions.value = [
       { value: "", label: t("parking.auto_assign") },
-      ...(res.data as any[]).map((s) => ({
-        value: s.id.toString(),
-        label: `${s.spotNumber} (${s.spotType})`,
+      ...(res.data?.data ?? []).map((s) => ({
+        value: String(s.id ?? ""),
+        label: `${s.spotNumber ?? ""} (${s.spotType?.label ?? ""})`,
       })),
     ];
   } catch (error) {
@@ -188,16 +195,16 @@ const loadSpots = async () => {
 const fetchStats = async () => {
   try {
     const [spotsRes, txRes] = await Promise.all([
-      $fetch("/api/parking/spots"),
-      $fetch("/api/parking/transactions"),
+      getApiParkingSpots({ query: {} }),
+      getApiParkingTransactions({ query: {} }),
     ]);
 
-    const spots = spotsRes.data as any[];
-    const txs = txRes.data as any[];
+    const spots = spotsRes.data?.data ?? [];
+    const txs = txRes.data?.data ?? [];
 
-    stats.available = spots.filter((s: any) => s.status === "available").length;
-    stats.occupied = spots.filter((s: any) => s.status === "occupied").length;
-    stats.active = txs.filter((t: any) => t.status === "active").length;
+    stats.available = spots.filter((s) => (s.status as { slug?: string } | undefined)?.slug === "available").length;
+    stats.occupied = spots.filter((s) => (s.status as { slug?: string } | undefined)?.slug === "occupied").length;
+    stats.active = txs.filter((t) => (t.status as { slug?: string } | undefined)?.slug === "active").length;
   } catch (error) {
     console.error("Failed to fetch stats:", error);
   }
@@ -206,15 +213,15 @@ const fetchStats = async () => {
 const checkIn = async () => {
   loading.value = true;
   try {
-    await $fetch("/api/parking/transactions", {
-      method: "POST",
+    await postApiParkingTransactions({
+      requestValidator: undefined,
       body: {
         licensePlate: form.licensePlate.toUpperCase(),
         lotId: parseInt(form.lotId),
-        spotId: form.spotId ? parseInt(form.spotId) : null,
-        guestId: form.guestId ? parseInt(form.guestId) : null,
-        reservationId: form.reservationId ? parseInt(form.reservationId) : null,
-        rateApplied: form.rateApplied,
+        spotId: form.spotId ? parseInt(form.spotId) : undefined,
+        guestId: form.guestId ? parseInt(form.guestId) : undefined,
+        reservationId: form.reservationId ? parseInt(form.reservationId) : undefined,
+        rateApplied: parseFloat(form.rateApplied) || 0,
       },
     });
     router.push("/parking/transactions");

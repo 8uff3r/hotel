@@ -98,6 +98,8 @@ func seedPaymentMethods(db *gorm.DB) {
 		{TranslateBase: models.TranslateBase{Slug: "cheque", Translation: t["cheque"]}},
 		{TranslateBase: models.TranslateBase{Slug: "credit", Translation: t["credit"]}},
 		{TranslateBase: models.TranslateBase{Slug: "online", Translation: t["online"]}},
+		{TranslateBase: models.TranslateBase{Slug: "contracting_party", Translation: t["contracting_party"]}},
+		{TranslateBase: models.TranslateBase{Slug: "agency", Translation: t["agency"]}},
 		{TranslateBase: models.TranslateBase{Slug: "other", Translation: t["other"]}},
 	}
 

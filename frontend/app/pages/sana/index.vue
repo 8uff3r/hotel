@@ -128,6 +128,8 @@
 
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
+import { useI18n } from "vue-i18n";
+import { postApiSanaSyncAll } from "~/utils/client";
 
 const { t } = useI18n();
 
@@ -231,7 +233,9 @@ const syncRoom = async (roomRack: SanaRoomRack) => {
 const syncAll = async () => {
   syncingAll.value = true;
   try {
-    await $fetch("/api/sana/sync-all", { method: "POST" });
+    await postApiSanaSyncAll({
+      requestValidator: undefined,
+    });
     await refreshGuests();
     await refreshRooms();
     syncAllModalOpen.value = false;

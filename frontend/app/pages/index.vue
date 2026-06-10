@@ -14,8 +14,8 @@
             <UIcon name="i-lucide-bed" class="h-5 w-5 text-gray-400" />
           </div>
         </template>
-        <div class="text-3xl font-bold">120</div>
-        <p class="mt-1 text-sm text-gray-500">{{ t("dashboard.availableRooms", { count: 85 }) }}</p>
+        <div class="text-3xl font-bold">{{ stats?.totalRooms ?? 0 }}</div>
+        <p class="mt-1 text-sm text-gray-500">{{ t("dashboard.availableRooms", { count: stats?.availableRooms ?? 0 }) }}</p>
       </UCard>
 
       <UCard>
@@ -27,8 +27,8 @@
             <UIcon name="i-lucide-users" class="h-5 w-5 text-gray-400" />
           </div>
         </template>
-        <div class="text-3xl font-bold">72%</div>
-        <p class="mt-1 text-sm text-gray-500">{{ t("dashboard.roomsOccupied", { count: 86 }) }}</p>
+        <div class="text-3xl font-bold">{{ formatPercent(stats?.occupancyRate ?? 0) }}</div>
+        <p class="mt-1 text-sm text-gray-500">{{ t("dashboard.roomsOccupied", { count: stats?.occupiedRooms ?? 0 }) }}</p>
       </UCard>
 
       <UCard>
@@ -40,7 +40,7 @@
             <UIcon name="i-lucide-dollar-sign" class="h-5 w-5 text-gray-400" />
           </div>
         </template>
-        <div class="text-3xl font-bold">$12,450</div>
+        <div class="text-3xl font-bold">{{ formatCurrency(stats?.todaysRevenue ?? 0) }}</div>
         <p class="mt-1 text-sm text-green-500">{{ t("dashboard.revenueDelta") }}</p>
       </UCard>
 
@@ -53,8 +53,8 @@
             <UIcon name="i-lucide-log-in" class="h-5 w-5 text-gray-400" />
           </div>
         </template>
-        <div class="text-3xl font-bold">18</div>
-        <p class="mt-1 text-sm text-gray-500">{{ t("dashboard.checkOuts", { count: 12 }) }}</p>
+        <div class="text-3xl font-bold">{{ stats?.checkInsToday ?? 0 }}</div>
+        <p class="mt-1 text-sm text-gray-500">{{ t("dashboard.checkOuts", { count: stats?.checkOutsToday ?? 0 }) }}</p>
       </UCard>
     </div>
 
@@ -70,20 +70,23 @@
         </template>
         <div class="space-y-4">
           <div
-            v-for="i in 5"
-            :key="i"
+            v-for="r in recentReservations"
+            :key="r.id"
             class="flex items-center justify-between border-b border-gray-100 py-2 last:border-0 dark:border-gray-800"
           >
             <div>
-              <p class="font-medium">{{ t("dashboard.sampleGuest") }}</p>
+              <p class="font-medium">{{ r.guestName }}</p>
               <p class="text-sm text-gray-500">
-                {{ t("dashboard.roomLabel", { number: 100 + i }) }}
+                {{ t("dashboard.roomLabel", { number: r.roomNumber || "-" }) }}
               </p>
             </div>
             <div class="text-right">
-              <UBadge color="success" variant="soft">{{ t("statuses.confirmed") }}</UBadge>
-              <p class="mt-1 text-xs text-gray-500">{{ new Date().toLocaleDateString() }}</p>
+              <UBadge color="success" variant="soft">{{ r.status }}</UBadge>
+              <p class="mt-1 text-xs text-gray-500">{{ formatDate(r.entryDate) }}</p>
             </div>
+          </div>
+          <div v-if="!recentReservations?.length" class="py-4 text-center text-gray-500">
+            {{ t("dashboard.noReservations") }}
           </div>
         </div>
       </UCard>
@@ -118,5 +121,45 @@
 </template>
 
 <script setup lang="ts">
+import { getApiDashboardStats, getApiDashboardRecentReservations } from "~/utils/client";
+
 const { t } = useI18n();
+
+const { data: stats } = useAsyncData("dashboard-stats", async () => {
+  const res = await getApiDashboardStats({ requestValidator: undefined });
+  return res.data;
+});
+
+interface RecentReservation {
+  id?: number;
+  reservationCode?: string;
+  guestName?: string;
+  roomNumber?: string;
+  status?: string;
+  entryDate?: string;
+}
+
+const { data: recentReservations } = useAsyncData<RecentReservation[]>("dashboard-recent-reservations", async () => {
+  const res = await getApiDashboardRecentReservations({ requestValidator: undefined });
+  return (res.data?.data ?? []) as RecentReservation[];
+});
+
+const formatPercent = (val: number) => {
+  return `${val.toFixed(0)}%`;
+};
+
+const formatCurrency = (val: number) => {
+  return `$${val.toFixed(2)}`;
+};
+
+const { locale } = useI18n();
+
+const formatDate = (date: string | undefined) => {
+  if (!date) return "-";
+  return new Date(date).toLocaleDateString(locale.value, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};
 </script>

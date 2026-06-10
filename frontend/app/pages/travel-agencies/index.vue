@@ -99,8 +99,10 @@
 </template>
 
 <script setup lang="ts">
+import { useQuery } from "@pinia/colada";
 import type { TableColumn } from "@nuxt/ui";
-import { getApiTravelAgencies } from "~/utils/client";
+import { useI18n } from "vue-i18n";
+import { getApiTravelAgencies, deleteApiTravelAgenciesId } from "~/utils/client";
 
 const { t } = useI18n();
 
@@ -145,7 +147,10 @@ const deleteAgency = async () => {
   if (!selectedAgency.value) return;
   deleting.value = true;
   try {
-    await $fetch(`/api/travel-agencies/${selectedAgency.value.id}`, { method: "DELETE" });
+    await deleteApiTravelAgenciesId({
+      path: { id: selectedAgency.value.id },
+      requestValidator: undefined,
+    });
     deleteModalOpen.value = false;
     refetch();
   } catch (error) {

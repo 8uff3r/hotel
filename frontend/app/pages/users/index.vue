@@ -46,7 +46,7 @@
           </div>
         </template>
 
-        <template #actions-cell="{ row }">
+         <template #actions-cell="{ row }">
           <div class="flex items-center gap-2">
             <UButton variant="ghost" size="sm" :to="`/users/${row.original.id}`">
               <UIcon name="i-lucide-eye" class="h-4 w-4" />
@@ -54,8 +54,13 @@
             <UButton variant="ghost" size="sm" :to="`/users/${row.original.id}/edit`">
               <UIcon name="i-lucide-pencil" class="h-4 w-4" />
             </UButton>
-            <UButton variant="ghost" size="sm" color="error" @click="confirmDelete(row.original)">
-              <UIcon name="i-lucide-trash-2" class="h-4 w-4" />
+            <UButton
+              variant="ghost"
+              size="sm"
+              :color="row.original.status === 'active' ? 'error' : 'success'"
+              @click="toggleUserStatus(row.original)"
+            >
+              <UIcon :name="row.original.status === 'active' ? 'i-lucide-user-x' : 'i-lucide-user-check'" class="h-4 w-4" />
             </UButton>
           </div>
         </template>
@@ -70,30 +75,17 @@
       </template>
     </UCard>
 
-    <UModal v-model="deleteModalOpen">
-      <template #header>
-        <h2 class="text-lg font-semibold">{{ t("actions.confirmDelete") }}</h2>
-      </template>
-      <template #body>
-        <p>{{ t("users.confirmDelete", { name: selectedUser?.firstName }) }}</p>
-      </template>
-      <template #footer>
-        <div class="flex justify-end gap-3">
-          <UButton variant="outline" @click="deleteModalOpen = false">{{
-            t("actions.cancel")
-          }}</UButton>
-          <UButton color="error" :loading="deleting" @click="deleteUser">{{
-            t("actions.delete")
-          }}</UButton>
-        </div>
-      </template>
-    </UModal>
+
   </div>
 </template>
 
 <script setup lang="ts">
+import { useToast } from "@nuxt/ui/composables";
+import { useI18n } from "vue-i18n";
+import { PERMISSIONS } from "~/utils/permissions.gen";
 import type { TableColumn } from "@nuxt/ui";
 import type { PaginatedResponseModelsSanitizedUser } from "~/utils/client";
+import { getApiUsers } from "~/utils/client";
 
 definePageMeta({
   requiresPermission: PERMISSIONS.users.users.read,
@@ -114,8 +106,7 @@ const sourceUsers = ref<User[]>([]);
 const users = ref<User[]>([]);
 const loading = ref(false);
 
-const deleting = ref(false);
-const deleteModalOpen = ref(false);
+const toggling = ref(false);
 const selectedUser = ref<User | null>(null);
 
 const filters = reactive({
@@ -145,7 +136,7 @@ const debouncedSearch = () => {
 const fetchUsers = async () => {
   loading.value = true;
   try {
-    const response = await getApiUsers({});
+    const response = await getApiUsers({ requestValidator: undefined });
     sourceUsers.value = response.data?.data ?? [];
     applyFilters();
   } catch (error) {
@@ -160,25 +151,25 @@ const clearFilters = () => {
   applyFilters();
 };
 
-const confirmDelete = (user: User) => {
+const toggleUserStatus = async (user: User) => {
   selectedUser.value = user;
-  deleteModalOpen.value = true;
-};
-
-const deleteUser = async () => {
-  if (!selectedUser.value) return;
-
-  deleting.value = true;
+  toggling.value = true;
+  const newStatus = user.status === "active" ? "inactive" : "active";
   try {
-    await $fetch(`/api/users/${selectedUser.value.id}`, { method: "DELETE" });
-    deleteModalOpen.value = false;
-    toast.add({ title: t("users.deleted"), color: "success" });
+    await $fetch(`/api/users/${user.id}`, {
+      method: "PUT",
+      body: { status: newStatus },
+    });
+    toast.add({
+      title: newStatus === "active" ? t("users.activated") : t("users.deactivated"),
+      color: "success",
+    });
     await fetchUsers();
   } catch (error) {
-    console.error("Failed to delete user:", error);
-    toast.add({ title: t("users.deleteFailed"), color: "error" });
+    console.error("Failed to toggle user status:", error);
+    toast.add({ title: t("users.statusToggleFailed"), color: "error" });
   } finally {
-    deleting.value = false;
+    toggling.value = false;
   }
 };
 

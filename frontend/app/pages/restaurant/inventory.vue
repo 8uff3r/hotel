@@ -164,6 +164,12 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
 import { useAuthStore } from "~/stores/auth";
+import {
+  getApiRestaurantInventory,
+  postApiRestaurantInventory,
+  putApiRestaurantInventoryId,
+  deleteApiRestaurantInventoryId,
+} from "~/utils/client";
 import type { PaginatedResponseModelsInventoryItem, InventoryItem } from "~/utils/client";
 
 definePageMeta({
@@ -226,20 +232,17 @@ const {
   data: itemsData,
   pending,
   refresh: fetchItems,
-} = useAsyncData(
+} = useAsyncData<InventoryItem[]>(
   "inventory-items",
   async () => {
     const params: any = { page: pagination.page, limit: pagination.limit };
     if (filters.search) params.search = filters.search;
     if (filters.category) params.category = filters.category;
 
-    const response = await $fetch<PaginatedResponseModelsInventoryItem>(
-      "/api/restaurant/inventory",
-      { query: params }
-    );
-    pagination.total = response.total ?? 0;
-    pagination.totalPages = response.totalPages ?? 0;
-    return response.data?.data;
+    const response = await getApiRestaurantInventory({ query: params });
+    pagination.total = response.data?.total ?? 0;
+    pagination.totalPages = response.data?.totalPages ?? 0;
+    return (response.data?.data ?? []) as InventoryItem[];
   },
   { watch: [() => pagination.page] }
 );
@@ -284,10 +287,20 @@ const openEditModal = (item: InventoryItem) => {
 const saveItem = async () => {
   saving.value = true;
   try {
+    const body = {
+      name: form.name,
+      category: form.category ? { slug: form.category } : undefined,
+      unit: form.unit ? { slug: form.unit } : undefined,
+      quantity: form.quantity,
+      unitCost: form.unitCost,
+      reorderLevel: form.reorderLevel,
+      description: form.description,
+      isActive: form.isActive,
+    };
     if (isEditing.value) {
-      await $fetch(`/api/restaurant/inventory/${form.id}`, { method: "PUT", body: form });
+      await putApiRestaurantInventoryId({ path: { id: String(form.id) }, body });
     } else {
-      await $fetch("/api/restaurant/inventory", { method: "POST", body: form });
+      await postApiRestaurantInventory({ body });
     }
     modalOpen.value = false;
     await fetchItems();
@@ -311,7 +324,7 @@ const deleteItem = async () => {
   if (!selectedItem.value) return;
   deleting.value = true;
   try {
-    await $fetch(`/api/restaurant/inventory/${selectedItem.value.id}`, { method: "DELETE" });
+    await deleteApiRestaurantInventoryId({ path: { id: String(selectedItem.value.id) } });
     deleteModalOpen.value = false;
     await fetchItems();
   } catch (error) {

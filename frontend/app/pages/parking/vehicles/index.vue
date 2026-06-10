@@ -61,8 +61,8 @@
         </template>
 
         <template #vehicleType-cell="{ row }">
-          <UBadge :color="getTypeColor(row.original.vehicleType) as any" variant="soft">
-            {{ row.original.vehicleType }}
+          <UBadge :color="getTypeColor(row.original.vehicle?.slug) as any" variant="soft">
+            {{ row.original.vehicle?.label }}
           </UBadge>
         </template>
 
@@ -124,16 +124,18 @@
 
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
+import { getApiParkingVehicles, deleteApiParkingVehiclesId } from "~/utils/client";
+import type { Guest, PaginatedResponseModelsVehicle } from "~/utils/client";
 
 interface Vehicle {
-  id: number;
-  licensePlate: string;
-  guestId: number | null;
-  vehicleType: string;
-  make: string | null;
-  model: string | null;
-  color: string | null;
-  isRegistered: number;
+  id?: number;
+  licensePlate?: string;
+  guestId?: number | null;
+  vehicle?: { id?: number; label?: string; slug?: string };
+  make?: string | null;
+  model?: string | null;
+  color?: string | null;
+  isRegistered?: boolean;
 }
 
 const vehicles = ref<Vehicle[]>([]);
@@ -188,34 +190,34 @@ const debouncedSearch = () => {
 
 const fetchGuests = async () => {
   try {
-    const res = await $fetch("/api/guests");
-    guests.value = res.data;
+    const res = await $fetch<{ data?: Guest[] }>("/api/guests");
+    guests.value = res.data ?? [];
   } catch (error) {
     console.error("Failed to fetch guests:", error);
   }
 };
 
-const getGuestName = (guestId: number | null) => {
+const getGuestName = (guestId: number | null | undefined) => {
   if (!guestId) return "-";
   const guest = guests.value.find((g) => g.id === guestId);
-  return guest ? `${guest.firstName} ${guest.lastName}` : "-";
+  return guest ? `${guest.firstName ?? ""} ${guest.lastName ?? ""}` : "-";
 };
 
 const fetchVehicles = async () => {
   loading.value = true;
   try {
-    const params = new URLSearchParams();
-    params.append("page", pagination.page.toString());
-    params.append("limit", pagination.limit.toString());
-
-    if (filters.search) params.append("search", filters.search);
+    const query: Record<string, any> = {
+      page: pagination.page.toString(),
+      limit: pagination.limit.toString(),
+    };
+    if (filters.search) query.search = filters.search;
     if (filters.vehicleType && filters.vehicleType !== "all")
-      params.append("vehicleType", filters.vehicleType);
+      query.vehicleType = filters.vehicleType;
 
-    const response = await $fetch(`/api/parking/vehicles?${params.toString()}`);
-    vehicles.value = response.data?.data;
-    pagination.total = response.pagination.total ?? 0;
-    pagination.totalPages = response.pagination.totalPages ?? 0;
+    const response = await getApiParkingVehicles({ query });
+    vehicles.value = response.data?.data ?? [];
+    pagination.total = response.data?.total ?? 0;
+    pagination.totalPages = response.data?.totalPages ?? 0;
   } catch (error) {
     console.error("Failed to fetch vehicles:", error);
   } finally {
@@ -240,7 +242,7 @@ const deleteVehicle = async () => {
 
   deleting.value = true;
   try {
-    await $fetch(`/api/parking/vehicles/${selectedVehicle.value.id}`, { method: "DELETE" });
+    await deleteApiParkingVehiclesId({ path: { id: String(selectedVehicle.value.id) } });
     deleteModalOpen.value = false;
     await fetchVehicles();
   } catch (error) {
@@ -250,7 +252,7 @@ const deleteVehicle = async () => {
   }
 };
 
-const getTypeColor = (type: string) => {
+const getTypeColor = (type: string | undefined) => {
   const colors: Record<string, string> = {
     car: "primary",
     motorcycle: "info",
@@ -258,7 +260,7 @@ const getTypeColor = (type: string) => {
     van: "success",
     other: "neutral",
   };
-  return colors[type] || "neutral";
+  return colors[type ?? ""] || "neutral";
 };
 
 onMounted(() => {

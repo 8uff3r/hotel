@@ -79,9 +79,12 @@
 </template>
 
 <script setup lang="ts">
+import { postApiParkingVehicles } from "~/utils/client";
+import type { Guest } from "~/utils/client";
+
 const form = reactive({
   licensePlate: "",
-  guestId: "",
+  guestId: undefined as number | undefined,
   vehicleType: "car",
   make: "",
   model: "",
@@ -90,7 +93,7 @@ const form = reactive({
   notes: "",
 });
 
-const guestOptions = ref<{ value: string; label: string }[]>([]);
+const guestOptions = ref<{ value: number; label: string }[]>([]);
 const { t } = useI18n();
 const loading = ref(false);
 const router = useRouter();
@@ -105,10 +108,10 @@ const typeOptions = [
 
 const fetchGuests = async () => {
   try {
-    const res = await $fetch("/api/guests");
-    guestOptions.value = (res.data as any[]).map((g) => ({
-      value: g.id.toString(),
-      label: `${g.firstName} ${g.lastName}`,
+    const res = await $fetch<{ data?: Guest[] }>("/api/guests");
+    guestOptions.value = (res.data ?? []).map((g) => ({
+      value: g.id ?? 0,
+      label: `${g.firstName ?? ""} ${g.lastName ?? ""}`,
     }));
   } catch (error) {
     console.error("Failed to fetch guests:", error);
@@ -118,18 +121,18 @@ const fetchGuests = async () => {
 const createVehicle = async () => {
   loading.value = true;
   try {
-    await $fetch("/api/parking/vehicles", {
-      method: "POST",
+    await postApiParkingVehicles({
+      requestValidator: undefined,
       body: {
         licensePlate: form.licensePlate.toUpperCase(),
-        guestId: form.guestId ? parseInt(form.guestId) : null,
-        vehicleType: form.vehicleType,
-        make: form.make || null,
-        model: form.model || null,
-        color: form.color || null,
+        guestId: form.guestId,
+        vehicle: { slug: form.vehicleType },
+        make: form.make || undefined,
+        model: form.model || undefined,
+        color: form.color || undefined,
         isRegistered: form.isRegistered,
-        notes: form.notes || null,
-      },
+        notes: form.notes || undefined,
+      } as any,
     });
     router.push("/parking/vehicles");
   } catch (error) {

@@ -246,6 +246,8 @@
     "cheque": { "fa": "چک", "en": "Cheque" },
     "credit": { "fa": "اعتباری", "en": "Credit" },
     "online": { "fa": "اینترنتی", "en": "Online" },
+    "contracting_party": { "fa": "طرف قرارداد", "en": "Contracting Party" },
+    "agency": { "fa": "آژانس", "en": "Agency" },
     "other": { "fa": "سایر", "en": "Other" }
   },
 

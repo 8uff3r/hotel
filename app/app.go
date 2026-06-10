@@ -22,6 +22,7 @@ import (
 	"hotel/internal/httpapi/admins"
 	"hotel/internal/httpapi/auth"
 	"hotel/internal/httpapi/common"
+	"hotel/internal/httpapi/dashboard"
 	"hotel/internal/httpapi/guests"
 	"hotel/internal/httpapi/hotels"
 	"hotel/internal/httpapi/parking"
@@ -130,6 +131,8 @@ func New(cfg config.Config) (*App, error) {
 		"/rooms":           rooms.RoomsModule{},
 		"/guests":          guests.GuestsModule{},
 		"/parking":         parking.ParkingModule{},
+		"/stays":           stays.StaysModule{},
+		"/services":        services.ServicesModule{},
 		"/accounting":      accounting.AccountingModule{},
 		"/reservation":     reservation.ReservationModule{},
 		"/hotels":          hotels.HotelsModule{},
@@ -137,10 +140,9 @@ func New(cfg config.Config) (*App, error) {
 		"/sana":            sanahttp.New(database, cfg.Sana),
 		"/restaurant":      restaurant.RestaurantModule{},
 		"/common":          common.CommonModule{},
+		"/dashboard":       dashboard.DashboardModule{},
 		"/travel-agencies": travelagency.TravelAgencyModule{},
 		"/admins":          admins.AdminsModule{},
-		"/stays":           stays.StaysModule{},
-		"/services":        services.ServicesModule{},
 	})
 
 	spaGroup := fuego.Group(srv, "/")
@@ -148,6 +150,7 @@ func New(cfg config.Config) (*App, error) {
 
 	jobsCtx, cancel := context.WithCancel(context.Background())
 	go cleanupExpiredSessions(jobsCtx, database, logger)
+	go nightAuditJob(jobsCtx, database, logger)
 
 	return &App{cfg: cfg, db: database, server: srv, logger: logger, stopJobs: cancel}, nil
 }
@@ -216,6 +219,7 @@ func ensureAdmin(db *gorm.DB, cfg config.Config) error {
 			PasswordHash: string(hash),
 			FirstName:    cfg.SeedAdminFName,
 			LastName:     cfg.SeedAdminLName,
+			HotelID:      cfg.SeedHotelCodeName,
 			IsActive:     true,
 		}
 		if err := db.Create(&user).Error; err != nil {
@@ -326,6 +330,90 @@ func expireUnpaidReservations(db *gorm.DB, logger *slog.Logger) error {
 		logger.Info("expired reservations", "count", res.RowsAffected)
 	}
 	return nil
+}
+
+func nightAuditJob(ctx context.Context, db *gorm.DB, logger *slog.Logger) {
+	ticker := time.NewTicker(1 * time.Hour)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-ticker.C:
+			now := time.Now()
+			// Only run at night audit hour (default 03:00)
+			if now.Hour() != 3 {
+				continue
+			}
+
+			// Find all hotels and their night audit settings
+			var hotels []models.Hotel
+			if err := db.Find(&hotels).Error; err != nil {
+				logger.Warn("night audit: fetch hotels failed", "err", err.Error())
+				continue
+			}
+
+			for _, hotel := range hotels {
+				var settings models.HotelSetting
+				if err := db.Where("hotel_id = ?", hotel.ID).First(&settings).Error; err != nil {
+					continue
+				}
+
+				// Parse night audit hour
+				auditHour := 3
+				if settings.NightAuditHour != "" {
+					if h, err := time.Parse("15:04", settings.NightAuditHour); err == nil {
+						auditHour = h.Hour()
+					}
+				}
+
+				if now.Hour() != auditHour {
+					continue
+				}
+
+				// Night audit logic:
+				// 1. Mark no-show guests for stays that passed scheduled departure
+				var noShowStatus models.StayStatus
+				if err := db.Where("slug = ?", "no_show").First(&noShowStatus).Error; err == nil {
+					var waitingStatus models.StayStatus
+					if err := db.Where("slug = ?", "waiting").First(&waitingStatus).Error; err == nil {
+						res := db.Model(&models.Stay{}).
+							Where("hotel_id = ? AND status_id = ? AND scheduled_departure_date < ?", hotel.ID, waitingStatus.ID, now.UTC()).
+							Update("status_id", noShowStatus.ID)
+						if res.Error != nil {
+							logger.Warn("night audit: mark no-show failed", "err", res.Error.Error())
+						}
+						if res.RowsAffected > 0 {
+							logger.Info("night audit: marked no-show stays", "hotel", hotel.ID, "count", res.RowsAffected)
+						}
+					}
+				}
+
+				// 2. Set rooms of checked-out stays to cleaning if not already handled
+				var checkedOutStatus models.StayStatus
+				if err := db.Where("slug = ?", "checked_out").First(&checkedOutStatus).Error; err == nil {
+					var cleaningStatus models.RoomStatus
+					if err := db.Where("slug = ?", "cleaning").First(&cleaningStatus).Error; err == nil {
+						// Find rooms with checked-out stays that haven't been updated yet
+						var stays []models.Stay
+						if err := db.Where("hotel_id = ? AND status_id = ? AND actual_check_out IS NOT NULL", hotel.ID, checkedOutStatus.ID).
+							Find(&stays).Error; err == nil {
+							for _, stay := range stays {
+								// Check if room is still occupied
+								var activeStayCount int64
+								db.Model(&models.Stay{}).
+									Where("room_id = ? AND status_id IN (SELECT id FROM stay_statuses WHERE slug IN ('waiting', 'resident'))", stay.RoomID).
+									Count(&activeStayCount)
+								if activeStayCount == 0 {
+									db.Model(&models.Room{}).Where("id = ?", stay.RoomID).Update("status_id", cleaningStatus.ID)
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 type ModuleRouter interface {

@@ -61,14 +61,14 @@
         </template>
 
         <template #spotType-cell="{ row }">
-          <UBadge :color="getSpotTypeColor(row.original.spotType) as any" variant="soft">
-            {{ row.original.spotType }}
+          <UBadge :color="getSpotTypeColor(row.original.spotType?.slug) as any" variant="soft">
+            {{ row.original.spotType?.label }}
           </UBadge>
         </template>
 
         <template #status-cell="{ row }">
-          <UBadge :color="getStatusColor(row.original.status) as any" variant="soft">
-            {{ row.original.status }}
+          <UBadge :color="getStatusColor(row.original.status?.slug) as any" variant="soft">
+            {{ row.original.status?.label }}
           </UBadge>
         </template>
 
@@ -128,15 +128,17 @@
 
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
+import { getApiParkingLots, getApiParkingSpots, deleteApiParkingSpotsId } from "~/utils/client";
+import type { ParkingLot, PaginatedResponseModelsParkingSpot } from "~/utils/client";
 
 interface Spot {
-  id: number;
-  lotId: number | null;
-  spotNumber: string;
-  floor: string | null;
-  spotType: string;
-  status: string;
-  isCovered: boolean;
+  id?: number;
+  lotId?: number | null;
+  spotNumber?: string;
+  floor?: string | null;
+  spotType?: { id?: number; label?: string; slug?: string };
+  status?: { colorHex?: string; id?: number; label?: string; slug?: string };
+  isCovered?: boolean;
 }
 
 const spots = ref<Spot[]>([]);
@@ -181,18 +183,18 @@ const lotOptions = ref<{ value: string; label: string }[]>([]);
 
 const fetchLots = async () => {
   try {
-    const res = await $fetch("/api/parking/lots");
-    lots.value = res.data;
+    const res = await getApiParkingLots();
+    lots.value = res.data?.data ?? [];
     lotOptions.value = [
       { value: "all", label: t("parking.all_lots") },
-      ...lots.value.map((l: any) => ({ value: l.id.toString(), label: l.name })),
+      ...lots.value.map((l) => ({ value: String(l.id ?? ""), label: l.name ?? "" })),
     ];
   } catch (error) {
     console.error("Failed to fetch lots:", error);
   }
 };
 
-const getLotName = (lotId: number | null) => {
+const getLotName = (lotId: number | null | undefined) => {
   if (!lotId) return "-";
   const lot = lots.value.find((l) => l.id === lotId);
   return lot?.name || "-";
@@ -201,17 +203,17 @@ const getLotName = (lotId: number | null) => {
 const fetchSpots = async () => {
   loading.value = true;
   try {
-    const params = new URLSearchParams();
-    params.append("page", pagination.page.toString());
-    params.append("limit", pagination.limit.toString());
+    const query: Record<string, any> = {
+      page: pagination.page.toString(),
+      limit: pagination.limit.toString(),
+    };
+    if (filters.lotId && filters.lotId !== "all") query.lotId = filters.lotId;
+    if (filters.status && filters.status !== "all") query.status = filters.status;
 
-    if (filters.lotId && filters.lotId !== "all") params.append("lotId", filters.lotId);
-    if (filters.status && filters.status !== "all") params.append("status", filters.status);
-
-    const response = await $fetch(`/api/parking/spots?${params.toString()}`);
-    spots.value = response.data?.data;
-    pagination.total = response.pagination.total ?? 0;
-    pagination.totalPages = response.pagination.totalPages ?? 0;
+    const response = await getApiParkingSpots({ query });
+    spots.value = response.data?.data ?? [];
+    pagination.total = response.data?.total ?? 0;
+    pagination.totalPages = response.data?.totalPages ?? 0;
   } catch (error) {
     console.error("Failed to fetch spots:", error);
   } finally {
@@ -236,7 +238,7 @@ const deleteSpot = async () => {
 
   deleting.value = true;
   try {
-    await $fetch(`/api/parking/spots/${selectedSpot.value.id}`, { method: "DELETE" });
+    await deleteApiParkingSpotsId({ path: { id: String(selectedSpot.value.id) } });
     deleteModalOpen.value = false;
     await fetchSpots();
   } catch (error) {
@@ -246,17 +248,17 @@ const deleteSpot = async () => {
   }
 };
 
-const getStatusColor = (status: string) => {
+const getStatusColor = (status: string | undefined) => {
   const colors: Record<string, string> = {
     available: "success",
     occupied: "warning",
     reserved: "info",
     maintenance: "error",
   };
-  return colors[status] || "neutral";
+  return colors[status ?? ""] || "neutral";
 };
 
-const getSpotTypeColor = (type: string) => {
+const getSpotTypeColor = (type: string | undefined) => {
   const colors: Record<string, string> = {
     standard: "neutral",
     handicap: "primary",
@@ -264,7 +266,7 @@ const getSpotTypeColor = (type: string) => {
     compact: "info",
     large: "warning",
   };
-  return colors[type] || "neutral";
+  return colors[type ?? ""] || "neutral";
 };
 
 onMounted(() => {

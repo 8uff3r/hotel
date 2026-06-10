@@ -30,7 +30,7 @@ const (
 type Invoice struct {
 	Base
 	StayID          uint               `gorm:"not null;uniqueIndex" json:"stayId"`
-	Stay            Stay               `gorm:"foreignKey:StayID" json:"stay,omitempty"`
+	Stay            Stay               `gorm:"foreignKey:StayID" json:"-"`
 	HotelID         string             `gorm:"not null" json:"hotelId"`
 	TotalAmount     float64            `gorm:"not null;default:0" json:"totalAmount"`
 	PaidAmount      float64            `gorm:"not null;default:0" json:"paidAmount"`

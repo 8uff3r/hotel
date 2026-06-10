@@ -32,13 +32,8 @@
               </UFormField>
 
               <!-- Floor -->
-              <UFormField :label="t('rooms.floor')" name="floor">
-                <UInput
-                  v-model.number="form.floor"
-                  type="number"
-                  :placeholder="t('rooms.floorPlaceholder')"
-                  :disabled="loading"
-                />
+              <UFormField :label="t('rooms.floor')" name="floorId">
+                <HSelect v-model="form.floorId" :items="floors ?? []" :disabled="loading" />
               </UFormField>
 
               <!-- Capacity -->
@@ -140,6 +135,10 @@ const { data: statuses } = useAsyncData("room-statuses", async () => {
 const { data: types } = useAsyncData("room-types", async () => {
   const res = await getApiRoomsTypes({});
   return res.data?.data;
+});
+const { data: floors } = useAsyncData("room-floors", async () => {
+  const res = await getApiRoomsFloors({});
+  return res.data?.data?.map((f: any) => ({ ...f, label: `Floor ${f.number}${f.description ? ` - ${f.description}` : ""}` })) ?? [];
 });
 
 const toggleAmenity = (amenityId: number) => {
