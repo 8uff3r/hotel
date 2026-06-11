@@ -138,7 +138,7 @@ export const zGrantPermissionsOfTemplateToUserDto = z.object({
 export const zGuest = z.object({
     address: z.string().optional(),
     companions: z.array(z.object({
-        dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+        dateOfBirth: z.iso.datetime({ offset: true }),
         fatherName: z.string().optional(),
         firstName: z.string().optional(),
         gender: z.string().optional(),
@@ -164,7 +164,7 @@ export const zGuest = z.object({
         }).optional(),
         relationId: z.int().gte(0).optional()
     })).optional(),
-    dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+    dateOfBirth: z.iso.datetime({ offset: true }),
     email: z.string().optional(),
     fatherName: z.string().optional(),
     firstName: z.string().min(2).max(50),
@@ -255,7 +255,7 @@ export const zGuestWithReservationRequest = z.object({
     guest: z.object({
         address: z.string().optional(),
         companions: z.array(z.object({
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             fatherName: z.string().optional(),
             firstName: z.string().optional(),
             gender: z.string().optional(),
@@ -281,7 +281,7 @@ export const zGuestWithReservationRequest = z.object({
             }).optional(),
             relationId: z.int().gte(0).optional()
         })).optional(),
-        dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+        dateOfBirth: z.iso.datetime({ offset: true }),
         email: z.string().optional(),
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
@@ -351,7 +351,7 @@ export const zGuestWithReservationResponse = z.object({
     guest: z.object({
         address: z.string().optional(),
         companions: z.array(z.object({
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             fatherName: z.string().optional(),
             firstName: z.string().optional(),
             gender: z.string().optional(),
@@ -377,7 +377,7 @@ export const zGuestWithReservationResponse = z.object({
             }).optional(),
             relationId: z.int().gte(0).optional()
         })).optional(),
-        dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+        dateOfBirth: z.iso.datetime({ offset: true }),
         email: z.string().optional(),
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
@@ -432,7 +432,7 @@ export const zGuestWithReservationResponse = z.object({
         guest: z.object({
             address: z.string().optional(),
             companions: z.array(z.object({
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 fatherName: z.string().optional(),
                 firstName: z.string().optional(),
                 gender: z.string().optional(),
@@ -458,7 +458,7 @@ export const zGuestWithReservationResponse = z.object({
                 }).optional(),
                 relationId: z.int().gte(0).optional()
             })).optional(),
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             email: z.string().optional(),
             fatherName: z.string().optional(),
             firstName: z.string().min(2).max(50),
@@ -772,7 +772,7 @@ export const zIncome = z.object({
         guest: z.object({
             address: z.string().optional(),
             companions: z.array(z.object({
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 fatherName: z.string().optional(),
                 firstName: z.string().optional(),
                 gender: z.string().optional(),
@@ -798,7 +798,7 @@ export const zIncome = z.object({
                 }).optional(),
                 relationId: z.int().gte(0).optional()
             })).optional(),
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             email: z.string().optional(),
             fatherName: z.string().optional(),
             firstName: z.string().min(2).max(50),
@@ -921,7 +921,7 @@ export const zIncome = z.object({
         guest: z.object({
             address: z.string().optional(),
             companions: z.array(z.object({
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 fatherName: z.string().optional(),
                 firstName: z.string().optional(),
                 gender: z.string().optional(),
@@ -947,7 +947,7 @@ export const zIncome = z.object({
                 }).optional(),
                 relationId: z.int().gte(0).optional()
             })).optional(),
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             email: z.string().optional(),
             fatherName: z.string().optional(),
             firstName: z.string().min(2).max(50),
@@ -1038,7 +1038,7 @@ export const zIncome = z.object({
             guest: z.object({
                 address: z.string().optional(),
                 companions: z.array(z.object({
-                    dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                    dateOfBirth: z.iso.datetime({ offset: true }),
                     fatherName: z.string().optional(),
                     firstName: z.string().optional(),
                     gender: z.string().optional(),
@@ -1064,7 +1064,7 @@ export const zIncome = z.object({
                     }).optional(),
                     relationId: z.int().gte(0).optional()
                 })).optional(),
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 email: z.string().optional(),
                 fatherName: z.string().optional(),
                 firstName: z.string().min(2).max(50),
@@ -1761,7 +1761,7 @@ export const zPaginatedResponseModelsGuest = z.object({
     data: z.array(z.object({
         address: z.string().optional(),
         companions: z.array(z.object({
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             fatherName: z.string().optional(),
             firstName: z.string().optional(),
             gender: z.string().optional(),
@@ -1787,7 +1787,7 @@ export const zPaginatedResponseModelsGuest = z.object({
             }).optional(),
             relationId: z.int().gte(0).optional()
         })).optional(),
-        dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+        dateOfBirth: z.iso.datetime({ offset: true }),
         email: z.string().optional(),
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
@@ -1981,7 +1981,7 @@ export const zPaginatedResponseModelsIncome = z.object({
             guest: z.object({
                 address: z.string().optional(),
                 companions: z.array(z.object({
-                    dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                    dateOfBirth: z.iso.datetime({ offset: true }),
                     fatherName: z.string().optional(),
                     firstName: z.string().optional(),
                     gender: z.string().optional(),
@@ -2007,7 +2007,7 @@ export const zPaginatedResponseModelsIncome = z.object({
                     }).optional(),
                     relationId: z.int().gte(0).optional()
                 })).optional(),
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 email: z.string().optional(),
                 fatherName: z.string().optional(),
                 firstName: z.string().min(2).max(50),
@@ -2130,7 +2130,7 @@ export const zPaginatedResponseModelsIncome = z.object({
             guest: z.object({
                 address: z.string().optional(),
                 companions: z.array(z.object({
-                    dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                    dateOfBirth: z.iso.datetime({ offset: true }),
                     fatherName: z.string().optional(),
                     firstName: z.string().optional(),
                     gender: z.string().optional(),
@@ -2156,7 +2156,7 @@ export const zPaginatedResponseModelsIncome = z.object({
                     }).optional(),
                     relationId: z.int().gte(0).optional()
                 })).optional(),
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 email: z.string().optional(),
                 fatherName: z.string().optional(),
                 firstName: z.string().min(2).max(50),
@@ -2247,7 +2247,7 @@ export const zPaginatedResponseModelsIncome = z.object({
                 guest: z.object({
                     address: z.string().optional(),
                     companions: z.array(z.object({
-                        dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                        dateOfBirth: z.iso.datetime({ offset: true }),
                         fatherName: z.string().optional(),
                         firstName: z.string().optional(),
                         gender: z.string().optional(),
@@ -2273,7 +2273,7 @@ export const zPaginatedResponseModelsIncome = z.object({
                         }).optional(),
                         relationId: z.int().gte(0).optional()
                     })).optional(),
-                    dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                    dateOfBirth: z.iso.datetime({ offset: true }),
                     email: z.string().optional(),
                     fatherName: z.string().optional(),
                     firstName: z.string().min(2).max(50),
@@ -2831,7 +2831,7 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
         guest: z.object({
             address: z.string().optional(),
             companions: z.array(z.object({
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 fatherName: z.string().optional(),
                 firstName: z.string().optional(),
                 gender: z.string().optional(),
@@ -2857,7 +2857,7 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
                 }).optional(),
                 relationId: z.int().gte(0).optional()
             })).optional(),
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             email: z.string().optional(),
             fatherName: z.string().optional(),
             firstName: z.string().min(2).max(50),
@@ -2948,7 +2948,7 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
             guest: z.object({
                 address: z.string().optional(),
                 companions: z.array(z.object({
-                    dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                    dateOfBirth: z.iso.datetime({ offset: true }),
                     fatherName: z.string().optional(),
                     firstName: z.string().optional(),
                     gender: z.string().optional(),
@@ -2974,7 +2974,7 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
                     }).optional(),
                     relationId: z.int().gte(0).optional()
                 })).optional(),
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 email: z.string().optional(),
                 fatherName: z.string().optional(),
                 firstName: z.string().min(2).max(50),
@@ -3224,7 +3224,7 @@ export const zPaginatedResponseModelsReservation = z.object({
         guest: z.object({
             address: z.string().optional(),
             companions: z.array(z.object({
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 fatherName: z.string().optional(),
                 firstName: z.string().optional(),
                 gender: z.string().optional(),
@@ -3250,7 +3250,7 @@ export const zPaginatedResponseModelsReservation = z.object({
                 }).optional(),
                 relationId: z.int().gte(0).optional()
             })).optional(),
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             email: z.string().optional(),
             fatherName: z.string().optional(),
             firstName: z.string().min(2).max(50),
@@ -3399,7 +3399,7 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
         guest: z.object({
             address: z.string().optional(),
             companions: z.array(z.object({
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 fatherName: z.string().optional(),
                 firstName: z.string().optional(),
                 gender: z.string().optional(),
@@ -3425,7 +3425,7 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
                 }).optional(),
                 relationId: z.int().gte(0).optional()
             })).optional(),
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             email: z.string().optional(),
             fatherName: z.string().optional(),
             firstName: z.string().min(2).max(50),
@@ -3466,7 +3466,7 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
             guest: z.object({
                 address: z.string().optional(),
                 companions: z.array(z.object({
-                    dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                    dateOfBirth: z.iso.datetime({ offset: true }),
                     fatherName: z.string().optional(),
                     firstName: z.string().optional(),
                     gender: z.string().optional(),
@@ -3492,7 +3492,7 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
                     }).optional(),
                     relationId: z.int().gte(0).optional()
                 })).optional(),
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 email: z.string().optional(),
                 fatherName: z.string().optional(),
                 firstName: z.string().min(2).max(50),
@@ -3942,7 +3942,7 @@ export const zPaginatedResponseModelsStay = z.object({
         guest: z.object({
             address: z.string().optional(),
             companions: z.array(z.object({
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 fatherName: z.string().optional(),
                 firstName: z.string().optional(),
                 gender: z.string().optional(),
@@ -3968,7 +3968,7 @@ export const zPaginatedResponseModelsStay = z.object({
                 }).optional(),
                 relationId: z.int().gte(0).optional()
             })).optional(),
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             email: z.string().optional(),
             fatherName: z.string().optional(),
             firstName: z.string().min(2).max(50),
@@ -4059,7 +4059,7 @@ export const zPaginatedResponseModelsStay = z.object({
             guest: z.object({
                 address: z.string().optional(),
                 companions: z.array(z.object({
-                    dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                    dateOfBirth: z.iso.datetime({ offset: true }),
                     fatherName: z.string().optional(),
                     firstName: z.string().optional(),
                     gender: z.string().optional(),
@@ -4085,7 +4085,7 @@ export const zPaginatedResponseModelsStay = z.object({
                     }).optional(),
                     relationId: z.int().gte(0).optional()
                 })).optional(),
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 email: z.string().optional(),
                 fatherName: z.string().optional(),
                 firstName: z.string().min(2).max(50),
@@ -4292,7 +4292,7 @@ export const zPaginatedResponseModelsVehicle = z.object({
         guest: z.object({
             address: z.string().optional(),
             companions: z.array(z.object({
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 fatherName: z.string().optional(),
                 firstName: z.string().optional(),
                 gender: z.string().optional(),
@@ -4318,7 +4318,7 @@ export const zPaginatedResponseModelsVehicle = z.object({
                 }).optional(),
                 relationId: z.int().gte(0).optional()
             })).optional(),
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             email: z.string().optional(),
             fatherName: z.string().optional(),
             firstName: z.string().min(2).max(50),
@@ -4579,7 +4579,7 @@ export const zParkingTransaction = z.object({
     guest: z.object({
         address: z.string().optional(),
         companions: z.array(z.object({
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             fatherName: z.string().optional(),
             firstName: z.string().optional(),
             gender: z.string().optional(),
@@ -4605,7 +4605,7 @@ export const zParkingTransaction = z.object({
             }).optional(),
             relationId: z.int().gte(0).optional()
         })).optional(),
-        dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+        dateOfBirth: z.iso.datetime({ offset: true }),
         email: z.string().optional(),
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
@@ -4696,7 +4696,7 @@ export const zParkingTransaction = z.object({
         guest: z.object({
             address: z.string().optional(),
             companions: z.array(z.object({
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 fatherName: z.string().optional(),
                 firstName: z.string().optional(),
                 gender: z.string().optional(),
@@ -4722,7 +4722,7 @@ export const zParkingTransaction = z.object({
                 }).optional(),
                 relationId: z.int().gte(0).optional()
             })).optional(),
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             email: z.string().optional(),
             fatherName: z.string().optional(),
             firstName: z.string().min(2).max(50),
@@ -4923,7 +4923,7 @@ export const zReservation = z.object({
     guest: z.object({
         address: z.string().optional(),
         companions: z.array(z.object({
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             fatherName: z.string().optional(),
             firstName: z.string().optional(),
             gender: z.string().optional(),
@@ -4949,7 +4949,7 @@ export const zReservation = z.object({
             }).optional(),
             relationId: z.int().gte(0).optional()
         })).optional(),
-        dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+        dateOfBirth: z.iso.datetime({ offset: true }),
         email: z.string().optional(),
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
@@ -5092,7 +5092,7 @@ export const zRestaurantBill = z.object({
     guest: z.object({
         address: z.string().optional(),
         companions: z.array(z.object({
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             fatherName: z.string().optional(),
             firstName: z.string().optional(),
             gender: z.string().optional(),
@@ -5118,7 +5118,7 @@ export const zRestaurantBill = z.object({
             }).optional(),
             relationId: z.int().gte(0).optional()
         })).optional(),
-        dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+        dateOfBirth: z.iso.datetime({ offset: true }),
         email: z.string().optional(),
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
@@ -5159,7 +5159,7 @@ export const zRestaurantBill = z.object({
         guest: z.object({
             address: z.string().optional(),
             companions: z.array(z.object({
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 fatherName: z.string().optional(),
                 firstName: z.string().optional(),
                 gender: z.string().optional(),
@@ -5185,7 +5185,7 @@ export const zRestaurantBill = z.object({
                 }).optional(),
                 relationId: z.int().gte(0).optional()
             })).optional(),
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             email: z.string().optional(),
             fatherName: z.string().optional(),
             firstName: z.string().min(2).max(50),
@@ -5646,7 +5646,7 @@ export const zStay = z.object({
     guest: z.object({
         address: z.string().optional(),
         companions: z.array(z.object({
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             fatherName: z.string().optional(),
             firstName: z.string().optional(),
             gender: z.string().optional(),
@@ -5672,7 +5672,7 @@ export const zStay = z.object({
             }).optional(),
             relationId: z.int().gte(0).optional()
         })).optional(),
-        dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+        dateOfBirth: z.iso.datetime({ offset: true }),
         email: z.string().optional(),
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
@@ -5763,7 +5763,7 @@ export const zStay = z.object({
         guest: z.object({
             address: z.string().optional(),
             companions: z.array(z.object({
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 fatherName: z.string().optional(),
                 firstName: z.string().optional(),
                 gender: z.string().optional(),
@@ -5789,7 +5789,7 @@ export const zStay = z.object({
                 }).optional(),
                 relationId: z.int().gte(0).optional()
             })).optional(),
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             email: z.string().optional(),
             fatherName: z.string().optional(),
             firstName: z.string().min(2).max(50),
@@ -5995,7 +5995,7 @@ export const zVehicle = z.object({
     guest: z.object({
         address: z.string().optional(),
         companions: z.array(z.object({
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             fatherName: z.string().optional(),
             firstName: z.string().optional(),
             gender: z.string().optional(),
@@ -6021,7 +6021,7 @@ export const zVehicle = z.object({
             }).optional(),
             relationId: z.int().gte(0).optional()
         })).optional(),
-        dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+        dateOfBirth: z.iso.datetime({ offset: true }),
         email: z.string().optional(),
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
@@ -6173,7 +6173,7 @@ export const zCheckInResponse = z.object({
     guest: z.object({
         address: z.string().optional(),
         companions: z.array(z.object({
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             fatherName: z.string().optional(),
             firstName: z.string().optional(),
             gender: z.string().optional(),
@@ -6199,7 +6199,7 @@ export const zCheckInResponse = z.object({
             }).optional(),
             relationId: z.int().gte(0).optional()
         })).optional(),
-        dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+        dateOfBirth: z.iso.datetime({ offset: true }),
         email: z.string().optional(),
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
@@ -6291,7 +6291,7 @@ export const zCheckInResponse = z.object({
         guest: z.object({
             address: z.string().optional(),
             companions: z.array(z.object({
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 fatherName: z.string().optional(),
                 firstName: z.string().optional(),
                 gender: z.string().optional(),
@@ -6317,7 +6317,7 @@ export const zCheckInResponse = z.object({
                 }).optional(),
                 relationId: z.int().gte(0).optional()
             })).optional(),
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             email: z.string().optional(),
             fatherName: z.string().optional(),
             firstName: z.string().min(2).max(50),
@@ -6509,7 +6509,7 @@ export const zCreateReservationResponse = z.object({
     guest: z.object({
         address: z.string().optional(),
         companions: z.array(z.object({
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             fatherName: z.string().optional(),
             firstName: z.string().optional(),
             gender: z.string().optional(),
@@ -6535,7 +6535,7 @@ export const zCreateReservationResponse = z.object({
             }).optional(),
             relationId: z.int().gte(0).optional()
         })).optional(),
-        dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+        dateOfBirth: z.iso.datetime({ offset: true }),
         email: z.string().optional(),
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
@@ -6661,7 +6661,7 @@ export const zCreateStayResponse = z.object({
     guest: z.object({
         address: z.string().optional(),
         companions: z.array(z.object({
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             fatherName: z.string().optional(),
             firstName: z.string().optional(),
             gender: z.string().optional(),
@@ -6687,7 +6687,7 @@ export const zCreateStayResponse = z.object({
             }).optional(),
             relationId: z.int().gte(0).optional()
         })).optional(),
-        dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+        dateOfBirth: z.iso.datetime({ offset: true }),
         email: z.string().optional(),
         fatherName: z.string().optional(),
         firstName: z.string().min(2).max(50),
@@ -6778,7 +6778,7 @@ export const zCreateStayResponse = z.object({
         guest: z.object({
             address: z.string().optional(),
             companions: z.array(z.object({
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
                 fatherName: z.string().optional(),
                 firstName: z.string().optional(),
                 gender: z.string().optional(),
@@ -6804,7 +6804,7 @@ export const zCreateStayResponse = z.object({
                 }).optional(),
                 relationId: z.int().gte(0).optional()
             })).optional(),
-            dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
             email: z.string().optional(),
             fatherName: z.string().optional(),
             firstName: z.string().min(2).max(50),
@@ -7109,7 +7109,9 @@ export const zLoginResponse = z.object({
 /**
  * okResponse schema
  */
-export const zOkResponse = z.unknown();
+export const zOkResponse = z.object({
+    ok: z.boolean().optional()
+});
 
 /**
  * payInvoiceDto schema

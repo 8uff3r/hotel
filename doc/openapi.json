@@ -445,6 +445,9 @@
 									"type": "integer"
 								}
 							},
+							"required": [
+								"dateOfBirth"
+							],
 							"type": "object"
 						},
 						"nullable": true,
@@ -534,6 +537,7 @@
 					}
 				},
 				"required": [
+					"dateOfBirth",
 					"firstName",
 					"lastName",
 					"nationalityID"
@@ -820,6 +824,9 @@
 											"type": "integer"
 										}
 									},
+									"required": [
+										"dateOfBirth"
+									],
 									"type": "object"
 								},
 								"nullable": true,
@@ -909,6 +916,7 @@
 							}
 						},
 						"required": [
+							"dateOfBirth",
 							"firstName",
 							"lastName",
 							"nationalityID"
@@ -1129,6 +1137,9 @@
 											"type": "integer"
 										}
 									},
+									"required": [
+										"dateOfBirth"
+									],
 									"type": "object"
 								},
 								"nullable": true,
@@ -1218,6 +1229,7 @@
 							}
 						},
 						"required": [
+							"dateOfBirth",
 							"firstName",
 							"lastName",
 							"nationalityID"
@@ -1398,6 +1410,9 @@
 													"type": "integer"
 												}
 											},
+											"required": [
+												"dateOfBirth"
+											],
 											"type": "object"
 										},
 										"nullable": true,
@@ -1487,6 +1502,7 @@
 									}
 								},
 								"required": [
+									"dateOfBirth",
 									"firstName",
 									"lastName",
 									"nationalityID"
@@ -2487,6 +2503,9 @@
 													"type": "integer"
 												}
 											},
+											"required": [
+												"dateOfBirth"
+											],
 											"type": "object"
 										},
 										"nullable": true,
@@ -2576,6 +2595,7 @@
 									}
 								},
 								"required": [
+									"dateOfBirth",
 									"firstName",
 									"lastName",
 									"nationalityID"
@@ -2999,6 +3019,9 @@
 													"type": "integer"
 												}
 											},
+											"required": [
+												"dateOfBirth"
+											],
 											"type": "object"
 										},
 										"nullable": true,
@@ -3088,6 +3111,7 @@
 									}
 								},
 								"required": [
+									"dateOfBirth",
 									"firstName",
 									"lastName",
 									"nationalityID"
@@ -3403,6 +3427,9 @@
 															"type": "integer"
 														}
 													},
+													"required": [
+														"dateOfBirth"
+													],
 													"type": "object"
 												},
 												"nullable": true,
@@ -3492,6 +3519,7 @@
 											}
 										},
 										"required": [
+											"dateOfBirth",
 											"firstName",
 											"lastName",
 											"nationalityID"
@@ -5659,6 +5687,9 @@
 												"type": "integer"
 											}
 										},
+										"required": [
+											"dateOfBirth"
+										],
 										"type": "object"
 									},
 									"nullable": true,
@@ -5748,6 +5779,7 @@
 								}
 							},
 							"required": [
+								"dateOfBirth",
 								"firstName",
 								"lastName",
 								"nationalityID"
@@ -6381,6 +6413,9 @@
 																"type": "integer"
 															}
 														},
+														"required": [
+															"dateOfBirth"
+														],
 														"type": "object"
 													},
 													"nullable": true,
@@ -6470,6 +6505,7 @@
 												}
 											},
 											"required": [
+												"dateOfBirth",
 												"firstName",
 												"lastName",
 												"nationalityID"
@@ -6893,6 +6929,9 @@
 																"type": "integer"
 															}
 														},
+														"required": [
+															"dateOfBirth"
+														],
 														"type": "object"
 													},
 													"nullable": true,
@@ -6982,6 +7021,7 @@
 												}
 											},
 											"required": [
+												"dateOfBirth",
 												"firstName",
 												"lastName",
 												"nationalityID"
@@ -7297,6 +7337,9 @@
 																		"type": "integer"
 																	}
 																},
+																"required": [
+																	"dateOfBirth"
+																],
 																"type": "object"
 															},
 															"nullable": true,
@@ -7386,6 +7429,7 @@
 														}
 													},
 													"required": [
+														"dateOfBirth",
 														"firstName",
 														"lastName",
 														"nationalityID"
@@ -9129,6 +9173,9 @@
 														"type": "integer"
 													}
 												},
+												"required": [
+													"dateOfBirth"
+												],
 												"type": "object"
 											},
 											"nullable": true,
@@ -9218,6 +9265,7 @@
 										}
 									},
 									"required": [
+										"dateOfBirth",
 										"firstName",
 										"lastName",
 										"nationalityID"
@@ -9522,6 +9570,9 @@
 																"type": "integer"
 															}
 														},
+														"required": [
+															"dateOfBirth"
+														],
 														"type": "object"
 													},
 													"nullable": true,
@@ -9611,6 +9662,7 @@
 												}
 											},
 											"required": [
+												"dateOfBirth",
 												"firstName",
 												"lastName",
 												"nationalityID"
@@ -10401,6 +10453,9 @@
 														"type": "integer"
 													}
 												},
+												"required": [
+													"dateOfBirth"
+												],
 												"type": "object"
 											},
 											"nullable": true,
@@ -10490,6 +10545,7 @@
 										}
 									},
 									"required": [
+										"dateOfBirth",
 										"firstName",
 										"lastName",
 										"nationalityID"
@@ -10980,6 +11036,9 @@
 														"type": "integer"
 													}
 												},
+												"required": [
+													"dateOfBirth"
+												],
 												"type": "object"
 											},
 											"nullable": true,
@@ -11069,6 +11128,7 @@
 										}
 									},
 									"required": [
+										"dateOfBirth",
 										"firstName",
 										"lastName",
 										"nationalityID"
@@ -11207,6 +11267,9 @@
 																"type": "integer"
 															}
 														},
+														"required": [
+															"dateOfBirth"
+														],
 														"type": "object"
 													},
 													"nullable": true,
@@ -11296,6 +11359,7 @@
 												}
 											},
 											"required": [
+												"dateOfBirth",
 												"firstName",
 												"lastName",
 												"nationalityID"
@@ -12722,6 +12786,9 @@
 														"type": "integer"
 													}
 												},
+												"required": [
+													"dateOfBirth"
+												],
 												"type": "object"
 											},
 											"nullable": true,
@@ -12811,6 +12878,7 @@
 										}
 									},
 									"required": [
+										"dateOfBirth",
 										"firstName",
 										"lastName",
 										"nationalityID"
@@ -13126,6 +13194,9 @@
 																"type": "integer"
 															}
 														},
+														"required": [
+															"dateOfBirth"
+														],
 														"type": "object"
 													},
 													"nullable": true,
@@ -13215,6 +13286,7 @@
 												}
 											},
 											"required": [
+												"dateOfBirth",
 												"firstName",
 												"lastName",
 												"nationalityID"
@@ -13894,6 +13966,9 @@
 														"type": "integer"
 													}
 												},
+												"required": [
+													"dateOfBirth"
+												],
 												"type": "object"
 											},
 											"nullable": true,
@@ -13983,6 +14058,7 @@
 										}
 									},
 									"required": [
+										"dateOfBirth",
 										"firstName",
 										"lastName",
 										"nationalityID"
@@ -14784,6 +14860,9 @@
 											"type": "integer"
 										}
 									},
+									"required": [
+										"dateOfBirth"
+									],
 									"type": "object"
 								},
 								"nullable": true,
@@ -14873,6 +14952,7 @@
 							}
 						},
 						"required": [
+							"dateOfBirth",
 							"firstName",
 							"lastName",
 							"nationalityID"
@@ -15177,6 +15257,9 @@
 													"type": "integer"
 												}
 											},
+											"required": [
+												"dateOfBirth"
+											],
 											"type": "object"
 										},
 										"nullable": true,
@@ -15266,6 +15349,7 @@
 									}
 								},
 								"required": [
+									"dateOfBirth",
 									"firstName",
 									"lastName",
 									"nationalityID"
@@ -15915,6 +15999,9 @@
 											"type": "integer"
 										}
 									},
+									"required": [
+										"dateOfBirth"
+									],
 									"type": "object"
 								},
 								"nullable": true,
@@ -16004,6 +16091,7 @@
 							}
 						},
 						"required": [
+							"dateOfBirth",
 							"firstName",
 							"lastName",
 							"nationalityID"
@@ -16473,6 +16561,9 @@
 											"type": "integer"
 										}
 									},
+									"required": [
+										"dateOfBirth"
+									],
 									"type": "object"
 								},
 								"nullable": true,
@@ -16562,6 +16653,7 @@
 							}
 						},
 						"required": [
+							"dateOfBirth",
 							"firstName",
 							"lastName",
 							"nationalityID"
@@ -16700,6 +16792,9 @@
 													"type": "integer"
 												}
 											},
+											"required": [
+												"dateOfBirth"
+											],
 											"type": "object"
 										},
 										"nullable": true,
@@ -16789,6 +16884,7 @@
 									}
 								},
 								"required": [
+									"dateOfBirth",
 									"firstName",
 									"lastName",
 									"nationalityID"
@@ -18203,6 +18299,9 @@
 											"type": "integer"
 										}
 									},
+									"required": [
+										"dateOfBirth"
+									],
 									"type": "object"
 								},
 								"nullable": true,
@@ -18292,6 +18391,7 @@
 							}
 						},
 						"required": [
+							"dateOfBirth",
 							"firstName",
 							"lastName",
 							"nationalityID"
@@ -18607,6 +18707,9 @@
 													"type": "integer"
 												}
 											},
+											"required": [
+												"dateOfBirth"
+											],
 											"type": "object"
 										},
 										"nullable": true,
@@ -18696,6 +18799,7 @@
 									}
 								},
 								"required": [
+									"dateOfBirth",
 									"firstName",
 									"lastName",
 									"nationalityID"
@@ -19355,6 +19459,9 @@
 											"type": "integer"
 										}
 									},
+									"required": [
+										"dateOfBirth"
+									],
 									"type": "object"
 								},
 								"nullable": true,
@@ -19444,6 +19551,7 @@
 							}
 						},
 						"required": [
+							"dateOfBirth",
 							"firstName",
 							"lastName",
 							"nationalityID"
@@ -19802,6 +19910,9 @@
 											"type": "integer"
 										}
 									},
+									"required": [
+										"dateOfBirth"
+									],
 									"type": "object"
 								},
 								"nullable": true,
@@ -19891,6 +20002,7 @@
 							}
 						},
 						"required": [
+							"dateOfBirth",
 							"firstName",
 							"lastName",
 							"nationalityID"
@@ -20210,6 +20322,9 @@
 													"type": "integer"
 												}
 											},
+											"required": [
+												"dateOfBirth"
+											],
 											"type": "object"
 										},
 										"nullable": true,
@@ -20299,6 +20414,7 @@
 									}
 								},
 								"required": [
+									"dateOfBirth",
 									"firstName",
 									"lastName",
 									"nationalityID"
@@ -20928,6 +21044,9 @@
 											"type": "integer"
 										}
 									},
+									"required": [
+										"dateOfBirth"
+									],
 									"type": "object"
 								},
 								"nullable": true,
@@ -21017,6 +21136,7 @@
 							}
 						},
 						"required": [
+							"dateOfBirth",
 							"firstName",
 							"lastName",
 							"nationalityID"
@@ -21438,6 +21558,9 @@
 											"type": "integer"
 										}
 									},
+									"required": [
+										"dateOfBirth"
+									],
 									"type": "object"
 								},
 								"nullable": true,
@@ -21527,6 +21650,7 @@
 							}
 						},
 						"required": [
+							"dateOfBirth",
 							"firstName",
 							"lastName",
 							"nationalityID"
@@ -21842,6 +21966,9 @@
 													"type": "integer"
 												}
 											},
+											"required": [
+												"dateOfBirth"
+											],
 											"type": "object"
 										},
 										"nullable": true,
@@ -21931,6 +22058,7 @@
 									}
 								},
 								"required": [
+									"dateOfBirth",
 									"firstName",
 									"lastName",
 									"nationalityID"
@@ -22805,7 +22933,13 @@
 				"type": "object"
 			},
 			"okResponse": {
-				"description": "okResponse schema"
+				"description": "okResponse schema",
+				"properties": {
+					"ok": {
+						"type": "boolean"
+					}
+				},
+				"type": "object"
 			},
 			"payInvoiceDto": {
 				"description": "payInvoiceDto schema",

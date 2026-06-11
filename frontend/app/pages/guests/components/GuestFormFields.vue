@@ -21,11 +21,11 @@ const { data: countries } = useCountriesQuery();
     <UInput v-model="form.guest.lastName" :disabled="loading" />
   </UFormField>
 
-  <UFormField :label="t('guest.fatherName')" name="guest.fatherName">
+  <UFormField :label="t('guest.fatherName')" name="guest.fatherName" required>
     <UInput v-model="form.guest.fatherName" :disabled="loading" />
   </UFormField>
 
-  <UFormField :label="t('guest.nationality')" name="guest.nationalityID">
+  <UFormField :label="t('guest.nationality')" name="guest.nationalityID" required>
     <HSelectMenu
       v-model="form.guest.nationalityID"
       :items="countries ?? []"
@@ -34,7 +34,7 @@ const { data: countries } = useCountriesQuery();
     />
   </UFormField>
 
-  <UFormField :label="t('guest.gender')" name="guest.gender">
+  <UFormField :label="t('guest.gender')" name="guest.gender" required>
     <USelect
       v-model="form.guest.gender"
       class="w-full"
@@ -46,7 +46,7 @@ const { data: countries } = useCountriesQuery();
     />
   </UFormField>
 
-  <UFormField :label="t('guest.dateOfBirth')" name="guest.dateOfBirth">
+  <UFormField :label="t('guest.dateOfBirth')" name="guest.dateOfBirth" required>
     <HDate v-model="form.guest.dateOfBirth" />
   </UFormField>
 

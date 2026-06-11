@@ -29,6 +29,8 @@
                 block
               />
             </template>
+
+            <!-- SECTION: Guest -->
             <template #content>
               <div
                 class="mt-2 grid grid-cols-1 gap-6 rounded-md p-4 ring ring-accented/40 ring-inset md:grid-cols-3"
@@ -186,7 +188,12 @@ const generateRegisterNumber = () => {
   return `${y}${m}${d}-${h}${min}${s}`;
 };
 
-const form = ref<CreateRequest & { guest: NonNullable<CreateRequest["guest"]>; payment: NonNullable<CreateRequest["payment"]> }>({
+const form = ref<
+  CreateRequest & {
+    guest: NonNullable<CreateRequest["guest"]>;
+    payment: NonNullable<CreateRequest["payment"]>;
+  }
+>({
   guest: {
     gender: "male",
     firstName: "",
@@ -195,7 +202,10 @@ const form = ref<CreateRequest & { guest: NonNullable<CreateRequest["guest"]>; p
   },
   payment: {},
   companions: [],
-} as unknown as CreateRequest & { guest: NonNullable<CreateRequest["guest"]>; payment: NonNullable<CreateRequest["payment"]> });
+} as unknown as CreateRequest & {
+  guest: NonNullable<CreateRequest["guest"]>;
+  payment: NonNullable<CreateRequest["payment"]>;
+});
 
 watch(reservationSectionOpen, (open) => {
   if (open && !form.value.reservation) {

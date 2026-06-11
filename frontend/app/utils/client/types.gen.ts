@@ -140,7 +140,7 @@ export type GrantPermissionsOfTemplateToUserDto = {
 export type Guest = {
     address?: string;
     companions?: Array<{
-        dateOfBirth?: string;
+        dateOfBirth: string;
         fatherName?: string;
         firstName?: string;
         gender?: string;
@@ -166,7 +166,7 @@ export type Guest = {
         };
         relationId?: number;
     }>;
-    dateOfBirth?: string;
+    dateOfBirth: string;
     email?: string;
     fatherName?: string;
     firstName: string;
@@ -257,7 +257,7 @@ export type GuestWithReservationRequest = {
     guest?: {
         address?: string;
         companions?: Array<{
-            dateOfBirth?: string;
+            dateOfBirth: string;
             fatherName?: string;
             firstName?: string;
             gender?: string;
@@ -283,7 +283,7 @@ export type GuestWithReservationRequest = {
             };
             relationId?: number;
         }>;
-        dateOfBirth?: string;
+        dateOfBirth: string;
         email?: string;
         fatherName?: string;
         firstName: string;
@@ -353,7 +353,7 @@ export type GuestWithReservationResponse = {
     guest?: {
         address?: string;
         companions?: Array<{
-            dateOfBirth?: string;
+            dateOfBirth: string;
             fatherName?: string;
             firstName?: string;
             gender?: string;
@@ -379,7 +379,7 @@ export type GuestWithReservationResponse = {
             };
             relationId?: number;
         }>;
-        dateOfBirth?: string;
+        dateOfBirth: string;
         email?: string;
         fatherName?: string;
         firstName: string;
@@ -434,7 +434,7 @@ export type GuestWithReservationResponse = {
         guest?: {
             address?: string;
             companions?: Array<{
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 fatherName?: string;
                 firstName?: string;
                 gender?: string;
@@ -460,7 +460,7 @@ export type GuestWithReservationResponse = {
                 };
                 relationId?: number;
             }>;
-            dateOfBirth?: string;
+            dateOfBirth: string;
             email?: string;
             fatherName?: string;
             firstName: string;
@@ -797,7 +797,7 @@ export type Income = {
         guest?: {
             address?: string;
             companions?: Array<{
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 fatherName?: string;
                 firstName?: string;
                 gender?: string;
@@ -823,7 +823,7 @@ export type Income = {
                 };
                 relationId?: number;
             }>;
-            dateOfBirth?: string;
+            dateOfBirth: string;
             email?: string;
             fatherName?: string;
             firstName: string;
@@ -946,7 +946,7 @@ export type Income = {
         guest?: {
             address?: string;
             companions?: Array<{
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 fatherName?: string;
                 firstName?: string;
                 gender?: string;
@@ -972,7 +972,7 @@ export type Income = {
                 };
                 relationId?: number;
             }>;
-            dateOfBirth?: string;
+            dateOfBirth: string;
             email?: string;
             fatherName?: string;
             firstName: string;
@@ -1063,7 +1063,7 @@ export type Income = {
             guest?: {
                 address?: string;
                 companions?: Array<{
-                    dateOfBirth?: string;
+                    dateOfBirth: string;
                     fatherName?: string;
                     firstName?: string;
                     gender?: string;
@@ -1089,7 +1089,7 @@ export type Income = {
                     };
                     relationId?: number;
                 }>;
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 email?: string;
                 fatherName?: string;
                 firstName: string;
@@ -1786,7 +1786,7 @@ export type PaginatedResponseModelsGuest = {
     data?: Array<{
         address?: string;
         companions?: Array<{
-            dateOfBirth?: string;
+            dateOfBirth: string;
             fatherName?: string;
             firstName?: string;
             gender?: string;
@@ -1812,7 +1812,7 @@ export type PaginatedResponseModelsGuest = {
             };
             relationId?: number;
         }>;
-        dateOfBirth?: string;
+        dateOfBirth: string;
         email?: string;
         fatherName?: string;
         firstName: string;
@@ -2006,7 +2006,7 @@ export type PaginatedResponseModelsIncome = {
             guest?: {
                 address?: string;
                 companions?: Array<{
-                    dateOfBirth?: string;
+                    dateOfBirth: string;
                     fatherName?: string;
                     firstName?: string;
                     gender?: string;
@@ -2032,7 +2032,7 @@ export type PaginatedResponseModelsIncome = {
                     };
                     relationId?: number;
                 }>;
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 email?: string;
                 fatherName?: string;
                 firstName: string;
@@ -2155,7 +2155,7 @@ export type PaginatedResponseModelsIncome = {
             guest?: {
                 address?: string;
                 companions?: Array<{
-                    dateOfBirth?: string;
+                    dateOfBirth: string;
                     fatherName?: string;
                     firstName?: string;
                     gender?: string;
@@ -2181,7 +2181,7 @@ export type PaginatedResponseModelsIncome = {
                     };
                     relationId?: number;
                 }>;
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 email?: string;
                 fatherName?: string;
                 firstName: string;
@@ -2272,7 +2272,7 @@ export type PaginatedResponseModelsIncome = {
                 guest?: {
                     address?: string;
                     companions?: Array<{
-                        dateOfBirth?: string;
+                        dateOfBirth: string;
                         fatherName?: string;
                         firstName?: string;
                         gender?: string;
@@ -2298,7 +2298,7 @@ export type PaginatedResponseModelsIncome = {
                         };
                         relationId?: number;
                     }>;
-                    dateOfBirth?: string;
+                    dateOfBirth: string;
                     email?: string;
                     fatherName?: string;
                     firstName: string;
@@ -2856,7 +2856,7 @@ export type PaginatedResponseModelsParkingTransaction = {
         guest?: {
             address?: string;
             companions?: Array<{
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 fatherName?: string;
                 firstName?: string;
                 gender?: string;
@@ -2882,7 +2882,7 @@ export type PaginatedResponseModelsParkingTransaction = {
                 };
                 relationId?: number;
             }>;
-            dateOfBirth?: string;
+            dateOfBirth: string;
             email?: string;
             fatherName?: string;
             firstName: string;
@@ -2973,7 +2973,7 @@ export type PaginatedResponseModelsParkingTransaction = {
             guest?: {
                 address?: string;
                 companions?: Array<{
-                    dateOfBirth?: string;
+                    dateOfBirth: string;
                     fatherName?: string;
                     firstName?: string;
                     gender?: string;
@@ -2999,7 +2999,7 @@ export type PaginatedResponseModelsParkingTransaction = {
                     };
                     relationId?: number;
                 }>;
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 email?: string;
                 fatherName?: string;
                 firstName: string;
@@ -3249,7 +3249,7 @@ export type PaginatedResponseModelsReservation = {
         guest?: {
             address?: string;
             companions?: Array<{
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 fatherName?: string;
                 firstName?: string;
                 gender?: string;
@@ -3275,7 +3275,7 @@ export type PaginatedResponseModelsReservation = {
                 };
                 relationId?: number;
             }>;
-            dateOfBirth?: string;
+            dateOfBirth: string;
             email?: string;
             fatherName?: string;
             firstName: string;
@@ -3424,7 +3424,7 @@ export type PaginatedResponseModelsRestaurantBill = {
         guest?: {
             address?: string;
             companions?: Array<{
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 fatherName?: string;
                 firstName?: string;
                 gender?: string;
@@ -3450,7 +3450,7 @@ export type PaginatedResponseModelsRestaurantBill = {
                 };
                 relationId?: number;
             }>;
-            dateOfBirth?: string;
+            dateOfBirth: string;
             email?: string;
             fatherName?: string;
             firstName: string;
@@ -3491,7 +3491,7 @@ export type PaginatedResponseModelsRestaurantBill = {
             guest?: {
                 address?: string;
                 companions?: Array<{
-                    dateOfBirth?: string;
+                    dateOfBirth: string;
                     fatherName?: string;
                     firstName?: string;
                     gender?: string;
@@ -3517,7 +3517,7 @@ export type PaginatedResponseModelsRestaurantBill = {
                     };
                     relationId?: number;
                 }>;
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 email?: string;
                 fatherName?: string;
                 firstName: string;
@@ -3967,7 +3967,7 @@ export type PaginatedResponseModelsStay = {
         guest?: {
             address?: string;
             companions?: Array<{
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 fatherName?: string;
                 firstName?: string;
                 gender?: string;
@@ -3993,7 +3993,7 @@ export type PaginatedResponseModelsStay = {
                 };
                 relationId?: number;
             }>;
-            dateOfBirth?: string;
+            dateOfBirth: string;
             email?: string;
             fatherName?: string;
             firstName: string;
@@ -4084,7 +4084,7 @@ export type PaginatedResponseModelsStay = {
             guest?: {
                 address?: string;
                 companions?: Array<{
-                    dateOfBirth?: string;
+                    dateOfBirth: string;
                     fatherName?: string;
                     firstName?: string;
                     gender?: string;
@@ -4110,7 +4110,7 @@ export type PaginatedResponseModelsStay = {
                     };
                     relationId?: number;
                 }>;
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 email?: string;
                 fatherName?: string;
                 firstName: string;
@@ -4317,7 +4317,7 @@ export type PaginatedResponseModelsVehicle = {
         guest?: {
             address?: string;
             companions?: Array<{
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 fatherName?: string;
                 firstName?: string;
                 gender?: string;
@@ -4343,7 +4343,7 @@ export type PaginatedResponseModelsVehicle = {
                 };
                 relationId?: number;
             }>;
-            dateOfBirth?: string;
+            dateOfBirth: string;
             email?: string;
             fatherName?: string;
             firstName: string;
@@ -4604,7 +4604,7 @@ export type ParkingTransaction = {
     guest?: {
         address?: string;
         companions?: Array<{
-            dateOfBirth?: string;
+            dateOfBirth: string;
             fatherName?: string;
             firstName?: string;
             gender?: string;
@@ -4630,7 +4630,7 @@ export type ParkingTransaction = {
             };
             relationId?: number;
         }>;
-        dateOfBirth?: string;
+        dateOfBirth: string;
         email?: string;
         fatherName?: string;
         firstName: string;
@@ -4721,7 +4721,7 @@ export type ParkingTransaction = {
         guest?: {
             address?: string;
             companions?: Array<{
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 fatherName?: string;
                 firstName?: string;
                 gender?: string;
@@ -4747,7 +4747,7 @@ export type ParkingTransaction = {
                 };
                 relationId?: number;
             }>;
-            dateOfBirth?: string;
+            dateOfBirth: string;
             email?: string;
             fatherName?: string;
             firstName: string;
@@ -4948,7 +4948,7 @@ export type Reservation = {
     guest?: {
         address?: string;
         companions?: Array<{
-            dateOfBirth?: string;
+            dateOfBirth: string;
             fatherName?: string;
             firstName?: string;
             gender?: string;
@@ -4974,7 +4974,7 @@ export type Reservation = {
             };
             relationId?: number;
         }>;
-        dateOfBirth?: string;
+        dateOfBirth: string;
         email?: string;
         fatherName?: string;
         firstName: string;
@@ -5117,7 +5117,7 @@ export type RestaurantBill = {
     guest?: {
         address?: string;
         companions?: Array<{
-            dateOfBirth?: string;
+            dateOfBirth: string;
             fatherName?: string;
             firstName?: string;
             gender?: string;
@@ -5143,7 +5143,7 @@ export type RestaurantBill = {
             };
             relationId?: number;
         }>;
-        dateOfBirth?: string;
+        dateOfBirth: string;
         email?: string;
         fatherName?: string;
         firstName: string;
@@ -5184,7 +5184,7 @@ export type RestaurantBill = {
         guest?: {
             address?: string;
             companions?: Array<{
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 fatherName?: string;
                 firstName?: string;
                 gender?: string;
@@ -5210,7 +5210,7 @@ export type RestaurantBill = {
                 };
                 relationId?: number;
             }>;
-            dateOfBirth?: string;
+            dateOfBirth: string;
             email?: string;
             fatherName?: string;
             firstName: string;
@@ -5671,7 +5671,7 @@ export type Stay = {
     guest?: {
         address?: string;
         companions?: Array<{
-            dateOfBirth?: string;
+            dateOfBirth: string;
             fatherName?: string;
             firstName?: string;
             gender?: string;
@@ -5697,7 +5697,7 @@ export type Stay = {
             };
             relationId?: number;
         }>;
-        dateOfBirth?: string;
+        dateOfBirth: string;
         email?: string;
         fatherName?: string;
         firstName: string;
@@ -5788,7 +5788,7 @@ export type Stay = {
         guest?: {
             address?: string;
             companions?: Array<{
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 fatherName?: string;
                 firstName?: string;
                 gender?: string;
@@ -5814,7 +5814,7 @@ export type Stay = {
                 };
                 relationId?: number;
             }>;
-            dateOfBirth?: string;
+            dateOfBirth: string;
             email?: string;
             fatherName?: string;
             firstName: string;
@@ -6020,7 +6020,7 @@ export type Vehicle = {
     guest?: {
         address?: string;
         companions?: Array<{
-            dateOfBirth?: string;
+            dateOfBirth: string;
             fatherName?: string;
             firstName?: string;
             gender?: string;
@@ -6046,7 +6046,7 @@ export type Vehicle = {
             };
             relationId?: number;
         }>;
-        dateOfBirth?: string;
+        dateOfBirth: string;
         email?: string;
         fatherName?: string;
         firstName: string;
@@ -6198,7 +6198,7 @@ export type CheckInResponse = {
     guest?: {
         address?: string;
         companions?: Array<{
-            dateOfBirth?: string;
+            dateOfBirth: string;
             fatherName?: string;
             firstName?: string;
             gender?: string;
@@ -6224,7 +6224,7 @@ export type CheckInResponse = {
             };
             relationId?: number;
         }>;
-        dateOfBirth?: string;
+        dateOfBirth: string;
         email?: string;
         fatherName?: string;
         firstName: string;
@@ -6316,7 +6316,7 @@ export type CheckInResponse = {
         guest?: {
             address?: string;
             companions?: Array<{
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 fatherName?: string;
                 firstName?: string;
                 gender?: string;
@@ -6342,7 +6342,7 @@ export type CheckInResponse = {
                 };
                 relationId?: number;
             }>;
-            dateOfBirth?: string;
+            dateOfBirth: string;
             email?: string;
             fatherName?: string;
             firstName: string;
@@ -6534,7 +6534,7 @@ export type CreateReservationResponse = {
     guest?: {
         address?: string;
         companions?: Array<{
-            dateOfBirth?: string;
+            dateOfBirth: string;
             fatherName?: string;
             firstName?: string;
             gender?: string;
@@ -6560,7 +6560,7 @@ export type CreateReservationResponse = {
             };
             relationId?: number;
         }>;
-        dateOfBirth?: string;
+        dateOfBirth: string;
         email?: string;
         fatherName?: string;
         firstName: string;
@@ -6686,7 +6686,7 @@ export type CreateStayResponse = {
     guest?: {
         address?: string;
         companions?: Array<{
-            dateOfBirth?: string;
+            dateOfBirth: string;
             fatherName?: string;
             firstName?: string;
             gender?: string;
@@ -6712,7 +6712,7 @@ export type CreateStayResponse = {
             };
             relationId?: number;
         }>;
-        dateOfBirth?: string;
+        dateOfBirth: string;
         email?: string;
         fatherName?: string;
         firstName: string;
@@ -6803,7 +6803,7 @@ export type CreateStayResponse = {
         guest?: {
             address?: string;
             companions?: Array<{
-                dateOfBirth?: string;
+                dateOfBirth: string;
                 fatherName?: string;
                 firstName?: string;
                 gender?: string;
@@ -6829,7 +6829,7 @@ export type CreateStayResponse = {
                 };
                 relationId?: number;
             }>;
-            dateOfBirth?: string;
+            dateOfBirth: string;
             email?: string;
             fatherName?: string;
             firstName: string;
@@ -7134,7 +7134,9 @@ export type LoginResponse = {
 /**
  * okResponse schema
  */
-export type OkResponse = unknown;
+export type OkResponse = {
+    ok?: boolean;
+};
 
 /**
  * payInvoiceDto schema

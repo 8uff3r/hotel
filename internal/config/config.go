@@ -2,9 +2,12 @@ package config
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
 type SanaConfig struct {
@@ -37,6 +40,10 @@ type Config struct {
 }
 
 func Load() (Config, error) {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	cfg := Config{
 		Addr:              getEnv("APP_ADDR", ":8080"),
 		DBPath:            getEnv("DB_PATH", "postgres://hotel_user:hotel_password@localhost:5432/hotel_db?sslmode=disable"),

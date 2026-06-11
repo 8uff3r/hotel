@@ -60,8 +60,14 @@ func (c *Client) baseParams() map[string]string {
 }
 
 func parseAnavinResponse(body []byte) ([]AnavinItem, error) {
+	var outer OuterXML
+	err := xml.Unmarshal(body, &outer)
+	if err != nil {
+		return nil, err
+	}
+
 	var result AnavinResponse
-	err := xml.Unmarshal(body, &result)
+	err = xml.Unmarshal([]byte(outer.Content), &result)
 	if err != nil {
 		return nil, err
 	}

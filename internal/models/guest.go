@@ -25,7 +25,7 @@ type Guest struct {
 	IDNumber     string    `json:"idNumber"`
 	Passport     string    `json:"passport"`
 	Gender       string    `json:"gender"`
-	DateOfBirth  time.Time `json:"dateOfBirth"`
+	DateOfBirth  time.Time `json:"dateOfBirth" validate:"required"`
 	PlaceOfBirth string    `json:"placeOfBirth"`
 	Phone        string    `json:"phone"`
 	Telephone    string    `json:"telephone"`
@@ -59,7 +59,7 @@ type GuestCompanion struct {
 	Gender      string             `json:"gender"`
 	RelationID  uint               `gorm:"not null" json:"relationId"`
 	Relation    FamilyRelationship `gorm:"foreignKey:RelationID" json:"relation,omitzero"`
-	DateOfBirth time.Time          `json:"dateOfBirth"`
+	DateOfBirth time.Time          `json:"dateOfBirth" validate:"required"`
 	Phone       string             `json:"phone"`
 	Mobile      string             `json:"mobile"`
 

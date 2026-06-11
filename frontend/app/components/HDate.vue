@@ -35,6 +35,7 @@ watch(value, (nv) => {
   emit("update:modelValue", nv?.toDate("UTC").toISOString());
 });
 const updatePlaceholder = (month: number, year: number) => {
+  if (!year || !month) return;
   value.value = toCalendarDate(new CalendarDate(calendar, year, month, 1));
 };
 const formatter = useDateFormatter("fa");
@@ -54,7 +55,8 @@ const formatter = useDateFormatter("fa");
     <template #content>
       <div class="flex flex-col p-2">
         <div class="flex w-full flex-row justify-between gap-3" v-if="value">
-          <USelect
+          {{ value }}
+          <USelectMenu
             class="w-1/2"
             :items="
               createDecade({
@@ -70,7 +72,7 @@ const formatter = useDateFormatter("fa");
               }
             "
           />
-          <USelect
+          <USelectMenu
             class="w-1/2"
             label-key="label"
             value-key="key"

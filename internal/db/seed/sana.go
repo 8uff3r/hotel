@@ -2,6 +2,7 @@ package seed
 
 import (
 	"fmt"
+
 	"hotel/internal/config"
 	"hotel/internal/models"
 	"hotel/internal/sana"
@@ -39,8 +40,9 @@ func seedTravelReasons(db *gorm.DB, client *sana.Client) {
 	var reasons []models.TravelReason
 	for _, item := range items {
 		reasons = append(reasons, models.TravelReason{
-			SanaID:   item.ID,
-			SanaName: item.Name,
+			TranslateBase: models.TranslateBase{Translation: models.Translation{"fa": item.Name}},
+			SanaID:        item.ID,
+			SanaName:      item.Name,
 		})
 	}
 
@@ -60,8 +62,9 @@ func seedFamilyRelationships(db *gorm.DB, client *sana.Client) {
 	var relationships []models.FamilyRelationship
 	for _, item := range items {
 		relationships = append(relationships, models.FamilyRelationship{
-			SanaID:   item.ID,
-			SanaName: item.Name,
+			TranslateBase: models.TranslateBase{Translation: models.Translation{"fa": item.Name}},
+			SanaID:        item.ID,
+			SanaName:      item.Name,
 		})
 	}
 
@@ -81,8 +84,9 @@ func seedNationalities(db *gorm.DB, client *sana.Client) {
 	var nationalities []models.Nationality
 	for _, item := range items {
 		nationalities = append(nationalities, models.Nationality{
-			SanaID:   item.ID,
-			SanaName: item.Name,
+			TranslateBase: models.TranslateBase{Translation: models.Translation{"fa": item.Name}},
+			SanaID:        item.ID,
+			SanaName:      item.Name,
 		})
 	}
 
@@ -102,9 +106,10 @@ func seedIranianCities(db *gorm.DB, client *sana.Client) {
 	var cities []models.SanaCity
 	for _, item := range items {
 		cities = append(cities, models.SanaCity{
-			SanaID:   item.ID,
-			SanaName: item.Name,
-			IsIran:   true,
+			TranslateBase: models.TranslateBase{Translation: models.Translation{"fa": item.Name}},
+			SanaID:        item.ID,
+			SanaName:      item.Name,
+			IsIran:        true,
 		})
 	}
 
@@ -124,9 +129,10 @@ func seedForeignCities(db *gorm.DB, client *sana.Client) {
 	var cities []models.SanaCity
 	for _, item := range items {
 		cities = append(cities, models.SanaCity{
-			SanaID:   item.ID,
-			SanaName: item.Name,
-			IsIran:   false,
+			TranslateBase: models.TranslateBase{Translation: models.Translation{"fa": item.Name}},
+			SanaID:        item.ID,
+			SanaName:      item.Name,
+			IsIran:        false,
 		})
 	}
 
@@ -146,8 +152,9 @@ func seedOccupations(db *gorm.DB, client *sana.Client) {
 	var occupations []models.Occupation
 	for _, item := range items {
 		occupations = append(occupations, models.Occupation{
-			SanaID:   item.ID,
-			SanaName: item.Name,
+			TranslateBase: models.TranslateBase{Translation: models.Translation{"fa": item.Name}},
+			SanaID:        item.ID,
+			SanaName:      item.Name,
 		})
 	}
 

@@ -32,6 +32,9 @@ func Seed(db *gorm.DB, cfg config.Config) {
 	if err := db.AutoMigrate(models.AllForDB()...); err != nil {
 		panic(fmt.Sprintf("auto migrate: %s", err))
 	}
+
+	seedSanaReferenceData(db, cfg)
+
 	seedAmenities(db)
 	seedParkingSpotStatuses(db)
 	seedParkingSpotTypes(db)
@@ -46,7 +49,6 @@ func Seed(db *gorm.DB, cfg config.Config) {
 	seedPermissions(db)
 	seedPermissionTemplates(db)
 	seedCountries(db)
-	seedSanaReferenceData(db, cfg)
 	seedRestaurantReferenceData(db)
 	seedAllReferenceData(db)
 	seedReservationStatuses(db)
@@ -135,11 +137,11 @@ func seedRoomStatuses(db *gorm.DB) {
 	t := Translations["room-status"]
 
 	statuses := []models.RoomStatus{
-		{TranslateBase: models.TranslateBase{Slug: "available", Translation: t["available"]}, ColorHex: "2ECC71"},     // green
-		{TranslateBase: models.TranslateBase{Slug: "occupied", Translation: t["occupied"]}, ColorHex: "E74C3C"},       // red
-		{TranslateBase: models.TranslateBase{Slug: "reserved", Translation: t["reserved"]}, ColorHex: "F39C12"},       // orange
+		{TranslateBase: models.TranslateBase{Slug: "available", Translation: t["available"]}, ColorHex: "2ECC71"},       // green
+		{TranslateBase: models.TranslateBase{Slug: "occupied", Translation: t["occupied"]}, ColorHex: "E74C3C"},         // red
+		{TranslateBase: models.TranslateBase{Slug: "reserved", Translation: t["reserved"]}, ColorHex: "F39C12"},         // orange
 		{TranslateBase: models.TranslateBase{Slug: "under_repair", Translation: t["under_repair"]}, ColorHex: "95A5A6"}, // gray
-		{TranslateBase: models.TranslateBase{Slug: "cleaning", Translation: t["cleaning"]}, ColorHex: "4a412a"},      // dark brown
+		{TranslateBase: models.TranslateBase{Slug: "cleaning", Translation: t["cleaning"]}, ColorHex: "4a412a"},         // dark brown
 	}
 
 	seed(db, statuses)
@@ -188,11 +190,11 @@ func seedReservationStatuses(db *gorm.DB) {
 
 	statuses := []models.ReservationStatus{
 		{TranslateBase: models.TranslateBase{Slug: "awaiting_payment", Translation: t["awaiting_payment"]}, ColorHex: "FFA500"}, // Amber
-		{TranslateBase: models.TranslateBase{Slug: "verified", Translation: t["verified"]}, ColorHex: "2E8B57"},                  // Forest Green
-		{TranslateBase: models.TranslateBase{Slug: "accepted", Translation: t["accepted"]}, ColorHex: "1E90FF"},                  // Dodger Blue
-		{TranslateBase: models.TranslateBase{Slug: "cancelled", Translation: t["cancelled"]}, ColorHex: "DC143C"},                 // Crimson
+		{TranslateBase: models.TranslateBase{Slug: "verified", Translation: t["verified"]}, ColorHex: "2E8B57"},                 // Forest Green
+		{TranslateBase: models.TranslateBase{Slug: "accepted", Translation: t["accepted"]}, ColorHex: "1E90FF"},                 // Dodger Blue
+		{TranslateBase: models.TranslateBase{Slug: "cancelled", Translation: t["cancelled"]}, ColorHex: "DC143C"},               // Crimson
 		{TranslateBase: models.TranslateBase{Slug: "absence", Translation: t["absence"]}, ColorHex: "8B0000"},                   // Dark Red
-		{TranslateBase: models.TranslateBase{Slug: "expired", Translation: t["expired"]}, ColorHex: "708090"},                     // Slate Gray
+		{TranslateBase: models.TranslateBase{Slug: "expired", Translation: t["expired"]}, ColorHex: "708090"},                   // Slate Gray
 	}
 
 	seed(db, statuses)

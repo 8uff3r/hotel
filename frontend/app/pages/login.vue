@@ -51,10 +51,10 @@
       </form>
 
       <template #footer>
-        <UAlert v-if="authError" color="error" variant="soft">
-          {{ authError }}
-        </UAlert>
-        <HLangSwitcher class="w-full" />
+        <div class="flex flex-col gap-2">
+          <UAlert :title="authError" v-if="authError" color="error" variant="soft"> </UAlert>
+          <HLangSwitcher class="w-full" />
+        </div>
       </template>
     </UCard>
   </div>
@@ -86,7 +86,7 @@ const handleLogin = async () => {
   if (result.success) {
     await navigateTo("/");
   } else {
-    authError.value = result.error || t("login.failed");
+    authError.value = t("login.failed");
   }
 };
 </script>

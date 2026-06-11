@@ -1,23 +1,39 @@
 package sana
 
-import "fmt"
+import (
+	"encoding/xml"
+	"fmt"
+	"strings"
+)
+
+type OuterXML struct {
+	XMLName xml.Name `xml:"string"`
+	Content string   `xml:",chardata"` // This captures the escaped inner XML string
+}
+
+// TbAnavin represents the root of the inner XML structure
+type TbAnavin struct {
+	XMLName xml.Name     `xml:"tb_Anavin"`
+	Items   []AnavinItem `xml:"Item"`
+}
 
 type AnavinItem struct {
-	ID   string `json:"ID"`
-	Name string `json:"Name"`
+	ID   string `xml:"ID"`
+	Name string `xml:"Name"`
 }
 
 type AnavinResponse struct {
-	Items []AnavinItem `json:"tb_Anavin"`
+	XMLName xml.Name     `xml:"tb_Anavin"`
+	Items   []AnavinItem `xml:"Item"`
 }
 
 type PayamItem struct {
-	ID   string `json:"ID"`
-	Name string `json:"Name"`
+	ID   string `xml:"ID"`
+	Name string `xml:"Name"`
 }
 
 type PayamResponse struct {
-	Items []PayamItem `json:"payam"`
+	Items []PayamItem `xml:"payam"`
 }
 
 type SabtChidemanResponse struct {
@@ -65,12 +81,13 @@ type Floor struct {
 }
 
 func BuildRac(input SabtChidemanInput) string {
-	result := fmt.Sprintf("sakhteman:%d|tedadotagh:%d", input.Sakhteman, input.TedadOtagh)
+	var result strings.Builder
+	fmt.Fprintf(&result, "sakhteman:%d|tedadotagh:%d", input.Sakhteman, input.TedadOtagh)
 	for _, floor := range input.Floors {
 		for _, room := range floor.Rooms {
-			result += fmt.Sprintf("|%d:%s", floor.Number, room)
+			fmt.Fprintf(&result, "|%d:%s", floor.Number, room)
 		}
 	}
-	result += "|"
-	return result
+	result.WriteString("|")
+	return result.String()
 }
