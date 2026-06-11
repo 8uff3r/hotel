@@ -118,7 +118,8 @@
       "restaurant": "Restaurant",
       "sana": "Sana Sync",
       "attendance": "Attendance",
-      "users": "Users"
+      "users": "Users",
+      "stays": "Reception"
     },
     "admin": {
       "accounting": "Accounting",
@@ -159,7 +160,8 @@
     "newReservation": "New Reservation",
     "checkInGuest": "Check-in Guest",
     "manageRooms": "Manage Rooms",
-    "parkingCheckIn": "Parking Check-in"
+    "parkingCheckIn": "Parking Check-in",
+    "noReservations": "No Reservations"
   },
   "users": {
     "title": "Users",
@@ -770,5 +772,19 @@
       "lastError": "Error",
       "actions": "Actions"
     }
+  },
+  "stays": {
+    "title": "Reception",
+    "list": "Receptions List",
+    "create": "Create",
+    "acceptanceId": "ID",
+    "guestFirstName": "Guest first name",
+    "guestLastName": "Guest last name",
+    "roomNumber": "Room Number",
+    "entryDate": "Entry Date",
+    "departureDate": "Departure Date",
+    "status": "Status",
+    "actions": "Actions",
+    "count": "{count} Receptions"
   }
 }

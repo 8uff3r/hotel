@@ -118,7 +118,8 @@
       "restaurant": "رستوران",
       "sana": "همگام‌سازی ثبت",
       "attendance": "حضور و غیاب",
-      "users": "کاربران"
+      "users": "کاربران",
+      "stays": "پذیرش"
     },
     "admin": {
       "accounting": "حسابداری",
@@ -159,7 +160,8 @@
     "newReservation": "رزرو جدید",
     "checkInGuest": "ثبت ورود مهمان",
     "manageRooms": "مدیریت اتاق‌ها",
-    "parkingCheckIn": "ثبت ورود پارکینگ"
+    "parkingCheckIn": "ثبت ورود پارکینگ",
+    "noReservations": "رزروی وجود ندارد"
   },
   "users": {
     "title": "کاربران",
@@ -761,5 +763,19 @@
       "lastError": "خطا",
       "actions": "عملیات"
     }
+  },
+  "stays": {
+    "title": "پذیرش",
+    "list": "لیست پذیرش ها",
+    "create": "پذیرش جدید",
+    "acceptanceId": "شناسه",
+    "guestFirstName": "نام مهمان",
+    "guestLastName": "نام خانوادگی مهمان",
+    "roomNumber": "شماره اتاق",
+    "entryDate": "تاریخ ورود",
+    "departureDate": "تاریخ خروج",
+    "status": "وضعیت",
+    "actions": "عملیات",
+    "count": "{count} پذیرش"
   }
 }
