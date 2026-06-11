@@ -128,6 +128,16 @@ export type FamilyRelationship = {
 };
 
 /**
+ * Floor schema
+ */
+export type Floor = {
+    description?: string;
+    hotelId?: string;
+    id?: number;
+    number?: number;
+};
+
+/**
  * GrantPermissionsOfTemplateToUserDto schema
  */
 export type GrantPermissionsOfTemplateToUserDto = {
@@ -7012,6 +7022,14 @@ export type DeleteResponse = {
 };
 
 /**
+ * floorCreateDto schema
+ */
+export type FloorCreateDto = {
+    description?: string;
+    number: number;
+};
+
+/**
  * hotelPictureDto schema
  */
 export type HotelPictureDto = {
@@ -11149,6 +11167,42 @@ export type GetApiRoomsFloorsResponses = {
 };
 
 export type GetApiRoomsFloorsResponse = GetApiRoomsFloorsResponses[keyof GetApiRoomsFloorsResponses];
+
+export type PostApiRoomsFloorsData = {
+    /**
+     * Request body for rooms.floorCreateDto
+     */
+    body: FloorCreateDto;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/rooms/floors';
+};
+
+export type PostApiRoomsFloorsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PostApiRoomsFloorsError = PostApiRoomsFloorsErrors[keyof PostApiRoomsFloorsErrors];
+
+export type PostApiRoomsFloorsResponses = {
+    /**
+     * OK
+     */
+    200: Floor;
+};
+
+export type PostApiRoomsFloorsResponse = PostApiRoomsFloorsResponses[keyof PostApiRoomsFloorsResponses];
 
 export type GetApiRoomsRackData = {
     body?: never;

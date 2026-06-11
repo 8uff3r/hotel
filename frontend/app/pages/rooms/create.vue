@@ -138,7 +138,12 @@ const { data: types } = useAsyncData("room-types", async () => {
 });
 const { data: floors } = useAsyncData("room-floors", async () => {
   const res = await getApiRoomsFloors({});
-  return res.data?.data?.map((f: any) => ({ ...f, label: `Floor ${f.number}${f.description ? ` - ${f.description}` : ""}` })) ?? [];
+  return (
+    res.data?.data?.map((f: any) => ({
+      ...f,
+      label: `${t("rooms.floor")} ${f.number}`,
+    })) ?? []
+  );
 });
 
 const toggleAmenity = (amenityId: number) => {

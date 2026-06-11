@@ -126,6 +126,16 @@ export const zFamilyRelationship = z.object({
 });
 
 /**
+ * Floor schema
+ */
+export const zFloor = z.object({
+    description: z.string().optional(),
+    hotelId: z.string().optional(),
+    id: z.int().gte(0).optional(),
+    number: z.int().optional()
+});
+
+/**
  * GrantPermissionsOfTemplateToUserDto schema
  */
 export const zGrantPermissionsOfTemplateToUserDto = z.object({
@@ -6987,6 +6997,14 @@ export const zDeleteResponse = z.object({
 });
 
 /**
+ * floorCreateDto schema
+ */
+export const zFloorCreateDto = z.object({
+    description: z.string().optional(),
+    number: z.int()
+});
+
+/**
  * hotelPictureDto schema
  */
 export const zHotelPictureDto = z.object({
@@ -8211,6 +8229,15 @@ export const zGetApiRoomsFloorsQuery = z.object({
     limit: z.int().optional(),
     page: z.int().optional(),
     filters: z.string().optional()
+});
+
+/**
+ * Request body for rooms.floorCreateDto
+ */
+export const zPostApiRoomsFloorsBody = zFloorCreateDto;
+
+export const zPostApiRoomsFloorsHeaders = z.object({
+    Accept: z.string().optional()
 });
 
 export const zGetApiRoomsRackHeaders = z.object({

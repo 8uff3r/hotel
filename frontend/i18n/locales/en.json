@@ -12,7 +12,8 @@
     "confirmDelete": "Confirm Delete",
     "confirm": "Confirm",
     "editGuest": "Edit Guest",
-    "saveChanges": "Save Changes"
+    "saveChanges": "Save Changes",
+    "add": "Add"
   },
   "restaurant": {
     "title": "Restaurant",
@@ -299,6 +300,7 @@
   "rooms": {
     "title": "Rooms",
     "addRoom": "Add Room",
+    "addFloor": "Add Floor",
     "addNew": "Add New Room",
     "createRoom": "Create Room",
     "list": "Room List",

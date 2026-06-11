@@ -341,6 +341,25 @@
 				},
 				"type": "object"
 			},
+			"Floor": {
+				"description": "Floor schema",
+				"properties": {
+					"description": {
+						"type": "string"
+					},
+					"hotelId": {
+						"type": "string"
+					},
+					"id": {
+						"minimum": 0,
+						"type": "integer"
+					},
+					"number": {
+						"type": "integer"
+					}
+				},
+				"type": "object"
+			},
 			"GrantPermissionsOfTemplateToUserDto": {
 				"description": "GrantPermissionsOfTemplateToUserDto schema",
 				"properties": {
@@ -22587,6 +22606,21 @@
 				},
 				"type": "object"
 			},
+			"floorCreateDto": {
+				"description": "floorCreateDto schema",
+				"properties": {
+					"description": {
+						"type": "string"
+					},
+					"number": {
+						"type": "integer"
+					}
+				},
+				"required": [
+					"number"
+				],
+				"type": "object"
+			},
 			"hotelPictureDto": {
 				"description": "hotelPictureDto schema",
 				"properties": {
@@ -31969,6 +32003,84 @@
 				"tags": [
 					"/ROOMS"
 				]
+			},
+			"post": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.createFloor.func17`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "POST_/api/rooms/floors",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"*/*": {
+							"schema": {
+								"$ref": "#/components/schemas/floorCreateDto"
+							}
+						}
+					},
+					"description": "Request body for rooms.floorCreateDto",
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Floor"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/Floor"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "func17",
+				"tags": [
+					"/ROOMS"
+				]
 			}
 		},
 		"/api/rooms/rack": {
@@ -32481,7 +32593,7 @@
 		},
 		"/api/rooms/{id}/pictures": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.roomPicturesGet.func17`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.roomPicturesGet.func18`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/rooms/:id/pictures",
 				"parameters": [
 					{
@@ -32550,13 +32662,13 @@
 						"description": ""
 					}
 				},
-				"summary": "func17",
+				"summary": "func18",
 				"tags": [
 					"/ROOMS"
 				]
 			},
 			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.roomPicturesAdd.func18`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.roomPicturesAdd.func19`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/rooms/:id/pictures",
 				"parameters": [
 					{
@@ -32636,7 +32748,7 @@
 						"description": ""
 					}
 				},
-				"summary": "func18",
+				"summary": "func19",
 				"tags": [
 					"/ROOMS"
 				]
@@ -32644,7 +32756,7 @@
 		},
 		"/api/rooms/{id}/pictures/{pictureId}": {
 			"delete": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.roomPicturesDelete.func19`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.roomPicturesDelete.func20`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "DELETE_/api/rooms/:id/pictures/:pictureId",
 				"parameters": [
 					{
@@ -32721,7 +32833,7 @@
 						"description": ""
 					}
 				},
-				"summary": "func19",
+				"summary": "func20",
 				"tags": [
 					"/ROOMS"
 				]

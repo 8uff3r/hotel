@@ -2,10 +2,24 @@
   <div>
     <div class="mb-6 flex items-center justify-between">
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ t("rooms.title") }}</h1>
-      <UButton to="/rooms/create" color="primary">
-        <UIcon name="i-lucide-plus" class="mr-2" />
-        {{ t("rooms.addRoom") }}
-      </UButton>
+      <div class="flex items-center gap-2">
+        <AddFloorModal
+          v-model="floorForm"
+          v-model:open="addFloorModalOpen"
+          :loading="addingFloor"
+          @confirm="addFloor"
+          @cancel="resetFloor"
+        >
+          <UButton variant="outline">
+            <UIcon name="i-lucide-plus" />
+            {{ t("rooms.addFloor") }}
+          </UButton>
+        </AddFloorModal>
+        <UButton to="/rooms/create" color="primary">
+          <UIcon name="i-lucide-plus" />
+          {{ t("rooms.addRoom") }}
+        </UButton>
+      </div>
     </div>
 
     <!-- Filters -->
@@ -104,6 +118,40 @@
       </template>
     </UCard>
 
+    <!-- Add Floor Modal -->
+    <UModal v-model="addFloorModalOpen">
+      <template #header>
+        <h2 class="text-lg font-semibold">{{ t("rooms.addFloor") }}</h2>
+      </template>
+      <template #body>
+        <div class="space-y-4">
+          <UFormField :label="t('rooms.floor')" required>
+            <UInput
+              v-model="floorForm.number"
+              type="number"
+              :placeholder="t('rooms.floorPlaceholder')"
+            />
+          </UFormField>
+          <UFormField :label="t('common.description')">
+            <UInput
+              v-model="floorForm.description"
+              :placeholder="t('rooms.descriptionPlaceholder')"
+            />
+          </UFormField>
+        </div>
+      </template>
+      <template #footer>
+        <div class="flex justify-end gap-3">
+          <UButton variant="outline" @click="addFloorModalOpen = false">
+            {{ t("actions.cancel") }}
+          </UButton>
+          <UButton color="primary" :loading="addingFloor" @click="addFloor">
+            {{ t("actions.add") }}
+          </UButton>
+        </div>
+      </template>
+    </UModal>
+
     <!-- Delete Confirmation Modal -->
     <UModal v-model="deleteModalOpen">
       <template #header>
@@ -127,9 +175,10 @@
 </template>
 
 <script setup lang="ts">
-import { deleteApiRoomsId } from "~/utils/client";
+import { deleteApiRoomsId, postApiRoomsFloors } from "~/utils/client";
 import type { TableColumn } from "@nuxt/ui";
 import type { PaginatedResponseModelsRoom } from "~/utils/client";
+import AddFloorModal from "./components/AddFloorModal.vue";
 
 type Room = NonNullable<PaginatedResponseModelsRoom["data"]>[0];
 definePageMeta({
@@ -167,6 +216,13 @@ const deleting = ref(false);
 const deleteModalOpen = ref(false);
 const selectedRoom = ref<Room | null>(null);
 const page = ref(1);
+
+const addingFloor = ref(false);
+const addFloorModalOpen = ref(false);
+const floorForm = ref({
+  number: "",
+  description: "",
+});
 
 const filters = reactive({
   search: "",
@@ -228,6 +284,26 @@ const deleteRoom = async () => {
     console.error("Failed to delete room:", error);
   } finally {
     deleting.value = false;
+  }
+};
+
+const resetFloor = () => (floorForm.value = { number: "", description: "" });
+const addFloor = async () => {
+  if (!floorForm.value.number) return;
+  addingFloor.value = true;
+  try {
+    await postApiRoomsFloors({
+      body: {
+        number: parseInt(floorForm.value.number),
+        description: floorForm.value.description || undefined,
+      },
+    });
+    addFloorModalOpen.value = false;
+    resetFloor();
+  } catch (error) {
+    console.error("Failed to add floor:", error);
+  } finally {
+    addingFloor.value = false;
   }
 };
 

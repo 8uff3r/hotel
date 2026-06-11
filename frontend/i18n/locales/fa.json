@@ -12,7 +12,8 @@
     "confirmDelete": "تأیید حذف",
     "confirm": "تایید",
     "editGuest": "ویرایش مهمان",
-    "saveChanges": "ذخیره تغییرات"
+    "saveChanges": "ذخیره تغییرات",
+    "add": "افزودن"
   },
   "restaurant": {
     "title": "رستوران",
@@ -300,6 +301,7 @@
   "rooms": {
     "title": "اتاق‌ها",
     "addRoom": "افزودن اتاق",
+    "addFloor": "افزودن طبقه",
     "addNew": "افزودن اتاق جدید",
     "createRoom": "ایجاد اتاق",
     "list": "فهرست اتاق‌ها",

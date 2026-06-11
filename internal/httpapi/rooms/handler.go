@@ -67,6 +67,7 @@ func (m RoomsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 			"/floors",
 			h.ListModel[models.Floor](api.Db),
 		)
+		fuego.Post(s, "/floors", createFloor(api.Db))
 
 	fuego.Get(s, "/{id}/pictures", roomPicturesGet(api.Db))
 	fuego.Post(s, "/{id}/pictures", roomPicturesAdd(api.Db))
@@ -198,5 +199,30 @@ func roomPicturesDelete(db *gorm.DB) func(c fuego.ContextNoBody) (roomDeleteResp
 			return zero, fuego.NotFoundError{}
 		}
 		return roomDeleteResponse{Ok: true}, nil
+	}
+}
+
+type floorCreateDto struct {
+	Number      int    `json:"number" validate:"required"`
+	Description string `json:"description"`
+}
+
+func createFloor(db *gorm.DB) func(c fuego.ContextWithBody[floorCreateDto]) (models.Floor, error) {
+	return func(c fuego.ContextWithBody[floorCreateDto]) (models.Floor, error) {
+		var zero models.Floor
+		body, err := c.Body()
+		if err != nil {
+			return zero, fuego.BadRequestError{}
+		}
+		hotelID := h.GetHotelIDFromContext(c.Context())
+		floor := models.Floor{
+			HotelID:     hotelID,
+			Number:      body.Number,
+			Description: body.Description,
+		}
+		if err := db.Create(&floor).Error; err != nil {
+			return zero, fuego.BadRequestError{Title: "create_failed"}
+		}
+		return floor, nil
 	}
 }
