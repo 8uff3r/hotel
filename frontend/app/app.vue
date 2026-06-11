@@ -5,10 +5,18 @@
         <NuxtPage />
       </NuxtLayout>
     </UApp>
+    <PiniaColadaDevtools />
   </Html>
 </template>
+<style>
+#open-devtools-button {
+  right: unset !important;
+  left: 1em !important;
+}
+</style>
 
 <script setup lang="ts">
+import { PiniaColadaDevtools } from "@pinia/colada-devtools";
 import { useAuthStore } from "~/stores/auth";
 import { en as zEn, fa as zFa } from "zod/v4/locales";
 import { fa_ir, en } from "@nuxt/ui/locale";

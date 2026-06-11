@@ -33,6 +33,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@pinia/colada-devtools": "^1.0.0",
     "oxfmt": "^0.35.0",
     "typescript": "^5.9.3",
     "vue-tsc": "^3.2.5"
