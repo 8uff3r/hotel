@@ -1,26 +1,27 @@
 package rooms
 
 import (
+	"time"
+
 	"hotel/internal/httpapi"
 	"hotel/internal/models"
-	"time"
 
 	"github.com/go-fuego/fuego"
 )
 
 type RackRoom struct {
-	ID                 uint              `json:"id"`
-	RoomNumber         string            `json:"roomNumber"`
-	Floor              int               `json:"floor"`
-	Capacity           int               `json:"capacity"`
-	BasePrice          float64           `json:"basePrice"`
-	Description        string            `json:"description"`
-	Amenities          []models.Amenity  `json:"amenities,omitempty"`
-	TypeID             uint              `json:"roomTypeId"`
-	Type               *models.RoomType  `json:"roomType,omitempty"`
-	StatusID           uint              `json:"statusId"`
+	ID                 uint               `json:"id"`
+	RoomNumber         string             `json:"roomNumber"`
+	Floor              int                `json:"floor"`
+	Capacity           int                `json:"capacity"`
+	BasePrice          float64            `json:"basePrice"`
+	Description        string             `json:"description"`
+	Amenities          []models.Amenity   `json:"amenities,omitempty"`
+	TypeID             uint               `json:"roomTypeId"`
+	Type               *models.RoomType   `json:"roomType,omitempty"`
+	StatusID           uint               `json:"statusId"`
 	Status             *models.RoomStatus `json:"status,omitempty"`
-	CurrentReservation *ReservationBrief `json:"currentReservation,omitempty"`
+	CurrentReservation *ReservationBrief  `json:"currentReservation,omitempty"`
 }
 
 type ReservationBrief struct {
@@ -72,6 +73,7 @@ func (m RoomsModule) rackHandler(api *httpapi.API) httpapi.FuegoHandler[httpapi.
 			Preload("Amenities").
 			Preload("Type").
 			Preload("Status").
+			Preload("Floor").
 			Find(&rooms).Error; err != nil {
 			return httpapi.PaginatedResponse[RackRoom]{}, fuego.InternalServerError{Err: err}
 		}

@@ -311,7 +311,7 @@ const filteredRooms = computed(() => {
   let rooms = allRooms.value || [];
 
   if (filters.value.roomTypeId) {
-    rooms = rooms.filter((r: RoomRack) => r.roomType?.id === filters.value.roomTypeId);
+    rooms = rooms.filter((r) => r.roomType?.id === filters.value.roomTypeId);
   }
 
   if (filters.value.nationalityId) {
@@ -323,7 +323,7 @@ const filteredRooms = computed(() => {
   if (filters.value.agencyId) {
     const agency = agencies.value?.find((a) => a.id === filters.value.agencyId);
     if (agency) {
-      rooms = rooms.filter((r: RoomRack) => r.currentReservation?.origin === agency.name);
+      rooms = rooms.filter((r) => r.currentReservation?.origin === agency.name);
     }
   }
 
@@ -376,7 +376,7 @@ const sortedFloors = computed(() => {
 const currentFloorRooms = computed(() => {
   return filteredRooms.value
     ?.filter((room) => room.floor === currentFloor.value)
-    .sort((a: RoomRack, b: RoomRack) => {
+    .sort((a, b) => {
       if (sortBy.value === "status") {
         return (a.status?.label || "").localeCompare(b.status?.label || "");
       }
@@ -411,7 +411,7 @@ const paginatedFloorList = computed(() => floors.value);
 const getRoomsByFloor = (floor: number) => {
   return filteredRooms.value
     ?.filter((room) => room.floor === floor)
-    .sort((a: RoomRack, b: RoomRack) => {
+    .sort((a, b) => {
       if (sortBy.value === "status") {
         return (a.status?.label || "").localeCompare(b.status?.label || "");
       }
