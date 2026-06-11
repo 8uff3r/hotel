@@ -139,7 +139,7 @@ const { data: types } = useAsyncData("room-types", async () => {
 const { data: floors } = useAsyncData("room-floors", async () => {
   const res = await getApiRoomsFloors({});
   return (
-    res.data?.data?.map((f: any) => ({
+    res.data?.data?.map((f) => ({
       ...f,
       label: `${t("rooms.floor")} ${f.number}`,
     })) ?? []
@@ -152,7 +152,6 @@ const toggleAmenity = (amenityId: number) => {
     form.value.amenities?.splice(index, 1);
   } else {
     const amenity = availableAmenities.value?.find((v) => v.id === amenityId);
-    console.log(amenity);
     if (amenity) form.value.amenities?.push(amenity);
   }
 };

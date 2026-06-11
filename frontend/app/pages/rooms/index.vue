@@ -87,7 +87,7 @@
         <template #basePrice-cell="{ row }"> ${{ row.original.basePrice?.toFixed(2) }} </template>
 
         <template #floor-cell="{ row }">
-          {{ row.original.floor ?? "-" }}
+          {{ row.original.floor?.number ?? "-" }}
         </template>
 
         <template #capacity-cell="{ row }">
