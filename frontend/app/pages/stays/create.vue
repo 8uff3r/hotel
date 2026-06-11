@@ -1,6 +1,6 @@
 <template>
-  <div class="p-6 max-w-2xl mx-auto">
-    <h1 class="text-2xl font-bold mb-6">{{ t("stays.createTitle") }}</h1>
+  <div class="mx-auto max-w-2xl p-6">
+    <h1 class="mb-6 text-2xl font-bold">{{ t("stays.createTitle") }}</h1>
 
     <UAlert v-if="warnings.length > 0" color="warning" class="mb-4">
       <ul class="list-disc pr-4">
@@ -29,7 +29,7 @@
           <UInput v-model.number="state.roomPrice" type="number" />
         </UFormGroup>
       </div>
-      <div class="grid grid-cols-4 gap-4 mt-4">
+      <div class="mt-4 grid grid-cols-4 gap-4">
         <UFormGroup :label="t('stays.breakfast')" name="breakfast">
           <UToggle v-model="state.breakfast" />
         </UFormGroup>
@@ -47,7 +47,7 @@
         <UTextarea v-model="state.notes" />
       </UFormGroup>
       <div class="mt-6 flex gap-3">
-        <UButton type="submit" :loading="submitting">{{ t("stays.submit") }}</UButton>
+        <UButton type="submit" :loading="submitting">{{ t("actions.confirm") }}</UButton>
         <UButton variant="outline" to="/stays">{{ t("actions.cancel") }}</UButton>
       </div>
     </UForm>
@@ -56,7 +56,11 @@
 
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import { getApiStaysCheckAvailability, getApiStaysCheckCapacity, postApiStays } from "~/utils/client";
+import {
+  getApiStaysCheckAvailability,
+  getApiStaysCheckCapacity,
+  postApiStays,
+} from "~/utils/client";
 import type { Guest, Room } from "~/utils/client";
 import { useAuthStore } from "~/stores/auth";
 
@@ -146,9 +150,12 @@ async function onRoomChange() {
   }
 }
 
-watch(() => [state.entryDate, state.departureDate], () => {
-  if (state.roomId) onRoomChange();
-});
+watch(
+  () => [state.entryDate, state.departureDate],
+  () => {
+    if (state.roomId) onRoomChange();
+  }
+);
 
 const submitting = ref(false);
 async function onSubmit() {

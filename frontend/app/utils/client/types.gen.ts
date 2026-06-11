@@ -7134,9 +7134,7 @@ export type LoginResponse = {
 /**
  * okResponse schema
  */
-export type OkResponse = {
-    ok?: boolean;
-};
+export type OkResponse = unknown;
 
 /**
  * payInvoiceDto schema

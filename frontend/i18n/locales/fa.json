@@ -776,6 +776,7 @@
     "departureDate": "تاریخ خروج",
     "status": "وضعیت",
     "actions": "عملیات",
-    "count": "{count} پذیرش"
+    "count": "{count} پذیرش",
+    "createTitle": "ایجاد پذیرش"
   }
 }

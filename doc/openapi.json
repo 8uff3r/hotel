@@ -22805,13 +22805,7 @@
 				"type": "object"
 			},
 			"okResponse": {
-				"description": "okResponse schema",
-				"properties": {
-					"ok": {
-						"type": "boolean"
-					}
-				},
-				"type": "object"
+				"description": "okResponse schema"
 			},
 			"payInvoiceDto": {
 				"description": "payInvoiceDto schema",

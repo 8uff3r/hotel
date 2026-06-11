@@ -13,7 +13,7 @@ const open = defineModel<boolean>("open", { default: false });
 const { t } = useI18n();
 const { data: relations } = useAsyncData("family-relations", async () => {
   const res = await getApiGuestsRelations({ query: { limit: -1 } });
-  return res.data;
+  return res.data?.data;
 });
 
 const emit = defineEmits<{

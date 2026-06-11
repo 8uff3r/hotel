@@ -159,7 +159,7 @@ const items = computed(() =>
         permission: PERMISSIONS.reservations.reservations.read,
       },
       {
-        label: "پذیرش",
+        label: t("layout.nav.stays"),
         icon: "i-lucide-door-open",
         to: "/stays",
         permission: PERMISSIONS.guests.guests.read,

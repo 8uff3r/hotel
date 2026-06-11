@@ -7109,9 +7109,7 @@ export const zLoginResponse = z.object({
 /**
  * okResponse schema
  */
-export const zOkResponse = z.object({
-    ok: z.boolean().optional()
-});
+export const zOkResponse = z.unknown();
 
 /**
  * payInvoiceDto schema
