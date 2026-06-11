@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-bold">{{ t("guests.archiveTitle") }}</h1>
       <div class="flex gap-2">
-        <USelect v-model="statusFilter" :options="statusOptions" :placeholder="t('guests.status')" />
+        <USelect v-model="statusFilter" :items="statusOptions" :placeholder="t('guests.status')" />
         <UButton to="/guests">{{ t("actions.back") }}</UButton>
       </div>
     </div>

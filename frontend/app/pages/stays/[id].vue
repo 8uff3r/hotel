@@ -95,7 +95,7 @@
             <UInput v-model.number="paymentState.amount" type="number" />
           </UFormGroup>
           <UFormGroup :label="t('stays.paymentMethod')" name="paymentMethod" class="mt-2">
-            <USelect v-model="paymentState.paymentMethod" :options="paymentMethodOptions" />
+            <USelect v-model="paymentState.paymentMethod" :items="paymentMethodOptions" />
           </UFormGroup>
           <div class="mt-4 flex gap-2">
             <UButton type="submit" :loading="paymentLoading">{{ t("stays.pay") }}</UButton>
@@ -113,7 +113,7 @@
         </template>
         <UForm :state="roomChangeState" @submit="doRoomChange">
           <UFormGroup :label="t('stays.newRoom')" name="newRoomId">
-            <USelect v-model="roomChangeState.newRoomId" :options="roomOptions" />
+            <USelect v-model="roomChangeState.newRoomId" :items="roomOptions" />
           </UFormGroup>
           <div class="mt-4 flex gap-2">
             <UButton type="submit" :loading="roomChangeLoading">{{ t("actions.change") }}</UButton>
@@ -131,7 +131,7 @@
         </template>
         <UForm :state="serviceState" @submit="doAddService">
           <UFormGroup :label="t('stays.service')" name="serviceId">
-            <USelect v-model="serviceState.serviceId" :options="serviceOptions" />
+            <USelect v-model="serviceState.serviceId" :items="serviceOptions" />
           </UFormGroup>
           <UFormGroup :label="t('stays.quantity')" name="quantity" class="mt-2">
             <UInput v-model.number="serviceState.quantity" type="number" />
@@ -158,7 +158,7 @@
             <UInput v-model.number="itemSettlementState.amount" type="number" />
           </UFormGroup>
           <UFormGroup :label="t('stays.paymentMethod')" name="paymentMethod" class="mt-2">
-            <USelect v-model="itemSettlementState.paymentMethod" :options="paymentMethodOptions" />
+            <USelect v-model="itemSettlementState.paymentMethod" :items="paymentMethodOptions" />
           </UFormGroup>
           <div class="mt-4 flex gap-2">
             <UButton type="submit" :loading="itemSettlementLoading">{{ t("stays.settle") }}</UButton>

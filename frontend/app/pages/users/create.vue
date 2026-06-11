@@ -48,25 +48,17 @@
               </UFormField>
 
               <UFormField label="نام کاربری" name="username">
-                <UInput
-                  v-model="form.username"
-                  placeholder="نام کاربری"
-                  :disabled="loading"
-                />
+                <UInput v-model="form.username" placeholder="نام کاربری" :disabled="loading" />
               </UFormField>
 
               <UFormField label="شماره تماس" name="contactNumber">
-                <UInput
-                  v-model="form.contactNumber"
-                  placeholder="شماره تماس"
-                  :disabled="loading"
-                />
+                <UInput v-model="form.contactNumber" placeholder="شماره تماس" :disabled="loading" />
               </UFormField>
 
               <UFormField label="نقش" name="role">
                 <USelect
                   v-model="form.role"
-                  :options="roleOptions"
+                  :items="roleOptions"
                   placeholder="نقش"
                   :disabled="loading"
                 />
@@ -75,7 +67,7 @@
               <UFormField label="وضعیت" name="status">
                 <USelect
                   v-model="form.status"
-                  :options="statusOptions"
+                  :items="statusOptions"
                   placeholder="وضعیت"
                   :disabled="loading"
                 />
@@ -84,7 +76,9 @@
               <UFormField label="هتل" name="hotelId" required>
                 <USelect
                   v-model="form.hotelId"
-                  :options="hotelOptions"
+                  :items="hotels"
+                  value-key="id"
+                  label-key="name"
                   placeholder="انتخاب هتل"
                   :disabled="loading"
                 />
@@ -109,7 +103,7 @@
         <h2 class="text-lg font-semibold">{{ t("users.permissions") }}</h2>
       </template>
       <div class="space-y-4">
-        <div class="flex gap-3 items-center">
+        <div class="flex items-center gap-3">
           <span class="text-sm text-gray-600 dark:text-gray-400">قالب دسترسی:</span>
           <div class="w-80">
             <HSelectMenu :items="templates" multiple v-model="selectedTemplates" />
@@ -161,14 +155,13 @@ const statusOptions = [
   { label: t("users.inactive"), value: "inactive" },
 ];
 
-const { data: hotels } = useFetch("/api/hotels", {
-  key: "hotels-list",
-  transform: (res) => (res as { data?: Hotel[] })?.data ?? [],
+const { data: hotels } = useQuery({
+  key: ["hotels", "options"],
+  query: async () => {
+    const res = await getApiHotels({ query: { limit: -1 } });
+    return res.data?.data;
+  },
 });
-
-const hotelOptions = computed(() =>
-  (hotels.value ?? []).map((h) => ({ label: h.name ?? "", value: h.id ?? "" }))
-);
 
 const { data: templates } = useQuery({
   key: ["users", "permissions", "templates"],
@@ -180,7 +173,9 @@ const { data: templates } = useQuery({
 
 const selectedTemplates = ref<number[]>([]);
 
-const resolveCreatedUserId = async (response: { data?: UserCreateResponse }): Promise<number | null> => {
+const resolveCreatedUserId = async (response: {
+  data?: UserCreateResponse;
+}): Promise<number | null> => {
   const maybeId = Number(response.data?.id);
   if (Number.isFinite(maybeId) && maybeId > 0) return maybeId;
 

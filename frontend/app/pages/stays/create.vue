@@ -11,10 +11,10 @@
     <UForm :state="state" @submit="onSubmit">
       <div class="grid grid-cols-2 gap-4">
         <UFormGroup :label="t('stays.guest')" name="guestId">
-          <USelect v-model="state.guestId" :options="guestOptions" />
+          <USelect v-model="state.guestId" :items="guestOptions" />
         </UFormGroup>
         <UFormGroup :label="t('stays.room')" name="roomId">
-          <USelect v-model="state.roomId" :options="roomOptions" @change="onRoomChange" />
+          <USelect v-model="state.roomId" :items="roomOptions" @change="onRoomChange" />
         </UFormGroup>
         <UFormGroup :label="t('stays.entryDate')" name="entryDate">
           <UInput v-model="state.entryDate" type="datetime-local" />

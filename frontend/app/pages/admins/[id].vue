@@ -23,7 +23,7 @@
         </UFormGroup>
       </div>
       <UFormGroup label="هتل‌ها" name="hotelIds" class="mt-4">
-        <USelect v-model="state.hotelIds" multiple :options="hotelOptions" />
+        <USelect v-model="state.hotelIds" multiple :items="hotelOptions" />
       </UFormGroup>
       <UFormGroup label="سوپر ادمین" name="isSuperAdmin" class="mt-4">
         <UToggle v-model="state.isSuperAdmin" />

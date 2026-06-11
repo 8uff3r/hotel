@@ -57,7 +57,7 @@
               <UFormField label="نقش" name="role">
                 <USelect
                   v-model="form.role"
-                  :options="roleOptions"
+                  :items="roleOptions"
                   placeholder="نقش"
                   :disabled="loading"
                 />
@@ -66,7 +66,7 @@
               <UFormField label="وضعیت" name="status">
                 <USelect
                   v-model="form.status"
-                  :options="statusOptions"
+                  :items="statusOptions"
                   placeholder="وضعیت"
                   :disabled="loading"
                 />
@@ -75,7 +75,7 @@
               <UFormField label="هتل" name="hotelId">
                 <USelect
                   v-model="form.hotelId"
-                  :options="hotelOptions"
+                  :items="hotelOptions"
                   placeholder="انتخاب هتل"
                   :disabled="loading"
                 />
