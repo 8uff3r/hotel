@@ -44,8 +44,8 @@ type Expense struct {
 	Notes       string    `json:"notes"`
 	CreatedBy   *uint     `json:"createdBy"`
 
-	HotelID *uint `gorm:"not null" json:"hotelId"`
-	Hotel   Hotel `gorm:"foreignKey:HotelID" json:"hotel"`
+	HotelID *string `gorm:"not null" json:"hotelId"`
+	Hotel   Hotel   `gorm:"foreignKey:HotelID" json:"hotel"`
 
 	AccountID *uint   `gorm:"not null" json:"accountId"`
 	Account   Account `gorm:"foreignKey:AccountID" json:"account,omitzero"`
@@ -75,19 +75,19 @@ type Income struct {
 	Notes       string    `json:"notes"`
 	CreatedBy   *uint     `json:"createdBy"`
 
-	HotelID *uint `gorm:"not null" json:"hotelId"`
-	Hotel   Hotel `gorm:"foreignKey:HotelID" json:"hotel"`
+	HotelID *string `gorm:"not null" json:"hotelId"`
+	Hotel   Hotel   `gorm:"foreignKey:HotelID" json:"hotel"`
 
 	AccountID *uint   `gorm:"not null" json:"accountId"`
 	Account   Account `gorm:"foreignKey:AccountID" json:"account,omitzero"`
 
-	ReservationID *uint       `json:"reservationId"`
+	ReservationID *uint        `json:"reservationId"`
 	Reservation   *Reservation `gorm:"foreignKey:ReservationID" json:"reservation,omitempty"`
 
-	StayID *uint  `json:"stayId"`
-	Stay   *Stay  `gorm:"foreignKey:StayID" json:"stay,omitempty"`
+	StayID *uint `json:"stayId"`
+	Stay   *Stay `gorm:"foreignKey:StayID" json:"stay,omitempty"`
 
-	InvoiceID *uint  `json:"invoiceId"`
+	InvoiceID *uint    `json:"invoiceId"`
 	Invoice   *Invoice `gorm:"foreignKey:InvoiceID" json:"invoice,omitempty"`
 
 	PaymentStatusID uint          `gorm:"not null" json:"paymentStatusId"`

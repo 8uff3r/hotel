@@ -24,8 +24,8 @@ type RestaurantBill struct {
 	SettledAt          *time.Time `json:"settledAt"`
 	SettledBy          *uint      `json:"settledBy"`
 
-	HotelID *uint `gorm:"not null" json:"hotelId"`
-	Hotel   Hotel `gorm:"foreignKey:HotelID" json:",omitzero"`
+	HotelID *string `gorm:"not null" json:"hotelId"`
+	Hotel   Hotel   `gorm:"foreignKey:HotelID" json:",omitzero"`
 
 	ReservationID *uint       `gorm:"index" json:"reservationId"`
 	Reservation   Reservation `gorm:"foreignKey:ReservationID" json:"reservation,omitzero"`
@@ -63,6 +63,6 @@ type MealTransaction struct {
 	BillID uint           `gorm:"not null;index" json:"billId"`
 	Bill   RestaurantBill `gorm:"foreignKey:BillID" json:"-"`
 
-	HotelID *uint `gorm:"not null" json:"hotelId"`
-	Hotel   Hotel `gorm:"foreignKey:HotelID" json:"hotel"`
+	HotelID *string `gorm:"not null" json:"hotelId"`
+	Hotel   Hotel   `gorm:"foreignKey:HotelID" json:"hotel"`
 }

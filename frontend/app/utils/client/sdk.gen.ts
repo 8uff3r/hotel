@@ -3237,7 +3237,7 @@ export const getApiRoomsId = <ThrowOnError extends boolean = false>(options: Opt
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.UpdateModel[...].func8`
+ * `hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.roomUpdate.func8`
  *
  * #### Middlewares:
  *

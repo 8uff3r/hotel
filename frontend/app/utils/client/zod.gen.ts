@@ -94,7 +94,7 @@ export const zExpense = z.object({
         }).optional(),
         totalCapacity: z.int().optional()
     }).optional(),
-    hotelId: z.int().gte(0).optional(),
+    hotelId: z.string().optional(),
     id: z.int().gte(0).optional(),
     notes: z.string().optional(),
     paymentMethod: z.object({
@@ -708,7 +708,7 @@ export const zIncome = z.object({
         }).optional(),
         totalCapacity: z.int().optional()
     }).optional(),
-    hotelId: z.int().gte(0).optional(),
+    hotelId: z.string().optional(),
     id: z.int().gte(0).optional(),
     incomeDate: z.iso.datetime({ offset: true }).optional(),
     invoice: z.object({
@@ -1286,7 +1286,7 @@ export const zInventoryItem = z.object({
     }).optional(),
     categoryId: z.int().gte(0).optional(),
     description: z.string().optional(),
-    hotelId: z.int().gte(0).optional(),
+    hotelId: z.string().optional(),
     id: z.int().gte(0).optional(),
     isActive: z.boolean().optional(),
     name: z.string().optional(),
@@ -1512,7 +1512,7 @@ export const zMealTransaction = z.object({
         }).optional(),
         totalCapacity: z.int().optional()
     }).optional(),
-    hotelId: z.int().gte(0).optional(),
+    hotelId: z.string().optional(),
     id: z.int().gte(0).optional(),
     inventoryItem: z.object({
         Hotel: z.object({
@@ -1547,7 +1547,7 @@ export const zMealTransaction = z.object({
         }).optional(),
         categoryId: z.int().gte(0).optional(),
         description: z.string().optional(),
-        hotelId: z.int().gte(0).optional(),
+        hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         isActive: z.boolean().optional(),
         name: z.string().optional(),
@@ -1706,7 +1706,7 @@ export const zPaginatedResponseModelsExpense = z.object({
             }).optional(),
             totalCapacity: z.int().optional()
         }).optional(),
-        hotelId: z.int().gte(0).optional(),
+        hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         notes: z.string().optional(),
         paymentMethod: z.object({
@@ -1917,7 +1917,7 @@ export const zPaginatedResponseModelsIncome = z.object({
             }).optional(),
             totalCapacity: z.int().optional()
         }).optional(),
-        hotelId: z.int().gte(0).optional(),
+        hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         incomeDate: z.iso.datetime({ offset: true }).optional(),
         invoice: z.object({
@@ -2501,7 +2501,7 @@ export const zPaginatedResponseModelsInventoryItem = z.object({
         }).optional(),
         categoryId: z.int().gte(0).optional(),
         description: z.string().optional(),
-        hotelId: z.int().gte(0).optional(),
+        hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         isActive: z.boolean().optional(),
         name: z.string().optional(),
@@ -2605,7 +2605,7 @@ export const zPaginatedResponseModelsMealTransaction = z.object({
             }).optional(),
             totalCapacity: z.int().optional()
         }).optional(),
-        hotelId: z.int().gte(0).optional(),
+        hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         inventoryItem: z.object({
             Hotel: z.object({
@@ -2640,7 +2640,7 @@ export const zPaginatedResponseModelsMealTransaction = z.object({
             }).optional(),
             categoryId: z.int().gte(0).optional(),
             description: z.string().optional(),
-            hotelId: z.int().gte(0).optional(),
+            hotelId: z.string().optional(),
             id: z.int().gte(0).optional(),
             isActive: z.boolean().optional(),
             name: z.string().optional(),
@@ -2707,7 +2707,7 @@ export const zPaginatedResponseModelsParkingLot = z.object({
             }).optional(),
             totalCapacity: z.int().optional()
         }).optional(),
-        hotelId: z.int().gte(0).optional(),
+        hotelId: z.string().optional(),
         hourlyRate: z.number().optional(),
         id: z.int().gte(0).optional(),
         location: z.string().optional(),
@@ -2763,7 +2763,7 @@ export const zPaginatedResponseModelsParkingSpot = z.object({
                 }).optional(),
                 totalCapacity: z.int().optional()
             }).optional(),
-            hotelId: z.int().gte(0).optional(),
+            hotelId: z.string().optional(),
             hourlyRate: z.number().optional(),
             id: z.int().gte(0).optional(),
             location: z.string().optional(),
@@ -2925,7 +2925,7 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
                 }).optional(),
                 totalCapacity: z.int().optional()
             }).optional(),
-            hotelId: z.int().gte(0).optional(),
+            hotelId: z.string().optional(),
             hourlyRate: z.number().optional(),
             id: z.int().gte(0).optional(),
             location: z.string().optional(),
@@ -3125,7 +3125,7 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
                     }).optional(),
                     totalCapacity: z.int().optional()
                 }).optional(),
-                hotelId: z.int().gte(0).optional(),
+                hotelId: z.string().optional(),
                 hourlyRate: z.number().optional(),
                 id: z.int().gte(0).optional(),
                 location: z.string().optional(),
@@ -3462,7 +3462,7 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
-        hotelId: z.int().gte(0).optional(),
+        hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         isExternal: z.boolean().optional(),
         notes: z.string().optional(),
@@ -4489,7 +4489,7 @@ export const zParkingLot = z.object({
         }).optional(),
         totalCapacity: z.int().optional()
     }).optional(),
-    hotelId: z.int().gte(0).optional(),
+    hotelId: z.string().optional(),
     hourlyRate: z.number().optional(),
     id: z.int().gte(0).optional(),
     location: z.string().optional(),
@@ -4539,7 +4539,7 @@ export const zParkingSpot = z.object({
             }).optional(),
             totalCapacity: z.int().optional()
         }).optional(),
-        hotelId: z.int().gte(0).optional(),
+        hotelId: z.string().optional(),
         hourlyRate: z.number().optional(),
         id: z.int().gte(0).optional(),
         location: z.string().optional(),
@@ -4673,7 +4673,7 @@ export const zParkingTransaction = z.object({
             }).optional(),
             totalCapacity: z.int().optional()
         }).optional(),
-        hotelId: z.int().gte(0).optional(),
+        hotelId: z.string().optional(),
         hourlyRate: z.number().optional(),
         id: z.int().gte(0).optional(),
         location: z.string().optional(),
@@ -4873,7 +4873,7 @@ export const zParkingTransaction = z.object({
                 }).optional(),
                 totalCapacity: z.int().optional()
             }).optional(),
-            hotelId: z.int().gte(0).optional(),
+            hotelId: z.string().optional(),
             hourlyRate: z.number().optional(),
             id: z.int().gte(0).optional(),
             location: z.string().optional(),
@@ -5155,7 +5155,7 @@ export const zRestaurantBill = z.object({
         telephone: z.string().optional()
     }).optional(),
     guestId: z.int().gte(0).optional(),
-    hotelId: z.int().gte(0).optional(),
+    hotelId: z.string().optional(),
     id: z.int().gte(0).optional(),
     isExternal: z.boolean().optional(),
     notes: z.string().optional(),

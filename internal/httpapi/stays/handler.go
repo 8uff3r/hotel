@@ -191,8 +191,8 @@ func (sm *StaysModule) stayUpdate(c fuego.ContextWithBody[models.Stay]) (models.
 
 type checkInResponse struct {
 	models.Stay
-	EarlyCheckInPrompt bool     `json:"earlyCheckInPrompt"`
-	PromptMessage      string   `json:"promptMessage,omitempty"`
+	EarlyCheckInPrompt bool   `json:"earlyCheckInPrompt"`
+	PromptMessage      string `json:"promptMessage,omitempty"`
 }
 
 func (sm *StaysModule) stayCheckIn(c fuego.ContextWithBody[checkInDto]) (checkInResponse, error) {
@@ -366,9 +366,9 @@ func (sm *StaysModule) stayChangeRoom(c fuego.ContextWithBody[changeRoomDto]) (m
 }
 
 type addServiceDto struct {
-	ServiceID   uint    `json:"serviceId"`
-	Quantity    int     `json:"quantity"`
-	Description string  `json:"description"`
+	ServiceID   uint   `json:"serviceId"`
+	Quantity    int    `json:"quantity"`
+	Description string `json:"description"`
 }
 
 func (sm *StaysModule) stayAddService(c fuego.ContextWithBody[addServiceDto]) (models.InvoiceItem, error) {
@@ -505,10 +505,7 @@ func (sm *StaysModule) createIncomeRecord(hotelID string, amount float64, source
 	if err := sm.Db.Where("slug = ?", "received").First(&ps).Error; err == nil {
 		income.PaymentStatusID = ps.ID
 	}
-	// Parse hotelID to uint
-	var hotelIDUint uint
-	fmt.Sscanf(hotelID, "%d", &hotelIDUint)
-	income.HotelID = &hotelIDUint
+	income.HotelID = &hotelID
 	sm.Db.Create(&income)
 }
 
@@ -526,11 +523,11 @@ func (sm *StaysModule) stayGetInvoice(c fuego.ContextNoBody) (models.Invoice, er
 }
 
 type addInvoiceItemDto struct {
-	ItemType        string  `json:"itemType"`
-	Description     string  `json:"description"`
-	Quantity        int     `json:"quantity"`
-	UnitPrice       float64 `json:"unitPrice"`
-	TotalPrice      float64 `json:"totalPrice"`
+	ItemType    string  `json:"itemType"`
+	Description string  `json:"description"`
+	Quantity    int     `json:"quantity"`
+	UnitPrice   float64 `json:"unitPrice"`
+	TotalPrice  float64 `json:"totalPrice"`
 }
 
 func (sm *StaysModule) stayAddInvoiceItem(c fuego.ContextWithBody[addInvoiceItemDto]) (models.InvoiceItem, error) {

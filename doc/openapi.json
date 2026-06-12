@@ -257,9 +257,8 @@
 						"type": "object"
 					},
 					"hotelId": {
-						"minimum": 0,
 						"nullable": true,
-						"type": "integer"
+						"type": "string"
 					},
 					"id": {
 						"minimum": 0,
@@ -2181,9 +2180,8 @@
 						"type": "object"
 					},
 					"hotelId": {
-						"minimum": 0,
 						"nullable": true,
-						"type": "integer"
+						"type": "string"
 					},
 					"id": {
 						"minimum": 0,
@@ -4166,9 +4164,8 @@
 						"type": "string"
 					},
 					"hotelId": {
-						"minimum": 0,
 						"nullable": true,
-						"type": "integer"
+						"type": "string"
 					},
 					"id": {
 						"minimum": 0,
@@ -4883,9 +4880,8 @@
 						"type": "object"
 					},
 					"hotelId": {
-						"minimum": 0,
 						"nullable": true,
-						"type": "integer"
+						"type": "string"
 					},
 					"id": {
 						"minimum": 0,
@@ -4996,9 +4992,8 @@
 								"type": "string"
 							},
 							"hotelId": {
-								"minimum": 0,
 								"nullable": true,
-								"type": "integer"
+								"type": "string"
 							},
 							"id": {
 								"minimum": 0,
@@ -5449,9 +5444,8 @@
 									"type": "object"
 								},
 								"hotelId": {
-									"minimum": 0,
 									"nullable": true,
-									"type": "integer"
+									"type": "string"
 								},
 								"id": {
 									"minimum": 0,
@@ -6091,9 +6085,8 @@
 									"type": "object"
 								},
 								"hotelId": {
-									"minimum": 0,
 									"nullable": true,
-									"type": "integer"
+									"type": "string"
 								},
 								"id": {
 									"minimum": 0,
@@ -8097,9 +8090,8 @@
 									"type": "string"
 								},
 								"hotelId": {
-									"minimum": 0,
 									"nullable": true,
-									"type": "integer"
+									"type": "string"
 								},
 								"id": {
 									"minimum": 0,
@@ -8392,9 +8384,8 @@
 									"type": "object"
 								},
 								"hotelId": {
-									"minimum": 0,
 									"nullable": true,
-									"type": "integer"
+									"type": "string"
 								},
 								"id": {
 									"minimum": 0,
@@ -8505,9 +8496,8 @@
 											"type": "string"
 										},
 										"hotelId": {
-											"minimum": 0,
 											"nullable": true,
-											"type": "integer"
+											"type": "string"
 										},
 										"id": {
 											"minimum": 0,
@@ -8717,9 +8707,8 @@
 									"type": "object"
 								},
 								"hotelId": {
-									"minimum": 0,
 									"nullable": true,
-									"type": "integer"
+									"type": "string"
 								},
 								"hourlyRate": {
 									"format": "double",
@@ -8887,9 +8876,8 @@
 											"type": "object"
 										},
 										"hotelId": {
-											"minimum": 0,
 											"nullable": true,
-											"type": "integer"
+											"type": "string"
 										},
 										"hourlyRate": {
 											"format": "double",
@@ -9398,9 +9386,8 @@
 											"type": "object"
 										},
 										"hotelId": {
-											"minimum": 0,
 											"nullable": true,
-											"type": "integer"
+											"type": "string"
 										},
 										"hourlyRate": {
 											"format": "double",
@@ -10077,9 +10064,8 @@
 													"type": "object"
 												},
 												"hotelId": {
-													"minimum": 0,
 													"nullable": true,
-													"type": "integer"
+													"type": "string"
 												},
 												"hourlyRate": {
 													"format": "double",
@@ -11160,9 +11146,8 @@
 									"type": "integer"
 								},
 								"hotelId": {
-									"minimum": 0,
 									"nullable": true,
-									"type": "integer"
+									"type": "string"
 								},
 								"id": {
 									"minimum": 0,
@@ -14506,9 +14491,8 @@
 						"type": "object"
 					},
 					"hotelId": {
-						"minimum": 0,
 						"nullable": true,
-						"type": "integer"
+						"type": "string"
 					},
 					"hourlyRate": {
 						"format": "double",
@@ -14655,9 +14639,8 @@
 								"type": "object"
 							},
 							"hotelId": {
-								"minimum": 0,
 								"nullable": true,
-								"type": "integer"
+								"type": "string"
 							},
 							"hourlyRate": {
 								"format": "double",
@@ -15085,9 +15068,8 @@
 								"type": "object"
 							},
 							"hotelId": {
-								"minimum": 0,
 								"nullable": true,
-								"type": "integer"
+								"type": "string"
 							},
 							"hourlyRate": {
 								"format": "double",
@@ -15764,9 +15746,8 @@
 										"type": "object"
 									},
 									"hotelId": {
-										"minimum": 0,
 										"nullable": true,
-										"type": "integer"
+										"type": "string"
 									},
 									"hourlyRate": {
 										"format": "double",
@@ -16685,9 +16666,8 @@
 						"type": "integer"
 					},
 					"hotelId": {
-						"minimum": 0,
 						"nullable": true,
-						"type": "integer"
+						"type": "string"
 					},
 					"id": {
 						"minimum": 0,
@@ -32505,7 +32485,7 @@
 				]
 			},
 			"put": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.UpdateModel[...].func8`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/rooms.RoomsModule.RegisterRoutes.roomUpdate.func8`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "PUT_/api/rooms/:id",
 				"parameters": [
 					{

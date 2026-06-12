@@ -96,7 +96,7 @@ export type Expense = {
         };
         totalCapacity?: number;
     };
-    hotelId?: number;
+    hotelId?: string;
     id?: number;
     notes?: string;
     paymentMethod?: {
@@ -733,7 +733,7 @@ export type Income = {
         };
         totalCapacity?: number;
     };
-    hotelId?: number;
+    hotelId?: string;
     id?: number;
     incomeDate?: string;
     invoice?: {
@@ -1311,7 +1311,7 @@ export type InventoryItem = {
     };
     categoryId?: number;
     description?: string;
-    hotelId?: number;
+    hotelId?: string;
     id?: number;
     isActive?: boolean;
     name?: string;
@@ -1537,7 +1537,7 @@ export type MealTransaction = {
         };
         totalCapacity?: number;
     };
-    hotelId?: number;
+    hotelId?: string;
     id?: number;
     inventoryItem?: {
         Hotel?: {
@@ -1572,7 +1572,7 @@ export type MealTransaction = {
         };
         categoryId?: number;
         description?: string;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         isActive?: boolean;
         name?: string;
@@ -1731,7 +1731,7 @@ export type PaginatedResponseModelsExpense = {
             };
             totalCapacity?: number;
         };
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         notes?: string;
         paymentMethod?: {
@@ -1942,7 +1942,7 @@ export type PaginatedResponseModelsIncome = {
             };
             totalCapacity?: number;
         };
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         incomeDate?: string;
         invoice?: {
@@ -2526,7 +2526,7 @@ export type PaginatedResponseModelsInventoryItem = {
         };
         categoryId?: number;
         description?: string;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         isActive?: boolean;
         name?: string;
@@ -2630,7 +2630,7 @@ export type PaginatedResponseModelsMealTransaction = {
             };
             totalCapacity?: number;
         };
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         inventoryItem?: {
             Hotel?: {
@@ -2665,7 +2665,7 @@ export type PaginatedResponseModelsMealTransaction = {
             };
             categoryId?: number;
             description?: string;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             isActive?: boolean;
             name?: string;
@@ -2732,7 +2732,7 @@ export type PaginatedResponseModelsParkingLot = {
             };
             totalCapacity?: number;
         };
-        hotelId?: number;
+        hotelId?: string;
         hourlyRate?: number;
         id?: number;
         location?: string;
@@ -2788,7 +2788,7 @@ export type PaginatedResponseModelsParkingSpot = {
                 };
                 totalCapacity?: number;
             };
-            hotelId?: number;
+            hotelId?: string;
             hourlyRate?: number;
             id?: number;
             location?: string;
@@ -2950,7 +2950,7 @@ export type PaginatedResponseModelsParkingTransaction = {
                 };
                 totalCapacity?: number;
             };
-            hotelId?: number;
+            hotelId?: string;
             hourlyRate?: number;
             id?: number;
             location?: string;
@@ -3150,7 +3150,7 @@ export type PaginatedResponseModelsParkingTransaction = {
                     };
                     totalCapacity?: number;
                 };
-                hotelId?: number;
+                hotelId?: string;
                 hourlyRate?: number;
                 id?: number;
                 location?: string;
@@ -3487,7 +3487,7 @@ export type PaginatedResponseModelsRestaurantBill = {
             telephone?: string;
         };
         guestId?: number;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         isExternal?: boolean;
         notes?: string;
@@ -4514,7 +4514,7 @@ export type ParkingLot = {
         };
         totalCapacity?: number;
     };
-    hotelId?: number;
+    hotelId?: string;
     hourlyRate?: number;
     id?: number;
     location?: string;
@@ -4564,7 +4564,7 @@ export type ParkingSpot = {
             };
             totalCapacity?: number;
         };
-        hotelId?: number;
+        hotelId?: string;
         hourlyRate?: number;
         id?: number;
         location?: string;
@@ -4698,7 +4698,7 @@ export type ParkingTransaction = {
             };
             totalCapacity?: number;
         };
-        hotelId?: number;
+        hotelId?: string;
         hourlyRate?: number;
         id?: number;
         location?: string;
@@ -4898,7 +4898,7 @@ export type ParkingTransaction = {
                 };
                 totalCapacity?: number;
             };
-            hotelId?: number;
+            hotelId?: string;
             hourlyRate?: number;
             id?: number;
             location?: string;
@@ -5180,7 +5180,7 @@ export type RestaurantBill = {
         telephone?: string;
     };
     guestId?: number;
-    hotelId?: number;
+    hotelId?: string;
     id?: number;
     isExternal?: boolean;
     notes?: string;

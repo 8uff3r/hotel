@@ -21,8 +21,8 @@ type ParkingLot struct {
 	StatusID uint             `gorm:"not null" json:"statusId"`
 	Status   ParkingLotStatus `gorm:"foreignKey:StatusID" json:"status,omitzero"`
 
-	HotelID *uint `gorm:"not null" json:"hotelId"`
-	Hotel   Hotel `gorm:"foreignKey:HotelID" json:"hotel"`
+	HotelID *string `gorm:"not null" json:"hotelId"`
+	Hotel   Hotel   `gorm:"foreignKey:HotelID" json:"hotel"`
 }
 
 type ParkingSpotStatus struct {
@@ -76,26 +76,26 @@ type Vehicle struct {
 
 type ParkingTransaction struct {
 	Base
-	LotID         *uint              `json:"lotId"`
-	Lot           ParkingLot         `gorm:"foreignKey:LotID" json:"lot,omitzero"`
-	SpotID        *uint              `json:"spotId"`
-	Spot          ParkingSpot        `gorm:"foreignKey:SpotID" json:"spot,omitzero"`
-	GuestID       *uint              `json:"guestId"`
-	Guest         Guest              `gorm:"foreignKey:GuestID" json:"guest,omitzero"`
-	ReservationID *uint              `json:"reservationId"`
-	Reservation   Reservation        `gorm:"foreignKey:ReservationID" json:"reservation,omitzero"`
-	LicensePlate  string             `gorm:"not null" json:"licensePlate"`
-	EntryTime     time.Time          `gorm:"not null" json:"entryTime"`
-	ExitTime      *time.Time         `json:"exitTime"`
-	HoursParked   *float64           `json:"hoursParked"`
-	RateApplied   *float64           `json:"rateApplied"`
-	AmountDue     float64            `gorm:"not null;default:0" json:"amountDue"`
-	AmountPaid    float64            `gorm:"not null;default:0" json:"amountPaid"`
-	Status        string             `gorm:"not null;default:active" json:"status"`
-	PaymentStatus string             `gorm:"not null;default:pending" json:"paymentStatus"`
-	PaymentMethodID *uint            `json:"paymentMethodId"`
-	PaymentMethod   PaymentMethod    `gorm:"foreignKey:PaymentMethodID" json:"paymentMethod,omitzero" translate:"true"`
-	Notes         string             `json:"notes"`
+	LotID           *uint         `json:"lotId"`
+	Lot             ParkingLot    `gorm:"foreignKey:LotID" json:"lot,omitzero"`
+	SpotID          *uint         `json:"spotId"`
+	Spot            ParkingSpot   `gorm:"foreignKey:SpotID" json:"spot,omitzero"`
+	GuestID         *uint         `json:"guestId"`
+	Guest           Guest         `gorm:"foreignKey:GuestID" json:"guest,omitzero"`
+	ReservationID   *uint         `json:"reservationId"`
+	Reservation     Reservation   `gorm:"foreignKey:ReservationID" json:"reservation,omitzero"`
+	LicensePlate    string        `gorm:"not null" json:"licensePlate"`
+	EntryTime       time.Time     `gorm:"not null" json:"entryTime"`
+	ExitTime        *time.Time    `json:"exitTime"`
+	HoursParked     *float64      `json:"hoursParked"`
+	RateApplied     *float64      `json:"rateApplied"`
+	AmountDue       float64       `gorm:"not null;default:0" json:"amountDue"`
+	AmountPaid      float64       `gorm:"not null;default:0" json:"amountPaid"`
+	Status          string        `gorm:"not null;default:active" json:"status"`
+	PaymentStatus   string        `gorm:"not null;default:pending" json:"paymentStatus"`
+	PaymentMethodID *uint         `json:"paymentMethodId"`
+	PaymentMethod   PaymentMethod `gorm:"foreignKey:PaymentMethodID" json:"paymentMethod,omitzero" translate:"true"`
+	Notes           string        `json:"notes"`
 }
 
 type ParkingStats struct {

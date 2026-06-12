@@ -34,6 +34,6 @@ type InventoryItem struct {
 	StatusID uint                `gorm:"not null" json:"statusId"`
 	Status   InventoryItemStatus `gorm:"foreignKey:StatusID" json:"status,omitzero"`
 
-	HotelID *uint `gorm:"not null" json:"hotelId"`
-	Hotel   Hotel `gorm:"foreignKey:HotelID" json:",omitzero"`
+	HotelID *string `gorm:"not null" json:"hotelId"`
+	Hotel   Hotel   `gorm:"foreignKey:HotelID" json:",omitzero"`
 }
