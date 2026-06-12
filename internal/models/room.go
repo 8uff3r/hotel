@@ -1,5 +1,7 @@
 package models
 
+import "gorm.io/gorm"
+
 type Room struct {
 	Base
 	HotelID     *uint     `json:"hotelId,omitempty"`
@@ -46,9 +48,31 @@ type Floor struct {
 	Description string `json:"description"`
 }
 
+type RoomStatusSlug string
+
+const (
+	RoomStatusAvailable   RoomStatusSlug = "available"
+	RoomStatusOccupied    RoomStatusSlug = "occupied"
+	RoomStatusReserved    RoomStatusSlug = "reserved"
+	RoomStatusUnderRepair RoomStatusSlug = "under_repair"
+	RoomStatusCleaning    RoomStatusSlug = "cleaning"
+)
+
 type RoomPicture struct {
 	Base
 	RoomID      uint   `gorm:"not null;index" json:"roomId"`
 	URL         string `gorm:"not null" json:"url"`
 	Description string `json:"description"`
+}
+
+func (r *Room) BeforeSave(tx *gorm.DB) (err error) {
+	if r.Status.Slug != "" && r.StatusID == 0 {
+		var status RoomStatus
+		if err := tx.Where("slug = ?", r.Status.Slug).First(&status).Error; err != nil {
+			return err
+		}
+		r.StatusID = status.ID
+		r.Status = status
+	}
+	return nil
 }

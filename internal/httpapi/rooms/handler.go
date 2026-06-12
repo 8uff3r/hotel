@@ -8,6 +8,7 @@ import (
 
 	"github.com/go-fuego/fuego"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type RoomsModule struct{}
@@ -16,58 +17,58 @@ func (m RoomsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Get(
 		s,
 		"/",
-			h.ListModel[models.Room](
-				api.Db,
-				h.WithPreload("Amenities", "Type", "Status", "Floor"),
-				h.WithTranslation[models.Room](),
-			),
-		)
-		fuego.Post(s, "/", h.CreateModel[models.Room](api.Db))
+		h.ListModel[models.Room](
+			api.Db,
+			h.WithPreload("Amenities", "Type", "Status", "Floor"),
+			h.WithTranslation[models.Room](),
+		),
+	)
+	fuego.Post(s, "/", h.CreateModel[models.Room](api.Db))
 
-		fuego.Get(s, "/rack", m.rackHandler(api))
-		fuego.Get(s, "/{id}/status", roomDynamicStatus(api.Db))
+	fuego.Get(s, "/rack", m.rackHandler(api))
+	fuego.Get(s, "/{id}/status", roomDynamicStatus(api.Db))
 
-		fuego.Get(
-			s,
-			"/{id}",
-			h.GetModel[models.Room](
-				api.Db,
-				"Amenities", "Type", "Status", "Floor", "Pictures",
-			),
-		)
-		fuego.Put(s, "/{id}", h.UpdateModel[models.Room](api.Db))
-		fuego.Delete(s, "/{id}", h.DeleteModel[models.Room](api.Db))
+	fuego.Get(
+		s,
+		"/{id}",
+		h.GetModel[models.Room](
+			api.Db,
+			"Amenities", "Type", "Status", "Floor", "Pictures",
+		),
+	)
+	fuego.Put(s, "/{id}", roomUpdate(api.Db))
+	fuego.Delete(s, "/{id}", h.DeleteModel[models.Room](api.Db))
 
-		fuego.Get(
-			s,
-			"/amenities",
-			h.ListModel[models.Amenity](
-				api.Db,
-				h.WithTranslation[models.Amenity](),
-			),
-		)
-		fuego.Get(
-			s,
-			"/types",
-			h.ListModel[models.RoomType](
-				api.Db,
-				h.WithTranslation[models.RoomType](),
-			),
-		)
-		fuego.Get(
-			s,
-			"/statuses",
-			h.ListModel[models.RoomStatus](
-				api.Db,
-				h.WithTranslation[models.RoomStatus](),
-			),
-		)
-		fuego.Get(
-			s,
-			"/floors",
-			h.ListModel[models.Floor](api.Db),
-		)
-		fuego.Post(s, "/floors", createFloor(api.Db))
+	fuego.Get(
+		s,
+		"/amenities",
+		h.ListModel[models.Amenity](
+			api.Db,
+			h.WithTranslation[models.Amenity](),
+		),
+	)
+	fuego.Get(
+		s,
+		"/types",
+		h.ListModel[models.RoomType](
+			api.Db,
+			h.WithTranslation[models.RoomType](),
+		),
+	)
+	fuego.Get(
+		s,
+		"/statuses",
+		h.ListModel[models.RoomStatus](
+			api.Db,
+			h.WithTranslation[models.RoomStatus](),
+		),
+	)
+	fuego.Get(
+		s,
+		"/floors",
+		h.ListModel[models.Floor](api.Db),
+	)
+	fuego.Post(s, "/floors", createFloor(api.Db))
 
 	fuego.Get(s, "/{id}/pictures", roomPicturesGet(api.Db))
 	fuego.Post(s, "/{id}/pictures", roomPicturesAdd(api.Db))
@@ -75,10 +76,44 @@ func (m RoomsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 }
 
 type RoomDynamicStatus struct {
-	Status    string `json:"status"`
-	StatusSlug string `json:"statusSlug"`
-	StayID    *uint  `json:"stayId,omitempty"`
-	ReservationID *uint `json:"reservationId,omitempty"`
+	Status        string `json:"status"`
+	StatusSlug    string `json:"statusSlug"`
+	StayID        *uint  `json:"stayId,omitempty"`
+	ReservationID *uint  `json:"reservationId,omitempty"`
+}
+
+func roomUpdate(db *gorm.DB) func(c fuego.ContextWithBody[models.Room]) (models.Room, error) {
+	return func(c fuego.ContextWithBody[models.Room]) (models.Room, error) {
+		var zero models.Room
+		id, err := h.ParseID(c.PathParam("id"))
+		if err != nil {
+			return zero, fuego.BadRequestError{Title: "invalid_id"}
+		}
+		body, err := c.Body()
+		if err != nil {
+			return zero, err
+		}
+		body.ID = id
+
+		// Resolve status slug if provided without ID
+		if body.Status.Slug != "" && body.StatusID == 0 {
+			var status models.RoomStatus
+			if err := db.Where("slug = ?", body.Status.Slug).First(&status).Error; err != nil {
+				return zero, fuego.BadRequestError{Title: "invalid_status_slug"}
+			}
+			body.StatusID = status.ID
+			body.Status = status
+		}
+
+		res := db.Model(&models.Room{}).Where("id = ?", id).Clauses(clause.Returning{}).Updates(body).Scan(&zero)
+		if res.Error != nil {
+			return zero, fuego.BadRequestError{Title: "update_failed"}
+		}
+		if res.RowsAffected == 0 {
+			return zero, fuego.NotFoundError{}
+		}
+		return zero, nil
+	}
 }
 
 func roomDynamicStatus(db *gorm.DB) func(c fuego.ContextNoBody) (RoomDynamicStatus, error) {
@@ -105,7 +140,7 @@ func roomDynamicStatus(db *gorm.DB) func(c fuego.ContextNoBody) (RoomDynamicStat
 		// Manual overrides (cleaning, under_repair) take precedence
 		var roomStatus models.RoomStatus
 		if err := db.First(&roomStatus, room.StatusID).Error; err == nil {
-			if roomStatus.Slug == "cleaning" || roomStatus.Slug == "under_repair" {
+			if roomStatus.Slug == string(models.RoomStatusCleaning) || roomStatus.Slug == string(models.RoomStatusUnderRepair) {
 				return RoomDynamicStatus{Status: roomStatus.Label, StatusSlug: roomStatus.Slug}, nil
 			}
 		}
@@ -115,7 +150,7 @@ func roomDynamicStatus(db *gorm.DB) func(c fuego.ContextNoBody) (RoomDynamicStat
 		if err := db.Where("room_id = ? AND entry_date <= ? AND (departure_date IS NULL OR departure_date >= ?) AND status_id IN (SELECT id FROM stay_statuses WHERE slug IN ('waiting', 'resident'))", id, date, date).
 			Order("id DESC").
 			First(&stay).Error; err == nil {
-			return RoomDynamicStatus{Status: "Occupied", StatusSlug: "occupied", StayID: &stay.ID}, nil
+			return RoomDynamicStatus{Status: "Occupied", StatusSlug: string(models.RoomStatusOccupied), StayID: &stay.ID}, nil
 		}
 
 		// Check reservations for this room on the date
@@ -124,10 +159,10 @@ func roomDynamicStatus(db *gorm.DB) func(c fuego.ContextNoBody) (RoomDynamicStat
 			Where("reservation_rooms.room_id = ? AND entry_date <= ? AND (departure_date IS NULL OR departure_date >= ?) AND status_id IN (SELECT id FROM reservation_statuses WHERE slug IN ('awaiting_payment', 'verified', 'accepted'))", id, date, date).
 			Order("reservations.id DESC").
 			First(&reservation).Error; err == nil {
-			return RoomDynamicStatus{Status: "Reserved", StatusSlug: "reserved", ReservationID: &reservation.ID}, nil
+			return RoomDynamicStatus{Status: "Reserved", StatusSlug: string(models.RoomStatusReserved), ReservationID: &reservation.ID}, nil
 		}
 
-		return RoomDynamicStatus{Status: "Available", StatusSlug: "available"}, nil
+		return RoomDynamicStatus{Status: "Available", StatusSlug: string(models.RoomStatusAvailable)}, nil
 	}
 }
 

@@ -234,7 +234,7 @@ func (sm *StaysModule) stayCheckIn(c fuego.ContextWithBody[checkInDto]) (checkIn
 
 	// Update room status to occupied
 	var occupiedStatus models.RoomStatus
-	sm.Db.Where("slug = ?", "occupied").First(&occupiedStatus)
+	sm.Db.Where("slug = ?", string(models.RoomStatusOccupied)).First(&occupiedStatus)
 	if occupiedStatus.ID > 0 {
 		sm.Db.Model(&models.Room{}).Where("id = ?", stay.RoomID).Update("status_id", occupiedStatus.ID)
 	}
@@ -284,7 +284,7 @@ func (sm *StaysModule) stayCheckOut(c fuego.ContextWithBody[checkOutDto]) (model
 
 	// Update room status to cleaning
 	var cleaningStatus models.RoomStatus
-	sm.Db.Where("slug = ?", "cleaning").First(&cleaningStatus)
+	sm.Db.Where("slug = ?", string(models.RoomStatusCleaning)).First(&cleaningStatus)
 	if cleaningStatus.ID > 0 {
 		sm.Db.Model(&models.Room{}).Where("id = ?", stay.RoomID).Update("status_id", cleaningStatus.ID)
 	}
@@ -356,7 +356,7 @@ func (sm *StaysModule) stayChangeRoom(c fuego.ContextWithBody[changeRoomDto]) (m
 	sm.Db.Model(&models.Stay{}).Where("room_id = ? AND status_id IN (SELECT id FROM stay_statuses WHERE slug IN ('waiting', 'resident'))", oldRoomID).Count(&oldRoomStayCount)
 	if oldRoomStayCount == 0 {
 		var availableStatus models.RoomStatus
-		sm.Db.Where("slug = ?", "available").First(&availableStatus)
+		sm.Db.Where("slug = ?", string(models.RoomStatusAvailable)).First(&availableStatus)
 		if availableStatus.ID > 0 {
 			sm.Db.Model(&models.Room{}).Where("id = ?", oldRoomID).Update("status_id", availableStatus.ID)
 		}

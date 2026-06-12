@@ -137,11 +137,41 @@ func seedRoomStatuses(db *gorm.DB) {
 	t := Translations["room-status"]
 
 	statuses := []models.RoomStatus{
-		{TranslateBase: models.TranslateBase{Slug: "available", Translation: t["available"]}, ColorHex: "2ECC71"},       // green
-		{TranslateBase: models.TranslateBase{Slug: "occupied", Translation: t["occupied"]}, ColorHex: "E74C3C"},         // red
-		{TranslateBase: models.TranslateBase{Slug: "reserved", Translation: t["reserved"]}, ColorHex: "F39C12"},         // orange
-		{TranslateBase: models.TranslateBase{Slug: "under_repair", Translation: t["under_repair"]}, ColorHex: "95A5A6"}, // gray
-		{TranslateBase: models.TranslateBase{Slug: "cleaning", Translation: t["cleaning"]}, ColorHex: "4a412a"},         // dark brown
+		{
+			TranslateBase: models.TranslateBase{
+				Slug:        string(models.RoomStatusAvailable),
+				Translation: t[string(models.RoomStatusAvailable)],
+			},
+			ColorHex: "2ECC71", // green
+		},
+		{
+			TranslateBase: models.TranslateBase{
+				Slug:        string(models.RoomStatusOccupied),
+				Translation: t[string(models.RoomStatusOccupied)],
+			},
+			ColorHex: "E74C3C", // red
+		},
+		{
+			TranslateBase: models.TranslateBase{
+				Slug:        string(models.RoomStatusReserved),
+				Translation: t[string(models.RoomStatusReserved)],
+			},
+			ColorHex: "F39C12", // orange
+		},
+		{
+			TranslateBase: models.TranslateBase{
+				Slug:        string(models.RoomStatusUnderRepair),
+				Translation: t[string(models.RoomStatusUnderRepair)],
+			},
+			ColorHex: "95A5A6", // gray
+		},
+		{
+			TranslateBase: models.TranslateBase{
+				Slug:        string(models.RoomStatusCleaning),
+				Translation: t[string(models.RoomStatusCleaning)],
+			},
+			ColorHex: "4a412a", // dark brown
+		},
 	}
 
 	seed(db, statuses)

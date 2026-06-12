@@ -88,24 +88,24 @@ type GuestWithReservationResponse struct {
 }
 
 type GuestSettlementResponse struct {
-	Reservations []ReservationSettlement `json:"reservations"`
-	ParkingTxns  []ParkingSettlement     `json:"parkingTransactions"`
-	RestaurantBills []RestaurantSettlement `json:"restaurantBills"`
-	TotalRoom    float64                 `json:"totalRoom"`
-	TotalParking float64                 `json:"totalParking"`
-	TotalRestaurant float64              `json:"totalRestaurant"`
-	TotalDue     float64                 `json:"totalDue"`
-	TotalPaid    float64                 `json:"totalPaid"`
-	Balance      float64                 `json:"balance"`
+	Reservations    []ReservationSettlement `json:"reservations"`
+	ParkingTxns     []ParkingSettlement     `json:"parkingTransactions"`
+	RestaurantBills []RestaurantSettlement  `json:"restaurantBills"`
+	TotalRoom       float64                 `json:"totalRoom"`
+	TotalParking    float64                 `json:"totalParking"`
+	TotalRestaurant float64                 `json:"totalRestaurant"`
+	TotalDue        float64                 `json:"totalDue"`
+	TotalPaid       float64                 `json:"totalPaid"`
+	Balance         float64                 `json:"balance"`
 }
 
 type ReservationSettlement struct {
-	ID              uint   `json:"id"`
-	ReservationCode string `json:"reservationCode"`
-	CheckInDate     string `json:"checkInDate"`
-	CheckOutDate    string `json:"checkOutDate"`
-	Status          string `json:"status"`
-	StatusLabel     string `json:"statusLabel"`
+	ID              uint    `json:"id"`
+	ReservationCode string  `json:"reservationCode"`
+	CheckInDate     string  `json:"checkInDate"`
+	CheckOutDate    string  `json:"checkOutDate"`
+	Status          string  `json:"status"`
+	StatusLabel     string  `json:"statusLabel"`
 	RoomPrice       float64 `json:"roomPrice"`
 	PaidAmount      float64 `json:"paidAmount"`
 }
@@ -217,13 +217,13 @@ func (gm *GuestsModule) createGuestWithReservation(c fuego.ContextWithBody[Guest
 }
 
 type SettleGuestRequest struct {
-	ReservationIDs  []uint  `json:"reservationIds"`
-	ParkingTxnIDs   []uint  `json:"parkingTxnIds"`
-	RestaurantBillIDs []uint `json:"restaurantBillIds"`
-	Amount          float64 `json:"amount"`
-	PaymentMethod   uint    `json:"paymentMethod"`
-	Reference       string  `json:"reference"`
-	Notes           string  `json:"notes"`
+	ReservationIDs    []uint  `json:"reservationIds"`
+	ParkingTxnIDs     []uint  `json:"parkingTxnIds"`
+	RestaurantBillIDs []uint  `json:"restaurantBillIds"`
+	Amount            float64 `json:"amount"`
+	PaymentMethod     uint    `json:"paymentMethod"`
+	Reference         string  `json:"reference"`
+	Notes             string  `json:"notes"`
 }
 
 func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRequest]) (okResponse, error) {

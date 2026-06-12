@@ -273,7 +273,7 @@ func (re *ReservationModule) createStayFromReservation(ctx fuego.ContextNoBody, 
 
 	// Update room status to occupied
 	var occupiedStatus models.RoomStatus
-	if err := re.Db.Where("slug = ?", "occupied").First(&occupiedStatus).Error; err == nil {
+	if err := re.Db.Where("slug = ?", string(models.RoomStatusOccupied)).First(&occupiedStatus).Error; err == nil {
 		re.Db.Model(&models.Room{}).Where("id = ?", roomID).Update("status_id", occupiedStatus.ID)
 	}
 

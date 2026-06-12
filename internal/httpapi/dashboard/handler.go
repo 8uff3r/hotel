@@ -68,7 +68,7 @@ func (m DashboardModule) statsHandler(api *h.API) func(c fuego.ContextNoBody) (D
 		var unavailableRooms int64
 		if err := db.Model(&models.Room{}).
 			Joins("JOIN room_statuses ON rooms.status_id = room_statuses.id").
-			Where("rooms.hotel_id = ? AND room_statuses.slug IN ('cleaning', 'under_repair')", hotelID).
+			Where("rooms.hotel_id = ? AND room_statuses.slug IN (?, ?)", hotelID, string(models.RoomStatusCleaning), string(models.RoomStatusUnderRepair)).
 			Count(&unavailableRooms).Error; err != nil {
 			return stats, fmt.Errorf("count unavailable: %w", err)
 		}
