@@ -265,7 +265,7 @@ const handleSubmit = async (event: FormSubmitEvent<CreateRequest>) => {
       companions: companions.value,
     };
 
-    const res = await postApiGuestsWithReservation({
+    const res = await postApiGuestsWithStay({
       body,
     });
 

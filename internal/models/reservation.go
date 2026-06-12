@@ -19,8 +19,8 @@ type Reservation struct {
 
 	ReservationCode string `gorm:"index" json:"reservationCode"`
 
-	EntryDate      time.Time `gorm:"not null" json:"entryDate"`
-	DepartureDate  time.Time `json:"departureDate"`
+	EntryDate      time.Time `gorm:"not null" json:"entryDate,omitzero"`
+	DepartureDate  time.Time `json:"departureDate,omitzero"`
 	DurationOfStay int       `json:"durationOfStay"`
 	NumberOfPeople int       `gorm:"not null;default:1" json:"numberOfPeople"`
 
@@ -39,7 +39,7 @@ type Reservation struct {
 	Status   ReservationStatus `gorm:"foreignKey:StatusID" json:"status"`
 
 	PaymentDeadline *time.Time `json:"paymentDeadline"` // reservation expires if not paid by this time
-	Notes         string     `json:"notes"`
+	Notes           string     `json:"notes"`
 
 	Payment Payment `gorm:"foreignKey:ReservationID" json:"payment"`
 }
