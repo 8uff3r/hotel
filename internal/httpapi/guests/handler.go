@@ -108,6 +108,7 @@ func (gm GuestsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 
 	fuego.Get(s, "/{id}/settle", gm.getGuestSettlementHandler)
 	fuego.Post(s, "/{id}/settle", gm.settleGuestAccount)
+	fuego.Get(s, "/{id}/with-stay", gm.getGuestWithStaysAndReservations)
 
 	fuego.Get(s, "/relations", h.ListModel[models.FamilyRelationship](api.Db, h.WithTranslation[models.FamilyRelationship]()))
 }
@@ -116,6 +117,12 @@ type GuestWithReservationResponse struct {
 	Guest       models.Guest       `json:"guest"`
 	Reservation models.Reservation `json:"reservation"`
 	Payment     models.Payment     `json:"payment"`
+}
+
+type GuestWithStaysAndReservationsResponse struct {
+	Guest        models.Guest       `json:"guest"`
+	Stays        []models.Stay       `json:"stays"`
+	Reservations []models.Reservation `json:"reservations"`
 }
 
 type GuestSettlementResponse struct {
@@ -794,6 +801,44 @@ func resolvePaymentStatus(db *gorm.DB, slug string) uint {
 		return 1
 	}
 	return status.ID
+}
+
+func (gm *GuestsModule) getGuestWithStaysAndReservations(c fuego.ContextNoBody) (GuestWithStaysAndReservationsResponse, error) {
+	var zero GuestWithStaysAndReservationsResponse
+	id, err := h.ParseID(c.PathParam("id"))
+	if err != nil {
+		return zero, fuego.BadRequestError{Title: "invalid_id"}
+	}
+
+	var guest models.Guest
+	if err := gm.Db.Preload("Nationality").First(&guest, id).Error; err != nil {
+		return zero, fuego.NotFoundError{}
+	}
+
+	var stays []models.Stay
+	if err := gm.Db.Where("guest_id = ?", id).
+		Preload("Room").
+		Preload("Status").
+		Order("entry_date desc").
+		Find(&stays).Error; err != nil {
+		return zero, fuego.InternalServerError{Title: "query_failed"}
+	}
+
+	var reservations []models.Reservation
+	if err := gm.Db.Where("guest_id = ?", id).
+		Preload("Rooms").
+		Preload("Status").
+		Preload("Payment.Status").
+		Order("entry_date desc").
+		Find(&reservations).Error; err != nil {
+		return zero, fuego.InternalServerError{Title: "query_failed"}
+	}
+
+	return GuestWithStaysAndReservationsResponse{
+		Guest:        guest,
+		Stays:        stays,
+		Reservations: reservations,
+	}, nil
 }
 
 func resolveAccount(db *gorm.DB, code string) *uint {

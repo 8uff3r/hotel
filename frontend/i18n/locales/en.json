@@ -13,6 +13,7 @@
     "confirm": "Confirm",
     "editGuest": "Edit Guest",
     "saveChanges": "Save Changes",
+    "close": "Close",
     "add": "Add"
   },
   "restaurant": {
@@ -262,13 +263,23 @@
     "companionsList": "Companions List",
     "noCompanions": "No companions added",
     "deleteCompanion": "Delete Companion",
+    "stays": "Stays",
+    "reservations": "Reservations",
+    "noStays": "No stays found",
+    "noReservations": "No reservations found",
+    "view": "View",
+    "edit": "Edit",
     "columns": {
       "id": "ID",
       "name": "Name",
       "phone": "Phone",
       "idInfo": "ID Info",
       "location": "Location",
-      "actions": "Actions"
+      "actions": "Actions",
+      "room": "Room",
+      "dates": "Dates",
+      "status": "Status",
+      "total": "Total"
     }
   },
   "idTypes": {

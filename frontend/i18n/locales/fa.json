@@ -13,7 +13,8 @@
     "confirm": "تایید",
     "editGuest": "ویرایش مهمان",
     "saveChanges": "ذخیره تغییرات",
-    "add": "افزودن"
+    "add": "افزودن",
+    "close": "بستن"
   },
   "restaurant": {
     "title": "رستوران",
@@ -263,13 +264,23 @@
     "companionsList": "فهرست همراهان",
     "noCompanions": "هیچ همراهی اضافه نشده",
     "deleteCompanion": "حذف همراه",
+    "stays": "اقامت‌ها",
+    "reservations": "رزروها",
+    "noStays": "اقامتی یافت نشد",
+    "noReservations": "رزروی یافت نشد",
+    "view": "مشاهده",
+    "edit": "ویرایش",
     "columns": {
       "id": "شناسه",
       "name": "نام",
       "phone": "تلفن",
       "idInfo": "اطلاعات شناسه",
       "location": "موقعیت",
-      "actions": "عملیات"
+      "actions": "عملیات",
+      "room": "اتاق",
+      "dates": "تاریخ‌ها",
+      "status": "وضعیت",
+      "total": "مجموع"
     }
   },
   "idTypes": {
