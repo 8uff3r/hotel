@@ -14,20 +14,12 @@
     <div v-else-if="room">
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <!-- Room Details -->
-        <div class="lg:col-span-2 space-y-6">
+        <div class="space-y-6 lg:col-span-2">
           <UCard>
             <template #header>
               <div class="flex items-center justify-between">
                 <span class="text-lg font-semibold">{{ t("common.room_details") }}</span>
                 <div class="flex items-center gap-2">
-                  <UBadge
-                    v-if="dynamicStatus"
-                    color="neutral"
-                    variant="soft"
-                    class="text-xs"
-                  >
-                    {{ dynamicStatus.status }}
-                  </UBadge>
                   <UBadge
                     color="neutral"
                     :style="{
@@ -138,20 +130,26 @@
               </div>
             </template>
             <div class="space-y-4">
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div v-for="pic in pictures" :key="pic.id" class="relative group">
-                  <img :src="pic.url" :alt="pic.description" class="w-full h-24 object-cover rounded-lg border" />
+              <div class="grid grid-cols-2 gap-3 md:grid-cols-4">
+                <div v-for="pic in pictures" :key="pic.id" class="group relative">
+                  <img
+                    :src="pic.url"
+                    :alt="pic.description"
+                    class="h-24 w-full rounded-lg border object-cover"
+                  />
                   <UButton
                     variant="ghost"
                     size="xs"
                     color="error"
-                    class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    class="absolute top-1 right-1 opacity-0 transition-opacity group-hover:opacity-100"
                     @click="removePicture(pic.id)"
                   >
                     <UIcon name="i-lucide-trash" class="h-3 w-3" />
                   </UButton>
                 </div>
-                <div class="flex items-center justify-center h-24 rounded-lg border border-dashed border-gray-300 dark:border-gray-600">
+                <div
+                  class="flex h-24 items-center justify-center rounded-lg border border-dashed border-gray-300 dark:border-gray-600"
+                >
                   <UButton variant="ghost" size="sm" @click="showAddPicture = true">
                     <UIcon name="i-lucide-plus" class="mr-1 h-4 w-4" />
                     افزودن تصویر
@@ -165,7 +163,7 @@
           <UModal v-model:open="showAddPicture">
             <template #title>افزودن تصویر</template>
             <template #content>
-              <div class="p-4 space-y-4">
+              <div class="space-y-4 p-4">
                 <UFormField label="آدرس تصویر (URL)" required>
                   <UInput v-model="newPicture.url" placeholder="https://..." />
                 </UFormField>
@@ -173,8 +171,12 @@
                   <UInput v-model="newPicture.description" placeholder="توضیحات تصویر" />
                 </UFormField>
                 <div class="flex justify-end gap-2">
-                  <UButton variant="outline" size="sm" @click="showAddPicture = false">انصراف</UButton>
-                  <UButton size="sm" color="primary" :loading="addingPicture" @click="addPicture">ذخیره</UButton>
+                  <UButton variant="outline" size="sm" @click="showAddPicture = false"
+                    >انصراف</UButton
+                  >
+                  <UButton size="sm" color="primary" :loading="addingPicture" @click="addPicture"
+                    >ذخیره</UButton
+                  >
                 </div>
               </div>
             </template>
@@ -231,7 +233,6 @@
 <script setup lang="ts">
 import type z from "zod";
 import {
-  getApiRoomsIdStatus,
   getApiRoomsIdPictures,
   postApiRoomsIdPictures,
   deleteApiRoomsIdPicturesPictureId,
@@ -270,7 +271,12 @@ const { data: types } = useAsyncData("room-types", async () => {
 });
 const { data: floors } = useAsyncData("room-floors", async () => {
   const res = await getApiRoomsFloors({});
-  return res.data?.data?.map((f: any) => ({ ...f, label: `Floor ${f.number}${f.description ? ` - ${f.description}` : ""}` })) ?? [];
+  return (
+    res.data?.data?.map((f: any) => ({
+      ...f,
+      label: `Floor ${f.number}${f.description ? ` - ${f.description}` : ""}`,
+    })) ?? []
+  );
 });
 
 const toggleAmenity = (amenityId: number) => {
@@ -294,14 +300,6 @@ const { data: room, pending } = useAsyncData(async () => {
   form.value = response.data ?? ({ amenities: [] } as any);
   return response.data;
 });
-
-const { data: dynamicStatus } = useAsyncData(
-  `room-dynamic-status-${roomId}`,
-  async () => {
-    const res = await getApiRoomsIdStatus({ path: { id: roomId } });
-    return res.data;
-  }
-);
 
 const { data: pictures, refresh: refreshPictures } = useAsyncData(
   `room-pictures-${roomId}`,
@@ -338,7 +336,9 @@ const addPicture = async () => {
 const removePicture = async (pictureId: number | undefined) => {
   if (!pictureId) return;
   try {
-    await deleteApiRoomsIdPicturesPictureId({ path: { id: String(roomId), pictureId: String(pictureId) } });
+    await deleteApiRoomsIdPicturesPictureId({
+      path: { id: String(roomId), pictureId: String(pictureId) },
+    });
     toast.add({ title: "تصویر حذف شد", color: "success" });
     await refreshPictures();
   } catch (e) {
@@ -368,8 +368,9 @@ const getStatusColor = (status: string): "success" | "warning" | "info" | "error
   const colors: Record<string, "success" | "warning" | "info" | "error" | "neutral"> = {
     available: "success",
     occupied: "warning",
-    maintenance: "info",
-    out_of_order: "error",
+    reserved: "info",
+    under_repair: "error",
+    cleaning: "neutral",
   };
   return colors[status] || "neutral";
 };

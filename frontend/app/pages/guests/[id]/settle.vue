@@ -258,7 +258,11 @@
 </template>
 
 <script setup lang="ts">
-import { getApiAccountingPaymentMethods, getApiGuestsIdSettle, postApiGuestsIdSettle } from "~/utils/client";
+import {
+  getApiAccountingPaymentMethods,
+  getApiGuestsIdSettle,
+  postApiGuestsIdSettle,
+} from "~/utils/client";
 
 const { t } = useI18n();
 const route = useRoute();

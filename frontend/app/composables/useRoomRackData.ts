@@ -1,13 +1,14 @@
+import { getApiCommonCountries } from "~/utils/client/sdk.gen";
+import { getApiTravelAgencies } from "~/utils/client/sdk.gen";
 import {
   getApiRoomsStatuses,
   getApiRoomsTypes,
   getApiRoomsAmenities,
 } from "~/utils/client/sdk.gen";
-import { getApiTravelAgencies } from "~/utils/client/sdk.gen";
-import { getApiCommonCountries } from "~/utils/client/sdk.gen";
 
 export interface RackFiltersState {
   roomTypeId: number | null;
+  statusId: number | null;
   nationalityId: number | null;
   agencyId: number | null;
   entryDateFrom: string;

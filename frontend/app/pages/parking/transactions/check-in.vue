@@ -111,8 +111,19 @@
 </template>
 
 <script setup lang="ts">
-import { getApiParkingLots, getApiParkingSpots, getApiParkingTransactions, postApiParkingTransactions } from "~/utils/client";
-import type { Guest, PaginatedResponseModelsParkingSpot, PaginatedResponseModelsParkingTransaction, ParkingLot, Reservation } from "~/utils/client";
+import {
+  getApiParkingLots,
+  getApiParkingSpots,
+  getApiParkingTransactions,
+  postApiParkingTransactions,
+} from "~/utils/client";
+import type {
+  Guest,
+  PaginatedResponseModelsParkingSpot,
+  PaginatedResponseModelsParkingTransaction,
+  ParkingLot,
+  Reservation,
+} from "~/utils/client";
 
 const form = reactive({
   licensePlate: "",
@@ -202,9 +213,15 @@ const fetchStats = async () => {
     const spots = spotsRes.data?.data ?? [];
     const txs = txRes.data?.data ?? [];
 
-    stats.available = spots.filter((s) => (s.status as { slug?: string } | undefined)?.slug === "available").length;
-    stats.occupied = spots.filter((s) => (s.status as { slug?: string } | undefined)?.slug === "occupied").length;
-    stats.active = txs.filter((t) => (t.status as { slug?: string } | undefined)?.slug === "active").length;
+    stats.available = spots.filter(
+      (s) => (s.status as { slug?: string } | undefined)?.slug === "available"
+    ).length;
+    stats.occupied = spots.filter(
+      (s) => (s.status as { slug?: string } | undefined)?.slug === "occupied"
+    ).length;
+    stats.active = txs.filter(
+      (t) => (t.status as { slug?: string } | undefined)?.slug === "active"
+    ).length;
   } catch (error) {
     console.error("Failed to fetch stats:", error);
   }

@@ -39,19 +39,11 @@
               </UFormField>
 
               <UFormField label="نام کاربری" name="username">
-                <UInput
-                  v-model="form.username"
-                  placeholder="نام کاربری"
-                  :disabled="loading"
-                />
+                <UInput v-model="form.username" placeholder="نام کاربری" :disabled="loading" />
               </UFormField>
 
               <UFormField label="شماره تماس" name="contactNumber">
-                <UInput
-                  v-model="form.contactNumber"
-                  placeholder="شماره تماس"
-                  :disabled="loading"
-                />
+                <UInput v-model="form.contactNumber" placeholder="شماره تماس" :disabled="loading" />
               </UFormField>
 
               <UFormField label="نقش" name="role">
@@ -344,7 +336,10 @@ const isCategoryFullyGranted = (category: { permissions: { id: number }[] }) => 
   return category.permissions.every((p) => selectedPermissionIds[p.id]);
 };
 
-const toggleCategoryFullAccess = async (category: { permissions: { id: number }[] }, granted: boolean | string) => {
+const toggleCategoryFullAccess = async (
+  category: { permissions: { id: number }[] },
+  granted: boolean | string
+) => {
   const flag = Boolean(granted);
   for (const permission of category.permissions) {
     selectedPermissionIds[permission.id] = flag;

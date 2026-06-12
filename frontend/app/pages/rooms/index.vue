@@ -311,8 +311,9 @@ const getStatusColor = (status: string) => {
   const colors: Record<string, string> = {
     available: "success",
     occupied: "warning",
-    maintenance: "info",
-    out_of_order: "error",
+    reserved: "info",
+    under_repair: "error",
+    cleaning: "neutral",
   };
   return colors[status] || "neutral";
 };

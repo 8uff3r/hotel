@@ -1,6 +1,6 @@
 <template>
   <div class="p-6">
-    <div class="flex justify-between items-center mb-6">
+    <div class="mb-6 flex items-center justify-between">
       <h1 class="text-2xl font-bold">{{ t("admins.title") }}</h1>
       <UButton to="/admins/create" icon="i-lucide-plus">
         {{ t("admins.create") }}
@@ -11,7 +11,9 @@
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-lg font-semibold">{{ t("admins.list") }}</span>
-          <span class="text-sm text-gray-500">{{ (admins ?? []).length }} {{ t("admins.count") }}</span>
+          <span class="text-sm text-gray-500"
+            >{{ (admins ?? []).length }} {{ t("admins.count") }}</span
+          >
         </div>
       </template>
       <UTable :rows="admins" :columns="columns" :loading="pending">

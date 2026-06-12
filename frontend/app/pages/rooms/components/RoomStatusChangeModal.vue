@@ -6,38 +6,6 @@
 
     <template #content>
       <div class="space-y-4 p-4">
-        <!-- Guest Info -->
-        <div
-          v-if="room.currentReservation?.guest"
-          class="rounded-lg border border-primary/20 bg-primary/5 p-3"
-        >
-          <h4 class="mb-2 text-sm font-semibold text-gray-900 dark:text-white">
-            <UIcon name="i-lucide-user" class="mr-1 inline h-4 w-4" />
-            {{ t("common.guest") }}
-          </h4>
-          <div class="space-y-1 text-sm text-gray-700 dark:text-gray-300">
-            <p class="font-medium">
-              {{ room.currentReservation.guest.firstName }}
-              {{ room.currentReservation.guest.lastName }}
-            </p>
-            <div class="flex items-center gap-1 text-xs text-gray-500">
-              <UIcon name="i-lucide-globe" class="h-3 w-3" />
-              <span>{{ room.currentReservation.guest.nationality?.label || "—" }}</span>
-            </div>
-            <div class="flex items-center gap-1 text-xs text-gray-500">
-              <UIcon name="i-lucide-phone" class="h-3 w-3" />
-              <span>{{ room.currentReservation.guest.phone || "—" }}</span>
-            </div>
-            <div class="flex items-center gap-1 text-xs text-gray-500">
-              <UIcon name="i-lucide-calendar" class="h-3 w-3" />
-              <span
-                >{{ formatDate(room.currentReservation.entryDate) }} →
-                {{ formatDate(room.currentReservation.departureDate) }}</span
-              >
-            </div>
-          </div>
-        </div>
-
         <p class="text-sm text-gray-600 dark:text-gray-400">
           {{ t("rooms.roomRack.selectNewStatus") }}
         </p>
@@ -62,10 +30,8 @@
         </div>
 
         <!-- Housekeeping review for checked-out (cleaning) rooms -->
-        <div v-if="room.status?.slug === 'cleaning'" class="border-t pt-4 mt-4">
-          <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-            بازبینی خدمات
-          </p>
+        <div v-if="room.status?.slug === 'cleaning'" class="mt-4 border-t pt-4">
+          <p class="mb-3 text-sm font-medium text-gray-700 dark:text-gray-300">بازبینی خدمات</p>
           <div class="flex gap-3">
             <UButton color="success" variant="soft" block @click="confirmCleaning">
               <UIcon name="i-lucide-check" class="mr-2" />
@@ -114,8 +80,8 @@ function getStatusIcon(slug: string | undefined) {
   const icons: Record<string, string> = {
     available: "i-lucide-check-circle",
     occupied: "i-lucide-door-open",
-    maintenance: "i-lucide-wrench",
-    out_of_order: "i-lucide-x-circle",
+    reserved: "i-lucide-calendar-check",
+    under_repair: "i-lucide-wrench",
     cleaning: "i-lucide-sparkles",
   };
   return icons[slug] || "i-lucide-circle";

@@ -1,15 +1,24 @@
 <template>
   <div class="p-6" v-if="stay">
-    <div class="flex justify-between items-center mb-6">
+    <div class="mb-6 flex items-center justify-between">
       <h1 class="text-2xl font-bold">{{ t("stays.detailTitle") }} {{ stay.acceptanceId }}</h1>
       <div class="flex gap-2">
         <UButton v-if="stay.status?.slug === 'waiting'" @click="checkIn" :loading="actionLoading">
           {{ t("stays.checkIn") }}
         </UButton>
-        <UButton v-if="stay.status?.slug === 'resident'" @click="checkOut" :loading="actionLoading" color="error">
+        <UButton
+          v-if="stay.status?.slug === 'resident'"
+          @click="checkOut"
+          :loading="actionLoading"
+          color="error"
+        >
           {{ t("stays.checkOut") }}
         </UButton>
-        <UButton v-if="stay.status?.slug === 'resident'" @click="showRoomChange = true" variant="soft">
+        <UButton
+          v-if="stay.status?.slug === 'resident'"
+          @click="showRoomChange = true"
+          variant="soft"
+        >
           {{ t("stays.changeRoom") }}
         </UButton>
         <UButton v-if="stay.status?.slug === 'resident'" @click="showService = true" variant="soft">
@@ -25,9 +34,16 @@
           <h2 class="font-semibold">{{ t("stays.guestInfo") }}</h2>
         </template>
         <div class="space-y-2">
-          <p><strong>{{ t("guests.name") }}:</strong> {{ stay.guest?.firstName }} {{ stay.guest?.lastName }}</p>
-          <p><strong>{{ t("guests.nationalId") }}:</strong> {{ stay.guest?.nationalId }}</p>
-          <p><strong>{{ t("guests.phone") }}:</strong> {{ stay.guest?.phone }}</p>
+          <p>
+            <strong>{{ t("guests.name") }}:</strong> {{ stay.guest?.firstName }}
+            {{ stay.guest?.lastName }}
+          </p>
+          <p>
+            <strong>{{ t("guests.nationalId") }}:</strong> {{ stay.guest?.nationalId }}
+          </p>
+          <p>
+            <strong>{{ t("guests.phone") }}:</strong> {{ stay.guest?.phone }}
+          </p>
         </div>
       </UCard>
 
@@ -36,9 +52,15 @@
           <h2 class="font-semibold">{{ t("stays.roomInfo") }}</h2>
         </template>
         <div class="space-y-2">
-          <p><strong>{{ t("rooms.roomNumber") }}:</strong> {{ stay.room?.roomNumber }}</p>
-          <p><strong>{{ t("rooms.capacity") }}:</strong> {{ stay.room?.capacity }}</p>
-          <p><strong>{{ t("rooms.type") }}:</strong> {{ stay.room?.roomType?.label }}</p>
+          <p>
+            <strong>{{ t("rooms.roomNumber") }}:</strong> {{ stay.room?.roomNumber }}
+          </p>
+          <p>
+            <strong>{{ t("rooms.capacity") }}:</strong> {{ stay.room?.capacity }}
+          </p>
+          <p>
+            <strong>{{ t("rooms.type") }}:</strong> {{ stay.room?.roomType?.label }}
+          </p>
         </div>
       </UCard>
 
@@ -47,12 +69,24 @@
           <h2 class="font-semibold">{{ t("stays.stayInfo") }}</h2>
         </template>
         <div class="space-y-2">
-          <p><strong>{{ t("stays.entryDate") }}:</strong> {{ formatDate(stay.entryDate) }}</p>
-          <p><strong>{{ t("stays.departureDate") }}:</strong> {{ formatDate(stay.departureDate) }}</p>
-          <p><strong>{{ t("stays.numberOfPeople") }}:</strong> {{ stay.numberOfPeople }}</p>
-          <p><strong>{{ t("stays.roomPrice") }}:</strong> {{ stay.roomPrice }}</p>
-          <p v-if="stay.earlyCheckInFee && stay.earlyCheckInFee > 0"><strong>{{ t("stays.earlyCheckInFee") }}:</strong> {{ stay.earlyCheckInFee }}</p>
-          <p v-if="stay.halfDayFee && stay.halfDayFee > 0"><strong>{{ t("stays.halfDayFee") }}:</strong> {{ stay.halfDayFee }}</p>
+          <p>
+            <strong>{{ t("stays.entryDate") }}:</strong> {{ formatDate(stay.entryDate) }}
+          </p>
+          <p>
+            <strong>{{ t("stays.departureDate") }}:</strong> {{ formatDate(stay.departureDate) }}
+          </p>
+          <p>
+            <strong>{{ t("stays.numberOfPeople") }}:</strong> {{ stay.numberOfPeople }}
+          </p>
+          <p>
+            <strong>{{ t("stays.roomPrice") }}:</strong> {{ stay.roomPrice }}
+          </p>
+          <p v-if="stay.earlyCheckInFee && stay.earlyCheckInFee > 0">
+            <strong>{{ t("stays.earlyCheckInFee") }}:</strong> {{ stay.earlyCheckInFee }}
+          </p>
+          <p v-if="stay.halfDayFee && stay.halfDayFee > 0">
+            <strong>{{ t("stays.halfDayFee") }}:</strong> {{ stay.halfDayFee }}
+          </p>
         </div>
       </UCard>
 
@@ -61,10 +95,18 @@
           <h2 class="font-semibold">{{ t("stays.invoice") }}</h2>
         </template>
         <div v-if="invoice" class="space-y-2">
-          <p><strong>{{ t("stays.totalAmount") }}:</strong> {{ invoice.totalAmount }}</p>
-          <p><strong>{{ t("stays.paidAmount") }}:</strong> {{ invoice.paidAmount }}</p>
-          <p><strong>{{ t("stays.remainingAmount") }}:</strong> {{ invoice.remainingAmount }}</p>
-          <p><strong>{{ t("stays.paymentStatus") }}:</strong> {{ invoice.paymentStatus }}</p>
+          <p>
+            <strong>{{ t("stays.totalAmount") }}:</strong> {{ invoice.totalAmount }}
+          </p>
+          <p>
+            <strong>{{ t("stays.paidAmount") }}:</strong> {{ invoice.paidAmount }}
+          </p>
+          <p>
+            <strong>{{ t("stays.remainingAmount") }}:</strong> {{ invoice.remainingAmount }}
+          </p>
+          <p>
+            <strong>{{ t("stays.paymentStatus") }}:</strong> {{ invoice.paymentStatus }}
+          </p>
           <UButton size="xs" @click="showPayment = true">{{ t("stays.pay") }}</UButton>
         </div>
         <div v-else>{{ t("stays.noInvoice") }}</div>
@@ -78,7 +120,12 @@
       </template>
       <UTable :rows="invoice.items" :columns="itemColumns">
         <template #actions-data="{ row }">
-          <UButton v-if="((row as unknown as InvoiceItem).remainingAmount ?? 0) > 0" size="xs" @click="settleItem(row as unknown as InvoiceItem)">{{ t("stays.settle") }}</UButton>
+          <UButton
+            v-if="((row as unknown as InvoiceItem).remainingAmount ?? 0) > 0"
+            size="xs"
+            @click="settleItem(row as unknown as InvoiceItem)"
+            >{{ t("stays.settle") }}</UButton
+          >
           <UBadge v-else color="success">{{ t("stays.settled") }}</UBadge>
         </template>
       </UTable>
@@ -99,7 +146,9 @@
           </UFormGroup>
           <div class="mt-4 flex gap-2">
             <UButton type="submit" :loading="paymentLoading">{{ t("stays.pay") }}</UButton>
-            <UButton variant="outline" @click="showPayment = false">{{ t("actions.cancel") }}</UButton>
+            <UButton variant="outline" @click="showPayment = false">{{
+              t("actions.cancel")
+            }}</UButton>
           </div>
         </UForm>
       </UCard>
@@ -117,7 +166,9 @@
           </UFormGroup>
           <div class="mt-4 flex gap-2">
             <UButton type="submit" :loading="roomChangeLoading">{{ t("actions.change") }}</UButton>
-            <UButton variant="outline" @click="showRoomChange = false">{{ t("actions.cancel") }}</UButton>
+            <UButton variant="outline" @click="showRoomChange = false">{{
+              t("actions.cancel")
+            }}</UButton>
           </div>
         </UForm>
       </UCard>
@@ -141,7 +192,9 @@
           </UFormGroup>
           <div class="mt-4 flex gap-2">
             <UButton type="submit" :loading="serviceLoading">{{ t("stays.add") }}</UButton>
-            <UButton variant="outline" @click="showService = false">{{ t("actions.cancel") }}</UButton>
+            <UButton variant="outline" @click="showService = false">{{
+              t("actions.cancel")
+            }}</UButton>
           </div>
         </UForm>
       </UCard>
@@ -161,8 +214,12 @@
             <USelect v-model="itemSettlementState.paymentMethod" :items="paymentMethodOptions" />
           </UFormGroup>
           <div class="mt-4 flex gap-2">
-            <UButton type="submit" :loading="itemSettlementLoading">{{ t("stays.settle") }}</UButton>
-            <UButton variant="outline" @click="showItemSettlement = false">{{ t("actions.cancel") }}</UButton>
+            <UButton type="submit" :loading="itemSettlementLoading">{{
+              t("stays.settle")
+            }}</UButton>
+            <UButton variant="outline" @click="showItemSettlement = false">{{
+              t("actions.cancel")
+            }}</UButton>
           </div>
         </UForm>
       </UCard>
@@ -236,7 +293,11 @@ const roomChangeState = reactive({ newRoomId: undefined as number | undefined })
 
 const showService = ref(false);
 const serviceLoading = ref(false);
-const serviceState = reactive({ serviceId: undefined as number | undefined, quantity: 1, description: "" });
+const serviceState = reactive({
+  serviceId: undefined as number | undefined,
+  quantity: 1,
+  description: "",
+});
 
 const showItemSettlement = ref(false);
 const itemSettlementLoading = ref(false);

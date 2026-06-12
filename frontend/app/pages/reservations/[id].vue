@@ -168,7 +168,11 @@
               {{ t("reservations.check_out_guest") }}
             </UButton>
             <UButton
-              v-if="['awaiting_payment', 'verified', 'accepted'].includes(reservation.status?.slug ?? '')"
+              v-if="
+                ['awaiting_payment', 'verified', 'accepted'].includes(
+                  reservation.status?.slug ?? ''
+                )
+              "
               color="error"
               variant="outline"
               block
@@ -271,7 +275,13 @@
 
 <script setup lang="ts">
 import type { Reservation } from "~/utils/client";
-import { getApiReservationIdDetailed, postApiReservationIdAccept, postApiReservationIdCheckIn, postApiReservationIdCheckOut, putApiReservationId } from "~/utils/client";
+import {
+  getApiReservationIdDetailed,
+  postApiReservationIdAccept,
+  postApiReservationIdCheckIn,
+  postApiReservationIdCheckOut,
+  putApiReservationId,
+} from "~/utils/client";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -361,7 +371,10 @@ const { mutate: handleCheckOut, isLoading: processingCheckOut } = useMutation({
 
 const { mutate: handleCancel, isLoading: processingCancel } = useMutation({
   mutation: async () => {
-    await putApiReservationId({ path: { id: reservationId }, body: { status: { slug: "cancelled" } } });
+    await putApiReservationId({
+      path: { id: reservationId },
+      body: { status: { slug: "cancelled" } },
+    });
   },
   onSettled: () => {
     refetch();
@@ -369,6 +382,10 @@ const { mutate: handleCancel, isLoading: processingCancel } = useMutation({
 });
 
 const processing = computed(
-  () => processingAccept.value || processingCheckIn.value || processingCheckOut.value || processingCancel.value
+  () =>
+    processingAccept.value ||
+    processingCheckIn.value ||
+    processingCheckOut.value ||
+    processingCancel.value
 );
 </script>

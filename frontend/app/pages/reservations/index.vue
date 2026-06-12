@@ -166,7 +166,13 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
 import type { Reservation } from "~/utils/client";
-import { getApiReservation, postApiReservationIdAccept, postApiReservationIdCheckIn, postApiReservationIdCheckOut, putApiReservationId } from "~/utils/client";
+import {
+  getApiReservation,
+  postApiReservationIdAccept,
+  postApiReservationIdCheckIn,
+  postApiReservationIdCheckOut,
+  putApiReservationId,
+} from "~/utils/client";
 
 type ReservationRow = Reservation;
 
@@ -327,11 +333,13 @@ const checkOut = async (reservation: ReservationRow) => {
 const cancelReservation = async (reservation: ReservationRow) => {
   if (!reservation.id) return;
   try {
-    await putApiReservationId({ path: { id: String(reservation.id) }, body: { status: { slug: "cancelled" } } });
+    await putApiReservationId({
+      path: { id: String(reservation.id) },
+      body: { status: { slug: "cancelled" } },
+    });
     refetch();
   } catch (error) {
     console.error("Failed to cancel:", error);
   }
 };
-
 </script>

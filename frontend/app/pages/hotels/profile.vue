@@ -1,6 +1,6 @@
 <template>
-  <div class="p-6 max-w-4xl mx-auto">
-    <div class="flex justify-between items-center mb-6">
+  <div class="mx-auto max-w-4xl p-6">
+    <div class="mb-6 flex items-center justify-between">
       <h1 class="text-2xl font-bold">پروفایل هتل</h1>
       <div class="flex gap-2">
         <UButton v-if="!editing" @click="editing = true">ویرایش</UButton>
@@ -82,20 +82,26 @@
           </div>
         </template>
         <div class="space-y-4">
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <div v-for="pic in pictures" :key="pic.id" class="relative group">
-              <img :src="pic.url" :alt="pic.description" class="w-full h-24 object-cover rounded-lg border" />
+          <div class="grid grid-cols-2 gap-3 md:grid-cols-4">
+            <div v-for="pic in pictures" :key="pic.id" class="group relative">
+              <img
+                :src="pic.url"
+                :alt="pic.description"
+                class="h-24 w-full rounded-lg border object-cover"
+              />
               <UButton
                 variant="ghost"
                 size="xs"
                 color="error"
-                class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                class="absolute top-1 right-1 opacity-0 transition-opacity group-hover:opacity-100"
                 @click="pic.id && removePicture(pic.id)"
               >
                 <UIcon name="i-lucide-trash" class="h-3 w-3" />
               </UButton>
             </div>
-            <div class="flex items-center justify-center h-24 rounded-lg border border-dashed border-gray-300 dark:border-gray-600">
+            <div
+              class="flex h-24 items-center justify-center rounded-lg border border-dashed border-gray-300 dark:border-gray-600"
+            >
               <UButton variant="ghost" size="sm" @click="showAddPicture = true">
                 <UIcon name="i-lucide-plus" class="mr-1 h-4 w-4" />
                 افزودن تصویر
@@ -108,7 +114,7 @@
       <UModal v-model:open="showAddPicture">
         <template #title>افزودن تصویر هتل</template>
         <template #content>
-          <div class="p-4 space-y-4">
+          <div class="space-y-4 p-4">
             <UFormField label="آدرس تصویر (URL)" required>
               <UInput v-model="newPicture.url" placeholder="https://..." />
             </UFormField>
@@ -117,7 +123,9 @@
             </UFormField>
             <div class="flex justify-end gap-2">
               <UButton variant="outline" size="sm" @click="showAddPicture = false">انصراف</UButton>
-              <UButton size="sm" color="primary" :loading="addingPicture" @click="addPicture">ذخیره</UButton>
+              <UButton size="sm" color="primary" :loading="addingPicture" @click="addPicture"
+                >ذخیره</UButton
+              >
             </div>
           </div>
         </template>
@@ -203,7 +211,9 @@ const addPicture = async () => {
 const removePicture = async (pictureId: number | undefined) => {
   if (!pictureId) return;
   try {
-    await deleteApiHotelsIdPicturesPictureId({ path: { id: hotelId.value, pictureId: String(pictureId) } });
+    await deleteApiHotelsIdPicturesPictureId({
+      path: { id: hotelId.value, pictureId: String(pictureId) },
+    });
     toast.add({ title: "تصویر حذف شد", color: "success" });
     await refreshPictures();
   } catch (e) {

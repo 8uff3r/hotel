@@ -94,11 +94,15 @@ const form = reactive({
 });
 
 const { data: spotTypeOptions } = useAsyncData("parking-spot-types", async () => {
-  const res = await $fetch<{ data: Array<{ label: string; value: string }> }>("/api/parking/spots/types");
+  const res = await $fetch<{ data: Array<{ label: string; value: string }> }>(
+    "/api/parking/spots/types"
+  );
   return res.data;
 });
 const { data: statusOptions } = useAsyncData("parking-spot-statuses", async () => {
-  const res = await $fetch<{ data: Array<{ label: string; value: string }> }>("/api/parking/spots/types");
+  const res = await $fetch<{ data: Array<{ label: string; value: string }> }>(
+    "/api/parking/spots/types"
+  );
   return res.data;
 });
 

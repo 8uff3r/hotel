@@ -1,6 +1,6 @@
 <template>
   <div class="p-6">
-    <div class="flex justify-between items-center mb-6">
+    <div class="mb-6 flex items-center justify-between">
       <h1 class="text-2xl font-bold">{{ t("guests.archiveTitle") }}</h1>
       <div class="flex gap-2">
         <USelect v-model="statusFilter" :items="statusOptions" :placeholder="t('guests.status')" />
@@ -12,7 +12,9 @@
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-lg font-semibold">{{ t("guests.archiveList") }}</span>
-          <span class="text-sm text-gray-500">{{ (guests ?? []).length }} {{ t("guests.count") }}</span>
+          <span class="text-sm text-gray-500"
+            >{{ (guests ?? []).length }} {{ t("guests.count") }}</span
+          >
         </div>
       </template>
       <UTable :rows="guests" :columns="columns" :loading="pending">
@@ -51,8 +53,11 @@ const statusOptions = [
   { label: t("guests.absence"), value: "absence" },
 ];
 
-const { data: guests, pending } = useFetch(() => `/api/guests/archived?status=${statusFilter.value}`, {
-  key: "guests-archive",
-  transform: (res) => (res as { data?: Guest[] })?.data ?? [],
-});
+const { data: guests, pending } = useFetch(
+  () => `/api/guests/archived?status=${statusFilter.value}`,
+  {
+    key: "guests-archive",
+    transform: (res) => (res as { data?: Guest[] })?.data ?? [],
+  }
+);
 </script>

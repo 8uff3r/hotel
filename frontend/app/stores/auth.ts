@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
 import type { LoginResponse, MeResponse, SanitizedUser } from "~/utils/client";
+import { defineStore } from "pinia";
 
 type UserHotelInfo = NonNullable<SanitizedUser["userHotels"]>[number];
 type AdminHotelInfo = NonNullable<SanitizedUser["adminHotels"]>[number];

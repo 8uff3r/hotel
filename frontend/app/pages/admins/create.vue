@@ -1,6 +1,6 @@
 <template>
-  <div class="p-6 max-w-2xl mx-auto">
-    <h1 class="text-2xl font-bold mb-6">افزودن مدیر سیستم</h1>
+  <div class="mx-auto max-w-2xl p-6">
+    <h1 class="mb-6 text-2xl font-bold">افزودن مدیر سیستم</h1>
     <UForm :schema="schema" :state="state" @submit="onSubmit">
       <div class="grid grid-cols-2 gap-4">
         <UFormGroup label="نام" name="firstName">

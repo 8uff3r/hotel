@@ -1,6 +1,6 @@
 <template>
-  <div class="p-6 max-w-2xl mx-auto">
-    <h1 class="text-2xl font-bold mb-6">{{ t("stays.editTitle") }}</h1>
+  <div class="mx-auto max-w-2xl p-6">
+    <h1 class="mb-6 text-2xl font-bold">{{ t("stays.editTitle") }}</h1>
     <UForm :state="state" @submit="onSubmit">
       <div class="grid grid-cols-2 gap-4">
         <UFormGroup :label="t('stays.entryDate')" name="entryDate">
@@ -16,7 +16,7 @@
           <UInput v-model.number="state.roomPrice" type="number" />
         </UFormGroup>
       </div>
-      <div class="grid grid-cols-4 gap-4 mt-4">
+      <div class="mt-4 grid grid-cols-4 gap-4">
         <UFormGroup :label="t('stays.breakfast')" name="breakfast">
           <UToggle v-model="state.breakfast" />
         </UFormGroup>

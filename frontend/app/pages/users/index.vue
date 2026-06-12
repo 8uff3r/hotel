@@ -46,7 +46,7 @@
           </div>
         </template>
 
-         <template #actions-cell="{ row }">
+        <template #actions-cell="{ row }">
           <div class="flex items-center gap-2">
             <UButton variant="ghost" size="sm" :to="`/users/${row.original.id}`">
               <UIcon name="i-lucide-eye" class="h-4 w-4" />
@@ -60,7 +60,10 @@
               :color="row.original.status === 'active' ? 'error' : 'success'"
               @click="toggleUserStatus(row.original)"
             >
-              <UIcon :name="row.original.status === 'active' ? 'i-lucide-user-x' : 'i-lucide-user-check'" class="h-4 w-4" />
+              <UIcon
+                :name="row.original.status === 'active' ? 'i-lucide-user-x' : 'i-lucide-user-check'"
+                class="h-4 w-4"
+              />
             </UButton>
           </div>
         </template>
@@ -74,8 +77,6 @@
         </div>
       </template>
     </UCard>
-
-
   </div>
 </template>
 

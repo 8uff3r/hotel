@@ -75,12 +75,11 @@
     </UCard>
 
     <!-- Filters -->
-    <UCard v-if="agencies?.length || roomTypes?.length" class="mb-6">
+    <UCard v-if="statuses?.length || roomTypes?.length" class="mb-6">
       <RoomRackFilters
         v-model:filters="filters"
         :room-types="roomTypes ?? []"
-        :countries="countries ?? []"
-        :agencies="agencies ?? []"
+        :statuses="statuses ?? []"
       />
     </UCard>
 
@@ -314,45 +313,8 @@ const filteredRooms = computed(() => {
     rooms = rooms.filter((r) => r.roomType?.id === filters.value.roomTypeId);
   }
 
-  if (filters.value.nationalityId) {
-    rooms = rooms.filter(
-      (r: RoomRack) => r.currentReservation?.guest?.nationality?.id === filters.value.nationalityId
-    );
-  }
-
-  if (filters.value.agencyId) {
-    const agency = agencies.value?.find((a) => a.id === filters.value.agencyId);
-    if (agency) {
-      rooms = rooms.filter((r) => r.currentReservation?.origin === agency.name);
-    }
-  }
-
-  if (filters.value.entryDateFrom) {
-    rooms = rooms.filter((r) => {
-      const d = r.currentReservation?.entryDate;
-      return d && d >= filters.value.entryDateFrom;
-    });
-  }
-
-  if (filters.value.entryDateTo) {
-    rooms = rooms.filter((r) => {
-      const d = r.currentReservation?.entryDate;
-      return d && d <= filters.value.entryDateTo;
-    });
-  }
-
-  if (filters.value.departureDateFrom) {
-    rooms = rooms.filter((r) => {
-      const d = r.currentReservation?.departureDate;
-      return d && d >= filters.value.departureDateFrom;
-    });
-  }
-
-  if (filters.value.departureDateTo) {
-    rooms = rooms.filter((r) => {
-      const d = r.currentReservation?.departureDate;
-      return d && d <= filters.value.departureDateTo;
-    });
+  if (filters.value.statusId) {
+    rooms = rooms.filter((r: RoomRack) => r.status?.id === filters.value.statusId);
   }
 
   return rooms;

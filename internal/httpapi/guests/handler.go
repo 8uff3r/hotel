@@ -1,6 +1,7 @@
 package guests
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
@@ -56,6 +57,35 @@ type ReservationRequest struct {
 	Rooms           []uint    `json:"rooms"`
 }
 
+type StayRequest struct {
+	EntryDate       time.Time `json:"entryDate"`
+	DepartureDate   time.Time `json:"departureDate"`
+	DurationOfStay  int       `json:"durationOfStay"`
+	NumberOfPeople  int       `json:"numberOfPeople"`
+	Origin          string    `json:"origin"`
+	Destination     string    `json:"destination"`
+	PurposeOfTravel string    `json:"purposeOfTravel"`
+	Breakfast       bool      `json:"breakfast"`
+	Parking         bool      `json:"parking"`
+	FullBoard       bool      `json:"fullBoard"`
+	RoomPrice       float64   `json:"roomPrice"`
+	Notes           string    `json:"notes"`
+	Rooms           []uint    `json:"rooms"`
+}
+
+type GuestWithStayRequest struct {
+	Guest      models.Guest        `json:"guest"`
+	Stay       *StayRequest        `json:"stay,omitzero"`
+	Payment    *models.Payment     `json:"payment,omitzero"`
+	Companions *[]CompanionRequest `json:"companions,omitzero"`
+}
+
+type GuestWithStayResponse struct {
+	Guest   models.Guest   `json:"guest"`
+	Stay    models.Stay    `json:"stay"`
+	Payment models.Payment `json:"payment"`
+}
+
 func (gm GuestsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	gm = GuestsModule{api}
 
@@ -71,6 +101,7 @@ func (gm GuestsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Get(s, "/archived", gm.getArchivedGuestsHandler)
 	fuego.Post(s, "/", h.CreateModel[models.Guest](api.Db))
 	fuego.Post(s, "/with-reservation", gm.createGuestWithReservation)
+	fuego.Post(s, "/with-stay", gm.createGuestWithStay)
 	fuego.Get(s, "/{id}", h.GetModel[models.Guest](api.Db))
 	fuego.Put(s, "/{id}", h.UpdateModel[models.Guest](api.Db))
 	fuego.Delete(s, "/{id}", h.DeleteModel[models.Guest](api.Db))
@@ -128,6 +159,14 @@ type RestaurantSettlement struct {
 	TotalAmount float64 `json:"totalAmount"`
 	Notes       string  `json:"notes"`
 	IsExternal  bool    `json:"isExternal"`
+}
+
+func resolveRoomStatusID(db *gorm.DB, slug string) uint {
+	var status models.RoomStatus
+	if err := db.Where("slug = ?", slug).First(&status).Error; err != nil {
+		return 0
+	}
+	return status.ID
 }
 
 func (gm *GuestsModule) createGuestWithReservation(c fuego.ContextWithBody[GuestWithReservationRequest]) (GuestWithReservationResponse, error) {
@@ -192,6 +231,14 @@ func (gm *GuestsModule) createGuestWithReservation(c fuego.ContextWithBody[Guest
 			if err := tx.Create(&reservation).Error; err != nil {
 				return err
 			}
+
+			// Mark rooms as reserved
+			reservedStatusID := resolveRoomStatusID(tx, string(models.RoomStatusReserved))
+			if reservedStatusID > 0 {
+				for _, room := range rooms {
+					tx.Model(&models.Room{}).Where("id = ?", room.ID).Update("status_id", reservedStatusID)
+				}
+			}
 		}
 
 		var payment models.Payment
@@ -214,6 +261,226 @@ func (gm *GuestsModule) createGuestWithReservation(c fuego.ContextWithBody[Guest
 	}
 
 	return result, nil
+}
+
+func (gm *GuestsModule) createGuestWithStay(c fuego.ContextWithBody[GuestWithStayRequest]) (GuestWithStayResponse, error) {
+	var zero GuestWithStayResponse
+	body, err := c.Body()
+	if err != nil {
+		return zero, err
+	}
+
+	var result GuestWithStayResponse
+
+	err = gm.Db.WithContext(c).Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&body.Guest).Error; err != nil {
+			return err
+		}
+
+		if body.Companions != nil {
+			for _, comp := range *body.Companions {
+				companion := models.GuestCompanion{
+					GuestID:       body.Guest.ID,
+					FirstName:     comp.FirstName,
+					LastName:      comp.LastName,
+					NationalID:    comp.NationalID,
+					IDNumber:      comp.IDNumber,
+					RelationID:    comp.Relation,
+					FatherName:    comp.FatherName,
+					Gender:        comp.Gender,
+					DateOfBirth:   comp.DateOfBirth,
+					NationalityID: comp.NationalityID,
+					Phone:         comp.Phone,
+				}
+				if err := tx.Create(&companion).Error; err != nil {
+					return err
+				}
+			}
+		}
+
+		var stay models.Stay
+		if body.Stay != nil {
+			roomID := uint(0)
+			if len(body.Stay.Rooms) > 0 {
+				roomID = body.Stay.Rooms[0]
+			}
+			if roomID == 0 {
+				return fuego.BadRequestError{Title: "no_room_assigned"}
+			}
+
+			// Get resident status
+			var residentStatus models.StayStatus
+			if err := tx.Where("slug = ?", "resident").First(&residentStatus).Error; err != nil {
+				return err
+			}
+
+			stay = models.Stay{
+				GuestID:         body.Guest.ID,
+				RoomID:          roomID,
+				AcceptanceID:    fmt.Sprintf("STY-%d", time.Now().Unix()),
+				StayType:        string(models.StayTypeNormal),
+				EntryDate:       body.Stay.EntryDate,
+				DepartureDate:   body.Stay.DepartureDate,
+				DurationOfStay:  body.Stay.DurationOfStay,
+				NumberOfPeople:  body.Stay.NumberOfPeople,
+				Origin:          body.Stay.Origin,
+				Destination:     body.Stay.Destination,
+				PurposeOfTravel: body.Stay.PurposeOfTravel,
+				RoomPrice:       body.Stay.RoomPrice,
+				Breakfast:       body.Stay.Breakfast,
+				HalfBoard:       body.Stay.FullBoard,
+				FullBoard:       body.Stay.FullBoard,
+				Parking:         body.Stay.Parking,
+				Notes:           body.Stay.Notes,
+				StatusID:        residentStatus.ID,
+				ActualCheckIn:   func() *time.Time { t := time.Now().UTC(); return &t }(),
+			}
+			if err := tx.Create(&stay).Error; err != nil {
+				return err
+			}
+
+			// Mark room as occupied
+			occupiedStatusID := resolveRoomStatusID(tx, string(models.RoomStatusOccupied))
+			if occupiedStatusID > 0 {
+				tx.Model(&models.Room{}).Where("id = ?", roomID).Update("status_id", occupiedStatusID)
+			}
+
+			// Generate invoice
+			_ = gm.generateInvoiceForStay(tx, &stay)
+		}
+
+		var payment models.Payment
+		if body.Payment != nil {
+			payment = *body.Payment
+			payment.ID = 0
+			if err := tx.Create(&payment).Error; err != nil {
+				return err
+			}
+		}
+
+		result.Guest = body.Guest
+		result.Stay = stay
+		result.Payment = payment
+
+		return nil
+	})
+	if err != nil {
+		return zero, fuego.BadRequestError{Title: "create_failed"}
+	}
+
+	return result, nil
+}
+
+func (gm *GuestsModule) generateInvoiceForStay(tx *gorm.DB, stay *models.Stay) error {
+	if stay.ID == 0 {
+		return fmt.Errorf("stay not saved")
+	}
+
+	nights := stay.DurationOfStay
+	if nights <= 0 {
+		nights = 1
+	}
+
+	invoice := models.Invoice{
+		StayID:          stay.ID,
+		HotelID:         stay.HotelID,
+		TotalAmount:     0,
+		PaidAmount:      0,
+		RemainingAmount: 0,
+		PaymentStatus:   string(models.PaymentStatusUnpaid),
+	}
+	if err := tx.Create(&invoice).Error; err != nil {
+		return err
+	}
+
+	var items []models.InvoiceItem
+
+	roomTotal := stay.RoomPrice * float64(nights)
+	items = append(items, models.InvoiceItem{
+		InvoiceID:       invoice.ID,
+		StayID:          stay.ID,
+		ItemType:        string(models.InvoiceItemTypeRoomCharge),
+		Quantity:        nights,
+		UnitPrice:       stay.RoomPrice,
+		TotalPrice:      roomTotal,
+		Description:     "Room charge",
+		RemainingAmount: roomTotal,
+		PaymentStatus:   string(models.PaymentStatusUnpaid),
+	})
+	invoice.TotalAmount += roomTotal
+
+	if stay.Breakfast {
+		breakfastTotal := 10.0 * float64(nights)
+		items = append(items, models.InvoiceItem{
+			InvoiceID:       invoice.ID,
+			StayID:          stay.ID,
+			ItemType:        string(models.InvoiceItemTypeBreakfast),
+			Quantity:        nights,
+			UnitPrice:       10.0,
+			TotalPrice:      breakfastTotal,
+			Description:     "Breakfast",
+			RemainingAmount: breakfastTotal,
+			PaymentStatus:   string(models.PaymentStatusUnpaid),
+		})
+		invoice.TotalAmount += breakfastTotal
+	}
+
+	if stay.HalfBoard {
+		halfBoardTotal := 20.0 * float64(nights)
+		items = append(items, models.InvoiceItem{
+			InvoiceID:       invoice.ID,
+			StayID:          stay.ID,
+			ItemType:        string(models.InvoiceItemTypeHalfBoard),
+			Quantity:        nights,
+			UnitPrice:       20.0,
+			TotalPrice:      halfBoardTotal,
+			Description:     "Half board",
+			RemainingAmount: halfBoardTotal,
+			PaymentStatus:   string(models.PaymentStatusUnpaid),
+		})
+		invoice.TotalAmount += halfBoardTotal
+	}
+
+	if stay.FullBoard {
+		fullBoardTotal := 35.0 * float64(nights)
+		items = append(items, models.InvoiceItem{
+			InvoiceID:       invoice.ID,
+			StayID:          stay.ID,
+			ItemType:        string(models.InvoiceItemTypeFullBoard),
+			Quantity:        nights,
+			UnitPrice:       35.0,
+			TotalPrice:      fullBoardTotal,
+			Description:     "Full board",
+			RemainingAmount: fullBoardTotal,
+			PaymentStatus:   string(models.PaymentStatusUnpaid),
+		})
+		invoice.TotalAmount += fullBoardTotal
+	}
+
+	if stay.Parking {
+		parkingTotal := 5.0 * float64(nights)
+		items = append(items, models.InvoiceItem{
+			InvoiceID:       invoice.ID,
+			StayID:          stay.ID,
+			ItemType:        string(models.InvoiceItemTypeParking),
+			Quantity:        nights,
+			UnitPrice:       5.0,
+			TotalPrice:      parkingTotal,
+			Description:     "Parking",
+			RemainingAmount: parkingTotal,
+			PaymentStatus:   string(models.PaymentStatusUnpaid),
+		})
+		invoice.TotalAmount += parkingTotal
+	}
+
+	if len(items) > 0 {
+		if err := tx.CreateInBatches(items, len(items)).Error; err != nil {
+			return err
+		}
+	}
+
+	invoice.RemainingAmount = invoice.TotalAmount
+	return tx.Save(&invoice).Error
 }
 
 type SettleGuestRequest struct {

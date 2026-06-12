@@ -107,7 +107,7 @@ func (re *ReservationModule) reservationsCreate(c fuego.ContextWithBody[models.R
 
 	// Validate room availability for each room
 	for _, room := range body.Rooms {
-		occupied, err := re.isRoomOccupied(room.ID, body.EntryDate, body.DepartureDate, 0)
+		occupied, err := re.isRoomOccupied(room.ID)
 		if err != nil {
 			return zero, fuego.InternalServerError{Title: "availability_check_failed"}
 		}
@@ -119,37 +119,25 @@ func (re *ReservationModule) reservationsCreate(c fuego.ContextWithBody[models.R
 	if err := re.Db.WithContext(c).Create(&body).Error; err != nil {
 		return zero, fuego.BadRequestError{Title: "create_failed"}
 	}
+
+	// Mark rooms as reserved
+	var reservedStatus models.RoomStatus
+	if err := re.Db.Where("slug = ?", string(models.RoomStatusReserved)).First(&reservedStatus).Error; err == nil {
+		for _, room := range body.Rooms {
+			re.Db.Model(&models.Room{}).Where("id = ?", room.ID).Update("status_id", reservedStatus.ID)
+		}
+	}
+
 	c.SetStatus(201)
 	return createReservationResponse{Reservation: body, Warnings: warnings}, nil
 }
 
-func (re *ReservationModule) isRoomOccupied(roomID uint, entryDate, departureDate time.Time, excludeReservationID uint) (bool, error) {
-	// Check active stays
-	q := re.Db.Model(&models.Stay{}).
-		Where("room_id = ? AND status_id IN (SELECT id FROM stay_statuses WHERE slug IN ('waiting', 'resident'))", roomID).
-		Where("(entry_date <= ? AND (departure_date IS NULL OR departure_date >= ?))", departureDate, entryDate)
-	var stayCount int64
-	if err := q.Count(&stayCount).Error; err != nil {
+func (re *ReservationModule) isRoomOccupied(roomID uint) (bool, error) {
+	var room models.Room
+	if err := re.Db.Preload("Status").First(&room, roomID).Error; err != nil {
 		return false, err
 	}
-	if stayCount > 0 {
-		return true, nil
-	}
-
-	// Check overlapping reservations
-	q2 := re.Db.Model(&models.Reservation{}).
-		Joins("JOIN reservation_rooms ON reservation_rooms.reservation_id = reservations.id").
-		Where("reservation_rooms.room_id = ?", roomID).
-		Where("reservations.status_id IN (SELECT id FROM reservation_statuses WHERE slug IN ('awaiting_payment', 'verified', 'accepted'))").
-		Where("(reservations.entry_date <= ? AND (reservations.departure_date IS NULL OR reservations.departure_date >= ?))", departureDate, entryDate)
-	if excludeReservationID > 0 {
-		q2 = q2.Where("reservations.id != ?", excludeReservationID)
-	}
-	var resCount int64
-	if err := q2.Count(&resCount).Error; err != nil {
-		return false, err
-	}
-	return resCount > 0, nil
+	return room.Status.Slug == string(models.RoomStatusOccupied) || room.Status.Slug == string(models.RoomStatusReserved), nil
 }
 
 func (re *ReservationModule) reservationsAccept(c fuego.ContextNoBody) (models.Stay, error) {
@@ -443,36 +431,13 @@ type availabilityResponse struct {
 
 func (re *ReservationModule) checkReservationAvailability(c fuego.ContextNoBody) (availabilityResponse, error) {
 	roomIDStr := c.QueryParam("roomId")
-	entryDateStr := c.QueryParam("entryDate")
-	departureDateStr := c.QueryParam("departureDate")
-	excludeReservationIDStr := c.QueryParam("excludeReservationId")
 
 	roomID, err := h.ParseID(roomIDStr)
 	if err != nil {
 		return availabilityResponse{}, fuego.BadRequestError{Title: "invalid_room_id"}
 	}
 
-	entryDate, err := time.Parse(time.RFC3339, entryDateStr)
-	if err != nil {
-		entryDate, err = time.Parse("2006-01-02", entryDateStr)
-		if err != nil {
-			return availabilityResponse{}, fuego.BadRequestError{Title: "invalid_entry_date"}
-		}
-	}
-	departureDate, err := time.Parse(time.RFC3339, departureDateStr)
-	if err != nil {
-		departureDate, err = time.Parse("2006-01-02", departureDateStr)
-		if err != nil {
-			return availabilityResponse{}, fuego.BadRequestError{Title: "invalid_departure_date"}
-		}
-	}
-
-	excludeReservationID := uint(0)
-	if excludeReservationIDStr != "" {
-		excludeReservationID, _ = h.ParseID(excludeReservationIDStr)
-	}
-
-	occupied, err := re.isRoomOccupied(roomID, entryDate, departureDate, excludeReservationID)
+	occupied, err := re.isRoomOccupied(roomID)
 	if err != nil {
 		return availabilityResponse{}, fuego.InternalServerError{Title: "availability_check_failed"}
 	}

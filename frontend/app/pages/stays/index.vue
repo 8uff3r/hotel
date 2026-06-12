@@ -9,7 +9,9 @@
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-lg font-semibold">{{ t("stays.list") }}</span>
-          <span class="text-sm text-gray-500">{{ (stays ?? []).length }} {{ t("stays.count") }}</span>
+          <span class="text-sm text-gray-500"
+            >{{ (stays ?? []).length }} {{ t("stays.count") }}</span
+          >
         </div>
       </template>
       <UTable :rows="stays" :columns="columns" :loading="pending">

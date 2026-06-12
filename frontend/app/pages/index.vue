@@ -15,7 +15,9 @@
           </div>
         </template>
         <div class="text-3xl font-bold">{{ stats?.totalRooms ?? 0 }}</div>
-        <p class="mt-1 text-sm text-gray-500">{{ t("dashboard.availableRooms", { count: stats?.availableRooms ?? 0 }) }}</p>
+        <p class="mt-1 text-sm text-gray-500">
+          {{ t("dashboard.availableRooms", { count: stats?.availableRooms ?? 0 }) }}
+        </p>
       </UCard>
 
       <UCard>
@@ -28,7 +30,9 @@
           </div>
         </template>
         <div class="text-3xl font-bold">{{ formatPercent(stats?.occupancyRate ?? 0) }}</div>
-        <p class="mt-1 text-sm text-gray-500">{{ t("dashboard.roomsOccupied", { count: stats?.occupiedRooms ?? 0 }) }}</p>
+        <p class="mt-1 text-sm text-gray-500">
+          {{ t("dashboard.roomsOccupied", { count: stats?.occupiedRooms ?? 0 }) }}
+        </p>
       </UCard>
 
       <UCard>
@@ -54,7 +58,9 @@
           </div>
         </template>
         <div class="text-3xl font-bold">{{ stats?.checkInsToday ?? 0 }}</div>
-        <p class="mt-1 text-sm text-gray-500">{{ t("dashboard.checkOuts", { count: stats?.checkOutsToday ?? 0 }) }}</p>
+        <p class="mt-1 text-sm text-gray-500">
+          {{ t("dashboard.checkOuts", { count: stats?.checkOutsToday ?? 0 }) }}
+        </p>
       </UCard>
     </div>
 
@@ -139,10 +145,13 @@ interface RecentReservation {
   entryDate?: string;
 }
 
-const { data: recentReservations } = useAsyncData<RecentReservation[]>("dashboard-recent-reservations", async () => {
-  const res = await getApiDashboardRecentReservations({ requestValidator: undefined });
-  return (res.data?.data ?? []) as RecentReservation[];
-});
+const { data: recentReservations } = useAsyncData<RecentReservation[]>(
+  "dashboard-recent-reservations",
+  async () => {
+    const res = await getApiDashboardRecentReservations({ requestValidator: undefined });
+    return (res.data?.data ?? []) as RecentReservation[];
+  }
+);
 
 const formatPercent = (val: number) => {
   return `${val.toFixed(0)}%`;

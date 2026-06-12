@@ -1,6 +1,6 @@
 <template>
-  <div class="p-6 max-w-4xl mx-auto">
-    <div class="flex justify-between items-center mb-6">
+  <div class="mx-auto max-w-4xl p-6">
+    <div class="mb-6 flex items-center justify-between">
       <h1 class="text-2xl font-bold">تنظیمات هتل</h1>
       <UButton variant="outline" to="/hotels/profile">بازگشت به پروفایل</UButton>
     </div>
@@ -10,7 +10,7 @@
         <h2 class="font-semibold">تنظیمات عمومی</h2>
       </template>
       <UForm :state="form" @submit="saveSettings">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
           <UFormField label="ساعت ورود استاندارد" name="standardCheckInTime" required>
             <UInput v-model="form.standardCheckInTime" placeholder="14:00" />
           </UFormField>

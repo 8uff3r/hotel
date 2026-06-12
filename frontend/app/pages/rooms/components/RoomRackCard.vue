@@ -1,7 +1,6 @@
 <template>
   <div
-    class="group relative flex cursor-pointer flex-col rounded-lg border-2 p-3 transition-all hover:scale-105 hover:shadow-lg"
-    :class="borderClass"
+    class="group relative flex cursor-pointer flex-col rounded-lg border-2 border-gray-200 p-3 transition-all hover:scale-105 hover:shadow-lg dark:border-gray-700"
     :style="{
       backgroundColor: bgColor,
       borderColor: borderColor,
@@ -9,21 +8,6 @@
     @click="$emit('select', room)"
     @contextmenu.prevent="openContextMenu($event)"
   >
-    <!-- Departure overdue indicator -->
-    <div v-if="isDepartureOverdue" class="absolute -top-1 -right-1 z-10">
-      <UBadge :color="isDepartureToday ? 'warning' : 'error'" variant="solid" size="xs">
-        <UIcon
-          :name="isDepartureToday ? 'i-lucide-clock' : 'i-lucide-alert-triangle'"
-          class="mr-0.5 h-3 w-3"
-        />
-        {{
-          isDepartureToday
-            ? t("rooms.roomRack.departureToday")
-            : t("rooms.roomRack.departureOverdue")
-        }}
-      </UBadge>
-    </div>
-
     <!-- Status bar -->
     <div
       class="absolute top-0 right-0 left-0 h-1.5 rounded-t-lg"
@@ -45,30 +29,6 @@
       {{ room.roomType?.label }}
     </span>
 
-    <!-- Guest info when occupied -->
-    <div
-      v-if="hasReservation"
-      class="mt-2 space-y-1 border-t border-gray-200 pt-2 dark:border-gray-600"
-    >
-      <!-- Guest name -->
-      <div class="flex items-center gap-1 text-xs text-gray-700 dark:text-gray-300">
-        <UIcon name="i-lucide-user" class="h-3 w-3 shrink-0" />
-        <span class="truncate">{{ guestName }}</span>
-      </div>
-
-      <!-- Guest count -->
-      <div class="flex items-center gap-1 text-xs text-gray-500">
-        <UIcon name="i-lucide-users" class="h-3 w-3 shrink-0" />
-        <span>{{ guestCount }} {{ t("rooms.roomRack.residentCount") }}</span>
-      </div>
-
-      <!-- Agency indicator -->
-      <div v-if="isAgency" class="flex items-center gap-1 text-xs text-gray-500">
-        <UIcon name="i-lucide-building" class="h-3 w-3 shrink-0" />
-        <span class="truncate">{{ agencyName }}</span>
-      </div>
-    </div>
-
     <!-- Context Menu -->
     <Teleport to="body">
       <div
@@ -85,25 +45,6 @@
             {{ room.roomNumber }}
           </h3>
           <span class="text-xs text-gray-500">{{ room.roomType?.label }}</span>
-        </div>
-
-        <!-- Guest info in context menu -->
-        <div v-if="hasReservation" class="mb-3 space-y-1.5">
-          <p class="text-sm font-medium text-gray-900 dark:text-white">{{ guestName }}</p>
-          <div class="space-y-1 text-xs text-gray-600 dark:text-gray-400">
-            <div class="flex items-center gap-2">
-              <UIcon name="i-lucide-globe" class="h-3 w-3" />
-              <span>{{ guestNationality }}</span>
-            </div>
-            <div v-if="isAgency" class="flex items-center gap-2">
-              <UIcon name="i-lucide-building" class="h-3 w-3" />
-              <span>{{ agencyName }}</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <UIcon name="i-lucide-phone" class="h-3 w-3" />
-              <span>{{ guestPhone }}</span>
-            </div>
-          </div>
         </div>
 
         <!-- Room info -->
@@ -151,53 +92,13 @@ const bgColor = computed(() => `${hex.value}15`);
 const borderColor = computed(() => hex.value);
 const barColor = computed(() => hex.value);
 
-const hasReservation = computed(() => !!props.room.currentReservation?.guest);
-const guestName = computed(() => {
-  const g = props.room.currentReservation?.guest;
-  return g ? `${g.firstName} ${g.lastName}` : "";
-});
-const guestCount = computed(() => props.room.currentReservation?.numberOfPeople ?? 1);
-
-const isDepartureOverdue = computed(() => {
-  if (!props.room.currentReservation?.departureDate) return false;
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const departure = new Date(props.room.currentReservation.departureDate);
-  departure.setHours(0, 0, 0, 0);
-  return departure <= today;
-});
-
-const isDepartureToday = computed(() => {
-  if (!props.room.currentReservation?.departureDate) return false;
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const departure = new Date(props.room.currentReservation.departureDate);
-  departure.setHours(0, 0, 0, 0);
-  return departure.getTime() === today.getTime();
-});
-
-const borderClass = computed(() => {
-  if (!isDepartureOverdue.value) return "border-gray-200 dark:border-gray-700";
-  if (isDepartureToday.value) {
-    return "border-amber-400 dark:border-amber-500 ring-2 ring-amber-300/50 dark:ring-amber-600/50";
-  }
-  return "border-red-400 dark:border-red-500 ring-2 ring-red-300/50 dark:ring-red-600/50";
-});
-
-const isAgency = computed(() => !!props.room.currentReservation?.origin);
-const agencyName = computed(() => props.room.currentReservation?.origin || "");
-const guestNationality = computed(
-  () => props.room.currentReservation?.guest?.nationality?.label || ""
-);
-const guestPhone = computed(() => props.room.currentReservation?.guest?.phone || "");
-
 const statusIcon = computed(() => {
   const slug = props.room.status?.slug;
   const icons: Record<string, string> = {
     available: "i-lucide-check-circle",
     occupied: "i-lucide-door-open",
-    maintenance: "i-lucide-wrench",
-    out_of_order: "i-lucide-x-circle",
+    reserved: "i-lucide-calendar-check",
+    under_repair: "i-lucide-wrench",
     cleaning: "i-lucide-sparkles",
   };
   return icons[slug as string] || "i-lucide-circle";

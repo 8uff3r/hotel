@@ -54,11 +54,11 @@ func (m DashboardModule) statsHandler(api *h.API) func(c fuego.ContextNoBody) (D
 		}
 		stats.TotalRooms = int(totalRooms)
 
-		// Occupied rooms: rooms with active stays today
+		// Occupied rooms: rooms with status = occupied
 		var occupiedRooms int64
-		today := time.Now().Format("2006-01-02")
-		if err := db.Model(&models.Stay{}).
-			Where("hotel_id = ? AND entry_date <= ? AND (departure_date IS NULL OR departure_date >= ?) AND status_id IN (SELECT id FROM stay_statuses WHERE slug IN ('waiting', 'resident'))", hotelID, today, today).
+		if err := db.Model(&models.Room{}).
+			Joins("JOIN room_statuses ON rooms.status_id = room_statuses.id").
+			Where("rooms.hotel_id = ? AND room_statuses.slug = ?", hotelID, string(models.RoomStatusOccupied)).
 			Count(&occupiedRooms).Error; err != nil {
 			return stats, fmt.Errorf("count occupied: %w", err)
 		}
