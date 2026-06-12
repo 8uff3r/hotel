@@ -55,13 +55,12 @@ const formatter = useDateFormatter("fa");
     <template #content>
       <div class="flex flex-col p-2">
         <div class="flex w-full flex-row justify-between gap-3" v-if="value">
-          {{ value }}
           <USelectMenu
             class="w-1/2"
             :items="
               createDecade({
                 dateObj: value as CalendarDate,
-                startIndex: -15,
+                startIndex: -100,
                 endIndex: 15,
               }).map((d) => d.year)
             "
