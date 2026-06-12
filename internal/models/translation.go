@@ -6,10 +6,12 @@ import (
 	"fmt"
 )
 
-type Translation map[string]string
-type HasTranslatables interface {
-	GetTranslatables() []Translatable
-}
+type (
+	Translation      map[string]string
+	HasTranslatables interface {
+		GetTranslatables() []Translatable
+	}
+)
 type TranslateBase struct {
 	Slug        string      `gorm:"uniqueIndex" json:"slug"`
 	Label       string      `gorm:"-" json:"label"`

@@ -25,35 +25,40 @@ type SanaRoomRack struct {
 type TravelReason struct {
 	Base
 	TranslateBase
-	SanaID   string `gorm:"uniqueIndex" json:"sanaId"`
-	SanaName string `json:"sanaName"`
+	Slug     *string `gorm:"uniqueIndex" json:"slug"`
+	SanaID   string  `gorm:"uniqueIndex" json:"sanaId"`
+	SanaName string  `json:"sanaName"`
 }
 
 type FamilyRelationship struct {
 	Base
 	TranslateBase
-	SanaID   string `gorm:"uniqueIndex" json:"sanaId"`
-	SanaName string `json:"sanaName"`
+	Slug     *string `gorm:"uniqueIndex" json:"slug"`
+	SanaID   string  `gorm:"uniqueIndex" json:"sanaId"`
+	SanaName string  `json:"sanaName"`
 }
 
 type Nationality struct {
 	Base
 	TranslateBase
-	SanaID   string `gorm:"uniqueIndex" json:"sanaId"`
-	SanaName string `json:"sanaName"`
+	Slug     *string `gorm:"uniqueIndex" json:"slug"`
+	SanaID   string  `gorm:"uniqueIndex" json:"sanaId"`
+	SanaName string  `json:"sanaName"`
 }
 
 type SanaCity struct {
 	Base
 	TranslateBase
-	SanaID   string `gorm:"uniqueIndex" json:"sanaId"`
-	SanaName string `json:"sanaName"`
-	IsIran   bool   `gorm:"default:false" json:"isIran"`
+	Slug     *string `gorm:"uniqueIndex" json:"slug"`
+	SanaID   string  `gorm:"uniqueIndex" json:"sanaId"`
+	SanaName string  `json:"sanaName"`
+	IsIran   bool    `gorm:"default:false" json:"isIran"`
 }
 
 type Occupation struct {
 	Base
 	TranslateBase
-	SanaID   string `gorm:"uniqueIndex" json:"sanaId"`
-	SanaName string `json:"sanaName"`
+	Slug     *string `gorm:"uniqueIndex" json:"slug"`
+	SanaID   string  `gorm:"uniqueIndex" json:"sanaId"`
+	SanaName string  `json:"sanaName"`
 }

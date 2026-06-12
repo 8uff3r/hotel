@@ -30,6 +30,7 @@ func (m StaysModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Get(s, "/{id}/invoice", sm.stayGetInvoice)
 	fuego.Post(s, "/{id}/invoice/items", sm.stayAddInvoiceItem)
 	fuego.Post(s, "/{id}/invoice/pay", sm.stayPayInvoice)
+	fuego.Post(s, "/{id}/change-duration", sm.stayChangeDuration)
 
 	// Validation endpoints
 	fuego.Get(s, "/check-availability", sm.checkAvailability)
@@ -615,6 +616,267 @@ func (sm *StaysModule) stayPayInvoice(c fuego.ContextWithBody[payInvoiceDto]) (m
 		return zero, fuego.BadRequestError{Title: "payment_failed"}
 	}
 	return invoice, nil
+}
+
+type changeDurationDto struct {
+	DurationOfStay int `json:"durationOfStay"`
+}
+
+type changeDurationResponse struct {
+	models.Stay
+	ChangeInNights int     `json:"changeInNights"`
+	ChangeInTotal  float64 `json:"changeInTotal"`
+}
+
+func (sm *StaysModule) stayChangeDuration(c fuego.ContextWithBody[changeDurationDto]) (changeDurationResponse, error) {
+	var zero changeDurationResponse
+	id, err := h.ParseID(c.PathParam("id"))
+	if err != nil {
+		return zero, fuego.BadRequestError{Title: "invalid_id"}
+	}
+
+	body, err := c.Body()
+	if err != nil {
+		return zero, fuego.BadRequestError{}
+	}
+
+	if body.DurationOfStay <= 0 {
+		return zero, fuego.BadRequestError{Title: "invalid_duration"}
+	}
+
+	var stay models.Stay
+	if err := sm.Db.First(&stay, id).Error; err != nil {
+		return zero, fuego.NotFoundError{}
+	}
+
+	// Find the invoice
+	var invoice models.Invoice
+	if err := sm.Db.Where("stay_id = ?", stay.ID).First(&invoice).Error; err != nil {
+		return zero, fuego.BadRequestError{Title: "invoice_not_found"}
+	}
+
+	newDuration := body.DurationOfStay
+	changeInNights := newDuration - stay.DurationOfStay
+
+	var items []models.InvoiceItem
+	changeInTotal := 0.0
+
+	if changeInNights > 0 {
+		// Extension: add new items for the additional nights
+		// Add room charge for additional nights
+		roomTotal := stay.RoomPrice * float64(changeInNights)
+		items = append(items, models.InvoiceItem{
+			InvoiceID:       invoice.ID,
+			StayID:          stay.ID,
+			ItemType:        string(models.InvoiceItemTypeRoomCharge),
+			Quantity:        changeInNights,
+			UnitPrice:       stay.RoomPrice,
+			TotalPrice:      roomTotal,
+			Description:     fmt.Sprintf("Room charge extension (%d nights)", changeInNights),
+			RemainingAmount: roomTotal,
+			PaymentStatus:   string(models.PaymentStatusUnpaid),
+		})
+		changeInTotal += roomTotal
+
+		if stay.Breakfast {
+			breakfastTotal := 10.0 * float64(changeInNights)
+			items = append(items, models.InvoiceItem{
+				InvoiceID:       invoice.ID,
+				StayID:          stay.ID,
+				ItemType:        string(models.InvoiceItemTypeBreakfast),
+				Quantity:        changeInNights,
+				UnitPrice:       10.0,
+				TotalPrice:      breakfastTotal,
+				Description:     fmt.Sprintf("Breakfast extension (%d nights)", changeInNights),
+				RemainingAmount: breakfastTotal,
+				PaymentStatus:   string(models.PaymentStatusUnpaid),
+			})
+			changeInTotal += breakfastTotal
+		}
+
+		if stay.HalfBoard {
+			halfBoardTotal := 20.0 * float64(changeInNights)
+			items = append(items, models.InvoiceItem{
+				InvoiceID:       invoice.ID,
+				StayID:          stay.ID,
+				ItemType:        string(models.InvoiceItemTypeHalfBoard),
+				Quantity:        changeInNights,
+				UnitPrice:       20.0,
+				TotalPrice:      halfBoardTotal,
+				Description:     fmt.Sprintf("Half board extension (%d nights)", changeInNights),
+				RemainingAmount: halfBoardTotal,
+				PaymentStatus:   string(models.PaymentStatusUnpaid),
+			})
+			changeInTotal += halfBoardTotal
+		}
+
+		if stay.FullBoard {
+			fullBoardTotal := 35.0 * float64(changeInNights)
+			items = append(items, models.InvoiceItem{
+				InvoiceID:       invoice.ID,
+				StayID:          stay.ID,
+				ItemType:        string(models.InvoiceItemTypeFullBoard),
+				Quantity:        changeInNights,
+				UnitPrice:       35.0,
+				TotalPrice:      fullBoardTotal,
+				Description:     fmt.Sprintf("Full board extension (%d nights)", changeInNights),
+				RemainingAmount: fullBoardTotal,
+				PaymentStatus:   string(models.PaymentStatusUnpaid),
+			})
+			changeInTotal += fullBoardTotal
+		}
+
+		if stay.Parking {
+			parkingTotal := 5.0 * float64(changeInNights)
+			items = append(items, models.InvoiceItem{
+				InvoiceID:       invoice.ID,
+				StayID:          stay.ID,
+				ItemType:        string(models.InvoiceItemTypeParking),
+				Quantity:        changeInNights,
+				UnitPrice:       5.0,
+				TotalPrice:      parkingTotal,
+				Description:     fmt.Sprintf("Parking extension (%d nights)", changeInNights),
+				RemainingAmount: parkingTotal,
+				PaymentStatus:   string(models.PaymentStatusUnpaid),
+			})
+			changeInTotal += parkingTotal
+		}
+	} else if changeInNights < 0 {
+		// Shortening: remove old duration-based items and recreate for new shorter duration
+		// Delete old duration-based items
+		var removedTotal float64
+		sm.Db.Model(&models.InvoiceItem{}).
+			Where("invoice_id = ? AND stay_id = ? AND item_type IN (?, ?, ?, ?, ?)",
+				invoice.ID, stay.ID,
+				string(models.InvoiceItemTypeRoomCharge),
+				string(models.InvoiceItemTypeBreakfast),
+				string(models.InvoiceItemTypeHalfBoard),
+				string(models.InvoiceItemTypeFullBoard),
+				string(models.InvoiceItemTypeParking),
+			).
+			Select("COALESCE(SUM(total_price), 0)").
+			Scan(&removedTotal)
+
+		sm.Db.Where("invoice_id = ? AND stay_id = ? AND item_type IN (?, ?, ?, ?, ?)",
+			invoice.ID, stay.ID,
+			string(models.InvoiceItemTypeRoomCharge),
+			string(models.InvoiceItemTypeBreakfast),
+			string(models.InvoiceItemTypeHalfBoard),
+			string(models.InvoiceItemTypeFullBoard),
+			string(models.InvoiceItemTypeParking),
+		).Delete(&models.InvoiceItem{})
+
+		// Create new items for the shorter duration
+		roomTotal := stay.RoomPrice * float64(newDuration)
+		items = append(items, models.InvoiceItem{
+			InvoiceID:       invoice.ID,
+			StayID:          stay.ID,
+			ItemType:        string(models.InvoiceItemTypeRoomCharge),
+			Quantity:        newDuration,
+			UnitPrice:       stay.RoomPrice,
+			TotalPrice:      roomTotal,
+			Description:     "Room charge",
+			RemainingAmount: roomTotal,
+			PaymentStatus:   string(models.PaymentStatusUnpaid),
+		})
+
+		if stay.Breakfast {
+			breakfastTotal := 10.0 * float64(newDuration)
+			items = append(items, models.InvoiceItem{
+				InvoiceID:       invoice.ID,
+				StayID:          stay.ID,
+				ItemType:        string(models.InvoiceItemTypeBreakfast),
+				Quantity:        newDuration,
+				UnitPrice:       10.0,
+				TotalPrice:      breakfastTotal,
+				Description:     "Breakfast",
+				RemainingAmount: breakfastTotal,
+				PaymentStatus:   string(models.PaymentStatusUnpaid),
+			})
+		}
+
+		if stay.HalfBoard {
+			halfBoardTotal := 20.0 * float64(newDuration)
+			items = append(items, models.InvoiceItem{
+				InvoiceID:       invoice.ID,
+				StayID:          stay.ID,
+				ItemType:        string(models.InvoiceItemTypeHalfBoard),
+				Quantity:        newDuration,
+				UnitPrice:       20.0,
+				TotalPrice:      halfBoardTotal,
+				Description:     "Half board",
+				RemainingAmount: halfBoardTotal,
+				PaymentStatus:   string(models.PaymentStatusUnpaid),
+			})
+		}
+
+		if stay.FullBoard {
+			fullBoardTotal := 35.0 * float64(newDuration)
+			items = append(items, models.InvoiceItem{
+				InvoiceID:       invoice.ID,
+				StayID:          stay.ID,
+				ItemType:        string(models.InvoiceItemTypeFullBoard),
+				Quantity:        newDuration,
+				UnitPrice:       35.0,
+				TotalPrice:      fullBoardTotal,
+				Description:     "Full board",
+				RemainingAmount: fullBoardTotal,
+				PaymentStatus:   string(models.PaymentStatusUnpaid),
+			})
+		}
+
+		if stay.Parking {
+			parkingTotal := 5.0 * float64(newDuration)
+			items = append(items, models.InvoiceItem{
+				InvoiceID:       invoice.ID,
+				StayID:          stay.ID,
+				ItemType:        string(models.InvoiceItemTypeParking),
+				Quantity:        newDuration,
+				UnitPrice:       5.0,
+				TotalPrice:      parkingTotal,
+				Description:     "Parking",
+				RemainingAmount: parkingTotal,
+				PaymentStatus:   string(models.PaymentStatusUnpaid),
+			})
+		}
+
+		// Calculate change: new total - old total
+		var newTotal float64
+		for _, item := range items {
+			newTotal += item.TotalPrice
+		}
+		changeInTotal = newTotal - removedTotal
+	}
+
+	if len(items) > 0 {
+		if err := sm.Db.CreateInBatches(items, len(items)).Error; err != nil {
+			return zero, fuego.BadRequestError{Title: "invoice_item_create_failed"}
+		}
+	}
+
+	// Update invoice totals
+	invoice.TotalAmount += changeInTotal
+	invoice.RemainingAmount += changeInTotal
+	if invoice.RemainingAmount < 0 {
+		invoice.RemainingAmount = 0
+		invoice.PaymentStatus = string(models.PaymentStatusCleared)
+	}
+	if err := sm.Db.Save(&invoice).Error; err != nil {
+		return zero, fuego.BadRequestError{Title: "invoice_update_failed"}
+	}
+
+	// Update stay
+	stay.DurationOfStay = newDuration
+	stay.DepartureDate = stay.EntryDate.Add(time.Duration(newDuration) * 24 * time.Hour)
+	if err := sm.Db.Save(&stay).Error; err != nil {
+		return zero, fuego.BadRequestError{Title: "stay_update_failed"}
+	}
+
+	return changeDurationResponse{
+		Stay:           stay,
+		ChangeInNights: changeInNights,
+		ChangeInTotal:  changeInTotal,
+	}, nil
 }
 
 func (sm *StaysModule) generateInvoiceForStay(stay *models.Stay) error {

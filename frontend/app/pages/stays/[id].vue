@@ -24,6 +24,9 @@
         <UButton v-if="stay.status?.slug === 'resident'" @click="showService = true" variant="soft">
           {{ t("stays.addService") }}
         </UButton>
+        <UButton v-if="stay.status?.slug === 'resident'" @click="showExtend = true" variant="soft">
+          {{ t("stays.changeDuration") }}
+        </UButton>
         <UButton to="/stays">{{ t("actions.back") }}</UButton>
       </div>
     </div>
@@ -200,6 +203,26 @@
       </UCard>
     </UModal>
 
+    <!-- Change Duration Modal -->
+    <UModal v-model="showExtend">
+      <UCard>
+        <template #header>
+          <h3 class="font-semibold">{{ t("stays.changeDuration") }}</h3>
+        </template>
+        <UForm :state="extendState" @submit="doChangeDuration">
+          <UFormGroup :label="t('stays.newDuration')" name="durationOfStay" required>
+            <UInput v-model.number="extendState.durationOfStay" type="number" min="1" />
+          </UFormGroup>
+          <div class="mt-4 flex gap-2">
+            <UButton type="submit" :loading="extendLoading">{{ t("stays.updateDuration") }}</UButton>
+            <UButton variant="outline" @click="showExtend = false">{{
+              t("actions.cancel")
+            }}</UButton>
+          </div>
+        </UForm>
+      </UCard>
+    </UModal>
+
     <!-- Item Settlement Modal -->
     <UModal v-model="showItemSettlement">
       <UCard>
@@ -303,6 +326,10 @@ const showItemSettlement = ref(false);
 const itemSettlementLoading = ref(false);
 const itemSettlementState = reactive({ amount: 0, paymentMethod: undefined as number | undefined });
 const currentItem = ref<InvoiceItem | null>(null);
+
+const showExtend = ref(false);
+const extendLoading = ref(false);
+const extendState = reactive({ durationOfStay: 1 });
 
 const paymentMethodOptions = ref([
   { label: t("payment.cash"), value: 1 },
@@ -430,6 +457,23 @@ async function doItemSettlement() {
     console.error(e);
   } finally {
     itemSettlementLoading.value = false;
+  }
+}
+
+async function doChangeDuration() {
+  extendLoading.value = true;
+  try {
+    await $fetch(`/api/stays/${stayId}/change-duration`, {
+      method: "POST",
+      body: { durationOfStay: extendState.durationOfStay },
+    });
+    showExtend.value = false;
+    refreshStay();
+    refreshInvoice();
+  } catch (e) {
+    console.error(e);
+  } finally {
+    extendLoading.value = false;
   }
 }
 </script>

@@ -578,6 +578,528 @@ export const zGuestWithReservationResponse = z.object({
 });
 
 /**
+ * GuestWithStayRequest schema
+ */
+export const zGuestWithStayRequest = z.object({
+    companions: z.array(z.object({
+        dateOfBirth: z.iso.datetime({ offset: true }).optional(),
+        fatherName: z.string().optional(),
+        firstName: z.string().optional(),
+        gender: z.string().optional(),
+        idNumber: z.string().optional(),
+        lastName: z.string().optional(),
+        nationalId: z.string().optional(),
+        nationality: z.object({
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        nationalityID: z.int().gte(0).optional(),
+        phone: z.string().optional(),
+        relation: z.int().gte(0).optional()
+    })).optional(),
+    guest: z.object({
+        address: z.string().optional(),
+        companions: z.array(z.object({
+            dateOfBirth: z.iso.datetime({ offset: true }),
+            fatherName: z.string().optional(),
+            firstName: z.string().optional(),
+            gender: z.string().optional(),
+            guestId: z.int().gte(0).optional(),
+            id: z.int().gte(0).optional(),
+            idNumber: z.string().optional(),
+            lastName: z.string().optional(),
+            mobile: z.string().optional(),
+            nationalId: z.string().optional(),
+            nationality: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            nationalityID: z.int().gte(0).optional(),
+            phone: z.string().optional(),
+            relation: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                sanaId: z.string().optional(),
+                sanaName: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            relationId: z.int().gte(0).optional()
+        })).optional(),
+        dateOfBirth: z.iso.datetime({ offset: true }),
+        email: z.string().optional(),
+        fatherName: z.string().optional(),
+        firstName: z.string().min(2).max(50),
+        gender: z.string().optional(),
+        hotelId: z.string().optional(),
+        id: z.int().gte(0).optional(),
+        idNumber: z.string().optional(),
+        job: z.string().optional(),
+        landline: z.string().optional(),
+        lastName: z.string().min(2).max(50),
+        nationalId: z.string().optional(),
+        nationality: z.object({
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        nationalityID: z.int().gte(0),
+        occupation: z.string().optional(),
+        passport: z.string().optional(),
+        phone: z.string().optional(),
+        placeOfBirth: z.string().optional(),
+        postalCode: z.string().optional(),
+        status: z.string().optional(),
+        telephone: z.string().optional()
+    }).optional(),
+    payment: z.object({
+        amount: z.number().optional(),
+        id: z.int().gte(0).optional(),
+        method: z.object({
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        methodId: z.int().gte(0).optional(),
+        referrer: z.string().optional(),
+        reservationId: z.int().gte(0).optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional()
+    }).optional(),
+    stay: z.object({
+        breakfast: z.boolean().optional(),
+        departureDate: z.iso.datetime({ offset: true }).optional(),
+        destination: z.string().optional(),
+        durationOfStay: z.int().optional(),
+        entryDate: z.iso.datetime({ offset: true }).optional(),
+        fullBoard: z.boolean().optional(),
+        notes: z.string().optional(),
+        numberOfPeople: z.int().optional(),
+        origin: z.string().optional(),
+        parking: z.boolean().optional(),
+        purposeOfTravel: z.string().optional(),
+        roomPrice: z.number().optional(),
+        rooms: z.array(z.int().gte(0)).optional()
+    }).optional()
+});
+
+/**
+ * GuestWithStayResponse schema
+ */
+export const zGuestWithStayResponse = z.object({
+    guest: z.object({
+        address: z.string().optional(),
+        companions: z.array(z.object({
+            dateOfBirth: z.iso.datetime({ offset: true }),
+            fatherName: z.string().optional(),
+            firstName: z.string().optional(),
+            gender: z.string().optional(),
+            guestId: z.int().gte(0).optional(),
+            id: z.int().gte(0).optional(),
+            idNumber: z.string().optional(),
+            lastName: z.string().optional(),
+            mobile: z.string().optional(),
+            nationalId: z.string().optional(),
+            nationality: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            nationalityID: z.int().gte(0).optional(),
+            phone: z.string().optional(),
+            relation: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                sanaId: z.string().optional(),
+                sanaName: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            relationId: z.int().gte(0).optional()
+        })).optional(),
+        dateOfBirth: z.iso.datetime({ offset: true }),
+        email: z.string().optional(),
+        fatherName: z.string().optional(),
+        firstName: z.string().min(2).max(50),
+        gender: z.string().optional(),
+        hotelId: z.string().optional(),
+        id: z.int().gte(0).optional(),
+        idNumber: z.string().optional(),
+        job: z.string().optional(),
+        landline: z.string().optional(),
+        lastName: z.string().min(2).max(50),
+        nationalId: z.string().optional(),
+        nationality: z.object({
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        nationalityID: z.int().gte(0),
+        occupation: z.string().optional(),
+        passport: z.string().optional(),
+        phone: z.string().optional(),
+        placeOfBirth: z.string().optional(),
+        postalCode: z.string().optional(),
+        status: z.string().optional(),
+        telephone: z.string().optional()
+    }).optional(),
+    payment: z.object({
+        amount: z.number().optional(),
+        id: z.int().gte(0).optional(),
+        method: z.object({
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        methodId: z.int().gte(0).optional(),
+        referrer: z.string().optional(),
+        reservationId: z.int().gte(0).optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional()
+    }).optional(),
+    stay: z.object({
+        acceptanceId: z.string().optional(),
+        actualCheckIn: z.iso.datetime({ offset: true }).optional(),
+        actualCheckOut: z.iso.datetime({ offset: true }).optional(),
+        breakfast: z.boolean().optional(),
+        departureDate: z.iso.datetime({ offset: true }).optional(),
+        destination: z.string().optional(),
+        durationOfStay: z.int().optional(),
+        earlyCheckInFee: z.number().optional(),
+        entryDate: z.iso.datetime({ offset: true }).optional(),
+        fullBoard: z.boolean().optional(),
+        guest: z.object({
+            address: z.string().optional(),
+            companions: z.array(z.object({
+                dateOfBirth: z.iso.datetime({ offset: true }),
+                fatherName: z.string().optional(),
+                firstName: z.string().optional(),
+                gender: z.string().optional(),
+                guestId: z.int().gte(0).optional(),
+                id: z.int().gte(0).optional(),
+                idNumber: z.string().optional(),
+                lastName: z.string().optional(),
+                mobile: z.string().optional(),
+                nationalId: z.string().optional(),
+                nationality: z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                nationalityID: z.int().gte(0).optional(),
+                phone: z.string().optional(),
+                relation: z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    sanaId: z.string().optional(),
+                    sanaName: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                relationId: z.int().gte(0).optional()
+            })).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
+            email: z.string().optional(),
+            fatherName: z.string().optional(),
+            firstName: z.string().min(2).max(50),
+            gender: z.string().optional(),
+            hotelId: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            idNumber: z.string().optional(),
+            job: z.string().optional(),
+            landline: z.string().optional(),
+            lastName: z.string().min(2).max(50),
+            nationalId: z.string().optional(),
+            nationality: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            nationalityID: z.int().gte(0),
+            occupation: z.string().optional(),
+            passport: z.string().optional(),
+            phone: z.string().optional(),
+            placeOfBirth: z.string().optional(),
+            postalCode: z.string().optional(),
+            status: z.string().optional(),
+            telephone: z.string().optional()
+        }).optional(),
+        guestId: z.int().gte(0).optional(),
+        halfBoard: z.boolean().optional(),
+        halfDayFee: z.number().optional(),
+        hotelId: z.string().optional(),
+        id: z.int().gte(0).optional(),
+        invoice: z.object({
+            createdAt: z.iso.datetime({ offset: true }).optional(),
+            hotelId: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            items: z.array(z.object({
+                description: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                invoiceId: z.int().gte(0).optional(),
+                itemType: z.string().optional(),
+                paidAmount: z.number().optional(),
+                paymentMethod: z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                paymentMethodId: z.int().gte(0).optional(),
+                paymentStatus: z.string().optional(),
+                quantity: z.int().optional(),
+                remainingAmount: z.number().optional(),
+                service: z.object({
+                    baseAmount: z.number().optional(),
+                    description: z.string().optional(),
+                    hotelId: z.string().optional(),
+                    id: z.int().gte(0).optional(),
+                    name: z.string().optional(),
+                    unit: z.string().optional()
+                }).optional(),
+                serviceId: z.int().gte(0).optional(),
+                stayId: z.int().gte(0).optional(),
+                totalPrice: z.number().optional(),
+                unitPrice: z.number().optional()
+            })).optional(),
+            paidAmount: z.number().optional(),
+            paymentMethod: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            paymentMethodId: z.int().gte(0).optional(),
+            paymentStatus: z.string().optional(),
+            remainingAmount: z.number().optional(),
+            stayId: z.int().gte(0).optional(),
+            totalAmount: z.number().optional(),
+            updatedAt: z.iso.datetime({ offset: true }).optional()
+        }).optional(),
+        notes: z.string().optional(),
+        numberOfPeople: z.int().optional(),
+        origin: z.string().optional(),
+        parking: z.boolean().optional(),
+        purposeOfTravel: z.string().optional(),
+        reservation: z.object({
+            breakfast: z.boolean().optional(),
+            departureDate: z.iso.datetime({ offset: true }).optional(),
+            destination: z.string().optional(),
+            durationOfStay: z.int().optional(),
+            entryDate: z.iso.datetime({ offset: true }).optional(),
+            fullBoard: z.boolean().optional(),
+            guest: z.object({
+                address: z.string().optional(),
+                companions: z.array(z.object({
+                    dateOfBirth: z.iso.datetime({ offset: true }),
+                    fatherName: z.string().optional(),
+                    firstName: z.string().optional(),
+                    gender: z.string().optional(),
+                    guestId: z.int().gte(0).optional(),
+                    id: z.int().gte(0).optional(),
+                    idNumber: z.string().optional(),
+                    lastName: z.string().optional(),
+                    mobile: z.string().optional(),
+                    nationalId: z.string().optional(),
+                    nationality: z.object({
+                        id: z.int().gte(0).optional(),
+                        label: z.string().optional(),
+                        slug: z.string().optional()
+                    }).optional(),
+                    nationalityID: z.int().gte(0).optional(),
+                    phone: z.string().optional(),
+                    relation: z.object({
+                        id: z.int().gte(0).optional(),
+                        label: z.string().optional(),
+                        sanaId: z.string().optional(),
+                        sanaName: z.string().optional(),
+                        slug: z.string().optional()
+                    }).optional(),
+                    relationId: z.int().gte(0).optional()
+                })).optional(),
+                dateOfBirth: z.iso.datetime({ offset: true }),
+                email: z.string().optional(),
+                fatherName: z.string().optional(),
+                firstName: z.string().min(2).max(50),
+                gender: z.string().optional(),
+                hotelId: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                idNumber: z.string().optional(),
+                job: z.string().optional(),
+                landline: z.string().optional(),
+                lastName: z.string().min(2).max(50),
+                nationalId: z.string().optional(),
+                nationality: z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                nationalityID: z.int().gte(0),
+                occupation: z.string().optional(),
+                passport: z.string().optional(),
+                phone: z.string().optional(),
+                placeOfBirth: z.string().optional(),
+                postalCode: z.string().optional(),
+                status: z.string().optional(),
+                telephone: z.string().optional()
+            }).optional(),
+            guestId: z.int().gte(0).optional(),
+            halfBoard: z.boolean().optional(),
+            hotelId: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            notes: z.string().optional(),
+            numberOfPeople: z.int().optional(),
+            origin: z.string().optional(),
+            parking: z.boolean().optional(),
+            payment: z.object({
+                amount: z.number().optional(),
+                id: z.int().gte(0).optional(),
+                method: z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                methodId: z.int().gte(0).optional(),
+                referrer: z.string().optional(),
+                reservationId: z.int().gte(0).optional(),
+                status: z.object({
+                    colorHex: z.string().optional(),
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                statusId: z.int().gte(0).optional()
+            }).optional(),
+            paymentDeadline: z.iso.datetime({ offset: true }).optional(),
+            purposeOfTravel: z.string().optional(),
+            reservationCode: z.string().optional(),
+            roomPrice: z.number().optional(),
+            rooms: z.array(z.object({
+                amenities: z.array(z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                })).optional(),
+                basePrice: z.number().optional(),
+                capacity: z.int().optional(),
+                description: z.string().optional(),
+                facilities: z.string().optional(),
+                floor: z.object({
+                    description: z.string().optional(),
+                    hotelId: z.string().optional(),
+                    id: z.int().gte(0).optional(),
+                    number: z.int().optional()
+                }).optional(),
+                floorId: z.int().gte(0).optional(),
+                hotelId: z.int().gte(0).optional(),
+                id: z.int().gte(0).optional(),
+                name: z.string().optional(),
+                pictures: z.array(z.object({
+                    description: z.string().optional(),
+                    id: z.int().gte(0).optional(),
+                    roomId: z.int().gte(0).optional(),
+                    url: z.string().optional()
+                })).optional(),
+                roomNumber: z.string().optional(),
+                roomType: z.object({
+                    colorHex: z.string().optional(),
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                roomTypeId: z.int().gte(0).optional(),
+                status: z.object({
+                    colorHex: z.string().optional(),
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                statusId: z.int().gte(0).optional()
+            })).optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional()
+        }).optional(),
+        reservationId: z.int().gte(0).optional(),
+        room: z.object({
+            amenities: z.array(z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            })).optional(),
+            basePrice: z.number().optional(),
+            capacity: z.int().optional(),
+            description: z.string().optional(),
+            facilities: z.string().optional(),
+            floor: z.object({
+                description: z.string().optional(),
+                hotelId: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                number: z.int().optional()
+            }).optional(),
+            floorId: z.int().gte(0).optional(),
+            hotelId: z.int().gte(0).optional(),
+            id: z.int().gte(0).optional(),
+            name: z.string().optional(),
+            pictures: z.array(z.object({
+                description: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                roomId: z.int().gte(0).optional(),
+                url: z.string().optional()
+            })).optional(),
+            roomNumber: z.string().optional(),
+            roomType: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            roomTypeId: z.int().gte(0).optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional()
+        }).optional(),
+        roomId: z.int().gte(0).optional(),
+        roomPrice: z.number().optional(),
+        scheduledDepartureDate: z.iso.datetime({ offset: true }).optional(),
+        scheduledEntryDate: z.iso.datetime({ offset: true }).optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional(),
+        stayType: z.string().optional(),
+        travelAgency: z.object({
+            ceoFirstName: z.string().optional(),
+            ceoLastName: z.string().optional(),
+            city: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            name: z.string().optional(),
+            province: z.string().optional(),
+            status: z.string().optional()
+        }).optional(),
+        travelAgencyId: z.int().gte(0).optional()
+    }).optional()
+});
+
+/**
  * HTTPError schema
  */
 export const zHttpError = z.object({
@@ -4386,53 +4908,6 @@ export const zPaginatedResponseRoomsRackRoom = z.object({
         })).optional(),
         basePrice: z.number().optional(),
         capacity: z.int().optional(),
-        currentReservation: z.object({
-            breakfast: z.boolean().optional(),
-            departureDate: z.iso.datetime({ offset: true }).optional(),
-            durationOfStay: z.int().optional(),
-            entryDate: z.iso.datetime({ offset: true }).optional(),
-            fullBoard: z.boolean().optional(),
-            guest: z.object({
-                address: z.string().optional(),
-                companions: z.array(z.object({
-                    firstName: z.string().optional(),
-                    id: z.int().gte(0).optional(),
-                    lastName: z.string().optional(),
-                    relation: z.object({
-                        id: z.int().gte(0).optional(),
-                        label: z.string().optional(),
-                        sanaId: z.string().optional(),
-                        sanaName: z.string().optional(),
-                        slug: z.string().optional()
-                    }).optional()
-                })).optional(),
-                dateOfBirth: z.iso.datetime({ offset: true }).optional(),
-                email: z.string().optional(),
-                fatherName: z.string().optional(),
-                firstName: z.string().optional(),
-                gender: z.string().optional(),
-                id: z.int().gte(0).optional(),
-                idNumber: z.string().optional(),
-                landline: z.string().optional(),
-                lastName: z.string().optional(),
-                nationalId: z.string().optional(),
-                nationality: z.object({
-                    id: z.int().gte(0).optional(),
-                    label: z.string().optional(),
-                    slug: z.string().optional()
-                }).optional(),
-                occupation: z.string().optional(),
-                phone: z.string().optional(),
-                placeOfBirth: z.string().optional()
-            }).optional(),
-            id: z.int().gte(0).optional(),
-            notes: z.string().optional(),
-            numberOfPeople: z.int().optional(),
-            origin: z.string().optional(),
-            parking: z.boolean().optional(),
-            purposeOfTravel: z.string().optional(),
-            roomPrice: z.number().optional()
-        }).optional(),
         description: z.string().optional(),
         floor: z.int().optional(),
         id: z.int().gte(0).optional(),
@@ -5419,16 +5894,6 @@ export const zRoom = z.object({
 });
 
 /**
- * RoomDynamicStatus schema
- */
-export const zRoomDynamicStatus = z.object({
-    reservationId: z.int().gte(0).optional(),
-    status: z.string().optional(),
-    statusSlug: z.string().optional(),
-    stayId: z.int().gte(0).optional()
-});
-
-/**
  * RoomPicture schema
  */
 export const zRoomPicture = z.object({
@@ -5436,6 +5901,16 @@ export const zRoomPicture = z.object({
     id: z.int().gte(0).optional(),
     roomId: z.int().gte(0).optional(),
     url: z.string().optional()
+});
+
+/**
+ * RoomStatus schema
+ */
+export const zRoomStatus = z.object({
+    colorHex: z.string().optional(),
+    id: z.int().gte(0).optional(),
+    label: z.string().optional(),
+    slug: z.string().optional()
 });
 
 /**
@@ -6143,6 +6618,349 @@ export const zCapacityResponse = z.object({
     guests: z.int().optional(),
     ok: z.boolean().optional(),
     warning: z.string().optional()
+});
+
+/**
+ * changeDurationDto schema
+ */
+export const zChangeDurationDto = z.object({
+    durationOfStay: z.int().optional()
+});
+
+/**
+ * changeDurationResponse schema
+ */
+export const zChangeDurationResponse = z.object({
+    acceptanceId: z.string().optional(),
+    actualCheckIn: z.iso.datetime({ offset: true }).optional(),
+    actualCheckOut: z.iso.datetime({ offset: true }).optional(),
+    breakfast: z.boolean().optional(),
+    changeInNights: z.int().optional(),
+    changeInTotal: z.number().optional(),
+    departureDate: z.iso.datetime({ offset: true }).optional(),
+    destination: z.string().optional(),
+    durationOfStay: z.int().optional(),
+    earlyCheckInFee: z.number().optional(),
+    entryDate: z.iso.datetime({ offset: true }).optional(),
+    fullBoard: z.boolean().optional(),
+    guest: z.object({
+        address: z.string().optional(),
+        companions: z.array(z.object({
+            dateOfBirth: z.iso.datetime({ offset: true }),
+            fatherName: z.string().optional(),
+            firstName: z.string().optional(),
+            gender: z.string().optional(),
+            guestId: z.int().gte(0).optional(),
+            id: z.int().gte(0).optional(),
+            idNumber: z.string().optional(),
+            lastName: z.string().optional(),
+            mobile: z.string().optional(),
+            nationalId: z.string().optional(),
+            nationality: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            nationalityID: z.int().gte(0).optional(),
+            phone: z.string().optional(),
+            relation: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                sanaId: z.string().optional(),
+                sanaName: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            relationId: z.int().gte(0).optional()
+        })).optional(),
+        dateOfBirth: z.iso.datetime({ offset: true }),
+        email: z.string().optional(),
+        fatherName: z.string().optional(),
+        firstName: z.string().min(2).max(50),
+        gender: z.string().optional(),
+        hotelId: z.string().optional(),
+        id: z.int().gte(0).optional(),
+        idNumber: z.string().optional(),
+        job: z.string().optional(),
+        landline: z.string().optional(),
+        lastName: z.string().min(2).max(50),
+        nationalId: z.string().optional(),
+        nationality: z.object({
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        nationalityID: z.int().gte(0),
+        occupation: z.string().optional(),
+        passport: z.string().optional(),
+        phone: z.string().optional(),
+        placeOfBirth: z.string().optional(),
+        postalCode: z.string().optional(),
+        status: z.string().optional(),
+        telephone: z.string().optional()
+    }).optional(),
+    guestId: z.int().gte(0).optional(),
+    halfBoard: z.boolean().optional(),
+    halfDayFee: z.number().optional(),
+    hotelId: z.string().optional(),
+    id: z.int().gte(0).optional(),
+    invoice: z.object({
+        createdAt: z.iso.datetime({ offset: true }).optional(),
+        hotelId: z.string().optional(),
+        id: z.int().gte(0).optional(),
+        items: z.array(z.object({
+            description: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            invoiceId: z.int().gte(0).optional(),
+            itemType: z.string().optional(),
+            paidAmount: z.number().optional(),
+            paymentMethod: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            paymentMethodId: z.int().gte(0).optional(),
+            paymentStatus: z.string().optional(),
+            quantity: z.int().optional(),
+            remainingAmount: z.number().optional(),
+            service: z.object({
+                baseAmount: z.number().optional(),
+                description: z.string().optional(),
+                hotelId: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                name: z.string().optional(),
+                unit: z.string().optional()
+            }).optional(),
+            serviceId: z.int().gte(0).optional(),
+            stayId: z.int().gte(0).optional(),
+            totalPrice: z.number().optional(),
+            unitPrice: z.number().optional()
+        })).optional(),
+        paidAmount: z.number().optional(),
+        paymentMethod: z.object({
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        paymentMethodId: z.int().gte(0).optional(),
+        paymentStatus: z.string().optional(),
+        remainingAmount: z.number().optional(),
+        stayId: z.int().gte(0).optional(),
+        totalAmount: z.number().optional(),
+        updatedAt: z.iso.datetime({ offset: true }).optional()
+    }).optional(),
+    notes: z.string().optional(),
+    numberOfPeople: z.int().optional(),
+    origin: z.string().optional(),
+    parking: z.boolean().optional(),
+    purposeOfTravel: z.string().optional(),
+    reservation: z.object({
+        breakfast: z.boolean().optional(),
+        departureDate: z.iso.datetime({ offset: true }).optional(),
+        destination: z.string().optional(),
+        durationOfStay: z.int().optional(),
+        entryDate: z.iso.datetime({ offset: true }).optional(),
+        fullBoard: z.boolean().optional(),
+        guest: z.object({
+            address: z.string().optional(),
+            companions: z.array(z.object({
+                dateOfBirth: z.iso.datetime({ offset: true }),
+                fatherName: z.string().optional(),
+                firstName: z.string().optional(),
+                gender: z.string().optional(),
+                guestId: z.int().gte(0).optional(),
+                id: z.int().gte(0).optional(),
+                idNumber: z.string().optional(),
+                lastName: z.string().optional(),
+                mobile: z.string().optional(),
+                nationalId: z.string().optional(),
+                nationality: z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                nationalityID: z.int().gte(0).optional(),
+                phone: z.string().optional(),
+                relation: z.object({
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    sanaId: z.string().optional(),
+                    sanaName: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                relationId: z.int().gte(0).optional()
+            })).optional(),
+            dateOfBirth: z.iso.datetime({ offset: true }),
+            email: z.string().optional(),
+            fatherName: z.string().optional(),
+            firstName: z.string().min(2).max(50),
+            gender: z.string().optional(),
+            hotelId: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            idNumber: z.string().optional(),
+            job: z.string().optional(),
+            landline: z.string().optional(),
+            lastName: z.string().min(2).max(50),
+            nationalId: z.string().optional(),
+            nationality: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            nationalityID: z.int().gte(0),
+            occupation: z.string().optional(),
+            passport: z.string().optional(),
+            phone: z.string().optional(),
+            placeOfBirth: z.string().optional(),
+            postalCode: z.string().optional(),
+            status: z.string().optional(),
+            telephone: z.string().optional()
+        }).optional(),
+        guestId: z.int().gte(0).optional(),
+        halfBoard: z.boolean().optional(),
+        hotelId: z.string().optional(),
+        id: z.int().gte(0).optional(),
+        notes: z.string().optional(),
+        numberOfPeople: z.int().optional(),
+        origin: z.string().optional(),
+        parking: z.boolean().optional(),
+        payment: z.object({
+            amount: z.number().optional(),
+            id: z.int().gte(0).optional(),
+            method: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            methodId: z.int().gte(0).optional(),
+            referrer: z.string().optional(),
+            reservationId: z.int().gte(0).optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional()
+        }).optional(),
+        paymentDeadline: z.iso.datetime({ offset: true }).optional(),
+        purposeOfTravel: z.string().optional(),
+        reservationCode: z.string().optional(),
+        roomPrice: z.number().optional(),
+        rooms: z.array(z.object({
+            amenities: z.array(z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            })).optional(),
+            basePrice: z.number().optional(),
+            capacity: z.int().optional(),
+            description: z.string().optional(),
+            facilities: z.string().optional(),
+            floor: z.object({
+                description: z.string().optional(),
+                hotelId: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                number: z.int().optional()
+            }).optional(),
+            floorId: z.int().gte(0).optional(),
+            hotelId: z.int().gte(0).optional(),
+            id: z.int().gte(0).optional(),
+            name: z.string().optional(),
+            pictures: z.array(z.object({
+                description: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                roomId: z.int().gte(0).optional(),
+                url: z.string().optional()
+            })).optional(),
+            roomNumber: z.string().optional(),
+            roomType: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            roomTypeId: z.int().gte(0).optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional()
+        })).optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional()
+    }).optional(),
+    reservationId: z.int().gte(0).optional(),
+    room: z.object({
+        amenities: z.array(z.object({
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        })).optional(),
+        basePrice: z.number().optional(),
+        capacity: z.int().optional(),
+        description: z.string().optional(),
+        facilities: z.string().optional(),
+        floor: z.object({
+            description: z.string().optional(),
+            hotelId: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            number: z.int().optional()
+        }).optional(),
+        floorId: z.int().gte(0).optional(),
+        hotelId: z.int().gte(0).optional(),
+        id: z.int().gte(0).optional(),
+        name: z.string().optional(),
+        pictures: z.array(z.object({
+            description: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            roomId: z.int().gte(0).optional(),
+            url: z.string().optional()
+        })).optional(),
+        roomNumber: z.string().optional(),
+        roomType: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        roomTypeId: z.int().gte(0).optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional()
+    }).optional(),
+    roomId: z.int().gte(0).optional(),
+    roomPrice: z.number().optional(),
+    scheduledDepartureDate: z.iso.datetime({ offset: true }).optional(),
+    scheduledEntryDate: z.iso.datetime({ offset: true }).optional(),
+    status: z.object({
+        colorHex: z.string().optional(),
+        id: z.int().gte(0).optional(),
+        label: z.string().optional(),
+        slug: z.string().optional()
+    }).optional(),
+    statusId: z.int().gte(0).optional(),
+    stayType: z.string().optional(),
+    travelAgency: z.object({
+        ceoFirstName: z.string().optional(),
+        ceoLastName: z.string().optional(),
+        city: z.string().optional(),
+        id: z.int().gte(0).optional(),
+        name: z.string().optional(),
+        province: z.string().optional(),
+        status: z.string().optional()
+    }).optional(),
+    travelAgencyId: z.int().gte(0).optional()
 });
 
 /**
@@ -7490,6 +8308,15 @@ export const zPostApiGuestsWithReservationHeaders = z.object({
     Accept: z.string().optional()
 });
 
+/**
+ * Request body for guests.GuestWithStayRequest
+ */
+export const zPostApiGuestsWithStayBody = zGuestWithStayRequest;
+
+export const zPostApiGuestsWithStayHeaders = z.object({
+    Accept: z.string().optional()
+});
+
 export const zDeleteApiGuestsIdHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -8462,6 +9289,19 @@ export const zPutApiStaysIdHeaders = z.object({
 });
 
 export const zPutApiStaysIdPath = z.object({
+    id: z.string()
+});
+
+/**
+ * Request body for stays.changeDurationDto
+ */
+export const zPostApiStaysIdChangeDurationBody = zChangeDurationDto;
+
+export const zPostApiStaysIdChangeDurationHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zPostApiStaysIdChangeDurationPath = z.object({
     id: z.string()
 });
 
