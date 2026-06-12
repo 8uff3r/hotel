@@ -42,6 +42,7 @@ func (m ReservationModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Post(s, "/{id}/check-out", re.reservationsCheckOut)
 
 	fuego.Get(s, "/check-availability", re.checkReservationAvailability)
+	fuego.Get(s, "/statuses", h.ListModel[models.ReservationStatus](api.Db, h.WithTranslation[models.ReservationStatus]()))
 }
 
 type okResponse struct{ ok bool }

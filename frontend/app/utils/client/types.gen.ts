@@ -3921,6 +3921,22 @@ export type PaginatedResponseModelsReservation = {
 };
 
 /**
+ * PaginatedResponse_models.ReservationStatus schema
+ */
+export type PaginatedResponseModelsReservationStatus = {
+    data?: Array<{
+        colorHex?: string;
+        id?: number;
+        label?: string;
+        slug?: string;
+    }>;
+    limit?: number;
+    page?: number;
+    total?: number;
+    totalPages?: number;
+};
+
+/**
  * PaginatedResponse_models.RestaurantBill schema
  */
 export type PaginatedResponseModelsRestaurantBill = {
@@ -10902,6 +10918,43 @@ export type GetApiReservationCheckAvailabilityResponses = {
 };
 
 export type GetApiReservationCheckAvailabilityResponse = GetApiReservationCheckAvailabilityResponses[keyof GetApiReservationCheckAvailabilityResponses];
+
+export type GetApiReservationStatusesData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: {
+        limit?: number;
+        page?: number;
+        filters?: string;
+    };
+    url: '/api/reservation/statuses';
+};
+
+export type GetApiReservationStatusesErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type GetApiReservationStatusesError = GetApiReservationStatusesErrors[keyof GetApiReservationStatusesErrors];
+
+export type GetApiReservationStatusesResponses = {
+    /**
+     * OK
+     */
+    200: PaginatedResponseModelsReservationStatus;
+};
+
+export type GetApiReservationStatusesResponse = GetApiReservationStatusesResponses[keyof GetApiReservationStatusesResponses];
 
 export type GetApiReservationIdData = {
     body?: never;

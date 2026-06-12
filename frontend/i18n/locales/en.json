@@ -576,7 +576,16 @@
     "code": "Code",
     "checkIn": "Check-in",
     "checkOut": "Check-out",
-    "status": "Status"
+    "status": "Status",
+    "id": "ID",
+    "guest": "Guest",
+    "dates": "Dates",
+    "payment": "Payment",
+    "total": "Total",
+    "accept": "Accept",
+    "no_reservations": "No reservations found",
+    "n_reservations": "{count} reservations",
+    "page_of": "Page {page} of {totalPages}"
   },
   "accounting": {
     "accounting": "Accounting",

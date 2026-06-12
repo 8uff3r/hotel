@@ -4,9 +4,6 @@
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
         {{ t("reservations.reservations") }}
       </h1>
-      <UButton to="/reservations/create" color="primary">
-        <UIcon name="i-lucide-plus" class="mr-2" />{{ t("reservations.new_reservation") }}</UButton
-      >
     </div>
 
     <!-- Filters -->
@@ -54,7 +51,9 @@
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-lg font-semibold">{{ t("reservations.reservation_list") }}</span>
-          <span class="text-sm text-gray-500">{{ pagination.total }} reservations</span>
+          <span class="text-sm text-gray-500">{{
+            t("reservations.n_reservations", { count: pagination.total })
+          }}</span>
         </div>
       </template>
 
@@ -127,7 +126,7 @@
               color="primary"
               @click="acceptReservation(row.original)"
             >
-              پذیرش
+              {{ t("reservations.accept") }}
             </UButton>
             <UButton
               v-if="row.original.status?.slug === 'accepted'"
@@ -154,7 +153,12 @@
       <template #footer>
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-500">
-            Page {{ pagination.page }} of {{ pagination.totalPages }}
+            {{
+              t("reservations.page_of", {
+                page: pagination.page,
+                totalPages: pagination.totalPages,
+              })
+            }}
           </span>
           <UPagination v-model="page" :page-count="pagination.limit" :total="pagination.total" />
         </div>
@@ -168,6 +172,7 @@ import type { TableColumn } from "@nuxt/ui";
 import type { Reservation } from "~/utils/client";
 import {
   getApiReservation,
+  getApiAccountingPaymentStatuses,
   postApiReservationIdAccept,
   postApiReservationIdCheckIn,
   postApiReservationIdCheckOut,
@@ -177,41 +182,29 @@ import {
 type ReservationRow = Reservation;
 
 const columns: TableColumn<ReservationRow>[] = [
-  { accessorKey: "id", header: "ID" },
-  { accessorKey: "guest", header: "Guest" },
-  { accessorKey: "room", header: "Room" },
-  { accessorKey: "dates", header: "Dates" },
-  { accessorKey: "status", header: "Status" },
-  { accessorKey: "paymentStatus", header: "Payment" },
-  { accessorKey: "totalAmount", header: "Total" },
-  { accessorKey: "actions", header: "Actions" },
-];
-
-const statusOptions = [
-  { value: "all", label: "All Statuses" },
-  { value: "awaiting_payment", label: "Awaiting Payment" },
-  { value: "verified", label: "Verified" },
-  { value: "accepted", label: "Accepted" },
-  { value: "cancelled", label: "Cancelled" },
-  { value: "absence", label: "Absence" },
-  { value: "expired", label: "Expired" },
-];
-
-const paymentStatusOptions = [
-  { value: "all", label: "All Payments" },
-  { value: "pending", label: "Pending" },
-  { value: "partial", label: "Partial" },
-  { value: "paid", label: "Paid" },
-  { value: "refunded", label: "Refunded" },
+  { accessorKey: "id", header: () => t("reservations.id") },
+  { accessorKey: "guest", header: () => t("reservations.guest") },
+  { accessorKey: "room", header: () => t("reservations.room") },
+  { accessorKey: "dates", header: () => t("reservations.dates") },
+  { accessorKey: "status", header: () => t("reservations.status") },
+  { accessorKey: "paymentStatus", header: () => t("reservations.payment") },
+  { accessorKey: "totalAmount", header: () => t("reservations.total") },
+  { accessorKey: "actions", header: () => t("reservations.actions") },
 ];
 
 const { t } = useI18n();
 const page = ref(1);
 
-const filters = reactive({
+const filters = reactive<{
+  search: string;
+  status: string | undefined;
+  paymentStatus: string | undefined;
+  entryDate: string;
+  departureDate: string;
+}>({
   search: "",
-  status: "",
-  paymentStatus: "",
+  status: undefined,
+  paymentStatus: undefined,
   entryDate: "",
   departureDate: "",
 });
@@ -233,6 +226,32 @@ const debouncedSearch = () => {
   }, 300);
 };
 
+const { data: reservationStatuses } = useQuery({
+  key: ["reservation", "statuses"],
+  query: async () => {
+    const res = await getApiReservationStatuses({ query: { limit: -1 } });
+    return res.data?.data;
+  },
+});
+
+const { data: paymentStatuses } = useQuery({
+  key: ["payment", "statuses"],
+  query: async () => {
+    const res = await getApiAccountingPaymentStatuses();
+    return res.data?.data;
+  },
+});
+
+const statusOptions = computed(() => [
+  { value: "all", label: t("common.all_statuses") },
+  ...(reservationStatuses.value?.map((s) => ({ value: s.slug, label: s.label })) ?? []),
+]);
+
+const paymentStatusOptions = computed(() => [
+  { value: "all", label: t("common.all_payments") },
+  ...(paymentStatuses.value?.map((s) => ({ value: s.slug, label: s.label })) ?? []),
+]);
+
 const {
   data: reservations,
   isLoading: loading,
@@ -246,9 +265,12 @@ const {
         limit: pagination.limit,
         filters: buildFilters({
           entry_date: { op: "eq", value: filters.entryDate },
-          payment_status: { op: "eq", value: filters.paymentStatus },
+          payment_status: {
+            op: "eq",
+            value: filters.paymentStatus != "all" ? filters.paymentStatus : undefined,
+          },
           departure_date: { op: "eq", value: filters.departureDate },
-          status: { op: "eq", value: filters.status },
+          status: { op: "eq", value: filters.status != "all" ? filters.status : undefined },
         }),
       },
     });
@@ -261,8 +283,8 @@ const {
 
 const clearFilters = () => {
   filters.search = "";
-  filters.status = "";
-  filters.paymentStatus = "";
+  filters.status = undefined;
+  filters.paymentStatus = undefined;
   filters.entryDate = "";
   filters.departureDate = "";
   pagination.page = 1;
@@ -276,28 +298,6 @@ const formatDate = (date: Date | string | undefined) => {
     month: "short",
     day: "numeric",
   });
-};
-
-const getStatusColor = (status: string): "success" | "warning" | "info" | "error" | "neutral" => {
-  const colors: Record<string, "success" | "warning" | "info" | "error" | "neutral"> = {
-    pending: "warning",
-    confirmed: "info",
-    checked_in: "success",
-    checked_out: "neutral",
-    cancelled: "error",
-    no_show: "error",
-  };
-  return colors[status] || "neutral";
-};
-
-const getPaymentColor = (status: string): "success" | "warning" | "info" | "error" | "neutral" => {
-  const colors: Record<string, "success" | "warning" | "info" | "error" | "neutral"> = {
-    pending: "warning",
-    partial: "info",
-    paid: "success",
-    refunded: "error",
-  };
-  return colors[status] || "neutral";
 };
 
 const acceptReservation = async (reservation: ReservationRow) => {

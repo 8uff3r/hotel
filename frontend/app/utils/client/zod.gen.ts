@@ -3896,6 +3896,22 @@ export const zPaginatedResponseModelsReservation = z.object({
 });
 
 /**
+ * PaginatedResponse_models.ReservationStatus schema
+ */
+export const zPaginatedResponseModelsReservationStatus = z.object({
+    data: z.array(z.object({
+        colorHex: z.string().optional(),
+        id: z.int().gte(0).optional(),
+        label: z.string().optional(),
+        slug: z.string().optional()
+    })).optional(),
+    limit: z.int().optional(),
+    page: z.int().optional(),
+    total: z.coerce.bigint().min(BigInt('-9223372036854775808'), { error: 'Invalid value: Expected int64 to be >= -9223372036854775808' }).max(BigInt('9223372036854775807'), { error: 'Invalid value: Expected int64 to be <= 9223372036854775807' }).optional(),
+    totalPages: z.int().optional()
+});
+
+/**
  * PaginatedResponse_models.RestaurantBill schema
  */
 export const zPaginatedResponseModelsRestaurantBill = z.object({
@@ -8768,6 +8784,16 @@ export const zPostApiReservationHeaders = z.object({
 
 export const zGetApiReservationCheckAvailabilityHeaders = z.object({
     Accept: z.string().optional()
+});
+
+export const zGetApiReservationStatusesHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zGetApiReservationStatusesQuery = z.object({
+    limit: z.int().optional(),
+    page: z.int().optional(),
+    filters: z.string().optional()
 });
 
 export const zGetApiReservationIdHeaders = z.object({

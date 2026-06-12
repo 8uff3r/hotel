@@ -567,7 +567,16 @@
     "code": "کد",
     "checkIn": "ورود",
     "checkOut": "خروج",
-    "status": "وضعیت"
+    "status": "وضعیت",
+    "id": "شناسه",
+    "guest": "مهمان",
+    "dates": "تاریخ‌ها",
+    "payment": "پرداخت",
+    "total": "مجموع",
+    "accept": "پذیرش",
+    "no_reservations": "رزروی یافت نشد",
+    "n_reservations": "{count} رزرو",
+    "page_of": "صفحه {page} از {totalPages}"
   },
   "accounting": {
     "accounting": "حسابداری",

@@ -298,6 +298,7 @@ const { allRooms, pending, statuses, roomTypes, agencies, countries } = useRoomR
 
 const filters = ref<RackFiltersState>({
   roomTypeId: null,
+  statusId: null,
   nationalityId: null,
   agencyId: null,
   entryDateFrom: "",
