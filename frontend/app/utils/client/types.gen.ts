@@ -718,6 +718,7 @@ export type GuestWithStayRequest = {
         purposeOfTravel?: string;
         roomPrice?: number;
         rooms?: Array<number>;
+        stayCode?: string;
     };
 };
 
@@ -1135,6 +1136,7 @@ export type GuestWithStayResponse = {
             slug?: string;
         };
         statusId?: number;
+        stayCode?: string;
         stayType?: string;
         travelAgency?: {
             ceoFirstName?: string;
@@ -1693,6 +1695,7 @@ export type GuestWithStaysAndReservationsResponse = {
             slug?: string;
         };
         statusId?: number;
+        stayCode?: string;
         stayType?: string;
         travelAgency?: {
             ceoFirstName?: string;
@@ -2406,6 +2409,7 @@ export type Income = {
             slug?: string;
         };
         statusId?: number;
+        stayCode?: string;
         stayType?: string;
         travelAgency?: {
             ceoFirstName?: string;
@@ -3639,6 +3643,7 @@ export type PaginatedResponseModelsIncome = {
                 slug?: string;
             };
             statusId?: number;
+            stayCode?: string;
             stayType?: string;
             travelAgency?: {
                 ceoFirstName?: string;
@@ -5509,6 +5514,7 @@ export type PaginatedResponseModelsStay = {
             slug?: string;
         };
         statusId?: number;
+        stayCode?: string;
         stayType?: string;
         travelAgency?: {
             ceoFirstName?: string;
@@ -7214,6 +7220,7 @@ export type Stay = {
         slug?: string;
     };
     statusId?: number;
+    stayCode?: string;
     stayType?: string;
     travelAgency?: {
         ceoFirstName?: string;
@@ -7747,6 +7754,7 @@ export type ChangeDurationResponse = {
         slug?: string;
     };
     statusId?: number;
+    stayCode?: string;
     stayType?: string;
     travelAgency?: {
         ceoFirstName?: string;
@@ -8115,6 +8123,7 @@ export type CheckInResponse = {
         slug?: string;
     };
     statusId?: number;
+    stayCode?: string;
     stayType?: string;
     travelAgency?: {
         ceoFirstName?: string;
@@ -8620,6 +8629,7 @@ export type CreateStayResponse = {
         slug?: string;
     };
     statusId?: number;
+    stayCode?: string;
     stayType?: string;
     travelAgency?: {
         ceoFirstName?: string;

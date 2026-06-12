@@ -16,48 +16,38 @@ const { data: rooms } = useAsyncData(async () => {
 });
 </script>
 <template>
-  <template v-if="form.reservation">
+  <template v-if="form.stay">
     <UFormField
       :label="t('guest.reservationCode')"
       name="reservation.reservationCode"
       class="md:col-span-3"
     >
-      <UInput v-model="form.reservation.reservationCode" :disabled="true" />
+      <UInput v-model="form.stay.stayCode" :disabled="true" />
     </UFormField>
 
     <UFormField :label="t('guest.entryDate')" name="reservation.entryDate" required>
-      <HDate v-model="form.reservation.entryDate" />
+      <HDate v-model="form.stay.entryDate" />
     </UFormField>
 
     <UFormField :label="t('guest.departureDate')" name="reservation.departureDate">
-      <HDate v-model="form.reservation.departureDate" />
+      <HDate v-model="form.stay.departureDate" />
     </UFormField>
 
     <UFormField :label="t('guest.numberOfPeople')" name="reservation.numberOfPeople">
-      <UInput
-        type="number"
-        min="1"
-        v-model.number="form.reservation.numberOfPeople"
-        :disabled="loading"
-      />
+      <UInput type="number" min="1" v-model.number="form.stay.numberOfPeople" :disabled="loading" />
     </UFormField>
 
     <UFormField :label="t('guest.durationOfStay')" name="reservation.durationOfStay">
-      <UInput
-        type="number"
-        min="1"
-        v-model.number="form.reservation.durationOfStay"
-        :disabled="loading"
-      />
+      <UInput type="number" min="1" v-model.number="form.stay.durationOfStay" :disabled="loading" />
     </UFormField>
 
     <UFormField :label="t('guest.origin')" name="reservation.origin">
-      <UInput v-model="form.reservation.origin" :disabled="loading" />
+      <UInput v-model="form.stay.origin" :disabled="loading" />
     </UFormField>
 
     <UFormField :label="t('guest.destination')" name="reservation.destination">
       <UInput
-        v-model="form.reservation.destination"
+        v-model="form.stay.destination"
         :disabled="loading"
         :placeholder="t('guest.defaultDestination')"
       />
@@ -65,39 +55,34 @@ const { data: rooms } = useAsyncData(async () => {
 
     <UFormField :label="t('guest.purposeOfTravel')" name="reservation.purposeOfTravel">
       <UInput
-        v-model="form.reservation.purposeOfTravel"
+        v-model="form.stay.purposeOfTravel"
         :disabled="loading"
         :placeholder="t('guest.defaultPurposeOfTravel')"
       />
     </UFormField>
 
     <UFormField :label="t('guest.roomPrice')" name="reservation.roomPrice">
-      <UInput
-        type="number"
-        min="0"
-        v-model.number="form.reservation.roomPrice"
-        :disabled="loading"
-      />
+      <UInput type="number" min="0" v-model.number="form.stay.roomPrice" :disabled="loading" />
     </UFormField>
 
     <UFormField :label="t('guest.selectRoom')" name="reservation.rooms">
-      <HSelect v-model="form.reservation.rooms" :items="rooms ?? []" multiple :disabled="loading" />
+      <HSelect v-model="form.stay.rooms" :items="rooms ?? []" multiple :disabled="loading" />
     </UFormField>
 
     <UFormField :label="t('guest.breakfast')" name="reservation.breakfast">
-      <UCheckbox v-model="form.reservation.breakfast" :disabled="loading" />
+      <UCheckbox v-model="form.stay.breakfast" :disabled="loading" />
     </UFormField>
 
     <UFormField :label="t('guest.fullBoard')" name="reservation.fullBoard">
-      <UCheckbox v-model="form.reservation.fullBoard" :disabled="loading" />
+      <UCheckbox v-model="form.stay.fullBoard" :disabled="loading" />
     </UFormField>
 
     <UFormField :label="t('guest.parking')" name="reservation.parking">
-      <UCheckbox v-model="form.reservation.parking" :disabled="loading" />
+      <UCheckbox v-model="form.stay.parking" :disabled="loading" />
     </UFormField>
 
     <UFormField :label="t('guest.notes')" name="reservation.notes" class="md:col-span-3">
-      <UTextarea v-model="form.reservation.notes" :rows="3" class="w-full" :disabled="loading" />
+      <UTextarea v-model="form.stay.notes" :rows="3" class="w-full" :disabled="loading" />
     </UFormField>
   </template>
 </template>

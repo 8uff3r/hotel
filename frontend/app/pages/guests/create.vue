@@ -40,8 +40,8 @@
             </template>
           </UCollapsible>
 
-          <!-- SECTION: Reservation -->
-          <UCollapsible v-model:open="reservationSectionOpen">
+          <!-- SECTION: stay -->
+          <UCollapsible v-model:open="staySectionOpen">
             <template #default="{ open }">
               <UButton
                 :label="t('guest.reservationDetails')"
@@ -56,7 +56,7 @@
               <div
                 class="mt-2 grid grid-cols-1 gap-6 rounded-md p-4 ring ring-accented/40 ring-inset md:grid-cols-3"
               >
-                <ReservationFormFields v-model="form" :loading />
+                <StayFormFields v-model="form" :loading />
               </div>
             </template>
           </UCollapsible>
@@ -169,13 +169,13 @@ import AddCompanionModal from "./components/AddCompanionModal.vue";
 import { type Companion, type CreateRequest, createSchema } from "./utils";
 import StickySummary from "./components/StickySummary.vue";
 import GuestFormFields from "./components/GuestFormFields.vue";
-import ReservationFormFields from "./components/ReservationFormFields.vue";
+import StayFormFields from "./components/StayFormFields.vue";
 
 const { t } = useI18n();
 
 const loading = ref(false);
 
-const reservationSectionOpen = ref(false);
+const staySectionOpen = ref(false);
 
 const generateRegisterNumber = () => {
   const now = new Date();
@@ -207,11 +207,11 @@ const form = ref<
   payment: NonNullable<CreateRequest["payment"]>;
 });
 
-watch(reservationSectionOpen, (open) => {
-  if (open && !form.value.reservation) {
-    form.value.reservation = {
+watch(staySectionOpen, (open) => {
+  if (open && !form.value.stay) {
+    form.value.stay = {
       rooms: [],
-      reservationCode: generateRegisterNumber(),
+      stayCode: generateRegisterNumber(),
       destination: t("guest.defaultDestination"),
       purposeOfTravel: t("guest.defaultPurposeOfTravel"),
     };
@@ -259,8 +259,7 @@ const handleSubmit = async (event: FormSubmitEvent<CreateRequest>) => {
           ? new Date(event.data.guest.dateOfBirth).toISOString()
           : undefined,
       } as CreateRequest["guest"],
-      reservation:
-        Object.keys(event.data.reservation ?? {}).length === 0 ? undefined : event.data.reservation,
+      stay: Object.keys(event.data.stay ?? {}).length === 0 ? undefined : event.data.stay,
       payment: Object.keys(event.data.payment ?? {}).length === 0 ? undefined : event.data.payment,
       companions: companions.value,
     };

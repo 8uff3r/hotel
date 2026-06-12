@@ -54,7 +54,7 @@
         </template>
 
         <template #status-cell="{ row }">
-          <UBadge :style="{ backgroundColor: `#${row.original.status?.colorHex}` }" variant="soft">
+          <UBadge :style="{ color: `#${row.original.status?.colorHex}` }" variant="soft">
             {{ row.original.status?.label }}
           </UBadge>
         </template>

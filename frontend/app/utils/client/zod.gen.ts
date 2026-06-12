@@ -715,7 +715,8 @@ export const zGuestWithStayRequest = z.object({
         parking: z.boolean().optional(),
         purposeOfTravel: z.string().optional(),
         roomPrice: z.number().optional(),
-        rooms: z.array(z.int().gte(0)).optional()
+        rooms: z.array(z.int().gte(0)).optional(),
+        stayCode: z.string().optional()
     }).optional()
 });
 
@@ -1133,6 +1134,7 @@ export const zGuestWithStayResponse = z.object({
             slug: z.string().optional()
         }).optional(),
         statusId: z.int().gte(0).optional(),
+        stayCode: z.string().optional(),
         stayType: z.string().optional(),
         travelAgency: z.object({
             ceoFirstName: z.string().optional(),
@@ -1691,6 +1693,7 @@ export const zGuestWithStaysAndReservationsResponse = z.object({
             slug: z.string().optional()
         }).optional(),
         statusId: z.int().gte(0).optional(),
+        stayCode: z.string().optional(),
         stayType: z.string().optional(),
         travelAgency: z.object({
             ceoFirstName: z.string().optional(),
@@ -2381,6 +2384,7 @@ export const zIncome = z.object({
             slug: z.string().optional()
         }).optional(),
         statusId: z.int().gte(0).optional(),
+        stayCode: z.string().optional(),
         stayType: z.string().optional(),
         travelAgency: z.object({
             ceoFirstName: z.string().optional(),
@@ -3614,6 +3618,7 @@ export const zPaginatedResponseModelsIncome = z.object({
                 slug: z.string().optional()
             }).optional(),
             statusId: z.int().gte(0).optional(),
+            stayCode: z.string().optional(),
             stayType: z.string().optional(),
             travelAgency: z.object({
                 ceoFirstName: z.string().optional(),
@@ -5484,6 +5489,7 @@ export const zPaginatedResponseModelsStay = z.object({
             slug: z.string().optional()
         }).optional(),
         statusId: z.int().gte(0).optional(),
+        stayCode: z.string().optional(),
         stayType: z.string().optional(),
         travelAgency: z.object({
             ceoFirstName: z.string().optional(),
@@ -7189,6 +7195,7 @@ export const zStay = z.object({
         slug: z.string().optional()
     }).optional(),
     statusId: z.int().gte(0).optional(),
+    stayCode: z.string().optional(),
     stayType: z.string().optional(),
     travelAgency: z.object({
         ceoFirstName: z.string().optional(),
@@ -7722,6 +7729,7 @@ export const zChangeDurationResponse = z.object({
         slug: z.string().optional()
     }).optional(),
     statusId: z.int().gte(0).optional(),
+    stayCode: z.string().optional(),
     stayType: z.string().optional(),
     travelAgency: z.object({
         ceoFirstName: z.string().optional(),
@@ -8090,6 +8098,7 @@ export const zCheckInResponse = z.object({
         slug: z.string().optional()
     }).optional(),
     statusId: z.int().gte(0).optional(),
+    stayCode: z.string().optional(),
     stayType: z.string().optional(),
     travelAgency: z.object({
         ceoFirstName: z.string().optional(),
@@ -8595,6 +8604,7 @@ export const zCreateStayResponse = z.object({
         slug: z.string().optional()
     }).optional(),
     statusId: z.int().gte(0).optional(),
+    stayCode: z.string().optional(),
     stayType: z.string().optional(),
     travelAgency: z.object({
         ceoFirstName: z.string().optional(),

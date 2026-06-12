@@ -9,14 +9,6 @@ func (m *Payment) GetTranslatables() []Translatable {
     return res
 }
 
-func (m *ParkingTransaction) GetTranslatables() []Translatable {
-    var res []Translatable
-
-    res = append(res, &m.PaymentMethod)
-
-    return res
-}
-
 func (m *Room) GetTranslatables() []Translatable {
     var res []Translatable
 
@@ -47,6 +39,30 @@ func (m *Income) GetTranslatables() []Translatable {
     res = append(res, &m.PaymentMethod)
 
     res = append(res, &m.Category)
+
+    return res
+}
+
+func (m *ParkingTransaction) GetTranslatables() []Translatable {
+    var res []Translatable
+
+    res = append(res, &m.PaymentMethod)
+
+    return res
+}
+
+func (m *Stay) GetTranslatables() []Translatable {
+    var res []Translatable
+
+    res = append(res, &m.Status)
+
+    return res
+}
+
+func (m *Guest) GetTranslatables() []Translatable {
+    var res []Translatable
+
+    res = append(res, &m.Status)
 
     return res
 }

@@ -26,33 +26,33 @@ const (
 type StayType string
 
 const (
-	StayTypeNormal         StayType = "normal"
-	StayTypePreviousNight  StayType = "previous_night"
-	StayTypeEarlyCheckIn   StayType = "early_checkin"
-	StayTypeHalfDay        StayType = "half_day"
+	StayTypeNormal        StayType = "normal"
+	StayTypePreviousNight StayType = "previous_night"
+	StayTypeEarlyCheckIn  StayType = "early_checkin"
+	StayTypeHalfDay       StayType = "half_day"
 )
 
 // Stay represents an actual hotel stay/reception (check-in)
 type Stay struct {
 	Base
-	HotelID              string     `gorm:"not null;index" json:"hotelId"`
-	GuestID              uint       `gorm:"not null;index" json:"guestId"`
-	Guest                Guest      `gorm:"foreignKey:GuestID" json:"guest"`
-	RoomID               uint       `gorm:"not null;index" json:"roomId"`
-	Room                 Room       `gorm:"foreignKey:RoomID" json:"room"`
-	ReservationID        *uint      `json:"reservationId"` // links to original reservation if applicable
-	Reservation          *Reservation `gorm:"foreignKey:ReservationID" json:"reservation,omitempty"`
+	HotelID       string       `gorm:"not null;index" json:"hotelId"`
+	GuestID       uint         `gorm:"not null;index" json:"guestId"`
+	Guest         Guest        `gorm:"foreignKey:GuestID" json:"guest"`
+	RoomID        uint         `gorm:"not null;index" json:"roomId"`
+	Room          Room         `gorm:"foreignKey:RoomID" json:"room"`
+	ReservationID *uint        `json:"reservationId"` // links to original reservation if applicable
+	Reservation   *Reservation `gorm:"foreignKey:ReservationID" json:"reservation,omitempty"`
 
-	AcceptanceID         string     `gorm:"uniqueIndex;not null" json:"acceptanceId"`
-	StayType             string     `gorm:"not null" json:"stayType"`
-	EntryDate            time.Time  `gorm:"not null" json:"entryDate"`
-	DepartureDate        time.Time  `json:"departureDate"`
-	ScheduledEntryDate   time.Time  `json:"scheduledEntryDate"`
-	ScheduledDepartureDate time.Time `json:"scheduledDepartureDate"`
-	ActualCheckIn        *time.Time `json:"actualCheckIn"`
-	ActualCheckOut       *time.Time `json:"actualCheckOut"`
-	DurationOfStay       int        `json:"durationOfStay"`
-	NumberOfPeople       int        `gorm:"not null;default:1" json:"numberOfPeople"`
+	AcceptanceID           string     `gorm:"uniqueIndex;not null" json:"acceptanceId"`
+	StayType               string     `gorm:"not null" json:"stayType"`
+	EntryDate              time.Time  `gorm:"not null" json:"entryDate"`
+	DepartureDate          time.Time  `json:"departureDate"`
+	ScheduledEntryDate     time.Time  `json:"scheduledEntryDate"`
+	ScheduledDepartureDate time.Time  `json:"scheduledDepartureDate"`
+	ActualCheckIn          *time.Time `json:"actualCheckIn"`
+	ActualCheckOut         *time.Time `json:"actualCheckOut"`
+	DurationOfStay         int        `json:"durationOfStay"`
+	NumberOfPeople         int        `gorm:"not null;default:1" json:"numberOfPeople"`
 
 	Origin          string  `json:"origin"`
 	Destination     string  `json:"destination"`
@@ -63,6 +63,8 @@ type Stay struct {
 	FullBoard       bool    `gorm:"not null;default:false" json:"fullBoard"`
 	Parking         bool    `gorm:"not null;default:false" json:"parking"`
 	Notes           string  `json:"notes"`
+
+	StayCode string `gorm:"index" json:"stayCode"`
 
 	TravelAgencyID *uint         `json:"travelAgencyId"`
 	TravelAgency   *TravelAgency `gorm:"foreignKey:TravelAgencyID" json:"travelAgency,omitempty"`

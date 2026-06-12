@@ -69,6 +69,7 @@ type StayRequest struct {
 	Parking         bool      `json:"parking"`
 	FullBoard       bool      `json:"fullBoard"`
 	RoomPrice       float64   `json:"roomPrice"`
+	StayCode        string    `json:"stayCode"`
 	Notes           string    `json:"notes"`
 	Rooms           []uint    `json:"rooms"`
 }
@@ -95,7 +96,7 @@ func (gm GuestsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 		h.ListModel[models.Guest](
 			api.Db,
 			h.WithPreload("Status"),
-			h.WithTranslation[models.GuestStatus](),
+			h.WithTranslation[models.Guest](),
 			h.WithAllowedFilters("first_name", "last_name", "phone", "national_id", "id_number"),
 		),
 	)
@@ -122,8 +123,8 @@ type GuestWithReservationResponse struct {
 }
 
 type GuestWithStaysAndReservationsResponse struct {
-	Guest        models.Guest       `json:"guest"`
-	Stays        []models.Stay       `json:"stays"`
+	Guest        models.Guest         `json:"guest"`
+	Stays        []models.Stay        `json:"stays"`
 	Reservations []models.Reservation `json:"reservations"`
 }
 
@@ -324,6 +325,7 @@ func (gm *GuestsModule) createGuestWithStay(c fuego.ContextWithBody[GuestWithSta
 			}
 
 			stay = models.Stay{
+				StayCode:        body.Stay.StayCode,
 				GuestID:         body.Guest.ID,
 				RoomID:          roomID,
 				AcceptanceID:    fmt.Sprintf("STY-%d", time.Now().Unix()),
