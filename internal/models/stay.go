@@ -2,6 +2,8 @@ package models
 
 import (
 	"time"
+
+	"gorm.io/gorm"
 )
 
 // StayStatus represents the status of a stay/reception record
@@ -10,6 +12,16 @@ type StayStatus struct {
 	TranslateBase
 	ColorHex string `gorm:"type:char(6);default:null" json:"colorHex,omitempty"`
 }
+
+type StayStatusSlug string
+
+const (
+	StayStatusWaiting    StayStatusSlug = "waiting"
+	StayStatusResident   StayStatusSlug = "resident"
+	StayStatusCheckedOut StayStatusSlug = "checked_out"
+	StayStatusCancelled  StayStatusSlug = "cancelled"
+	StayStatusNoShow     StayStatusSlug = "no_show"
+)
 
 type StayType string
 
@@ -62,4 +74,8 @@ type Stay struct {
 	Status   StayStatus `gorm:"foreignKey:StatusID" json:"status,omitzero" translate:"true"`
 
 	Invoice *Invoice `gorm:"foreignKey:StayID" json:"invoice,omitempty"`
+}
+
+func (s *Stay) AfterSave(tx *gorm.DB) error {
+	return UpdateGuestStatus(tx, s.GuestID)
 }

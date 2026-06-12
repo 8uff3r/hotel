@@ -199,7 +199,13 @@ export type Guest = {
     phone?: string;
     placeOfBirth?: string;
     postalCode?: string;
-    status?: string;
+    status?: {
+        colorHex?: string;
+        id?: number;
+        label?: string;
+        slug?: string;
+    };
+    statusId?: number;
     telephone?: string;
 };
 
@@ -316,7 +322,13 @@ export type GuestWithReservationRequest = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        status?: string;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
         telephone?: string;
     };
     payment?: {
@@ -412,7 +424,13 @@ export type GuestWithReservationResponse = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        status?: string;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
         telephone?: string;
     };
     payment?: {
@@ -493,7 +511,13 @@ export type GuestWithReservationResponse = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            status?: string;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
             telephone?: string;
         };
         guestId?: number;
@@ -652,7 +676,13 @@ export type GuestWithStayRequest = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        status?: string;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
         telephone?: string;
     };
     payment?: {
@@ -747,7 +777,13 @@ export type GuestWithStayResponse = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        status?: string;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
         telephone?: string;
     };
     payment?: {
@@ -832,7 +868,13 @@ export type GuestWithStayResponse = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            status?: string;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
             telephone?: string;
         };
         guestId?: number;
@@ -949,7 +991,13 @@ export type GuestWithStayResponse = {
                 phone?: string;
                 placeOfBirth?: string;
                 postalCode?: string;
-                status?: string;
+                status?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                statusId?: number;
                 telephone?: string;
             };
             guestId?: number;
@@ -1157,7 +1205,13 @@ export type GuestWithStaysAndReservationsResponse = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        status?: string;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
         telephone?: string;
     };
     reservations?: Array<{
@@ -1219,7 +1273,13 @@ export type GuestWithStaysAndReservationsResponse = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            status?: string;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
             telephone?: string;
         };
         guestId?: number;
@@ -1366,7 +1426,13 @@ export type GuestWithStaysAndReservationsResponse = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            status?: string;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
             telephone?: string;
         };
         guestId?: number;
@@ -1483,7 +1549,13 @@ export type GuestWithStaysAndReservationsResponse = {
                 phone?: string;
                 placeOfBirth?: string;
                 postalCode?: string;
-                status?: string;
+                status?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                statusId?: number;
                 telephone?: string;
             };
             guestId?: number;
@@ -1912,7 +1984,13 @@ export type Income = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            status?: string;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
             telephone?: string;
         };
         guestId?: number;
@@ -2061,7 +2139,13 @@ export type Income = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            status?: string;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
             telephone?: string;
         };
         guestId?: number;
@@ -2178,7 +2262,13 @@ export type Income = {
                 phone?: string;
                 placeOfBirth?: string;
                 postalCode?: string;
-                status?: string;
+                status?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                statusId?: number;
                 telephone?: string;
             };
             guestId?: number;
@@ -2901,7 +2991,13 @@ export type PaginatedResponseModelsGuest = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        status?: string;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
         telephone?: string;
     }>;
     limit?: number;
@@ -3121,7 +3217,13 @@ export type PaginatedResponseModelsIncome = {
                 phone?: string;
                 placeOfBirth?: string;
                 postalCode?: string;
-                status?: string;
+                status?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                statusId?: number;
                 telephone?: string;
             };
             guestId?: number;
@@ -3270,7 +3372,13 @@ export type PaginatedResponseModelsIncome = {
                 phone?: string;
                 placeOfBirth?: string;
                 postalCode?: string;
-                status?: string;
+                status?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                statusId?: number;
                 telephone?: string;
             };
             guestId?: number;
@@ -3387,7 +3495,13 @@ export type PaginatedResponseModelsIncome = {
                     phone?: string;
                     placeOfBirth?: string;
                     postalCode?: string;
-                    status?: string;
+                    status?: {
+                        colorHex?: string;
+                        id?: number;
+                        label?: string;
+                        slug?: string;
+                    };
+                    statusId?: number;
                     telephone?: string;
                 };
                 guestId?: number;
@@ -3971,7 +4085,13 @@ export type PaginatedResponseModelsParkingTransaction = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            status?: string;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
             telephone?: string;
         };
         guestId?: number;
@@ -4088,7 +4208,13 @@ export type PaginatedResponseModelsParkingTransaction = {
                 phone?: string;
                 placeOfBirth?: string;
                 postalCode?: string;
-                status?: string;
+                status?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                statusId?: number;
                 telephone?: string;
             };
             guestId?: number;
@@ -4364,7 +4490,13 @@ export type PaginatedResponseModelsReservation = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            status?: string;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
             telephone?: string;
         };
         guestId?: number;
@@ -4555,7 +4687,13 @@ export type PaginatedResponseModelsRestaurantBill = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            status?: string;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
             telephone?: string;
         };
         guestId?: number;
@@ -4622,7 +4760,13 @@ export type PaginatedResponseModelsRestaurantBill = {
                 phone?: string;
                 placeOfBirth?: string;
                 postalCode?: string;
-                status?: string;
+                status?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                statusId?: number;
                 telephone?: string;
             };
             guestId?: number;
@@ -5098,7 +5242,13 @@ export type PaginatedResponseModelsStay = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            status?: string;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
             telephone?: string;
         };
         guestId?: number;
@@ -5215,7 +5365,13 @@ export type PaginatedResponseModelsStay = {
                 phone?: string;
                 placeOfBirth?: string;
                 postalCode?: string;
-                status?: string;
+                status?: {
+                    colorHex?: string;
+                    id?: number;
+                    label?: string;
+                    slug?: string;
+                };
+                statusId?: number;
                 telephone?: string;
             };
             guestId?: number;
@@ -5448,7 +5604,13 @@ export type PaginatedResponseModelsVehicle = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            status?: string;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
             telephone?: string;
         };
         guestId?: number;
@@ -5688,7 +5850,13 @@ export type ParkingTransaction = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        status?: string;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
         telephone?: string;
     };
     guestId?: number;
@@ -5805,7 +5973,13 @@ export type ParkingTransaction = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            status?: string;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
             telephone?: string;
         };
         guestId?: number;
@@ -6032,7 +6206,13 @@ export type Reservation = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        status?: string;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
         telephone?: string;
     };
     guestId?: number;
@@ -6201,7 +6381,13 @@ export type RestaurantBill = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        status?: string;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
         telephone?: string;
     };
     guestId?: number;
@@ -6268,7 +6454,13 @@ export type RestaurantBill = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            status?: string;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
             telephone?: string;
         };
         guestId?: number;
@@ -6755,7 +6947,13 @@ export type Stay = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        status?: string;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
         telephone?: string;
     };
     guestId?: number;
@@ -6872,7 +7070,13 @@ export type Stay = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            status?: string;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
             telephone?: string;
         };
         guestId?: number;
@@ -7104,7 +7308,13 @@ export type Vehicle = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        status?: string;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
         telephone?: string;
     };
     guestId?: number;
@@ -7270,7 +7480,13 @@ export type ChangeDurationResponse = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        status?: string;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
         telephone?: string;
     };
     guestId?: number;
@@ -7387,7 +7603,13 @@ export type ChangeDurationResponse = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            status?: string;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
             telephone?: string;
         };
         guestId?: number;
@@ -7625,7 +7847,13 @@ export type CheckInResponse = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        status?: string;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
         telephone?: string;
     };
     guestId?: number;
@@ -7743,7 +7971,13 @@ export type CheckInResponse = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            status?: string;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
             telephone?: string;
         };
         guestId?: number;
@@ -7961,7 +8195,13 @@ export type CreateReservationResponse = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        status?: string;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
         telephone?: string;
     };
     guestId?: number;
@@ -8113,7 +8353,13 @@ export type CreateStayResponse = {
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
-        status?: string;
+        status?: {
+            colorHex?: string;
+            id?: number;
+            label?: string;
+            slug?: string;
+        };
+        statusId?: number;
         telephone?: string;
     };
     guestId?: number;
@@ -8230,7 +8476,13 @@ export type CreateStayResponse = {
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
-            status?: string;
+            status?: {
+                colorHex?: string;
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            statusId?: number;
             telephone?: string;
         };
         guestId?: number;

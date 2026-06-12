@@ -2,6 +2,8 @@ package models
 
 import (
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type ReservationStatus struct {
@@ -42,6 +44,10 @@ type Reservation struct {
 	Notes           string     `json:"notes"`
 
 	Payment Payment `gorm:"foreignKey:ReservationID" json:"payment"`
+}
+
+func (r *Reservation) AfterSave(tx *gorm.DB) error {
+	return UpdateGuestStatus(tx, r.GuestID)
 }
 
 type Payment struct {

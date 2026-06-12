@@ -264,7 +264,6 @@ import RoomRackCard from "./components/RoomRackCard.vue";
 import RoomRackFilters from "./components/RoomRackFilters.vue";
 import RoomDetailModal from "./components/RoomDetailModal.vue";
 import RoomStatusChangeModal from "./components/RoomStatusChangeModal.vue";
-import type { GetApiRoomsRackResponse } from "~/utils/client";
 import type { RoomRack, RoomStatus } from "./types";
 
 const { t } = useI18n();

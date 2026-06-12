@@ -647,11 +647,11 @@ export const getApiDashboardStats = <ThrowOnError extends boolean = false>(optio
 });
 
 /**
- * func2
+ * func4
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.ListModel[...].func2`
+ * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.ListModel[...].func4`
  *
  * #### Middlewares:
  *
@@ -674,11 +674,11 @@ export const getApiGuests = <ThrowOnError extends boolean = false>(options?: Opt
 });
 
 /**
- * func3
+ * func5
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.CreateModel[...].func3`
+ * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.CreateModel[...].func5`
  *
  * #### Middlewares:
  *
@@ -732,11 +732,11 @@ export const getApiGuestsArchived = <ThrowOnError extends boolean = false>(optio
 });
 
 /**
- * func8
+ * func10
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.ListModel[...].func8`
+ * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.ListModel[...].func10`
  *
  * #### Middlewares:
  *
@@ -821,11 +821,11 @@ export const postApiGuestsWithStay = <ThrowOnError extends boolean = false>(opti
 });
 
 /**
- * func6
+ * func8
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.DeleteModel[...].func6`
+ * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.DeleteModel[...].func8`
  *
  * #### Middlewares:
  *
@@ -848,11 +848,11 @@ export const deleteApiGuestsId = <ThrowOnError extends boolean = false>(options:
 });
 
 /**
- * func4
+ * func6
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.GetModel[...].func4`
+ * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.GetModel[...].func6`
  *
  * #### Middlewares:
  *
@@ -875,11 +875,11 @@ export const getApiGuestsId = <ThrowOnError extends boolean = false>(options: Op
 });
 
 /**
- * func5
+ * func7
  *
  * #### Controller:
  *
- * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.UpdateModel[...].func5`
+ * `hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.UpdateModel[...].func7`
  *
  * #### Middlewares:
  *

@@ -550,7 +550,28 @@
 						"type": "string"
 					},
 					"status": {
-						"type": "string"
+						"properties": {
+							"colorHex": {
+								"nullable": true,
+								"type": "string"
+							},
+							"id": {
+								"minimum": 0,
+								"type": "integer"
+							},
+							"label": {
+								"type": "string"
+							},
+							"slug": {
+								"type": "string"
+							}
+						},
+						"type": "object"
+					},
+					"statusId": {
+						"minimum": 0,
+						"nullable": true,
+						"type": "integer"
 					},
 					"telephone": {
 						"type": "string"
@@ -930,7 +951,28 @@
 								"type": "string"
 							},
 							"status": {
-								"type": "string"
+								"properties": {
+									"colorHex": {
+										"nullable": true,
+										"type": "string"
+									},
+									"id": {
+										"minimum": 0,
+										"type": "integer"
+									},
+									"label": {
+										"type": "string"
+									},
+									"slug": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							},
+							"statusId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
 							},
 							"telephone": {
 								"type": "string"
@@ -1244,7 +1286,28 @@
 								"type": "string"
 							},
 							"status": {
-								"type": "string"
+								"properties": {
+									"colorHex": {
+										"nullable": true,
+										"type": "string"
+									},
+									"id": {
+										"minimum": 0,
+										"type": "integer"
+									},
+									"label": {
+										"type": "string"
+									},
+									"slug": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							},
+							"statusId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
 							},
 							"telephone": {
 								"type": "string"
@@ -1518,7 +1581,28 @@
 										"type": "string"
 									},
 									"status": {
-										"type": "string"
+										"properties": {
+											"colorHex": {
+												"nullable": true,
+												"type": "string"
+											},
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"label": {
+												"type": "string"
+											},
+											"slug": {
+												"type": "string"
+											}
+										},
+										"type": "object"
+									},
+									"statusId": {
+										"minimum": 0,
+										"nullable": true,
+										"type": "integer"
 									},
 									"telephone": {
 										"type": "string"
@@ -2050,7 +2134,28 @@
 								"type": "string"
 							},
 							"status": {
-								"type": "string"
+								"properties": {
+									"colorHex": {
+										"nullable": true,
+										"type": "string"
+									},
+									"id": {
+										"minimum": 0,
+										"type": "integer"
+									},
+									"label": {
+										"type": "string"
+									},
+									"slug": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							},
+							"statusId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
 							},
 							"telephone": {
 								"type": "string"
@@ -2361,7 +2466,28 @@
 								"type": "string"
 							},
 							"status": {
-								"type": "string"
+								"properties": {
+									"colorHex": {
+										"nullable": true,
+										"type": "string"
+									},
+									"id": {
+										"minimum": 0,
+										"type": "integer"
+									},
+									"label": {
+										"type": "string"
+									},
+									"slug": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							},
+							"statusId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
 							},
 							"telephone": {
 								"type": "string"
@@ -2652,7 +2778,28 @@
 										"type": "string"
 									},
 									"status": {
-										"type": "string"
+										"properties": {
+											"colorHex": {
+												"nullable": true,
+												"type": "string"
+											},
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"label": {
+												"type": "string"
+											},
+											"slug": {
+												"type": "string"
+											}
+										},
+										"type": "object"
+									},
+									"statusId": {
+										"minimum": 0,
+										"nullable": true,
+										"type": "integer"
 									},
 									"telephone": {
 										"type": "string"
@@ -3061,7 +3208,28 @@
 												"type": "string"
 											},
 											"status": {
-												"type": "string"
+												"properties": {
+													"colorHex": {
+														"nullable": true,
+														"type": "string"
+													},
+													"id": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"label": {
+														"type": "string"
+													},
+													"slug": {
+														"type": "string"
+													}
+												},
+												"type": "object"
+											},
+											"statusId": {
+												"minimum": 0,
+												"nullable": true,
+												"type": "integer"
 											},
 											"telephone": {
 												"type": "string"
@@ -3764,7 +3932,28 @@
 								"type": "string"
 							},
 							"status": {
-								"type": "string"
+								"properties": {
+									"colorHex": {
+										"nullable": true,
+										"type": "string"
+									},
+									"id": {
+										"minimum": 0,
+										"type": "integer"
+									},
+									"label": {
+										"type": "string"
+									},
+									"slug": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							},
+							"statusId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
 							},
 							"telephone": {
 								"type": "string"
@@ -3977,7 +4166,28 @@
 											"type": "string"
 										},
 										"status": {
-											"type": "string"
+											"properties": {
+												"colorHex": {
+													"nullable": true,
+													"type": "string"
+												},
+												"id": {
+													"minimum": 0,
+													"type": "integer"
+												},
+												"label": {
+													"type": "string"
+												},
+												"slug": {
+													"type": "string"
+												}
+											},
+											"type": "object"
+										},
+										"statusId": {
+											"minimum": 0,
+											"nullable": true,
+											"type": "integer"
 										},
 										"telephone": {
 											"type": "string"
@@ -4488,7 +4698,28 @@
 											"type": "string"
 										},
 										"status": {
-											"type": "string"
+											"properties": {
+												"colorHex": {
+													"nullable": true,
+													"type": "string"
+												},
+												"id": {
+													"minimum": 0,
+													"type": "integer"
+												},
+												"label": {
+													"type": "string"
+												},
+												"slug": {
+													"type": "string"
+												}
+											},
+											"type": "object"
+										},
+										"statusId": {
+											"minimum": 0,
+											"nullable": true,
+											"type": "integer"
 										},
 										"telephone": {
 											"type": "string"
@@ -4897,7 +5128,28 @@
 													"type": "string"
 												},
 												"status": {
-													"type": "string"
+													"properties": {
+														"colorHex": {
+															"nullable": true,
+															"type": "string"
+														},
+														"id": {
+															"minimum": 0,
+															"type": "integer"
+														},
+														"label": {
+															"type": "string"
+														},
+														"slug": {
+															"type": "string"
+														}
+													},
+													"type": "object"
+												},
+												"statusId": {
+													"minimum": 0,
+													"nullable": true,
+													"type": "integer"
 												},
 												"telephone": {
 													"type": "string"
@@ -6220,7 +6472,28 @@
 										"type": "string"
 									},
 									"status": {
-										"type": "string"
+										"properties": {
+											"colorHex": {
+												"nullable": true,
+												"type": "string"
+											},
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"label": {
+												"type": "string"
+											},
+											"slug": {
+												"type": "string"
+											}
+										},
+										"type": "object"
+									},
+									"statusId": {
+										"minimum": 0,
+										"nullable": true,
+										"type": "integer"
 									},
 									"telephone": {
 										"type": "string"
@@ -6737,7 +7010,28 @@
 										"type": "string"
 									},
 									"status": {
-										"type": "string"
+										"properties": {
+											"colorHex": {
+												"nullable": true,
+												"type": "string"
+											},
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"label": {
+												"type": "string"
+											},
+											"slug": {
+												"type": "string"
+											}
+										},
+										"type": "object"
+									},
+									"statusId": {
+										"minimum": 0,
+										"nullable": true,
+										"type": "integer"
 									},
 									"telephone": {
 										"type": "string"
@@ -7146,7 +7440,28 @@
 												"type": "string"
 											},
 											"status": {
-												"type": "string"
+												"properties": {
+													"colorHex": {
+														"nullable": true,
+														"type": "string"
+													},
+													"id": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"label": {
+														"type": "string"
+													},
+													"slug": {
+														"type": "string"
+													}
+												},
+												"type": "object"
+											},
+											"statusId": {
+												"minimum": 0,
+												"nullable": true,
+												"type": "integer"
 											},
 											"telephone": {
 												"type": "string"
@@ -9406,7 +9721,28 @@
 									"type": "string"
 								},
 								"status": {
-									"type": "string"
+									"properties": {
+										"colorHex": {
+											"nullable": true,
+											"type": "string"
+										},
+										"id": {
+											"minimum": 0,
+											"type": "integer"
+										},
+										"label": {
+											"type": "string"
+										},
+										"slug": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								},
+								"statusId": {
+									"minimum": 0,
+									"nullable": true,
+									"type": "integer"
 								},
 								"telephone": {
 									"type": "string"
@@ -10132,7 +10468,28 @@
 													"type": "string"
 												},
 												"status": {
-													"type": "string"
+													"properties": {
+														"colorHex": {
+															"nullable": true,
+															"type": "string"
+														},
+														"id": {
+															"minimum": 0,
+															"type": "integer"
+														},
+														"label": {
+															"type": "string"
+														},
+														"slug": {
+															"type": "string"
+														}
+													},
+													"type": "object"
+												},
+												"statusId": {
+													"minimum": 0,
+													"nullable": true,
+													"type": "integer"
 												},
 												"telephone": {
 													"type": "string"
@@ -10649,7 +11006,28 @@
 													"type": "string"
 												},
 												"status": {
-													"type": "string"
+													"properties": {
+														"colorHex": {
+															"nullable": true,
+															"type": "string"
+														},
+														"id": {
+															"minimum": 0,
+															"type": "integer"
+														},
+														"label": {
+															"type": "string"
+														},
+														"slug": {
+															"type": "string"
+														}
+													},
+													"type": "object"
+												},
+												"statusId": {
+													"minimum": 0,
+													"nullable": true,
+													"type": "integer"
 												},
 												"telephone": {
 													"type": "string"
@@ -11058,7 +11436,28 @@
 															"type": "string"
 														},
 														"status": {
-															"type": "string"
+															"properties": {
+																"colorHex": {
+																	"nullable": true,
+																	"type": "string"
+																},
+																"id": {
+																	"minimum": 0,
+																	"type": "integer"
+																},
+																"label": {
+																	"type": "string"
+																},
+																"slug": {
+																	"type": "string"
+																}
+															},
+															"type": "object"
+														},
+														"statusId": {
+															"minimum": 0,
+															"nullable": true,
+															"type": "integer"
 														},
 														"telephone": {
 															"type": "string"
@@ -12890,7 +13289,28 @@
 											"type": "string"
 										},
 										"status": {
-											"type": "string"
+											"properties": {
+												"colorHex": {
+													"nullable": true,
+													"type": "string"
+												},
+												"id": {
+													"minimum": 0,
+													"type": "integer"
+												},
+												"label": {
+													"type": "string"
+												},
+												"slug": {
+													"type": "string"
+												}
+											},
+											"type": "object"
+										},
+										"statusId": {
+											"minimum": 0,
+											"nullable": true,
+											"type": "integer"
 										},
 										"telephone": {
 											"type": "string"
@@ -13287,7 +13707,28 @@
 													"type": "string"
 												},
 												"status": {
-													"type": "string"
+													"properties": {
+														"colorHex": {
+															"nullable": true,
+															"type": "string"
+														},
+														"id": {
+															"minimum": 0,
+															"type": "integer"
+														},
+														"label": {
+															"type": "string"
+														},
+														"slug": {
+															"type": "string"
+														}
+													},
+													"type": "object"
+												},
+												"statusId": {
+													"minimum": 0,
+													"nullable": true,
+													"type": "integer"
 												},
 												"telephone": {
 													"type": "string"
@@ -14170,7 +14611,28 @@
 											"type": "string"
 										},
 										"status": {
-											"type": "string"
+											"properties": {
+												"colorHex": {
+													"nullable": true,
+													"type": "string"
+												},
+												"id": {
+													"minimum": 0,
+													"type": "integer"
+												},
+												"label": {
+													"type": "string"
+												},
+												"slug": {
+													"type": "string"
+												}
+											},
+											"type": "object"
+										},
+										"statusId": {
+											"minimum": 0,
+											"nullable": true,
+											"type": "integer"
 										},
 										"telephone": {
 											"type": "string"
@@ -14795,7 +15257,28 @@
 											"type": "string"
 										},
 										"status": {
-											"type": "string"
+											"properties": {
+												"colorHex": {
+													"nullable": true,
+													"type": "string"
+												},
+												"id": {
+													"minimum": 0,
+													"type": "integer"
+												},
+												"label": {
+													"type": "string"
+												},
+												"slug": {
+													"type": "string"
+												}
+											},
+											"type": "object"
+										},
+										"statusId": {
+											"minimum": 0,
+											"nullable": true,
+											"type": "integer"
 										},
 										"telephone": {
 											"type": "string"
@@ -15026,7 +15509,28 @@
 													"type": "string"
 												},
 												"status": {
-													"type": "string"
+													"properties": {
+														"colorHex": {
+															"nullable": true,
+															"type": "string"
+														},
+														"id": {
+															"minimum": 0,
+															"type": "integer"
+														},
+														"label": {
+															"type": "string"
+														},
+														"slug": {
+															"type": "string"
+														}
+													},
+													"type": "object"
+												},
+												"statusId": {
+													"minimum": 0,
+													"nullable": true,
+													"type": "integer"
 												},
 												"telephone": {
 													"type": "string"
@@ -16546,7 +17050,28 @@
 											"type": "string"
 										},
 										"status": {
-											"type": "string"
+											"properties": {
+												"colorHex": {
+													"nullable": true,
+													"type": "string"
+												},
+												"id": {
+													"minimum": 0,
+													"type": "integer"
+												},
+												"label": {
+													"type": "string"
+												},
+												"slug": {
+													"type": "string"
+												}
+											},
+											"type": "object"
+										},
+										"statusId": {
+											"minimum": 0,
+											"nullable": true,
+											"type": "integer"
 										},
 										"telephone": {
 											"type": "string"
@@ -16955,7 +17480,28 @@
 													"type": "string"
 												},
 												"status": {
-													"type": "string"
+													"properties": {
+														"colorHex": {
+															"nullable": true,
+															"type": "string"
+														},
+														"id": {
+															"minimum": 0,
+															"type": "integer"
+														},
+														"label": {
+															"type": "string"
+														},
+														"slug": {
+															"type": "string"
+														}
+													},
+													"type": "object"
+												},
+												"statusId": {
+													"minimum": 0,
+													"nullable": true,
+													"type": "integer"
 												},
 												"telephone": {
 													"type": "string"
@@ -17728,7 +18274,28 @@
 											"type": "string"
 										},
 										"status": {
-											"type": "string"
+											"properties": {
+												"colorHex": {
+													"nullable": true,
+													"type": "string"
+												},
+												"id": {
+													"minimum": 0,
+													"type": "integer"
+												},
+												"label": {
+													"type": "string"
+												},
+												"slug": {
+													"type": "string"
+												}
+											},
+											"type": "object"
+										},
+										"statusId": {
+											"minimum": 0,
+											"nullable": true,
+											"type": "integer"
 										},
 										"telephone": {
 											"type": "string"
@@ -18468,7 +19035,28 @@
 								"type": "string"
 							},
 							"status": {
-								"type": "string"
+								"properties": {
+									"colorHex": {
+										"nullable": true,
+										"type": "string"
+									},
+									"id": {
+										"minimum": 0,
+										"type": "integer"
+									},
+									"label": {
+										"type": "string"
+									},
+									"slug": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							},
+							"statusId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
 							},
 							"telephone": {
 								"type": "string"
@@ -18865,7 +19453,28 @@
 										"type": "string"
 									},
 									"status": {
-										"type": "string"
+										"properties": {
+											"colorHex": {
+												"nullable": true,
+												"type": "string"
+											},
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"label": {
+												"type": "string"
+											},
+											"slug": {
+												"type": "string"
+											}
+										},
+										"type": "object"
+									},
+									"statusId": {
+										"minimum": 0,
+										"nullable": true,
+										"type": "integer"
 									},
 									"telephone": {
 										"type": "string"
@@ -19607,7 +20216,28 @@
 								"type": "string"
 							},
 							"status": {
-								"type": "string"
+								"properties": {
+									"colorHex": {
+										"nullable": true,
+										"type": "string"
+									},
+									"id": {
+										"minimum": 0,
+										"type": "integer"
+									},
+									"label": {
+										"type": "string"
+									},
+									"slug": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							},
+							"statusId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
 							},
 							"telephone": {
 								"type": "string"
@@ -20170,7 +20800,28 @@
 								"type": "string"
 							},
 							"status": {
-								"type": "string"
+								"properties": {
+									"colorHex": {
+										"nullable": true,
+										"type": "string"
+									},
+									"id": {
+										"minimum": 0,
+										"type": "integer"
+									},
+									"label": {
+										"type": "string"
+									},
+									"slug": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							},
+							"statusId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
 							},
 							"telephone": {
 								"type": "string"
@@ -20401,7 +21052,28 @@
 										"type": "string"
 									},
 									"status": {
-										"type": "string"
+										"properties": {
+											"colorHex": {
+												"nullable": true,
+												"type": "string"
+											},
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"label": {
+												"type": "string"
+											},
+											"slug": {
+												"type": "string"
+											}
+										},
+										"type": "object"
+									},
+									"statusId": {
+										"minimum": 0,
+										"nullable": true,
+										"type": "integer"
 									},
 									"telephone": {
 										"type": "string"
@@ -21908,7 +22580,28 @@
 								"type": "string"
 							},
 							"status": {
-								"type": "string"
+								"properties": {
+									"colorHex": {
+										"nullable": true,
+										"type": "string"
+									},
+									"id": {
+										"minimum": 0,
+										"type": "integer"
+									},
+									"label": {
+										"type": "string"
+									},
+									"slug": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							},
+							"statusId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
 							},
 							"telephone": {
 								"type": "string"
@@ -22317,7 +23010,28 @@
 										"type": "string"
 									},
 									"status": {
-										"type": "string"
+										"properties": {
+											"colorHex": {
+												"nullable": true,
+												"type": "string"
+											},
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"label": {
+												"type": "string"
+											},
+											"slug": {
+												"type": "string"
+											}
+										},
+										"type": "object"
+									},
+									"statusId": {
+										"minimum": 0,
+										"nullable": true,
+										"type": "integer"
 									},
 									"telephone": {
 										"type": "string"
@@ -23071,7 +23785,28 @@
 								"type": "string"
 							},
 							"status": {
-								"type": "string"
+								"properties": {
+									"colorHex": {
+										"nullable": true,
+										"type": "string"
+									},
+									"id": {
+										"minimum": 0,
+										"type": "integer"
+									},
+									"label": {
+										"type": "string"
+									},
+									"slug": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							},
+							"statusId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
 							},
 							"telephone": {
 								"type": "string"
@@ -23511,7 +24246,28 @@
 								"type": "string"
 							},
 							"status": {
-								"type": "string"
+								"properties": {
+									"colorHex": {
+										"nullable": true,
+										"type": "string"
+									},
+									"id": {
+										"minimum": 0,
+										"type": "integer"
+									},
+									"label": {
+										"type": "string"
+									},
+									"slug": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							},
+							"statusId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
 							},
 							"telephone": {
 								"type": "string"
@@ -23920,7 +24676,28 @@
 										"type": "string"
 									},
 									"status": {
-										"type": "string"
+										"properties": {
+											"colorHex": {
+												"nullable": true,
+												"type": "string"
+											},
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"label": {
+												"type": "string"
+											},
+											"slug": {
+												"type": "string"
+											}
+										},
+										"type": "object"
+									},
+									"statusId": {
+										"minimum": 0,
+										"nullable": true,
+										"type": "integer"
 									},
 									"telephone": {
 										"type": "string"
@@ -24685,7 +25462,28 @@
 								"type": "string"
 							},
 							"status": {
-								"type": "string"
+								"properties": {
+									"colorHex": {
+										"nullable": true,
+										"type": "string"
+									},
+									"id": {
+										"minimum": 0,
+										"type": "integer"
+									},
+									"label": {
+										"type": "string"
+									},
+									"slug": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							},
+							"statusId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
 							},
 							"telephone": {
 								"type": "string"
@@ -25098,7 +25896,28 @@
 										"type": "string"
 									},
 									"status": {
-										"type": "string"
+										"properties": {
+											"colorHex": {
+												"nullable": true,
+												"type": "string"
+											},
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"label": {
+												"type": "string"
+											},
+											"slug": {
+												"type": "string"
+											}
+										},
+										"type": "object"
+									},
+									"statusId": {
+										"minimum": 0,
+										"nullable": true,
+										"type": "integer"
 									},
 									"telephone": {
 										"type": "string"
@@ -25821,7 +26640,28 @@
 								"type": "string"
 							},
 							"status": {
-								"type": "string"
+								"properties": {
+									"colorHex": {
+										"nullable": true,
+										"type": "string"
+									},
+									"id": {
+										"minimum": 0,
+										"type": "integer"
+									},
+									"label": {
+										"type": "string"
+									},
+									"slug": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							},
+							"statusId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
 							},
 							"telephone": {
 								"type": "string"
@@ -26336,7 +27176,28 @@
 								"type": "string"
 							},
 							"status": {
-								"type": "string"
+								"properties": {
+									"colorHex": {
+										"nullable": true,
+										"type": "string"
+									},
+									"id": {
+										"minimum": 0,
+										"type": "integer"
+									},
+									"label": {
+										"type": "string"
+									},
+									"slug": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							},
+							"statusId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
 							},
 							"telephone": {
 								"type": "string"
@@ -26745,7 +27606,28 @@
 										"type": "string"
 									},
 									"status": {
-										"type": "string"
+										"properties": {
+											"colorHex": {
+												"nullable": true,
+												"type": "string"
+											},
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"label": {
+												"type": "string"
+											},
+											"slug": {
+												"type": "string"
+											}
+										},
+										"type": "object"
+									},
+									"statusId": {
+										"minimum": 0,
+										"nullable": true,
+										"type": "integer"
 									},
 									"telephone": {
 										"type": "string"
@@ -29675,7 +30557,7 @@
 		},
 		"/api/guests/": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.ListModel[...].func2`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.ListModel[...].func4`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/guests/",
 				"parameters": [
 					{
@@ -29757,13 +30639,13 @@
 						"description": ""
 					}
 				},
-				"summary": "func2",
+				"summary": "func4",
 				"tags": [
 					"/GUESTS"
 				]
 			},
 			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.CreateModel[...].func3`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.CreateModel[...].func5`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/guests/",
 				"parameters": [
 					{
@@ -29835,7 +30717,7 @@
 						"description": ""
 					}
 				},
-				"summary": "func3",
+				"summary": "func5",
 				"tags": [
 					"/GUESTS"
 				]
@@ -29933,7 +30815,7 @@
 		},
 		"/api/guests/relations": {
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.ListModel[...].func8`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.ListModel[...].func10`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/guests/relations",
 				"parameters": [
 					{
@@ -30015,7 +30897,7 @@
 						"description": ""
 					}
 				},
-				"summary": "func8",
+				"summary": "func10",
 				"tags": [
 					"/GUESTS"
 				]
@@ -30183,7 +31065,7 @@
 		},
 		"/api/guests/{id}": {
 			"delete": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.DeleteModel[...].func6`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.DeleteModel[...].func8`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "DELETE_/api/guests/:id",
 				"parameters": [
 					{
@@ -30252,13 +31134,13 @@
 						"description": ""
 					}
 				},
-				"summary": "func6",
+				"summary": "func8",
 				"tags": [
 					"/GUESTS"
 				]
 			},
 			"get": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.GetModel[...].func4`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.GetModel[...].func6`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "GET_/api/guests/:id",
 				"parameters": [
 					{
@@ -30327,13 +31209,13 @@
 						"description": ""
 					}
 				},
-				"summary": "func4",
+				"summary": "func6",
 				"tags": [
 					"/GUESTS"
 				]
 			},
 			"put": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.UpdateModel[...].func5`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.GuestsModule.RegisterRoutes.UpdateModel[...].func7`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "PUT_/api/guests/:id",
 				"parameters": [
 					{
@@ -30413,7 +31295,7 @@
 						"description": ""
 					}
 				},
-				"summary": "func5",
+				"summary": "func7",
 				"tags": [
 					"/GUESTS"
 				]

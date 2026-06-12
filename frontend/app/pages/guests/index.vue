@@ -53,6 +53,12 @@
           {{ row.original.phone || "-" }}
         </template>
 
+        <template #status-cell="{ row }">
+          <UBadge :style="{ backgroundColor: `#${row.original.status?.colorHex}` }" variant="soft">
+            {{ row.original.status?.label }}
+          </UBadge>
+        </template>
+
         <template #actions-cell="{ row }">
           <div class="flex items-center gap-2">
             <UButton variant="ghost" size="sm" :to="`/guests/${row.original.id}`">
@@ -89,8 +95,8 @@ const columns = computed<TableColumn<Guest>[]>(() => [
   { accessorKey: "id", header: t("guests.columns.id") },
   { accessorKey: "name", header: t("guests.columns.name") },
   { accessorKey: "phone", header: t("guests.columns.phone") },
-  { accessorKey: "passport", header: "پاسپورت" },
-  { accessorKey: "status", header: "وضعیت" },
+  { accessorKey: "passport", header: t("guests.passport") },
+  { accessorKey: "status", header: t("common.status") },
   { accessorKey: "actions", header: t("guests.columns.actions") },
 ]);
 

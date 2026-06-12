@@ -23,6 +23,12 @@
           </template>
 
           <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <div class="mb-2 flex items-center gap-2 md:col-span-3">
+              <p class="text-sm text-gray-500">{{ t("common.status") }}:</p>
+              <UBadge :style="{ backgroundColor: `#${guest.status?.colorHex}` }" variant="soft">
+                {{ guest.status?.label }}
+              </UBadge>
+            </div>
             <div>
               <p class="text-sm text-gray-500">{{ t("forms.firstName") }}</p>
               <p class="font-medium">{{ guest.firstName }}</p>
@@ -115,7 +121,10 @@
               </div>
             </template>
             <template #status-cell="{ row }">
-              <UBadge :style="{ backgroundColor: `#${row.original.status?.colorHex}` }" variant="soft">
+              <UBadge
+                :style="{ backgroundColor: `#${row.original.status?.colorHex}` }"
+                variant="soft"
+              >
                 {{ row.original.status?.label }}
               </UBadge>
             </template>
@@ -142,7 +151,9 @@
           </div>
           <UTable v-else :data="reservations" :columns="reservationColumns" striped>
             <template #room-cell="{ row }">
-              <p class="font-medium">{{ row.original.rooms?.map((r) => r.roomNumber).join(", ") }}</p>
+              <p class="font-medium">
+                {{ row.original.rooms?.map((r) => r.roomNumber).join(", ") }}
+              </p>
             </template>
             <template #dates-cell="{ row }">
               <div>
@@ -157,12 +168,18 @@
               </div>
             </template>
             <template #status-cell="{ row }">
-              <UBadge :style="{ backgroundColor: `#${row.original.status?.colorHex}` }" variant="soft">
+              <UBadge
+                :style="{ backgroundColor: `#${row.original.status?.colorHex}` }"
+                variant="soft"
+              >
                 {{ row.original.status?.label }}
               </UBadge>
             </template>
             <template #paymentStatus-cell="{ row }">
-              <UBadge :style="{ backgroundColor: `#${row.original.payment?.status?.colorHex}` }" variant="soft">
+              <UBadge
+                :style="{ backgroundColor: `#${row.original.payment?.status?.colorHex}` }"
+                variant="soft"
+              >
                 {{ row.original.payment?.status?.label }}
               </UBadge>
             </template>
@@ -260,8 +277,13 @@
       <template #body>
         <div v-if="selectedStay" class="space-y-4">
           <div class="flex items-center justify-between">
-            <h3 class="text-lg font-semibold">{{ t("stays.detailTitle") }} {{ selectedStay.acceptanceId }}</h3>
-            <UBadge :style="{ backgroundColor: `#${selectedStay.status?.colorHex}` }" variant="soft">
+            <h3 class="text-lg font-semibold">
+              {{ t("stays.detailTitle") }} {{ selectedStay.acceptanceId }}
+            </h3>
+            <UBadge
+              :style="{ backgroundColor: `#${selectedStay.status?.colorHex}` }"
+              variant="soft"
+            >
               {{ selectedStay.status?.label }}
             </UBadge>
           </div>
@@ -272,7 +294,10 @@
             </div>
             <div>
               <p class="text-sm text-gray-500">{{ t("guests.columns.dates") }}</p>
-              <p class="font-medium">{{ formatDate(selectedStay.entryDate) }} - {{ formatDate(selectedStay.departureDate) }}</p>
+              <p class="font-medium">
+                {{ formatDate(selectedStay.entryDate) }} -
+                {{ formatDate(selectedStay.departureDate) }}
+              </p>
             </div>
             <div>
               <p class="text-sm text-gray-500">{{ t("guest.numberOfPeople") }}</p>
@@ -295,7 +320,9 @@
       </template>
       <template #footer>
         <UButton variant="outline" @click="showStayModal = false">{{ t("actions.close") }}</UButton>
-        <UButton v-if="selectedStay" color="primary" :to="`/stays/${selectedStay.id}`">{{ t("guests.edit") }}</UButton>
+        <UButton v-if="selectedStay" color="primary" :to="`/stays/${selectedStay.id}`">{{
+          t("guests.edit")
+        }}</UButton>
       </template>
     </UModal>
 
@@ -304,19 +331,29 @@
       <template #body>
         <div v-if="selectedReservation" class="space-y-4">
           <div class="flex items-center justify-between">
-            <h3 class="text-lg font-semibold">{{ t("reservations.reservation_details") }} #{{ selectedReservation.id }}</h3>
-            <UBadge :style="{ backgroundColor: `#${selectedReservation.status?.colorHex}` }" variant="soft">
+            <h3 class="text-lg font-semibold">
+              {{ t("reservations.reservation_details") }} #{{ selectedReservation.id }}
+            </h3>
+            <UBadge
+              :style="{ backgroundColor: `#${selectedReservation.status?.colorHex}` }"
+              variant="soft"
+            >
               {{ selectedReservation.status?.label }}
             </UBadge>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
               <p class="text-sm text-gray-500">{{ t("guests.columns.room") }}</p>
-              <p class="font-medium">{{ selectedReservation.rooms?.map((r) => r.roomNumber).join(", ") }}</p>
+              <p class="font-medium">
+                {{ selectedReservation.rooms?.map((r) => r.roomNumber).join(", ") }}
+              </p>
             </div>
             <div>
               <p class="text-sm text-gray-500">{{ t("guests.columns.dates") }}</p>
-              <p class="font-medium">{{ formatDate(selectedReservation.entryDate) }} - {{ formatDate(selectedReservation.departureDate) }}</p>
+              <p class="font-medium">
+                {{ formatDate(selectedReservation.entryDate) }} -
+                {{ formatDate(selectedReservation.departureDate) }}
+              </p>
             </div>
             <div>
               <p class="text-sm text-gray-500">{{ t("guest.numberOfPeople") }}</p>
@@ -338,8 +375,15 @@
         </div>
       </template>
       <template #footer>
-        <UButton variant="outline" @click="showReservationModal = false">{{ t("actions.close") }}</UButton>
-        <UButton v-if="selectedReservation" color="primary" :to="`/reservations/${selectedReservation.id}`">{{ t("guests.edit") }}</UButton>
+        <UButton variant="outline" @click="showReservationModal = false">{{
+          t("actions.close")
+        }}</UButton>
+        <UButton
+          v-if="selectedReservation"
+          color="primary"
+          :to="`/reservations/${selectedReservation.id}`"
+          >{{ t("guests.edit") }}</UButton
+        >
       </template>
     </UModal>
   </div>

@@ -53,6 +53,7 @@ func Seed(db *gorm.DB, cfg config.Config) {
 	seedAllReferenceData(db)
 	seedReservationStatuses(db)
 	seedStayStatuses(db)
+	seedGuestStatuses(db)
 	seedInvoiceItemTypes(db)
 	seedServices(db)
 }
@@ -239,6 +240,19 @@ func seedStayStatuses(db *gorm.DB) {
 		{TranslateBase: models.TranslateBase{Slug: "checked_out", Translation: t["checked_out"]}, ColorHex: "708090"},
 		{TranslateBase: models.TranslateBase{Slug: "cancelled", Translation: t["cancelled"]}, ColorHex: "DC143C"},
 		{TranslateBase: models.TranslateBase{Slug: "no_show", Translation: t["no_show"]}, ColorHex: "8B0000"},
+	}
+
+	seed(db, statuses)
+}
+
+func seedGuestStatuses(db *gorm.DB) {
+	t := Translations["guest-status"]
+
+	statuses := []models.GuestStatus{
+		{TranslateBase: models.TranslateBase{Slug: "waiting", Translation: t["waiting"]}, ColorHex: "FFA500"},
+		{TranslateBase: models.TranslateBase{Slug: "resident", Translation: t["resident"]}, ColorHex: "2ECC71"},
+		{TranslateBase: models.TranslateBase{Slug: "checked_out", Translation: t["checked_out"]}, ColorHex: "708090"},
+		{TranslateBase: models.TranslateBase{Slug: "cancelled", Translation: t["cancelled"]}, ColorHex: "DC143C"},
 	}
 
 	seed(db, statuses)

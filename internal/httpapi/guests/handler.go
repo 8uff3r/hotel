@@ -94,6 +94,8 @@ func (gm GuestsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 		"/",
 		h.ListModel[models.Guest](
 			api.Db,
+			h.WithPreload("Status"),
+			h.WithTranslation[models.GuestStatus](),
 			h.WithAllowedFilters("first_name", "last_name", "phone", "national_id", "id_number"),
 		),
 	)
@@ -768,12 +770,12 @@ func (gm *GuestsModule) getArchivedGuestsHandler(c fuego.ContextWithParams[h.Par
 	var zeroResponse h.PaginatedResponse[models.Guest]
 
 	status := c.QueryParam("status")
-	q := gm.Db.Model(&models.Guest{})
+	q := gm.Db.Model(&models.Guest{}).Joins("JOIN guest_statuses ON guests.status_id = guest_statuses.id").Preload("Status")
 
 	if status != "" {
-		q = q.Where("status = ?", status)
+		q = q.Where("guest_statuses.slug = ?", status)
 	} else {
-		q = q.Where("status IN ?", []string{string(models.GuestStatusCheckedOut), string(models.GuestStatusCancelled), string(models.GuestStatusAbsence)})
+		q = q.Where("guest_statuses.slug IN ?", []string{string(models.GuestStatusCheckedOut), string(models.GuestStatusCancelled)})
 	}
 
 	var total int64

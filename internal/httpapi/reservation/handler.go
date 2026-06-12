@@ -202,9 +202,6 @@ func (re *ReservationModule) reservationsCheckIn(c fuego.ContextNoBody) (models.
 		re.Db.Model(&reservation).Update("status_id", acceptedStatus.ID)
 	}
 
-	// Update guest status
-	re.Db.Model(&models.Guest{}).Where("id = ?", reservation.GuestID).Update("status", string(models.GuestStatusResident))
-
 	return stay, nil
 }
 

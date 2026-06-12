@@ -17,9 +17,19 @@
           >
         </div>
       </template>
-      <UTable :rows="guests" :columns="columns" :loading="pending">
-        <template #actions-data="{ row }">
-          <UButton variant="ghost" icon="i-lucide-eye" size="xs" :to="`/guests/${row.id}`" />
+      <UTable :data="guests" :columns="columns" :loading="pending">
+        <template #status-cell="{ row }">
+          <UBadge :style="{ backgroundColor: `#${row.original.status?.colorHex}` }" variant="soft">
+            {{ row.original.status?.label }}
+          </UBadge>
+        </template>
+        <template #actions-cell="{ row }">
+          <UButton
+            variant="ghost"
+            icon="i-lucide-eye"
+            size="xs"
+            :to="`/guests/${row.original.id}`"
+          />
         </template>
       </UTable>
     </UCard>
@@ -48,9 +58,8 @@ const statusFilter = ref("");
 
 const statusOptions = [
   { label: t("common.all"), value: "" },
-  { label: t("guests.checkedOut"), value: "checked_out" },
-  { label: t("guests.cancelled"), value: "cancelled" },
-  { label: t("guests.absence"), value: "absence" },
+  { label: "Checked Out", value: "checked_out" },
+  { label: "Cancelled", value: "cancelled" },
 ];
 
 const { data: guests, pending } = useFetch(

@@ -269,6 +269,7 @@
     "noReservations": "No reservations found",
     "view": "View",
     "edit": "Edit",
+    "status": "Status",
     "columns": {
       "id": "ID",
       "name": "Name",

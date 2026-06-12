@@ -214,7 +214,9 @@
             <UInput v-model.number="extendState.durationOfStay" type="number" min="1" />
           </UFormGroup>
           <div class="mt-4 flex gap-2">
-            <UButton type="submit" :loading="extendLoading">{{ t("stays.updateDuration") }}</UButton>
+            <UButton type="submit" :loading="extendLoading">{{
+              t("stays.updateDuration")
+            }}</UButton>
             <UButton variant="outline" @click="showExtend = false">{{
               t("actions.cancel")
             }}</UButton>

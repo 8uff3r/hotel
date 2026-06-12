@@ -270,6 +270,7 @@
     "noReservations": "رزروی یافت نشد",
     "view": "مشاهده",
     "edit": "ویرایش",
+    "status": "وضعیت",
     "columns": {
       "id": "شناسه",
       "name": "نام",

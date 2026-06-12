@@ -197,7 +197,13 @@ export const zGuest = z.object({
     phone: z.string().optional(),
     placeOfBirth: z.string().optional(),
     postalCode: z.string().optional(),
-    status: z.string().optional(),
+    status: z.object({
+        colorHex: z.string().optional(),
+        id: z.int().gte(0).optional(),
+        label: z.string().optional(),
+        slug: z.string().optional()
+    }).optional(),
+    statusId: z.int().gte(0).optional(),
     telephone: z.string().optional()
 });
 
@@ -314,7 +320,13 @@ export const zGuestWithReservationRequest = z.object({
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
-        status: z.string().optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional(),
         telephone: z.string().optional()
     }).optional(),
     payment: z.object({
@@ -410,7 +422,13 @@ export const zGuestWithReservationResponse = z.object({
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
-        status: z.string().optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional(),
         telephone: z.string().optional()
     }).optional(),
     payment: z.object({
@@ -491,7 +509,13 @@ export const zGuestWithReservationResponse = z.object({
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
-            status: z.string().optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional(),
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
@@ -650,7 +674,13 @@ export const zGuestWithStayRequest = z.object({
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
-        status: z.string().optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional(),
         telephone: z.string().optional()
     }).optional(),
     payment: z.object({
@@ -745,7 +775,13 @@ export const zGuestWithStayResponse = z.object({
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
-        status: z.string().optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional(),
         telephone: z.string().optional()
     }).optional(),
     payment: z.object({
@@ -830,7 +866,13 @@ export const zGuestWithStayResponse = z.object({
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
-            status: z.string().optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional(),
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
@@ -947,7 +989,13 @@ export const zGuestWithStayResponse = z.object({
                 phone: z.string().optional(),
                 placeOfBirth: z.string().optional(),
                 postalCode: z.string().optional(),
-                status: z.string().optional(),
+                status: z.object({
+                    colorHex: z.string().optional(),
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                statusId: z.int().gte(0).optional(),
                 telephone: z.string().optional()
             }).optional(),
             guestId: z.int().gte(0).optional(),
@@ -1155,7 +1203,13 @@ export const zGuestWithStaysAndReservationsResponse = z.object({
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
-        status: z.string().optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional(),
         telephone: z.string().optional()
     }).optional(),
     reservations: z.array(z.object({
@@ -1217,7 +1271,13 @@ export const zGuestWithStaysAndReservationsResponse = z.object({
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
-            status: z.string().optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional(),
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
@@ -1364,7 +1424,13 @@ export const zGuestWithStaysAndReservationsResponse = z.object({
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
-            status: z.string().optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional(),
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
@@ -1481,7 +1547,13 @@ export const zGuestWithStaysAndReservationsResponse = z.object({
                 phone: z.string().optional(),
                 placeOfBirth: z.string().optional(),
                 postalCode: z.string().optional(),
-                status: z.string().optional(),
+                status: z.object({
+                    colorHex: z.string().optional(),
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                statusId: z.int().gte(0).optional(),
                 telephone: z.string().optional()
             }).optional(),
             guestId: z.int().gte(0).optional(),
@@ -1887,7 +1959,13 @@ export const zIncome = z.object({
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
-            status: z.string().optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional(),
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
@@ -2036,7 +2114,13 @@ export const zIncome = z.object({
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
-            status: z.string().optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional(),
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
@@ -2153,7 +2237,13 @@ export const zIncome = z.object({
                 phone: z.string().optional(),
                 placeOfBirth: z.string().optional(),
                 postalCode: z.string().optional(),
-                status: z.string().optional(),
+                status: z.object({
+                    colorHex: z.string().optional(),
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                statusId: z.int().gte(0).optional(),
                 telephone: z.string().optional()
             }).optional(),
             guestId: z.int().gte(0).optional(),
@@ -2876,7 +2966,13 @@ export const zPaginatedResponseModelsGuest = z.object({
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
-        status: z.string().optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional(),
         telephone: z.string().optional()
     })).optional(),
     limit: z.int().optional(),
@@ -3096,7 +3192,13 @@ export const zPaginatedResponseModelsIncome = z.object({
                 phone: z.string().optional(),
                 placeOfBirth: z.string().optional(),
                 postalCode: z.string().optional(),
-                status: z.string().optional(),
+                status: z.object({
+                    colorHex: z.string().optional(),
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                statusId: z.int().gte(0).optional(),
                 telephone: z.string().optional()
             }).optional(),
             guestId: z.int().gte(0).optional(),
@@ -3245,7 +3347,13 @@ export const zPaginatedResponseModelsIncome = z.object({
                 phone: z.string().optional(),
                 placeOfBirth: z.string().optional(),
                 postalCode: z.string().optional(),
-                status: z.string().optional(),
+                status: z.object({
+                    colorHex: z.string().optional(),
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                statusId: z.int().gte(0).optional(),
                 telephone: z.string().optional()
             }).optional(),
             guestId: z.int().gte(0).optional(),
@@ -3362,7 +3470,13 @@ export const zPaginatedResponseModelsIncome = z.object({
                     phone: z.string().optional(),
                     placeOfBirth: z.string().optional(),
                     postalCode: z.string().optional(),
-                    status: z.string().optional(),
+                    status: z.object({
+                        colorHex: z.string().optional(),
+                        id: z.int().gte(0).optional(),
+                        label: z.string().optional(),
+                        slug: z.string().optional()
+                    }).optional(),
+                    statusId: z.int().gte(0).optional(),
                     telephone: z.string().optional()
                 }).optional(),
                 guestId: z.int().gte(0).optional(),
@@ -3946,7 +4060,13 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
-            status: z.string().optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional(),
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
@@ -4063,7 +4183,13 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
                 phone: z.string().optional(),
                 placeOfBirth: z.string().optional(),
                 postalCode: z.string().optional(),
-                status: z.string().optional(),
+                status: z.object({
+                    colorHex: z.string().optional(),
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                statusId: z.int().gte(0).optional(),
                 telephone: z.string().optional()
             }).optional(),
             guestId: z.int().gte(0).optional(),
@@ -4339,7 +4465,13 @@ export const zPaginatedResponseModelsReservation = z.object({
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
-            status: z.string().optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional(),
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
@@ -4530,7 +4662,13 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
-            status: z.string().optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional(),
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
@@ -4597,7 +4735,13 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
                 phone: z.string().optional(),
                 placeOfBirth: z.string().optional(),
                 postalCode: z.string().optional(),
-                status: z.string().optional(),
+                status: z.object({
+                    colorHex: z.string().optional(),
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                statusId: z.int().gte(0).optional(),
                 telephone: z.string().optional()
             }).optional(),
             guestId: z.int().gte(0).optional(),
@@ -5073,7 +5217,13 @@ export const zPaginatedResponseModelsStay = z.object({
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
-            status: z.string().optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional(),
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
@@ -5190,7 +5340,13 @@ export const zPaginatedResponseModelsStay = z.object({
                 phone: z.string().optional(),
                 placeOfBirth: z.string().optional(),
                 postalCode: z.string().optional(),
-                status: z.string().optional(),
+                status: z.object({
+                    colorHex: z.string().optional(),
+                    id: z.int().gte(0).optional(),
+                    label: z.string().optional(),
+                    slug: z.string().optional()
+                }).optional(),
+                statusId: z.int().gte(0).optional(),
                 telephone: z.string().optional()
             }).optional(),
             guestId: z.int().gte(0).optional(),
@@ -5423,7 +5579,13 @@ export const zPaginatedResponseModelsVehicle = z.object({
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
-            status: z.string().optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional(),
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
@@ -5663,7 +5825,13 @@ export const zParkingTransaction = z.object({
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
-        status: z.string().optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional(),
         telephone: z.string().optional()
     }).optional(),
     guestId: z.int().gte(0).optional(),
@@ -5780,7 +5948,13 @@ export const zParkingTransaction = z.object({
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
-            status: z.string().optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional(),
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
@@ -6007,7 +6181,13 @@ export const zReservation = z.object({
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
-        status: z.string().optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional(),
         telephone: z.string().optional()
     }).optional(),
     guestId: z.int().gte(0).optional(),
@@ -6176,7 +6356,13 @@ export const zRestaurantBill = z.object({
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
-        status: z.string().optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional(),
         telephone: z.string().optional()
     }).optional(),
     guestId: z.int().gte(0).optional(),
@@ -6243,7 +6429,13 @@ export const zRestaurantBill = z.object({
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
-            status: z.string().optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional(),
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
@@ -6730,7 +6922,13 @@ export const zStay = z.object({
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
-        status: z.string().optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional(),
         telephone: z.string().optional()
     }).optional(),
     guestId: z.int().gte(0).optional(),
@@ -6847,7 +7045,13 @@ export const zStay = z.object({
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
-            status: z.string().optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional(),
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
@@ -7079,7 +7283,13 @@ export const zVehicle = z.object({
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
-        status: z.string().optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional(),
         telephone: z.string().optional()
     }).optional(),
     guestId: z.int().gte(0).optional(),
@@ -7245,7 +7455,13 @@ export const zChangeDurationResponse = z.object({
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
-        status: z.string().optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional(),
         telephone: z.string().optional()
     }).optional(),
     guestId: z.int().gte(0).optional(),
@@ -7362,7 +7578,13 @@ export const zChangeDurationResponse = z.object({
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
-            status: z.string().optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional(),
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
@@ -7600,7 +7822,13 @@ export const zCheckInResponse = z.object({
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
-        status: z.string().optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional(),
         telephone: z.string().optional()
     }).optional(),
     guestId: z.int().gte(0).optional(),
@@ -7718,7 +7946,13 @@ export const zCheckInResponse = z.object({
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
-            status: z.string().optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional(),
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),
@@ -7936,7 +8170,13 @@ export const zCreateReservationResponse = z.object({
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
-        status: z.string().optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional(),
         telephone: z.string().optional()
     }).optional(),
     guestId: z.int().gte(0).optional(),
@@ -8088,7 +8328,13 @@ export const zCreateStayResponse = z.object({
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
-        status: z.string().optional(),
+        status: z.object({
+            colorHex: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            label: z.string().optional(),
+            slug: z.string().optional()
+        }).optional(),
+        statusId: z.int().gte(0).optional(),
         telephone: z.string().optional()
     }).optional(),
     guestId: z.int().gte(0).optional(),
@@ -8205,7 +8451,13 @@ export const zCreateStayResponse = z.object({
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
-            status: z.string().optional(),
+            status: z.object({
+                colorHex: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            statusId: z.int().gte(0).optional(),
             telephone: z.string().optional()
         }).optional(),
         guestId: z.int().gte(0).optional(),

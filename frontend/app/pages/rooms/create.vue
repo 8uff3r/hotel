@@ -156,6 +156,7 @@ const toggleAmenity = (amenityId: number) => {
   }
 };
 
+const qc = useQueryCache();
 const handleSubmit = async (event: FormSubmitEvent<Schema>) => {
   loading.value = true;
   try {
@@ -163,6 +164,7 @@ const handleSubmit = async (event: FormSubmitEvent<Schema>) => {
       body: event.data,
     });
 
+    qc.invalidateQueries({ key: ["rooms"] });
     navigateTo("/rooms");
   } catch (error) {
     console.error("Failed to create room:", error);

@@ -234,9 +234,6 @@ func (sm *StaysModule) stayCheckIn(c fuego.ContextWithBody[checkInDto]) (checkIn
 		}
 	}
 
-	// Update guest status to resident
-	sm.Db.Model(&models.Guest{}).Where("id = ?", stay.GuestID).Update("status", string(models.GuestStatusResident))
-
 	// Update room status to occupied
 	var occupiedStatus models.RoomStatus
 	sm.Db.Where("slug = ?", string(models.RoomStatusOccupied)).First(&occupiedStatus)
@@ -283,9 +280,6 @@ func (sm *StaysModule) stayCheckOut(c fuego.ContextWithBody[checkOutDto]) (model
 
 	now := time.Now().UTC()
 	stay.ActualCheckOut = &now
-
-	// Update guest status
-	sm.Db.Model(&models.Guest{}).Where("id = ?", stay.GuestID).Update("status", string(models.GuestStatusCheckedOut))
 
 	// Update room status to cleaning
 	var cleaningStatus models.RoomStatus
