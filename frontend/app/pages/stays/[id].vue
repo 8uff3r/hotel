@@ -8,8 +8,7 @@
         </UButton>
         <UButton
           v-if="stay.status?.slug === 'resident'"
-          @click="checkOut"
-          :loading="actionLoading"
+          :to="`/guests/${stay.guestId}/settle`"
           color="error"
         >
           {{ t("stays.checkOut") }}
@@ -73,10 +72,10 @@
         </template>
         <div class="space-y-2">
           <p>
-            <strong>{{ t("stays.entryDate") }}:</strong> {{ formatDate(stay.entryDate) }}
+            <strong>{{ t("stays.entryDate") }}:</strong> {{ formatDate(stay.entryDate ?? '') }}
           </p>
           <p>
-            <strong>{{ t("stays.departureDate") }}:</strong> {{ formatDate(stay.departureDate) }}
+            <strong>{{ t("stays.departureDate") }}:</strong> {{ formatDate(stay.departureDate ?? '') }}
           </p>
           <p>
             <strong>{{ t("stays.numberOfPeople") }}:</strong> {{ stay.numberOfPeople }}
@@ -110,7 +109,7 @@
           <p>
             <strong>{{ t("stays.paymentStatus") }}:</strong> {{ invoice.paymentStatus }}
           </p>
-          <UButton size="xs" @click="showPayment = true">{{ t("stays.pay") }}</UButton>
+          <UButton size="xs" :to="`/guests/${stay.guestId}/settle`">{{ t("stays.goToSettlement") }}</UButton>
         </div>
         <div v-else>{{ t("stays.noInvoice") }}</div>
       </UCard>
@@ -121,41 +120,15 @@
       <template #header>
         <h2 class="font-semibold">{{ t("stays.invoiceItems") }}</h2>
       </template>
-      <UTable :rows="invoice.items" :columns="itemColumns">
-        <template #actions-data="{ row }">
-          <UButton
-            v-if="((row as unknown as InvoiceItem).remainingAmount ?? 0) > 0"
-            size="xs"
-            @click="settleItem(row as unknown as InvoiceItem)"
-            >{{ t("stays.settle") }}</UButton
-          >
+      <UTable :data="invoice.items" :columns="itemColumns">
+        <template #actions-cell="{ row }">
+          <UBadge v-if="((row.original as unknown as InvoiceItem).remainingAmount ?? 0) > 0" color="warning">
+            {{ t("stays.unpaid") }}
+          </UBadge>
           <UBadge v-else color="success">{{ t("stays.settled") }}</UBadge>
         </template>
       </UTable>
     </UCard>
-
-    <!-- Payment Modal -->
-    <UModal v-model="showPayment">
-      <UCard>
-        <template #header>
-          <h3 class="font-semibold">{{ t("stays.paymentTitle") }}</h3>
-        </template>
-        <UForm :state="paymentState" @submit="makePayment">
-          <UFormGroup :label="t('stays.amount')" name="amount">
-            <UInput v-model.number="paymentState.amount" type="number" />
-          </UFormGroup>
-          <UFormGroup :label="t('stays.paymentMethod')" name="paymentMethod" class="mt-2">
-            <USelect v-model="paymentState.paymentMethod" :items="paymentMethodOptions" />
-          </UFormGroup>
-          <div class="mt-4 flex gap-2">
-            <UButton type="submit" :loading="paymentLoading">{{ t("stays.pay") }}</UButton>
-            <UButton variant="outline" @click="showPayment = false">{{
-              t("actions.cancel")
-            }}</UButton>
-          </div>
-        </UForm>
-      </UCard>
-    </UModal>
 
     <!-- Room Change Modal -->
     <UModal v-model="showRoomChange">
@@ -224,31 +197,6 @@
         </UForm>
       </UCard>
     </UModal>
-
-    <!-- Item Settlement Modal -->
-    <UModal v-model="showItemSettlement">
-      <UCard>
-        <template #header>
-          <h3 class="font-semibold">{{ t("stays.itemSettlement") }}</h3>
-        </template>
-        <UForm :state="itemSettlementState" @submit="doItemSettlement">
-          <UFormGroup :label="t('stays.amount')" name="amount">
-            <UInput v-model.number="itemSettlementState.amount" type="number" />
-          </UFormGroup>
-          <UFormGroup :label="t('stays.paymentMethod')" name="paymentMethod" class="mt-2">
-            <USelect v-model="itemSettlementState.paymentMethod" :items="paymentMethodOptions" />
-          </UFormGroup>
-          <div class="mt-4 flex gap-2">
-            <UButton type="submit" :loading="itemSettlementLoading">{{
-              t("stays.settle")
-            }}</UButton>
-            <UButton variant="outline" @click="showItemSettlement = false">{{
-              t("actions.cancel")
-            }}</UButton>
-          </div>
-        </UForm>
-      </UCard>
-    </UModal>
   </div>
 </template>
 
@@ -257,9 +205,6 @@ import { useI18n } from "vue-i18n";
 import {
   postApiStaysIdChangeRoom,
   postApiStaysIdCheckIn,
-  postApiStaysIdCheckOut,
-  postApiStaysIdInvoiceItems,
-  postApiStaysIdInvoicePay,
   postApiStaysIdServices,
 } from "~/utils/client";
 import type { Invoice, InvoiceItem, Room, Service, Stay } from "~/utils/client";
@@ -279,22 +224,42 @@ const { data: invoice, refresh: refreshInvoice } = useFetch(`/api/stays/${stayId
 });
 
 const { data: rooms } = useFetch("/api/rooms", {
-  key: `stay-rooms-${stayId}`,
-  transform: (res) => (res as { data?: Room[] })?.data ?? [],
+  key: "rooms",
+  transform: (res) =>
+    (res as { data?: Room[] })?.data?.map((r) => ({ value: r.id, label: r.roomNumber })) ?? [],
 });
 
 const { data: services } = useFetch("/api/services", {
-  key: `stay-services-${stayId}`,
-  transform: (res) => (res as { data?: Service[] })?.data ?? [],
+  key: "services",
+  transform: (res) =>
+    (res as { data?: Service[] })?.data?.map((s) => ({ value: s.id, label: s.name })) ?? [],
 });
 
-const roomOptions = computed(() =>
-  (rooms.value ?? []).map((r) => ({ label: r.roomNumber ?? "", value: r.id }))
-);
+const { data: paymentMethods } = useFetch("/api/accounting/payment-methods", {
+  key: "payment-methods",
+  transform: (res) =>
+    (res as { data?: { id: number; label: string }[] })?.data?.map((m) => ({
+      value: m.id,
+      label: m.label,
+    })) ?? [],
+});
 
-const serviceOptions = computed(() =>
-  (services.value ?? []).map((s) => ({ label: s.name ?? "", value: s.id }))
-);
+const actionLoading = ref(false);
+const roomChangeLoading = ref(false);
+const serviceLoading = ref(false);
+const extendLoading = ref(false);
+
+const showRoomChange = ref(false);
+const showService = ref(false);
+const showExtend = ref(false);
+
+const roomChangeState = reactive({ newRoomId: undefined as number | undefined });
+const serviceState = reactive({
+  serviceId: undefined as number | undefined,
+  quantity: 1,
+  description: "",
+});
+const extendState = reactive({ durationOfStay: 1 });
 
 const itemColumns = [
   { accessorKey: "itemType", header: t("stays.itemType") },
@@ -304,90 +269,22 @@ const itemColumns = [
   { accessorKey: "totalPrice", header: t("stays.totalPrice") },
   { accessorKey: "paidAmount", header: t("stays.paidAmount") },
   { accessorKey: "remainingAmount", header: t("stays.remainingAmount") },
-  { id: "actions", header: t("actions.actions") },
+  { accessorKey: "actions", header: t("actions.actions") },
 ];
 
-const actionLoading = ref(false);
-const showPayment = ref(false);
-const paymentLoading = ref(false);
-const paymentState = reactive({ amount: 0, paymentMethod: undefined as number | undefined });
-
-const showRoomChange = ref(false);
-const roomChangeLoading = ref(false);
-const roomChangeState = reactive({ newRoomId: undefined as number | undefined });
-
-const showService = ref(false);
-const serviceLoading = ref(false);
-const serviceState = reactive({
-  serviceId: undefined as number | undefined,
-  quantity: 1,
-  description: "",
-});
-
-const showItemSettlement = ref(false);
-const itemSettlementLoading = ref(false);
-const itemSettlementState = reactive({ amount: 0, paymentMethod: undefined as number | undefined });
-const currentItem = ref<InvoiceItem | null>(null);
-
-const showExtend = ref(false);
-const extendLoading = ref(false);
-const extendState = reactive({ durationOfStay: 1 });
-
-const paymentMethodOptions = ref([
-  { label: t("payment.cash"), value: 1 },
-  { label: t("payment.card"), value: 2 },
-  { label: t("payment.transfer"), value: 3 },
-  { label: t("payment.contractingParty"), value: 4 },
-  { label: t("payment.agency"), value: 5 },
-]);
-
-function formatDate(date: string | undefined) {
-  if (!date) return "-";
-  return new Date(date).toLocaleDateString("fa-IR");
-}
+const roomOptions = computed(() => rooms.value ?? []);
+const serviceOptions = computed(() => services.value ?? []);
+const paymentMethodOptions = computed(() => paymentMethods.value ?? []);
 
 async function checkIn() {
   actionLoading.value = true;
   try {
-    const response = await postApiStaysIdCheckIn({ path: { id: stayId }, body: {} });
-    const res = response.data;
-    if (res?.earlyCheckInPrompt) {
-      alert(res.promptMessage);
-    }
-    refreshStay();
-    refreshInvoice();
-  } catch (e) {
-    console.error(e);
-  } finally {
-    actionLoading.value = false;
-  }
-}
-
-async function checkOut() {
-  actionLoading.value = true;
-  try {
-    await postApiStaysIdCheckOut({ path: { id: stayId }, body: {} });
+    await postApiStaysIdCheckIn({ path: { id: stayId }, body: {} });
     refreshStay();
   } catch (e) {
     console.error(e);
   } finally {
     actionLoading.value = false;
-  }
-}
-
-async function makePayment() {
-  paymentLoading.value = true;
-  try {
-    await postApiStaysIdInvoicePay({
-      path: { id: stayId },
-      body: { amount: paymentState.amount, paymentMethod: paymentState.paymentMethod },
-    });
-    showPayment.value = false;
-    refreshInvoice();
-  } catch (e) {
-    console.error(e);
-  } finally {
-    paymentLoading.value = false;
   }
 }
 
@@ -427,41 +324,6 @@ async function doAddService() {
   }
 }
 
-function settleItem(item: InvoiceItem) {
-  currentItem.value = item;
-  itemSettlementState.amount = item.remainingAmount ?? 0;
-  showItemSettlement.value = true;
-}
-
-async function doItemSettlement() {
-  itemSettlementLoading.value = true;
-  try {
-    await postApiStaysIdInvoiceItems({
-      path: { id: stayId },
-      body: {
-        itemType: currentItem.value?.itemType,
-        description: (currentItem.value?.description ?? "") + " (settlement)",
-        quantity: 1,
-        unitPrice: 0,
-        totalPrice: 0,
-      },
-    });
-    await postApiStaysIdInvoicePay({
-      path: { id: stayId },
-      body: {
-        amount: itemSettlementState.amount,
-        paymentMethod: itemSettlementState.paymentMethod,
-      },
-    });
-    showItemSettlement.value = false;
-    refreshInvoice();
-  } catch (e) {
-    console.error(e);
-  } finally {
-    itemSettlementLoading.value = false;
-  }
-}
-
 async function doChangeDuration() {
   extendLoading.value = true;
   try {
@@ -477,5 +339,15 @@ async function doChangeDuration() {
   } finally {
     extendLoading.value = false;
   }
+}
+
+function formatDate(date: string | Date) {
+  if (!date) return "-";
+  const d = typeof date === "string" ? new Date(date) : date;
+  return d.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 }
 </script>

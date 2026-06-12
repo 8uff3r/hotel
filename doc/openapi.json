@@ -45,6 +45,26 @@
 				},
 				"type": "object"
 			},
+			"CheckoutGuestRequest": {
+				"description": "CheckoutGuestRequest schema",
+				"properties": {
+					"paymentMethod": {
+						"minimum": 0,
+						"type": "integer"
+					}
+				},
+				"type": "object"
+			},
+			"CheckoutGuestResponse": {
+				"description": "CheckoutGuestResponse schema",
+				"properties": {
+					"checkoutId": {
+						"minimum": 0,
+						"type": "integer"
+					}
+				},
+				"type": "object"
+			},
 			"Country": {
 				"description": "Country schema",
 				"properties": {
@@ -592,6 +612,9 @@
 						"format": "double",
 						"type": "number"
 					},
+					"canCheckout": {
+						"type": "boolean"
+					},
 					"parkingTransactions": {
 						"items": {
 							"properties": {
@@ -632,41 +655,6 @@
 						},
 						"type": "array"
 					},
-					"reservations": {
-						"items": {
-							"properties": {
-								"checkInDate": {
-									"type": "string"
-								},
-								"checkOutDate": {
-									"type": "string"
-								},
-								"id": {
-									"minimum": 0,
-									"type": "integer"
-								},
-								"paidAmount": {
-									"format": "double",
-									"type": "number"
-								},
-								"reservationCode": {
-									"type": "string"
-								},
-								"roomPrice": {
-									"format": "double",
-									"type": "number"
-								},
-								"status": {
-									"type": "string"
-								},
-								"statusLabel": {
-									"type": "string"
-								}
-							},
-							"type": "object"
-						},
-						"type": "array"
-					},
 					"restaurantBills": {
 						"items": {
 							"properties": {
@@ -681,6 +669,145 @@
 									"type": "boolean"
 								},
 								"notes": {
+									"type": "string"
+								},
+								"totalAmount": {
+									"format": "double",
+									"type": "number"
+								}
+							},
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"stays": {
+						"items": {
+							"properties": {
+								"acceptanceId": {
+									"type": "string"
+								},
+								"departureDate": {
+									"type": "string"
+								},
+								"entryDate": {
+									"type": "string"
+								},
+								"id": {
+									"minimum": 0,
+									"type": "integer"
+								},
+								"items": {
+									"items": {
+										"properties": {
+											"description": {
+												"type": "string"
+											},
+											"id": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"invoiceId": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"itemType": {
+												"type": "string"
+											},
+											"paidAmount": {
+												"format": "double",
+												"type": "number"
+											},
+											"paymentMethod": {
+												"nullable": true,
+												"properties": {
+													"id": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"label": {
+														"type": "string"
+													},
+													"slug": {
+														"type": "string"
+													}
+												},
+												"type": "object"
+											},
+											"paymentMethodId": {
+												"minimum": 0,
+												"nullable": true,
+												"type": "integer"
+											},
+											"paymentStatus": {
+												"type": "string"
+											},
+											"quantity": {
+												"type": "integer"
+											},
+											"remainingAmount": {
+												"format": "double",
+												"type": "number"
+											},
+											"service": {
+												"nullable": true,
+												"properties": {
+													"baseAmount": {
+														"format": "double",
+														"type": "number"
+													},
+													"description": {
+														"type": "string"
+													},
+													"hotelId": {
+														"type": "string"
+													},
+													"id": {
+														"minimum": 0,
+														"type": "integer"
+													},
+													"name": {
+														"type": "string"
+													},
+													"unit": {
+														"type": "string"
+													}
+												},
+												"type": "object"
+											},
+											"serviceId": {
+												"minimum": 0,
+												"nullable": true,
+												"type": "integer"
+											},
+											"stayId": {
+												"minimum": 0,
+												"type": "integer"
+											},
+											"totalPrice": {
+												"format": "double",
+												"type": "number"
+											},
+											"unitPrice": {
+												"format": "double",
+												"type": "number"
+											}
+										},
+										"type": "object"
+									},
+									"type": "array"
+								},
+								"paidAmount": {
+									"format": "double",
+									"type": "number"
+								},
+								"remainingAmount": {
+									"format": "double",
+									"type": "number"
+								},
+								"status": {
+									"type": "string"
+								},
+								"statusLabel": {
 									"type": "string"
 								},
 								"totalAmount": {
@@ -2837,6 +2964,11 @@
 							"invoice": {
 								"nullable": true,
 								"properties": {
+									"checkoutId": {
+										"minimum": 0,
+										"nullable": true,
+										"type": "integer"
+									},
 									"createdAt": {
 										"format": "date-time",
 										"type": "string"
@@ -4760,6 +4892,11 @@
 								"invoice": {
 									"nullable": true,
 									"properties": {
+										"checkoutId": {
+											"minimum": 0,
+											"nullable": true,
+											"type": "integer"
+										},
 										"createdAt": {
 											"format": "date-time",
 											"type": "string"
@@ -6069,6 +6206,11 @@
 					"invoice": {
 						"nullable": true,
 						"properties": {
+							"checkoutId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
+							},
 							"createdAt": {
 								"format": "date-time",
 								"type": "string"
@@ -7075,6 +7217,11 @@
 							"invoice": {
 								"nullable": true,
 								"properties": {
+									"checkoutId": {
+										"minimum": 0,
+										"nullable": true,
+										"type": "integer"
+									},
 									"createdAt": {
 										"format": "date-time",
 										"type": "string"
@@ -8181,6 +8328,11 @@
 			"Invoice": {
 				"description": "Invoice schema",
 				"properties": {
+					"checkoutId": {
+						"minimum": 0,
+						"nullable": true,
+						"type": "integer"
+					},
 					"createdAt": {
 						"format": "date-time",
 						"type": "string"
@@ -10068,6 +10220,11 @@
 								"invoice": {
 									"nullable": true,
 									"properties": {
+										"checkoutId": {
+											"minimum": 0,
+											"nullable": true,
+											"type": "integer"
+										},
 										"createdAt": {
 											"format": "date-time",
 											"type": "string"
@@ -11074,6 +11231,11 @@
 										"invoice": {
 											"nullable": true,
 											"properties": {
+												"checkoutId": {
+													"minimum": 0,
+													"nullable": true,
+													"type": "integer"
+												},
 												"createdAt": {
 													"format": "date-time",
 													"type": "string"
@@ -13119,6 +13281,11 @@
 									"format": "double",
 									"type": "number"
 								},
+								"checkoutId": {
+									"minimum": 0,
+									"nullable": true,
+									"type": "integer"
+								},
 								"entryTime": {
 									"format": "date-time",
 									"type": "string"
@@ -15088,6 +15255,11 @@
 								"billDate": {
 									"format": "date-time",
 									"type": "string"
+								},
+								"checkoutId": {
+									"minimum": 0,
+									"nullable": true,
+									"type": "integer"
 								},
 								"discountAmount": {
 									"format": "double",
@@ -17121,6 +17293,11 @@
 								"invoice": {
 									"nullable": true,
 									"properties": {
+										"checkoutId": {
+											"minimum": 0,
+											"nullable": true,
+											"type": "integer"
+										},
 										"createdAt": {
 											"format": "date-time",
 											"type": "string"
@@ -18867,6 +19044,11 @@
 					"amountPaid": {
 						"format": "double",
 						"type": "number"
+					},
+					"checkoutId": {
+						"minimum": 0,
+						"nullable": true,
+						"type": "integer"
 					},
 					"entryTime": {
 						"format": "date-time",
@@ -20635,6 +20817,11 @@
 						"format": "date-time",
 						"type": "string"
 					},
+					"checkoutId": {
+						"minimum": 0,
+						"nullable": true,
+						"type": "integer"
+					},
 					"discountAmount": {
 						"format": "double",
 						"type": "number"
@@ -22348,6 +22535,13 @@
 						"format": "double",
 						"type": "number"
 					},
+					"invoiceIds": {
+						"items": {
+							"minimum": 0,
+							"type": "integer"
+						},
+						"type": "array"
+					},
 					"notes": {
 						"type": "string"
 					},
@@ -22364,13 +22558,6 @@
 					},
 					"reference": {
 						"type": "string"
-					},
-					"reservationIds": {
-						"items": {
-							"minimum": 0,
-							"type": "integer"
-						},
-						"type": "array"
 					},
 					"restaurantBillIds": {
 						"items": {
@@ -22654,6 +22841,11 @@
 					"invoice": {
 						"nullable": true,
 						"properties": {
+							"checkoutId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
+							},
 							"createdAt": {
 								"format": "date-time",
 								"type": "string"
@@ -24323,6 +24515,11 @@
 					"invoice": {
 						"nullable": true,
 						"properties": {
+							"checkoutId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
+							},
 							"createdAt": {
 								"format": "date-time",
 								"type": "string"
@@ -25542,6 +25739,11 @@
 					"invoice": {
 						"nullable": true,
 						"properties": {
+							"checkoutId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
+							},
 							"createdAt": {
 								"format": "date-time",
 								"type": "string"
@@ -26465,9 +26667,6 @@
 				},
 				"type": "object"
 			},
-			"checkOutDto": {
-				"description": "checkOutDto schema"
-			},
 			"createReservationResponse": {
 				"description": "createReservationResponse schema",
 				"properties": {
@@ -27259,6 +27458,11 @@
 					"invoice": {
 						"nullable": true,
 						"properties": {
+							"checkoutId": {
+								"minimum": 0,
+								"nullable": true,
+								"type": "integer"
+							},
 							"createdAt": {
 								"format": "date-time",
 								"type": "string"
@@ -28554,18 +28758,10 @@
 				"type": "object"
 			},
 			"okResponse": {
-				"description": "okResponse schema"
-			},
-			"payInvoiceDto": {
-				"description": "payInvoiceDto schema",
+				"description": "okResponse schema",
 				"properties": {
-					"amount": {
-						"format": "double",
-						"type": "number"
-					},
-					"paymentMethod": {
-						"minimum": 0,
-						"type": "integer"
+					"ok": {
+						"type": "boolean"
 					}
 				},
 				"type": "object"
@@ -28673,20 +28869,6 @@
 							"type": "object"
 						},
 						"type": "array"
-					}
-				},
-				"type": "object"
-			},
-			"settleDto": {
-				"description": "settleDto schema",
-				"properties": {
-					"amount": {
-						"format": "double",
-						"type": "number"
-					},
-					"paymentMethod": {
-						"minimum": 0,
-						"type": "integer"
 					}
 				},
 				"type": "object"
@@ -31320,6 +31502,94 @@
 					}
 				},
 				"summary": "func7",
+				"tags": [
+					"/GUESTS"
+				]
+			}
+		},
+		"/api/guests/{id}/checkout": {
+			"post": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/guests.(*GuestsModule).checkoutGuest`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "POST_/api/guests/:id/checkout",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"*/*": {
+							"schema": {
+								"$ref": "#/components/schemas/CheckoutGuestRequest"
+							}
+						}
+					},
+					"description": "Request body for guests.CheckoutGuestRequest",
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CheckoutGuestResponse"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/CheckoutGuestResponse"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "checkout guest",
 				"tags": [
 					"/GUESTS"
 				]
@@ -40648,94 +40918,6 @@
 				]
 			}
 		},
-		"/api/stays/{id}/check-out": {
-			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/stays.(*StaysModule).stayCheckOut`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
-				"operationId": "POST_/api/stays/:id/check-out",
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Accept",
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"content": {
-						"*/*": {
-							"schema": {
-								"$ref": "#/components/schemas/checkOutDto"
-							}
-						}
-					},
-					"description": "Request body for stays.checkOutDto",
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/Stay"
-								}
-							},
-							"application/xml": {
-								"schema": {
-									"$ref": "#/components/schemas/Stay"
-								}
-							}
-						},
-						"description": "OK"
-					},
-					"400": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/HTTPError"
-								}
-							},
-							"application/xml": {
-								"schema": {
-									"$ref": "#/components/schemas/HTTPError"
-								}
-							}
-						},
-						"description": "Bad Request _(validation or deserialization error)_"
-					},
-					"500": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/HTTPError"
-								}
-							},
-							"application/xml": {
-								"schema": {
-									"$ref": "#/components/schemas/HTTPError"
-								}
-							}
-						},
-						"description": "Internal Server Error _(panics)_"
-					},
-					"default": {
-						"description": ""
-					}
-				},
-				"summary": "stay check out",
-				"tags": [
-					"/STAYS"
-				]
-			}
-		},
 		"/api/stays/{id}/invoice": {
 			"get": {
 				"description": "#### Controller: \n\n`hotel/internal/httpapi/stays.(*StaysModule).stayGetInvoice`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
@@ -40901,94 +41083,6 @@
 				]
 			}
 		},
-		"/api/stays/{id}/invoice/pay": {
-			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/stays.(*StaysModule).stayPayInvoice`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
-				"operationId": "POST_/api/stays/:id/invoice/pay",
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Accept",
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"content": {
-						"*/*": {
-							"schema": {
-								"$ref": "#/components/schemas/payInvoiceDto"
-							}
-						}
-					},
-					"description": "Request body for stays.payInvoiceDto",
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/Invoice"
-								}
-							},
-							"application/xml": {
-								"schema": {
-									"$ref": "#/components/schemas/Invoice"
-								}
-							}
-						},
-						"description": "OK"
-					},
-					"400": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/HTTPError"
-								}
-							},
-							"application/xml": {
-								"schema": {
-									"$ref": "#/components/schemas/HTTPError"
-								}
-							}
-						},
-						"description": "Bad Request _(validation or deserialization error)_"
-					},
-					"500": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/HTTPError"
-								}
-							},
-							"application/xml": {
-								"schema": {
-									"$ref": "#/components/schemas/HTTPError"
-								}
-							}
-						},
-						"description": "Internal Server Error _(panics)_"
-					},
-					"default": {
-						"description": ""
-					}
-				},
-				"summary": "stay pay invoice",
-				"tags": [
-					"/STAYS"
-				]
-			}
-		},
 		"/api/stays/{id}/services": {
 			"post": {
 				"description": "#### Controller: \n\n`hotel/internal/httpapi/stays.(*StaysModule).stayAddService`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
@@ -41072,94 +41166,6 @@
 					}
 				},
 				"summary": "stay add service",
-				"tags": [
-					"/STAYS"
-				]
-			}
-		},
-		"/api/stays/{id}/settle": {
-			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/stays.(*StaysModule).staySettle`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
-				"operationId": "POST_/api/stays/:id/settle",
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Accept",
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"content": {
-						"*/*": {
-							"schema": {
-								"$ref": "#/components/schemas/settleDto"
-							}
-						}
-					},
-					"description": "Request body for stays.settleDto",
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/Invoice"
-								}
-							},
-							"application/xml": {
-								"schema": {
-									"$ref": "#/components/schemas/Invoice"
-								}
-							}
-						},
-						"description": "OK"
-					},
-					"400": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/HTTPError"
-								}
-							},
-							"application/xml": {
-								"schema": {
-									"$ref": "#/components/schemas/HTTPError"
-								}
-							}
-						},
-						"description": "Bad Request _(validation or deserialization error)_"
-					},
-					"500": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/HTTPError"
-								}
-							},
-							"application/xml": {
-								"schema": {
-									"$ref": "#/components/schemas/HTTPError"
-								}
-							}
-						},
-						"description": "Internal Server Error _(panics)_"
-					},
-					"default": {
-						"description": ""
-					}
-				},
-				"summary": "stay settle",
 				"tags": [
 					"/STAYS"
 				]

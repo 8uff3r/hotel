@@ -2,7 +2,7 @@
 import type { CreateRequest } from "../utils";
 
 defineProps<{
-  value: CreateRequest;
+  value: CreateRequest & { reservation?: { entryDate?: string; departureDate?: string; numberOfPeople?: number; roomPrice?: number } };
 }>();
 
 const { t } = useI18n();

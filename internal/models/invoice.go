@@ -38,6 +38,7 @@ type Invoice struct {
 	PaymentStatus   string             `gorm:"not null;default:'unpaid'" json:"paymentStatus"`
 	PaymentMethodID *uint              `json:"paymentMethodId"`
 	PaymentMethod   *PaymentMethod     `gorm:"foreignKey:PaymentMethodID" json:"paymentMethod,omitempty" translate:"true"`
+	CheckoutID      *uint              `json:"checkoutId"`
 	CreatedAt       time.Time          `json:"createdAt"`
 	UpdatedAt       time.Time          `json:"updatedAt"`
 

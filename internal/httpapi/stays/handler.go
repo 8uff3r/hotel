@@ -23,13 +23,10 @@ func (m StaysModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 	fuego.Get(s, "/{id}", sm.stayView)
 	fuego.Put(s, "/{id}", sm.stayUpdate)
 	fuego.Post(s, "/{id}/check-in", sm.stayCheckIn)
-	fuego.Post(s, "/{id}/check-out", sm.stayCheckOut)
 	fuego.Post(s, "/{id}/change-room", sm.stayChangeRoom)
 	fuego.Post(s, "/{id}/services", sm.stayAddService)
-	fuego.Post(s, "/{id}/settle", sm.staySettle)
 	fuego.Get(s, "/{id}/invoice", sm.stayGetInvoice)
 	fuego.Post(s, "/{id}/invoice/items", sm.stayAddInvoiceItem)
-	fuego.Post(s, "/{id}/invoice/pay", sm.stayPayInvoice)
 	fuego.Post(s, "/{id}/change-duration", sm.stayChangeDuration)
 
 	// Validation endpoints
@@ -261,49 +258,7 @@ func (sm *StaysModule) stayCheckIn(c fuego.ContextWithBody[checkInDto]) (checkIn
 	return checkInResponse{Stay: stay, EarlyCheckInPrompt: earlyCheckInPrompt, PromptMessage: promptMessage}, nil
 }
 
-func (sm *StaysModule) stayCheckOut(c fuego.ContextWithBody[checkOutDto]) (models.Stay, error) {
-	var zero models.Stay
-	id, err := h.ParseID(c.PathParam("id"))
-	if err != nil {
-		return zero, fuego.BadRequestError{Title: "invalid_id"}
-	}
-
-	var stay models.Stay
-	if err := sm.Db.Preload("Invoice").First(&stay, id).Error; err != nil {
-		return zero, fuego.NotFoundError{}
-	}
-
-	// Verify invoice is cleared
-	if stay.Invoice != nil && stay.Invoice.RemainingAmount > 0 {
-		return zero, fuego.BadRequestError{Title: "invoice_not_cleared"}
-	}
-
-	now := time.Now().UTC()
-	stay.ActualCheckOut = &now
-
-	// Update room status to cleaning
-	var cleaningStatus models.RoomStatus
-	sm.Db.Where("slug = ?", string(models.RoomStatusCleaning)).First(&cleaningStatus)
-	if cleaningStatus.ID > 0 {
-		sm.Db.Model(&models.Room{}).Where("id = ?", stay.RoomID).Update("status_id", cleaningStatus.ID)
-	}
-
-	// Update stay status
-	var checkedOutStatus models.StayStatus
-	sm.Db.Where("slug = ?", "checked_out").First(&checkedOutStatus)
-	if checkedOutStatus.ID > 0 {
-		stay.StatusID = checkedOutStatus.ID
-	}
-
-	if err := sm.Db.Save(&stay).Error; err != nil {
-		return zero, fuego.BadRequestError{Title: "check_out_failed"}
-	}
-	return stay, nil
-}
-
 type checkInDto struct{}
-
-type checkOutDto struct{}
 
 type changeRoomDto struct {
 	NewRoomID uint `json:"newRoomId"`
@@ -427,60 +382,6 @@ func (sm *StaysModule) stayAddService(c fuego.ContextWithBody[addServiceDto]) (m
 	return item, nil
 }
 
-type settleDto struct {
-	Amount        float64 `json:"amount"`
-	PaymentMethod uint    `json:"paymentMethod"`
-}
-
-func (sm *StaysModule) staySettle(c fuego.ContextWithBody[settleDto]) (models.Invoice, error) {
-	var zero models.Invoice
-	id, err := h.ParseID(c.PathParam("id"))
-	if err != nil {
-		return zero, fuego.BadRequestError{Title: "invalid_id"}
-	}
-
-	body, err := c.Body()
-	if err != nil {
-		return zero, fuego.BadRequestError{}
-	}
-
-	var invoice models.Invoice
-	if err := sm.Db.Where("stay_id = ?", id).First(&invoice).Error; err != nil {
-		return zero, fuego.NotFoundError{}
-	}
-
-	if body.Amount <= 0 {
-		return zero, fuego.BadRequestError{Title: "invalid_amount"}
-	}
-
-	invoice.PaidAmount += body.Amount
-	invoice.RemainingAmount = invoice.TotalAmount - invoice.PaidAmount
-	if invoice.RemainingAmount <= 0 {
-		invoice.PaymentStatus = string(models.PaymentStatusCleared)
-		invoice.RemainingAmount = 0
-	} else {
-		invoice.PaymentStatus = string(models.PaymentStatusPartiallyPaid)
-	}
-	if body.PaymentMethod > 0 {
-		invoice.PaymentMethodID = &body.PaymentMethod
-	}
-
-	if err := sm.Db.Save(&invoice).Error; err != nil {
-		return zero, fuego.BadRequestError{Title: "settlement_failed"}
-	}
-
-	// Create income record for traceability
-	var stay models.Stay
-	if err := sm.Db.First(&stay, id).Error; err == nil {
-		var guest models.Guest
-		if err := sm.Db.First(&guest, stay.GuestID).Error; err == nil {
-			sm.createIncomeRecord(stay.HotelID, body.Amount, guest.FirstName+" "+guest.LastName, body.PaymentMethod, "Stay settlement - "+stay.AcceptanceID)
-		}
-	}
-
-	return invoice, nil
-}
-
 func (sm *StaysModule) createIncomeRecord(hotelID string, amount float64, source string, paymentMethodID uint, description string) {
 	income := models.Income{
 		IncomeDate:  time.Now().UTC(),
@@ -566,50 +467,6 @@ func (sm *StaysModule) stayAddInvoiceItem(c fuego.ContextWithBody[addInvoiceItem
 	sm.Db.Save(&invoice)
 
 	return item, nil
-}
-
-type payInvoiceDto struct {
-	Amount        float64 `json:"amount"`
-	PaymentMethod uint    `json:"paymentMethod"`
-}
-
-func (sm *StaysModule) stayPayInvoice(c fuego.ContextWithBody[payInvoiceDto]) (models.Invoice, error) {
-	var zero models.Invoice
-	id, err := h.ParseID(c.PathParam("id"))
-	if err != nil {
-		return zero, fuego.BadRequestError{Title: "invalid_id"}
-	}
-
-	body, err := c.Body()
-	if err != nil {
-		return zero, fuego.BadRequestError{}
-	}
-
-	var invoice models.Invoice
-	if err := sm.Db.Where("stay_id = ?", id).First(&invoice).Error; err != nil {
-		return zero, fuego.NotFoundError{}
-	}
-
-	if body.Amount <= 0 {
-		return zero, fuego.BadRequestError{Title: "invalid_amount"}
-	}
-
-	invoice.PaidAmount += body.Amount
-	invoice.RemainingAmount = invoice.TotalAmount - invoice.PaidAmount
-	if invoice.RemainingAmount <= 0 {
-		invoice.PaymentStatus = string(models.PaymentStatusCleared)
-		invoice.RemainingAmount = 0
-	} else {
-		invoice.PaymentStatus = string(models.PaymentStatusPartiallyPaid)
-	}
-	if body.PaymentMethod > 0 {
-		invoice.PaymentMethodID = &body.PaymentMethod
-	}
-
-	if err := sm.Db.Save(&invoice).Error; err != nil {
-		return zero, fuego.BadRequestError{Title: "payment_failed"}
-	}
-	return invoice, nil
 }
 
 type changeDurationDto struct {

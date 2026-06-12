@@ -22,6 +22,20 @@ export type Account = {
 };
 
 /**
+ * CheckoutGuestRequest schema
+ */
+export type CheckoutGuestRequest = {
+    paymentMethod?: number;
+};
+
+/**
+ * CheckoutGuestResponse schema
+ */
+export type CheckoutGuestResponse = {
+    checkoutId?: number;
+};
+
+/**
  * Country schema
  */
 export type Country = {
@@ -214,6 +228,7 @@ export type Guest = {
  */
 export type GuestSettlementResponse = {
     balance?: number;
+    canCheckout?: boolean;
     parkingTransactions?: Array<{
         amountDue?: number;
         amountPaid?: number;
@@ -225,21 +240,50 @@ export type GuestSettlementResponse = {
         rateApplied?: number;
         status?: string;
     }>;
-    reservations?: Array<{
-        checkInDate?: string;
-        checkOutDate?: string;
-        id?: number;
-        paidAmount?: number;
-        reservationCode?: string;
-        roomPrice?: number;
-        status?: string;
-        statusLabel?: string;
-    }>;
     restaurantBills?: Array<{
         billDate?: string;
         id?: number;
         isExternal?: boolean;
         notes?: string;
+        totalAmount?: number;
+    }>;
+    stays?: Array<{
+        acceptanceId?: string;
+        departureDate?: string;
+        entryDate?: string;
+        id?: number;
+        items?: Array<{
+            description?: string;
+            id?: number;
+            invoiceId?: number;
+            itemType?: string;
+            paidAmount?: number;
+            paymentMethod?: {
+                id?: number;
+                label?: string;
+                slug?: string;
+            };
+            paymentMethodId?: number;
+            paymentStatus?: string;
+            quantity?: number;
+            remainingAmount?: number;
+            service?: {
+                baseAmount?: number;
+                description?: string;
+                hotelId?: string;
+                id?: number;
+                name?: string;
+                unit?: string;
+            };
+            serviceId?: number;
+            stayId?: number;
+            totalPrice?: number;
+            unitPrice?: number;
+        }>;
+        paidAmount?: number;
+        remainingAmount?: number;
+        status?: string;
+        statusLabel?: string;
         totalAmount?: number;
     }>;
     totalDue?: number;
@@ -884,6 +928,7 @@ export type GuestWithStayResponse = {
         hotelId?: string;
         id?: number;
         invoice?: {
+            checkoutId?: number;
             createdAt?: string;
             hotelId?: string;
             id?: number;
@@ -1443,6 +1488,7 @@ export type GuestWithStaysAndReservationsResponse = {
         hotelId?: string;
         id?: number;
         invoice?: {
+            checkoutId?: number;
             createdAt?: string;
             hotelId?: string;
             id?: number;
@@ -1868,6 +1914,7 @@ export type Income = {
     id?: number;
     incomeDate?: string;
     invoice?: {
+        checkoutId?: number;
         createdAt?: string;
         hotelId?: string;
         id?: number;
@@ -2157,6 +2204,7 @@ export type Income = {
         hotelId?: string;
         id?: number;
         invoice?: {
+            checkoutId?: number;
             createdAt?: string;
             hotelId?: string;
             id?: number;
@@ -2487,6 +2535,7 @@ export type InventoryItem = {
  * Invoice schema
  */
 export type Invoice = {
+    checkoutId?: number;
     createdAt?: string;
     hotelId?: string;
     id?: number;
@@ -3102,6 +3151,7 @@ export type PaginatedResponseModelsIncome = {
         id?: number;
         incomeDate?: string;
         invoice?: {
+            checkoutId?: number;
             createdAt?: string;
             hotelId?: string;
             id?: number;
@@ -3391,6 +3441,7 @@ export type PaginatedResponseModelsIncome = {
             hotelId?: string;
             id?: number;
             invoice?: {
+                checkoutId?: number;
                 createdAt?: string;
                 hotelId?: string;
                 id?: number;
@@ -4036,6 +4087,7 @@ export type PaginatedResponseModelsParkingTransaction = {
     data?: Array<{
         amountDue?: number;
         amountPaid?: number;
+        checkoutId?: number;
         entryTime?: string;
         exitTime?: string;
         guest?: {
@@ -4638,6 +4690,7 @@ export type PaginatedResponseModelsRestaurantBill = {
             totalCapacity?: number;
         };
         billDate?: string;
+        checkoutId?: number;
         discountAmount?: number;
         externalRestaurant?: string;
         guest?: {
@@ -5262,6 +5315,7 @@ export type PaginatedResponseModelsStay = {
         hotelId?: string;
         id?: number;
         invoice?: {
+            checkoutId?: number;
             createdAt?: string;
             hotelId?: string;
             id?: number;
@@ -5802,6 +5856,7 @@ export type ParkingStats = {
 export type ParkingTransaction = {
     amountDue?: number;
     amountPaid?: number;
+    checkoutId?: number;
     entryTime?: string;
     exitTime?: string;
     guest?: {
@@ -6333,6 +6388,7 @@ export type RestaurantBill = {
         totalCapacity?: number;
     };
     billDate?: string;
+    checkoutId?: number;
     discountAmount?: number;
     externalRestaurant?: string;
     guest?: {
@@ -6879,11 +6935,11 @@ export type Service = {
  */
 export type SettleGuestRequest = {
     amount?: number;
+    invoiceIds?: Array<number>;
     notes?: string;
     parkingTxnIds?: Array<number>;
     paymentMethod?: number;
     reference?: string;
-    reservationIds?: Array<number>;
     restaurantBillIds?: Array<number>;
 };
 
@@ -6968,6 +7024,7 @@ export type Stay = {
     hotelId?: string;
     id?: number;
     invoice?: {
+        checkoutId?: number;
         createdAt?: string;
         hotelId?: string;
         id?: number;
@@ -7502,6 +7559,7 @@ export type ChangeDurationResponse = {
     hotelId?: string;
     id?: number;
     invoice?: {
+        checkoutId?: number;
         createdAt?: string;
         hotelId?: string;
         id?: number;
@@ -7870,6 +7928,7 @@ export type CheckInResponse = {
     hotelId?: string;
     id?: number;
     invoice?: {
+        checkoutId?: number;
         createdAt?: string;
         hotelId?: string;
         id?: number;
@@ -8138,11 +8197,6 @@ export type CheckInResponse = {
 };
 
 /**
- * checkOutDto schema
- */
-export type CheckOutDto = unknown;
-
-/**
  * createReservationResponse schema
  */
 export type CreateReservationResponse = {
@@ -8377,6 +8431,7 @@ export type CreateStayResponse = {
     hotelId?: string;
     id?: number;
     invoice?: {
+        checkoutId?: number;
         createdAt?: string;
         hotelId?: string;
         id?: number;
@@ -8787,14 +8842,6 @@ export type OkResponse = {
 };
 
 /**
- * payInvoiceDto schema
- */
-export type PayInvoiceDto = {
-    amount?: number;
-    paymentMethod?: number;
-};
-
-/**
  * permissionsResponse schema
  */
 export type PermissionsResponse = {
@@ -8845,14 +8892,6 @@ export type RoomPicturesResponse = {
         roomId?: number;
         url?: string;
     }>;
-};
-
-/**
- * settleDto schema
- */
-export type SettleDto = {
-    amount?: number;
-    paymentMethod?: number;
 };
 
 /**
@@ -10027,6 +10066,44 @@ export type PutApiGuestsIdResponses = {
 };
 
 export type PutApiGuestsIdResponse = PutApiGuestsIdResponses[keyof PutApiGuestsIdResponses];
+
+export type PostApiGuestsIdCheckoutData = {
+    /**
+     * Request body for guests.CheckoutGuestRequest
+     */
+    body: CheckoutGuestRequest;
+    headers?: {
+        Accept?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/guests/{id}/checkout';
+};
+
+export type PostApiGuestsIdCheckoutErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PostApiGuestsIdCheckoutError = PostApiGuestsIdCheckoutErrors[keyof PostApiGuestsIdCheckoutErrors];
+
+export type PostApiGuestsIdCheckoutResponses = {
+    /**
+     * OK
+     */
+    200: CheckoutGuestResponse;
+};
+
+export type PostApiGuestsIdCheckoutResponse = PostApiGuestsIdCheckoutResponses[keyof PostApiGuestsIdCheckoutResponses];
 
 export type GetApiGuestsIdSettleData = {
     body?: never;
@@ -14167,44 +14244,6 @@ export type PostApiStaysIdCheckInResponses = {
 
 export type PostApiStaysIdCheckInResponse = PostApiStaysIdCheckInResponses[keyof PostApiStaysIdCheckInResponses];
 
-export type PostApiStaysIdCheckOutData = {
-    /**
-     * Request body for stays.checkOutDto
-     */
-    body: CheckOutDto;
-    headers?: {
-        Accept?: string;
-    };
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: '/api/stays/{id}/check-out';
-};
-
-export type PostApiStaysIdCheckOutErrors = {
-    /**
-     * Bad Request _(validation or deserialization error)_
-     */
-    400: HttpError;
-    /**
-     * Internal Server Error _(panics)_
-     */
-    500: HttpError;
-    default: unknown;
-};
-
-export type PostApiStaysIdCheckOutError = PostApiStaysIdCheckOutErrors[keyof PostApiStaysIdCheckOutErrors];
-
-export type PostApiStaysIdCheckOutResponses = {
-    /**
-     * OK
-     */
-    200: Stay;
-};
-
-export type PostApiStaysIdCheckOutResponse = PostApiStaysIdCheckOutResponses[keyof PostApiStaysIdCheckOutResponses];
-
 export type GetApiStaysIdInvoiceData = {
     body?: never;
     headers?: {
@@ -14278,44 +14317,6 @@ export type PostApiStaysIdInvoiceItemsResponses = {
 
 export type PostApiStaysIdInvoiceItemsResponse = PostApiStaysIdInvoiceItemsResponses[keyof PostApiStaysIdInvoiceItemsResponses];
 
-export type PostApiStaysIdInvoicePayData = {
-    /**
-     * Request body for stays.payInvoiceDto
-     */
-    body: PayInvoiceDto;
-    headers?: {
-        Accept?: string;
-    };
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: '/api/stays/{id}/invoice/pay';
-};
-
-export type PostApiStaysIdInvoicePayErrors = {
-    /**
-     * Bad Request _(validation or deserialization error)_
-     */
-    400: HttpError;
-    /**
-     * Internal Server Error _(panics)_
-     */
-    500: HttpError;
-    default: unknown;
-};
-
-export type PostApiStaysIdInvoicePayError = PostApiStaysIdInvoicePayErrors[keyof PostApiStaysIdInvoicePayErrors];
-
-export type PostApiStaysIdInvoicePayResponses = {
-    /**
-     * OK
-     */
-    200: Invoice;
-};
-
-export type PostApiStaysIdInvoicePayResponse = PostApiStaysIdInvoicePayResponses[keyof PostApiStaysIdInvoicePayResponses];
-
 export type PostApiStaysIdServicesData = {
     /**
      * Request body for stays.addServiceDto
@@ -14353,44 +14354,6 @@ export type PostApiStaysIdServicesResponses = {
 };
 
 export type PostApiStaysIdServicesResponse = PostApiStaysIdServicesResponses[keyof PostApiStaysIdServicesResponses];
-
-export type PostApiStaysIdSettleData = {
-    /**
-     * Request body for stays.settleDto
-     */
-    body: SettleDto;
-    headers?: {
-        Accept?: string;
-    };
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: '/api/stays/{id}/settle';
-};
-
-export type PostApiStaysIdSettleErrors = {
-    /**
-     * Bad Request _(validation or deserialization error)_
-     */
-    400: HttpError;
-    /**
-     * Internal Server Error _(panics)_
-     */
-    500: HttpError;
-    default: unknown;
-};
-
-export type PostApiStaysIdSettleError = PostApiStaysIdSettleErrors[keyof PostApiStaysIdSettleErrors];
-
-export type PostApiStaysIdSettleResponses = {
-    /**
-     * OK
-     */
-    200: Invoice;
-};
-
-export type PostApiStaysIdSettleResponse = PostApiStaysIdSettleResponses[keyof PostApiStaysIdSettleResponses];
 
 export type GetApiTravelAgenciesData = {
     body?: never;

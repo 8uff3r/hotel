@@ -64,6 +64,14 @@
             <UButton variant="ghost" size="sm" :to="`/guests/${row.original.id}`">
               <UIcon name="i-lucide-eye" class="h-4 w-4" />
             </UButton>
+            <UButton
+              variant="ghost"
+              size="sm"
+              color="success"
+              :to="`/guests/${row.original.id}/settle`"
+            >
+              <UIcon name="i-lucide-credit-card" class="h-4 w-4" />
+            </UButton>
             <UButton variant="ghost" size="sm" color="error" @click="confirmDelete(row.original)">
               <UIcon name="i-lucide-trash-2" class="h-4 w-4" />
             </UButton>

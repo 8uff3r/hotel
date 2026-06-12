@@ -16,50 +16,55 @@
 
     <div v-else class="grid grid-cols-1 gap-6 lg:grid-cols-3">
       <div class="space-y-6 lg:col-span-2">
-        <!-- Room Charges -->
+        <!-- Stays / Room Charges -->
         <UCard>
           <template #header>
-            <div class="flex items-center justify-between">
-              <h3 class="text-lg font-semibold">{{ t("accounting.roomCharges") }}</h3>
-              <UCheckbox
-                v-if="settlement?.reservations?.length"
-                v-model="selectAllRoom"
-                @update:model-value="(v) => v !== 'indeterminate' && toggleSelectAll(v)"
-                :label="t('accounting.selectAll')"
-              />
-            </div>
+            <h3 class="text-lg font-semibold">{{ t("accounting.roomCharges") }}</h3>
           </template>
-          <div v-if="settlement?.reservations?.length">
-            <table class="w-full">
-              <thead>
-                <tr class="border-b text-left text-sm text-gray-500">
-                  <th class="w-10 pb-2"></th>
-                  <th class="pb-2">{{ t("reservations.code") }}</th>
-                  <th class="pb-2">{{ t("reservations.checkIn") }}</th>
-                  <th class="pb-2">{{ t("reservations.checkOut") }}</th>
-                  <th class="pb-2">{{ t("reservations.status") }}</th>
-                  <th class="pb-2 text-right">{{ t("accounting.amount") }}</th>
-                  <th class="pb-2 text-right">{{ t("accounting.paid") }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="res in settlement.reservations" :key="res.id" class="border-b">
-                  <td class="py-3">
-                    <UCheckbox v-model="selectedReservationIds" :value="res.id" />
-                  </td>
-                  <td class="py-3">{{ res.reservationCode }}</td>
-                  <td class="py-3">{{ formatDate(res.checkInDate) }}</td>
-                  <td class="py-3">{{ formatDate(res.checkOutDate) }}</td>
-                  <td class="py-3">
-                    <UBadge :color="getStatusColor(res.status)" variant="soft" size="sm">
-                      {{ res.statusLabel || res.status }}
-                    </UBadge>
-                  </td>
-                  <td class="py-3 text-right">${{ res.roomPrice?.toFixed(2) }}</td>
-                  <td class="py-3 text-right text-green-600">${{ res.paidAmount?.toFixed(2) }}</td>
-                </tr>
-              </tbody>
-            </table>
+          <div v-if="settlement?.stays?.length">
+            <div v-for="stay in settlement.stays" :key="stay.id" class="mb-4 border-b pb-4 last:border-0">
+              <div class="flex items-center justify-between mb-2">
+                <div>
+                  <p class="font-medium">{{ stay.acceptanceId }}</p>
+                  <p class="text-sm text-gray-500">
+                    {{ formatDate(stay.entryDate) }} - {{ formatDate(stay.departureDate) }}
+                  </p>
+                </div>
+                <UBadge variant="soft">
+                  {{ stay.statusLabel || stay.status }}
+                </UBadge>
+              </div>
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="border-b text-left text-gray-500">
+                    <th class="pb-1">{{ t("accounting.item") }}</th>
+                    <th class="pb-1 text-right">{{ t("accounting.amount") }}</th>
+                    <th class="pb-1 text-right">{{ t("accounting.paid") }}</th>
+                    <th class="pb-1 text-right">{{ t("accounting.remaining") }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in stay.items" :key="item.id" class="border-b">
+                    <td class="py-1">{{ item.description || item.itemType }}</td>
+                    <td class="py-1 text-right">${{ item.totalPrice?.toFixed(2) }}</td>
+                    <td class="py-1 text-right">${{ item.paidAmount?.toFixed(2) }}</td>
+                    <td class="py-1 text-right">${{ item.remainingAmount?.toFixed(2) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="mt-2 flex justify-between font-medium">
+                <span>{{ t("accounting.stayTotal") }}:</span>
+                <span>${{ stay.totalAmount?.toFixed(2) }}</span>
+              </div>
+              <div class="flex justify-between text-sm text-gray-500">
+                <span>{{ t("accounting.paid") }}:</span>
+                <span>${{ stay.paidAmount?.toFixed(2) }}</span>
+              </div>
+              <div class="flex justify-between text-sm text-red-600">
+                <span>{{ t("accounting.remaining") }}:</span>
+                <span>${{ stay.remainingAmount?.toFixed(2) }}</span>
+              </div>
+            </div>
           </div>
           <div v-else class="py-4 text-center text-gray-500">
             {{ t("accounting.noRoomCharges") }}
@@ -69,42 +74,26 @@
         <!-- Parking Charges -->
         <UCard>
           <template #header>
-            <div class="flex items-center justify-between">
-              <h3 class="text-lg font-semibold">{{ t("accounting.parkingCharges") }}</h3>
-              <UCheckbox
-                v-if="settlement?.parkingTransactions?.length"
-                v-model="selectAllParking"
-                @update:model-value="(v) => v !== 'indeterminate' && toggleSelectAllParking"
-                :label="t('accounting.selectAll')"
-              />
-            </div>
+            <h3 class="text-lg font-semibold">{{ t("accounting.parkingCharges") }}</h3>
           </template>
           <div v-if="settlement?.parkingTransactions?.length">
             <table class="w-full">
               <thead>
                 <tr class="border-b text-left text-sm text-gray-500">
-                  <th class="w-10 pb-2"></th>
                   <th class="pb-2">{{ t("parking.licensePlate") }}</th>
                   <th class="pb-2">{{ t("parking.entryTime") }}</th>
-                  <th class="pb-2">{{ t("parking.exitTime") }}</th>
                   <th class="pb-2 text-right">{{ t("parking.hours") }}</th>
-                  <th class="pb-2 text-right">{{ t("parking.rate") }}</th>
                   <th class="pb-2 text-right">{{ t("accounting.amount") }}</th>
                   <th class="pb-2 text-right">{{ t("accounting.paid") }}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="pt in settlement.parkingTransactions" :key="pt.id" class="border-b">
-                  <td class="py-3">
-                    <UCheckbox v-model="selectedParkingTxnIds" :value="pt.id" />
-                  </td>
                   <td class="py-3">{{ pt.licensePlate }}</td>
                   <td class="py-3">{{ formatDateTime(pt.entryTime) }}</td>
-                  <td class="py-3">{{ formatDateTime(pt.exitTime) }}</td>
                   <td class="py-3 text-right">{{ pt.hoursParked?.toFixed(1) }}</td>
-                  <td class="py-3 text-right">${{ pt.rateApplied?.toFixed(2) }}</td>
                   <td class="py-3 text-right">${{ pt.amountDue?.toFixed(2) }}</td>
-                  <td class="py-3 text-right text-green-600">${{ pt.amountPaid?.toFixed(2) }}</td>
+                  <td class="py-3 text-right">${{ pt.amountPaid?.toFixed(2) }}</td>
                 </tr>
               </tbody>
             </table>
@@ -117,34 +106,22 @@
         <!-- Restaurant Charges -->
         <UCard>
           <template #header>
-            <div class="flex items-center justify-between">
-              <h3 class="text-lg font-semibold">{{ t("accounting.restaurantCharges") }}</h3>
-              <UCheckbox
-                v-if="settlement?.restaurantBills?.length"
-                v-model="selectAllRestaurant"
-                @update:model-value="(v) => v !== 'indeterminate' && toggleSelectAllRestaurant(v)"
-                :label="t('accounting.selectAll')"
-              />
-            </div>
+            <h3 class="text-lg font-semibold">{{ t("accounting.restaurantCharges") }}</h3>
           </template>
           <div v-if="settlement?.restaurantBills?.length">
             <table class="w-full">
               <thead>
                 <tr class="border-b text-left text-sm text-gray-500">
-                  <th class="w-10 pb-2"></th>
                   <th class="pb-2">{{ t("accounting.billDate") }}</th>
-                  <th class="pb-2">{{ t("accounting.amount") }}</th>
+                  <th class="pb-2 text-right">{{ t("accounting.amount") }}</th>
                   <th class="pb-2">{{ t("accounting.external") }}</th>
                   <th class="pb-2">{{ t("common.notes") }}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="bill in settlement.restaurantBills" :key="bill.id" class="border-b">
-                  <td class="py-3">
-                    <UCheckbox v-model="selectedRestaurantBillIds" :value="bill.id" />
-                  </td>
                   <td class="py-3">{{ formatDate(bill.billDate) }}</td>
-                  <td class="py-3">${{ bill.totalAmount?.toFixed(2) }}</td>
+                  <td class="py-3 text-right">${{ bill.totalAmount?.toFixed(2) }}</td>
                   <td class="py-3">
                     <UBadge v-if="bill.isExternal" color="warning" variant="soft" size="sm">
                       {{ t("accounting.external") }}
@@ -159,41 +136,6 @@
           <div v-else class="py-4 text-center text-gray-500">
             {{ t("accounting.noRestaurantCharges") }}
           </div>
-        </UCard>
-
-        <!-- Payment Form -->
-        <UCard v-if="showSettlementForm">
-          <template #header>
-            <h3 class="text-lg font-semibold">{{ t("accounting.recordPayment") }}</h3>
-          </template>
-          <form @submit.prevent="handleSettle">
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <UFormField :label="t('accounting.amount')" name="amount" required>
-                <UInput v-model.number="form.amount" type="number" min="0" step="0.01" />
-              </UFormField>
-
-              <UFormField :label="t('accounting.paymentMethod')" name="paymentMethod">
-                <USelect v-model="form.paymentMethod" :items="paymentMethodOptions" />
-              </UFormField>
-
-              <UFormField :label="t('accounting.reference')" name="reference" class="md:col-span-2">
-                <UInput v-model="form.reference" :placeholder="t('accounting.receiptNumber')" />
-              </UFormField>
-
-              <UFormField :label="t('common.notes')" name="notes" class="md:col-span-2">
-                <UTextarea v-model="form.notes" :rows="2" />
-              </UFormField>
-            </div>
-
-            <div class="mt-6 flex justify-end gap-3">
-              <UButton variant="outline" @click="showSettlementForm = false">
-                {{ t("actions.cancel") }}
-              </UButton>
-              <UButton type="submit" color="success" :loading="settling">
-                {{ t("accounting.recordPayment") }}
-              </UButton>
-            </div>
-          </form>
         </UCard>
       </div>
 
@@ -234,24 +176,60 @@
                 >
               </div>
             </div>
-            <div class="border-t pt-3">
-              <div class="flex justify-between">
-                <span class="text-gray-500">{{ t("accounting.selected") }}</span>
-                <span class="font-semibold">${{ selectedTotal.toFixed(2) }}</span>
-              </div>
-            </div>
           </div>
         </UCard>
 
+        <!-- Pay Now Button (only if balance > 0) -->
         <UButton
-          v-if="selectedTotal > 0 && !showSettlementForm"
+          v-if="settlement && settlement.balance > 0"
           color="success"
           block
-          @click="openSettlementForm"
+          @click="showPaymentForm = true"
         >
           <UIcon name="i-lucide-credit-card" class="mr-2" />
-          {{ t("accounting.processPayment") }}
+          {{ t("accounting.payNow") }}
         </UButton>
+
+        <!-- Checkout Button (only if balance == 0) -->
+        <UButton
+          v-if="settlement && settlement.canCheckout"
+          color="error"
+          block
+          @click="handleCheckout"
+          :loading="checkingOut"
+        >
+          <UIcon name="i-lucide-log-out" class="mr-2" />
+          {{ t("accounting.checkout") }}
+        </UButton>
+
+        <!-- Payment Form Modal -->
+        <UModal v-model="showPaymentForm">
+          <template #body>
+            <div class="space-y-4">
+              <h3 class="text-lg font-semibold">{{ t("accounting.recordPayment") }}</h3>
+              <div class="grid grid-cols-1 gap-4">
+                <UFormField :label="t('accounting.amount')" name="amount">
+                  <UInput v-model.number="paymentForm.amount" type="number" min="0" step="0.01" />
+                </UFormField>
+                <UFormField :label="t('accounting.paymentMethod')" name="paymentMethod">
+                  <USelect v-model="paymentForm.paymentMethod" :items="paymentMethodOptions" />
+                </UFormField>
+                <UFormField :label="t('accounting.reference')" name="reference">
+                  <UInput v-model="paymentForm.reference" />
+                </UFormField>
+                <UFormField :label="t('common.notes')" name="notes">
+                  <UTextarea v-model="paymentForm.notes" :rows="2" />
+                </UFormField>
+              </div>
+            </div>
+          </template>
+          <template #footer>
+            <UButton variant="outline" @click="showPaymentForm = false">{{ t("actions.cancel") }}</UButton>
+            <UButton color="success" @click="handlePayment" :loading="paying">
+              {{ t("accounting.recordPayment") }}
+            </UButton>
+          </template>
+        </UModal>
       </div>
     </div>
   </div>
@@ -262,6 +240,7 @@ import {
   getApiAccountingPaymentMethods,
   getApiGuestsIdSettle,
   postApiGuestsIdSettle,
+  postApiGuestsIdCheckout,
 } from "~/utils/client";
 
 const { t } = useI18n();
@@ -269,18 +248,28 @@ const route = useRoute();
 const guestId = route.params.id as string;
 
 const loading = ref(true);
-const settling = ref(false);
-const showSettlementForm = ref(false);
+const paying = ref(false);
+const checkingOut = ref(false);
+const showPaymentForm = ref(false);
 
-interface ReservationSettlement {
+interface StayInvoiceSettlement {
   id: number;
-  reservationCode: string;
-  checkInDate: string;
-  checkOutDate: string;
+  acceptanceId: string;
+  entryDate: string;
+  departureDate: string;
   status: string;
   statusLabel: string;
-  roomPrice: number;
+  totalAmount: number;
   paidAmount: number;
+  remainingAmount: number;
+  items: Array<{
+    id: number;
+    description: string;
+    itemType: string;
+    totalPrice: number;
+    paidAmount: number;
+    remainingAmount: number;
+  }>;
 }
 
 interface ParkingSettlement {
@@ -304,7 +293,7 @@ interface RestaurantSettlement {
 }
 
 interface Settlement {
-  reservations: ReservationSettlement[];
+  stays: StayInvoiceSettlement[];
   parkingTransactions: ParkingSettlement[];
   restaurantBills: RestaurantSettlement[];
   totalRoom: number;
@@ -313,6 +302,7 @@ interface Settlement {
   totalDue: number;
   totalPaid: number;
   balance: number;
+  canCheckout: boolean;
 }
 
 interface PaymentMethod {
@@ -324,60 +314,7 @@ interface PaymentMethod {
 const settlement = ref<Settlement | null>(null);
 const paymentMethods = ref<PaymentMethod[]>([]);
 
-const selectedReservationIds = ref<number[]>([]);
-const selectedParkingTxnIds = ref<number[]>([]);
-const selectedRestaurantBillIds = ref<number[]>([]);
-const selectAllRoom = ref(false);
-const selectAllParking = ref(false);
-const selectAllRestaurant = ref(false);
-
-const toggleSelectAll = (val: boolean) => {
-  if (val && settlement.value) {
-    selectedReservationIds.value = settlement.value.reservations.map((r) => r.id);
-  } else {
-    selectedReservationIds.value = [];
-  }
-};
-
-const toggleSelectAllParking = (val: boolean) => {
-  if (val && settlement.value) {
-    selectedParkingTxnIds.value = settlement.value.parkingTransactions.map((p) => p.id);
-  } else {
-    selectedParkingTxnIds.value = [];
-  }
-};
-
-const toggleSelectAllRestaurant = (val: boolean) => {
-  if (val && settlement.value) {
-    selectedRestaurantBillIds.value = settlement.value.restaurantBills.map((b) => b.id);
-  } else {
-    selectedRestaurantBillIds.value = [];
-  }
-};
-
-const selectedTotal = computed(() => {
-  let total = 0;
-  if (settlement.value) {
-    for (const r of settlement.value.reservations) {
-      if (selectedReservationIds.value.includes(r.id)) {
-        total += r.roomPrice;
-      }
-    }
-    for (const p of settlement.value.parkingTransactions) {
-      if (selectedParkingTxnIds.value.includes(p.id)) {
-        total += p.amountDue;
-      }
-    }
-    for (const b of settlement.value.restaurantBills) {
-      if (selectedRestaurantBillIds.value.includes(b.id)) {
-        total += b.totalAmount;
-      }
-    }
-  }
-  return total;
-});
-
-const form = reactive({
+const paymentForm = reactive({
   amount: 0,
   paymentMethod: undefined as number | undefined,
   reference: "",
@@ -391,25 +328,10 @@ const paymentMethodOptions = computed(() => {
   }));
 });
 
-const getStatusColor = (status: string): "success" | "warning" | "info" | "error" | "neutral" => {
-  const colors: Record<string, "success" | "warning" | "info" | "error" | "neutral"> = {
-    pending: "warning",
-    confirmed: "info",
-    checked_in: "success",
-    checked_out: "neutral",
-    cancelled: "error",
-    no_show: "error",
-  };
-  return colors[status] || "neutral";
-};
-
 const fetchPaymentMethods = async () => {
   try {
     const res = await getApiAccountingPaymentMethods();
     paymentMethods.value = res.data?.data ?? [];
-    if (paymentMethods.value.length > 0) {
-      form.paymentMethod = paymentMethods.value[0]?.id;
-    }
   } catch (e) {
     console.error("Failed to fetch payment methods:", e);
   }
@@ -427,42 +349,61 @@ const fetchSettlement = async () => {
   }
 };
 
-const openSettlementForm = () => {
-  form.amount = selectedTotal.value;
-  showSettlementForm.value = true;
-};
+const handlePayment = async () => {
+  if (paymentForm.amount <= 0) return;
+  if (!paymentForm.paymentMethod) return;
 
-const handleSettle = async () => {
-  if (form.amount <= 0) return;
-  if (!form.paymentMethod) return;
-
-  settling.value = true;
+  paying.value = true;
   try {
+    // Gather invoice IDs for active stays
+    const invoiceIds = settlement.value?.stays
+      ?.filter((s) => s.remainingAmount > 0)
+      ?.map((s) => s.id) ?? [];
+
+    const parkingTxnIds = settlement.value?.parkingTransactions
+      ?.filter((p) => p.amountDue > p.amountPaid)
+      ?.map((p) => p.id) ?? [];
+
+    const restaurantBillIds = settlement.value?.restaurantBills
+      ?.map((b) => b.id) ?? [];
+
     await postApiGuestsIdSettle({
       path: { id: guestId },
       body: {
-        reservationIds: selectedReservationIds.value,
-        parkingTxnIds: selectedParkingTxnIds.value,
-        restaurantBillIds: selectedRestaurantBillIds.value,
-        amount: form.amount,
-        paymentMethod: form.paymentMethod,
-        reference: form.reference,
-        notes: form.notes,
+        invoiceIds,
+        parkingTxnIds,
+        restaurantBillIds,
+        amount: paymentForm.amount,
+        paymentMethod: paymentForm.paymentMethod,
+        reference: paymentForm.reference,
+        notes: paymentForm.notes,
       },
     });
 
-    showSettlementForm.value = false;
-    selectedReservationIds.value = [];
-    selectedParkingTxnIds.value = [];
-    selectedRestaurantBillIds.value = [];
-    selectAllRoom.value = false;
-    selectAllParking.value = false;
-    selectAllRestaurant.value = false;
+    showPaymentForm.value = false;
+    paymentForm.amount = 0;
+    paymentForm.reference = "";
+    paymentForm.notes = "";
     await fetchSettlement();
   } catch (error) {
     console.error("Failed to settle:", error);
   } finally {
-    settling.value = false;
+    paying.value = false;
+  }
+};
+
+const handleCheckout = async () => {
+  checkingOut.value = true;
+  try {
+    await postApiGuestsIdCheckout({
+      path: { id: guestId },
+      body: { paymentMethod: paymentForm.paymentMethod ?? 0 },
+    });
+    await navigateTo(`/guests/${guestId}`);
+  } catch (error) {
+    console.error("Failed to checkout:", error);
+  } finally {
+    checkingOut.value = false;
   }
 };
 

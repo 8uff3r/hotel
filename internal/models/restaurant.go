@@ -38,6 +38,8 @@ type RestaurantBill struct {
 
 	StatusID uint                 `gorm:"not null" json:"statusId"`
 	Status   RestaurantBillStatus `gorm:"foreignKey:StatusID" json:"status,omitzero"`
+
+	CheckoutID *uint `json:"checkoutId"`
 }
 
 type RestaurantStats struct {

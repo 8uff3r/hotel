@@ -95,6 +95,7 @@ type ParkingTransaction struct {
 	PaymentStatus   string        `gorm:"not null;default:pending" json:"paymentStatus"`
 	PaymentMethodID *uint         `json:"paymentMethodId"`
 	PaymentMethod   PaymentMethod `gorm:"foreignKey:PaymentMethodID" json:"paymentMethod,omitzero" translate:"true"`
+	CheckoutID      *uint          `json:"checkoutId"`
 	Notes           string        `json:"notes"`
 }
 

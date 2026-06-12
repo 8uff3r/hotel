@@ -20,6 +20,20 @@ export const zAccount = z.object({
 });
 
 /**
+ * CheckoutGuestRequest schema
+ */
+export const zCheckoutGuestRequest = z.object({
+    paymentMethod: z.int().gte(0).optional()
+});
+
+/**
+ * CheckoutGuestResponse schema
+ */
+export const zCheckoutGuestResponse = z.object({
+    checkoutId: z.int().gte(0).optional()
+});
+
+/**
  * Country schema
  */
 export const zCountry = z.object({
@@ -212,6 +226,7 @@ export const zGuest = z.object({
  */
 export const zGuestSettlementResponse = z.object({
     balance: z.number().optional(),
+    canCheckout: z.boolean().optional(),
     parkingTransactions: z.array(z.object({
         amountDue: z.number().optional(),
         amountPaid: z.number().optional(),
@@ -223,21 +238,50 @@ export const zGuestSettlementResponse = z.object({
         rateApplied: z.number().optional(),
         status: z.string().optional()
     })).optional(),
-    reservations: z.array(z.object({
-        checkInDate: z.string().optional(),
-        checkOutDate: z.string().optional(),
-        id: z.int().gte(0).optional(),
-        paidAmount: z.number().optional(),
-        reservationCode: z.string().optional(),
-        roomPrice: z.number().optional(),
-        status: z.string().optional(),
-        statusLabel: z.string().optional()
-    })).optional(),
     restaurantBills: z.array(z.object({
         billDate: z.string().optional(),
         id: z.int().gte(0).optional(),
         isExternal: z.boolean().optional(),
         notes: z.string().optional(),
+        totalAmount: z.number().optional()
+    })).optional(),
+    stays: z.array(z.object({
+        acceptanceId: z.string().optional(),
+        departureDate: z.string().optional(),
+        entryDate: z.string().optional(),
+        id: z.int().gte(0).optional(),
+        items: z.array(z.object({
+            description: z.string().optional(),
+            id: z.int().gte(0).optional(),
+            invoiceId: z.int().gte(0).optional(),
+            itemType: z.string().optional(),
+            paidAmount: z.number().optional(),
+            paymentMethod: z.object({
+                id: z.int().gte(0).optional(),
+                label: z.string().optional(),
+                slug: z.string().optional()
+            }).optional(),
+            paymentMethodId: z.int().gte(0).optional(),
+            paymentStatus: z.string().optional(),
+            quantity: z.int().optional(),
+            remainingAmount: z.number().optional(),
+            service: z.object({
+                baseAmount: z.number().optional(),
+                description: z.string().optional(),
+                hotelId: z.string().optional(),
+                id: z.int().gte(0).optional(),
+                name: z.string().optional(),
+                unit: z.string().optional()
+            }).optional(),
+            serviceId: z.int().gte(0).optional(),
+            stayId: z.int().gte(0).optional(),
+            totalPrice: z.number().optional(),
+            unitPrice: z.number().optional()
+        })).optional(),
+        paidAmount: z.number().optional(),
+        remainingAmount: z.number().optional(),
+        status: z.string().optional(),
+        statusLabel: z.string().optional(),
         totalAmount: z.number().optional()
     })).optional(),
     totalDue: z.number().optional(),
@@ -882,6 +926,7 @@ export const zGuestWithStayResponse = z.object({
         hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         invoice: z.object({
+            checkoutId: z.int().gte(0).optional(),
             createdAt: z.iso.datetime({ offset: true }).optional(),
             hotelId: z.string().optional(),
             id: z.int().gte(0).optional(),
@@ -1441,6 +1486,7 @@ export const zGuestWithStaysAndReservationsResponse = z.object({
         hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         invoice: z.object({
+            checkoutId: z.int().gte(0).optional(),
             createdAt: z.iso.datetime({ offset: true }).optional(),
             hotelId: z.string().optional(),
             id: z.int().gte(0).optional(),
@@ -1843,6 +1889,7 @@ export const zIncome = z.object({
     id: z.int().gte(0).optional(),
     incomeDate: z.iso.datetime({ offset: true }).optional(),
     invoice: z.object({
+        checkoutId: z.int().gte(0).optional(),
         createdAt: z.iso.datetime({ offset: true }).optional(),
         hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
@@ -2132,6 +2179,7 @@ export const zIncome = z.object({
         hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         invoice: z.object({
+            checkoutId: z.int().gte(0).optional(),
             createdAt: z.iso.datetime({ offset: true }).optional(),
             hotelId: z.string().optional(),
             id: z.int().gte(0).optional(),
@@ -2462,6 +2510,7 @@ export const zInventoryItem = z.object({
  * Invoice schema
  */
 export const zInvoice = z.object({
+    checkoutId: z.int().gte(0).optional(),
     createdAt: z.iso.datetime({ offset: true }).optional(),
     hotelId: z.string().optional(),
     id: z.int().gte(0).optional(),
@@ -3077,6 +3126,7 @@ export const zPaginatedResponseModelsIncome = z.object({
         id: z.int().gte(0).optional(),
         incomeDate: z.iso.datetime({ offset: true }).optional(),
         invoice: z.object({
+            checkoutId: z.int().gte(0).optional(),
             createdAt: z.iso.datetime({ offset: true }).optional(),
             hotelId: z.string().optional(),
             id: z.int().gte(0).optional(),
@@ -3366,6 +3416,7 @@ export const zPaginatedResponseModelsIncome = z.object({
             hotelId: z.string().optional(),
             id: z.int().gte(0).optional(),
             invoice: z.object({
+                checkoutId: z.int().gte(0).optional(),
                 createdAt: z.iso.datetime({ offset: true }).optional(),
                 hotelId: z.string().optional(),
                 id: z.int().gte(0).optional(),
@@ -4011,6 +4062,7 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
     data: z.array(z.object({
         amountDue: z.number().optional(),
         amountPaid: z.number().optional(),
+        checkoutId: z.int().gte(0).optional(),
         entryTime: z.iso.datetime({ offset: true }).optional(),
         exitTime: z.iso.datetime({ offset: true }).optional(),
         guest: z.object({
@@ -4613,6 +4665,7 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
             totalCapacity: z.int().optional()
         }).optional(),
         billDate: z.iso.datetime({ offset: true }).optional(),
+        checkoutId: z.int().gte(0).optional(),
         discountAmount: z.number().optional(),
         externalRestaurant: z.string().optional(),
         guest: z.object({
@@ -5237,6 +5290,7 @@ export const zPaginatedResponseModelsStay = z.object({
         hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
         invoice: z.object({
+            checkoutId: z.int().gte(0).optional(),
             createdAt: z.iso.datetime({ offset: true }).optional(),
             hotelId: z.string().optional(),
             id: z.int().gte(0).optional(),
@@ -5777,6 +5831,7 @@ export const zParkingStats = z.object({
 export const zParkingTransaction = z.object({
     amountDue: z.number().optional(),
     amountPaid: z.number().optional(),
+    checkoutId: z.int().gte(0).optional(),
     entryTime: z.iso.datetime({ offset: true }).optional(),
     exitTime: z.iso.datetime({ offset: true }).optional(),
     guest: z.object({
@@ -6308,6 +6363,7 @@ export const zRestaurantBill = z.object({
         totalCapacity: z.int().optional()
     }).optional(),
     billDate: z.iso.datetime({ offset: true }).optional(),
+    checkoutId: z.int().gte(0).optional(),
     discountAmount: z.number().optional(),
     externalRestaurant: z.string().optional(),
     guest: z.object({
@@ -6854,11 +6910,11 @@ export const zService = z.object({
  */
 export const zSettleGuestRequest = z.object({
     amount: z.number().optional(),
+    invoiceIds: z.array(z.int().gte(0)).optional(),
     notes: z.string().optional(),
     parkingTxnIds: z.array(z.int().gte(0)).optional(),
     paymentMethod: z.int().gte(0).optional(),
     reference: z.string().optional(),
-    reservationIds: z.array(z.int().gte(0)).optional(),
     restaurantBillIds: z.array(z.int().gte(0)).optional()
 });
 
@@ -6943,6 +6999,7 @@ export const zStay = z.object({
     hotelId: z.string().optional(),
     id: z.int().gte(0).optional(),
     invoice: z.object({
+        checkoutId: z.int().gte(0).optional(),
         createdAt: z.iso.datetime({ offset: true }).optional(),
         hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
@@ -7477,6 +7534,7 @@ export const zChangeDurationResponse = z.object({
     hotelId: z.string().optional(),
     id: z.int().gte(0).optional(),
     invoice: z.object({
+        checkoutId: z.int().gte(0).optional(),
         createdAt: z.iso.datetime({ offset: true }).optional(),
         hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
@@ -7845,6 +7903,7 @@ export const zCheckInResponse = z.object({
     hotelId: z.string().optional(),
     id: z.int().gte(0).optional(),
     invoice: z.object({
+        checkoutId: z.int().gte(0).optional(),
         createdAt: z.iso.datetime({ offset: true }).optional(),
         hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
@@ -8113,11 +8172,6 @@ export const zCheckInResponse = z.object({
 });
 
 /**
- * checkOutDto schema
- */
-export const zCheckOutDto = z.unknown();
-
-/**
  * createReservationResponse schema
  */
 export const zCreateReservationResponse = z.object({
@@ -8352,6 +8406,7 @@ export const zCreateStayResponse = z.object({
     hotelId: z.string().optional(),
     id: z.int().gte(0).optional(),
     invoice: z.object({
+        checkoutId: z.int().gte(0).optional(),
         createdAt: z.iso.datetime({ offset: true }).optional(),
         hotelId: z.string().optional(),
         id: z.int().gte(0).optional(),
@@ -8762,14 +8817,6 @@ export const zOkResponse = z.object({
 });
 
 /**
- * payInvoiceDto schema
- */
-export const zPayInvoiceDto = z.object({
-    amount: z.number().optional(),
-    paymentMethod: z.int().gte(0).optional()
-});
-
-/**
  * permissionsResponse schema
  */
 export const zPermissionsResponse = z.object({
@@ -8820,14 +8867,6 @@ export const zRoomPicturesResponse = z.object({
         roomId: z.int().gte(0).optional(),
         url: z.string().optional()
     })).optional()
-});
-
-/**
- * settleDto schema
- */
-export const zSettleDto = z.object({
-    amount: z.number().optional(),
-    paymentMethod: z.int().gte(0).optional()
 });
 
 /**
@@ -9155,6 +9194,19 @@ export const zPutApiGuestsIdHeaders = z.object({
 });
 
 export const zPutApiGuestsIdPath = z.object({
+    id: z.string()
+});
+
+/**
+ * Request body for guests.CheckoutGuestRequest
+ */
+export const zPostApiGuestsIdCheckoutBody = zCheckoutGuestRequest;
+
+export const zPostApiGuestsIdCheckoutHeaders = z.object({
+    Accept: z.string().optional()
+});
+
+export const zPostApiGuestsIdCheckoutPath = z.object({
     id: z.string()
 });
 
@@ -10161,19 +10213,6 @@ export const zPostApiStaysIdCheckInPath = z.object({
     id: z.string()
 });
 
-/**
- * Request body for stays.checkOutDto
- */
-export const zPostApiStaysIdCheckOutBody = zCheckOutDto;
-
-export const zPostApiStaysIdCheckOutHeaders = z.object({
-    Accept: z.string().optional()
-});
-
-export const zPostApiStaysIdCheckOutPath = z.object({
-    id: z.string()
-});
-
 export const zGetApiStaysIdInvoiceHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -10196,19 +10235,6 @@ export const zPostApiStaysIdInvoiceItemsPath = z.object({
 });
 
 /**
- * Request body for stays.payInvoiceDto
- */
-export const zPostApiStaysIdInvoicePayBody = zPayInvoiceDto;
-
-export const zPostApiStaysIdInvoicePayHeaders = z.object({
-    Accept: z.string().optional()
-});
-
-export const zPostApiStaysIdInvoicePayPath = z.object({
-    id: z.string()
-});
-
-/**
  * Request body for stays.addServiceDto
  */
 export const zPostApiStaysIdServicesBody = zAddServiceDto;
@@ -10218,19 +10244,6 @@ export const zPostApiStaysIdServicesHeaders = z.object({
 });
 
 export const zPostApiStaysIdServicesPath = z.object({
-    id: z.string()
-});
-
-/**
- * Request body for stays.settleDto
- */
-export const zPostApiStaysIdSettleBody = zSettleDto;
-
-export const zPostApiStaysIdSettleHeaders = z.object({
-    Accept: z.string().optional()
-});
-
-export const zPostApiStaysIdSettlePath = z.object({
     id: z.string()
 });
 

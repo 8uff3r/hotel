@@ -16,6 +16,7 @@ func AllForDB() []any {
 		&Admin{}, &AdminHotel{},
 		&Stay{}, &StayStatus{},
 		&Invoice{}, &InvoiceItem{}, &Service{},
+		&GuestCheckout{},
 		&Floor{}, &RoomPicture{},
 	}
 }
@@ -67,6 +68,7 @@ func AllForTypeGen() []any {
 		Invoice{},
 		InvoiceItem{},
 		Service{},
+		GuestCheckout{},
 		Floor{},
 		HotelSetting{},
 	}

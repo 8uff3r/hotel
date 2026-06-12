@@ -111,6 +111,7 @@ func (gm GuestsModule) RegisterRoutes(api *h.API, s *fuego.Server) {
 
 	fuego.Get(s, "/{id}/settle", gm.getGuestSettlementHandler)
 	fuego.Post(s, "/{id}/settle", gm.settleGuestAccount)
+	fuego.Post(s, "/{id}/checkout", gm.checkoutGuest)
 	fuego.Get(s, "/{id}/with-stay", gm.getGuestWithStaysAndReservations)
 
 	fuego.Get(s, "/relations", h.ListModel[models.FamilyRelationship](api.Db, h.WithTranslation[models.FamilyRelationship]()))
@@ -129,26 +130,29 @@ type GuestWithStaysAndReservationsResponse struct {
 }
 
 type GuestSettlementResponse struct {
-	Reservations    []ReservationSettlement `json:"reservations"`
-	ParkingTxns     []ParkingSettlement     `json:"parkingTransactions"`
-	RestaurantBills []RestaurantSettlement  `json:"restaurantBills"`
-	TotalRoom       float64                 `json:"totalRoom"`
-	TotalParking    float64                 `json:"totalParking"`
-	TotalRestaurant float64                 `json:"totalRestaurant"`
-	TotalDue        float64                 `json:"totalDue"`
-	TotalPaid       float64                 `json:"totalPaid"`
-	Balance         float64                 `json:"balance"`
+	Stays           []StayInvoiceSettlement `json:"stays"`
+	ParkingTxns     []ParkingSettlement       `json:"parkingTransactions"`
+	RestaurantBills []RestaurantSettlement    `json:"restaurantBills"`
+	TotalRoom       float64                   `json:"totalRoom"`
+	TotalParking    float64                   `json:"totalParking"`
+	TotalRestaurant float64                   `json:"totalRestaurant"`
+	TotalDue        float64                   `json:"totalDue"`
+	TotalPaid       float64                   `json:"totalPaid"`
+	Balance         float64                   `json:"balance"`
+	CanCheckout     bool                      `json:"canCheckout"`
 }
 
-type ReservationSettlement struct {
-	ID              uint    `json:"id"`
-	ReservationCode string  `json:"reservationCode"`
-	CheckInDate     string  `json:"checkInDate"`
-	CheckOutDate    string  `json:"checkOutDate"`
-	Status          string  `json:"status"`
-	StatusLabel     string  `json:"statusLabel"`
-	RoomPrice       float64 `json:"roomPrice"`
-	PaidAmount      float64 `json:"paidAmount"`
+type StayInvoiceSettlement struct {
+	ID              uint               `json:"id"`
+	AcceptanceID    string             `json:"acceptanceId"`
+	EntryDate       string             `json:"entryDate"`
+	DepartureDate   string             `json:"departureDate"`
+	Status          string             `json:"status"`
+	StatusLabel     string             `json:"statusLabel"`
+	TotalAmount     float64            `json:"totalAmount"`
+	PaidAmount      float64            `json:"paidAmount"`
+	RemainingAmount float64            `json:"remainingAmount"`
+	Items           []models.InvoiceItem `json:"items"`
 }
 
 type ParkingSettlement struct {
@@ -169,6 +173,14 @@ type RestaurantSettlement struct {
 	TotalAmount float64 `json:"totalAmount"`
 	Notes       string  `json:"notes"`
 	IsExternal  bool    `json:"isExternal"`
+}
+
+type CheckoutGuestRequest struct {
+	PaymentMethod uint `json:"paymentMethod"`
+}
+
+type CheckoutGuestResponse struct {
+	CheckoutID uint `json:"checkoutId"`
 }
 
 func resolveRoomStatusID(db *gorm.DB, slug string) uint {
@@ -495,7 +507,7 @@ func (gm *GuestsModule) generateInvoiceForStay(tx *gorm.DB, stay *models.Stay) e
 }
 
 type SettleGuestRequest struct {
-	ReservationIDs    []uint  `json:"reservationIds"`
+	InvoiceIDs        []uint  `json:"invoiceIds"`
 	ParkingTxnIDs     []uint  `json:"parkingTxnIds"`
 	RestaurantBillIDs []uint  `json:"restaurantBillIds"`
 	Amount            float64 `json:"amount"`
@@ -528,49 +540,49 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 	receivedStatusID := resolvePaymentStatus(gm.Db, "received")
 
 	err = gm.Db.WithContext(c).Transaction(func(tx *gorm.DB) error {
-		for _, resID := range body.ReservationIDs {
-			var res models.Reservation
-			if err := tx.First(&res, resID).Error; err != nil {
+		// Pay invoices (room charges)
+		for _, invID := range body.InvoiceIDs {
+			var inv models.Invoice
+			if err := tx.First(&inv, invID).Error; err != nil {
 				continue
 			}
-			if res.GuestID != id {
+			var stay models.Stay
+			if err := tx.Where("id = ?", inv.StayID).First(&stay).Error; err != nil {
 				continue
+			}
+			if stay.GuestID != id {
+				continue
+			}
+			inv.PaidAmount += body.Amount
+			inv.RemainingAmount = inv.TotalAmount - inv.PaidAmount
+			if inv.RemainingAmount <= 0 {
+				inv.PaymentStatus = string(models.PaymentStatusCleared)
+				inv.RemainingAmount = 0
+			} else {
+				inv.PaymentStatus = string(models.PaymentStatusPartiallyPaid)
+			}
+			if body.PaymentMethod > 0 {
+				inv.PaymentMethodID = &body.PaymentMethod
+			}
+			if err := tx.Save(&inv).Error; err != nil {
+				return err
 			}
 
+			// Create income record
 			income := models.Income{
 				IncomeDate:      time.Now().UTC(),
-				Description:     "Room payment - Reservation " + res.ReservationCode,
-				Amount:          res.RoomPrice,
+				Description:     "Room payment - Invoice #" + formatID(inv.ID),
+				Amount:          body.Amount,
 				Source:          guest.FirstName + " " + guest.LastName,
 				PaymentMethodID: body.PaymentMethod,
 				Notes:           body.Notes,
+				ReservationID:   nil,
 			}
 			income.CategoryID = resolveIncomeCategory(tx, "room_revenue")
 			income.PaymentStatusID = receivedStatusID
 			income.AccountID = resolveAccount(tx, "1000")
-			income.ReservationID = &resID
 			if err := tx.Create(&income).Error; err != nil {
 				return err
-			}
-
-			var payment models.Payment
-			if err := tx.Where("reservation_id = ?", resID).First(&payment).Error; err != nil {
-				payment = models.Payment{
-					ReservationID: resID,
-					Amount:        res.RoomPrice,
-					MethodID:      body.PaymentMethod,
-					StatusID:      receivedStatusID,
-				}
-				if err := tx.Create(&payment).Error; err != nil {
-					return err
-				}
-			} else {
-				payment.Amount += res.RoomPrice
-				payment.MethodID = body.PaymentMethod
-				payment.StatusID = receivedStatusID
-				if err := tx.Save(&payment).Error; err != nil {
-					return err
-				}
 			}
 		}
 
@@ -655,8 +667,10 @@ func formatID(id uint) string {
 func (gm *GuestsModule) getGuestSettlement(id uint) (GuestSettlementResponse, error) {
 	var zero GuestSettlementResponse
 
-	var reservations []models.Reservation
-	if err := gm.Db.Preload("Status").Where("guest_id = ?", id).Find(&reservations).Error; err != nil {
+	// Find active/resident stays for the guest
+	var stays []models.Stay
+	if err := gm.Db.Preload("Status").Preload("Invoice.Items").Preload("Invoice.Items.Service").
+		Where("guest_id = ?", id).Order("entry_date desc").Find(&stays).Error; err != nil {
 		return zero, err
 	}
 
@@ -671,39 +685,48 @@ func (gm *GuestsModule) getGuestSettlement(id uint) (GuestSettlementResponse, er
 	}
 
 	var resp GuestSettlementResponse
-	resp.Reservations = make([]ReservationSettlement, 0, len(reservations))
+	resp.Stays = make([]StayInvoiceSettlement, 0, len(stays))
 	resp.ParkingTxns = make([]ParkingSettlement, 0, len(parkingTxns))
 	resp.RestaurantBills = make([]RestaurantSettlement, 0, len(bills))
 
 	var totalRoom, totalParking, totalRestaurant, totalPaid float64
 
-	for _, r := range reservations {
-		var paid float64
-		gm.Db.Model(&models.Income{}).
-			Select("COALESCE(SUM(amount), 0)").
-			Where("reservation_id = ?", r.ID).
-			Scan(&paid)
+	for _, stay := range stays {
+		inv := stay.Invoice
+		var items []models.InvoiceItem
+		if inv != nil {
+			items = inv.Items
+		}
 
 		statusSlug := ""
 		statusLabel := ""
-		if r.Status.Slug != "" {
-			statusSlug = r.Status.Slug
-			statusLabel = r.Status.Label
+		if stay.Status.Slug != "" {
+			statusSlug = stay.Status.Slug
+			statusLabel = stay.Status.Label
 		}
 
-		s := ReservationSettlement{
-			ID:              r.ID,
-			ReservationCode: r.ReservationCode,
-			CheckInDate:     r.EntryDate.Format(time.RFC3339),
-			CheckOutDate:    r.DepartureDate.Format(time.RFC3339),
+		var totalAmount, paidAmount, remainingAmount float64
+		if inv != nil {
+			totalAmount = inv.TotalAmount
+			paidAmount = inv.PaidAmount
+			remainingAmount = inv.RemainingAmount
+		}
+
+		s := StayInvoiceSettlement{
+			ID:              stay.ID,
+			AcceptanceID:    stay.AcceptanceID,
+			EntryDate:       stay.EntryDate.Format(time.RFC3339),
+			DepartureDate:   stay.DepartureDate.Format(time.RFC3339),
 			Status:          statusSlug,
 			StatusLabel:     statusLabel,
-			RoomPrice:       r.RoomPrice,
-			PaidAmount:      paid,
+			TotalAmount:     totalAmount,
+			PaidAmount:      paidAmount,
+			RemainingAmount: remainingAmount,
+			Items:           items,
 		}
-		resp.Reservations = append(resp.Reservations, s)
-		totalRoom += r.RoomPrice
-		totalPaid += paid
+		resp.Stays = append(resp.Stays, s)
+		totalRoom += totalAmount
+		totalPaid += paidAmount
 	}
 
 	for _, p := range parkingTxns {
@@ -750,8 +773,122 @@ func (gm *GuestsModule) getGuestSettlement(id uint) (GuestSettlementResponse, er
 	resp.TotalDue = totalRoom + totalParking + totalRestaurant
 	resp.TotalPaid = totalPaid
 	resp.Balance = resp.TotalDue - totalPaid
+	resp.CanCheckout = resp.Balance <= 0
 
 	return resp, nil
+}
+
+func (gm *GuestsModule) checkoutGuest(c fuego.ContextWithBody[CheckoutGuestRequest]) (CheckoutGuestResponse, error) {
+	var zero CheckoutGuestResponse
+	id, err := h.ParseID(c.PathParam("id"))
+	if err != nil {
+		return zero, fuego.BadRequestError{Title: "invalid_id"}
+	}
+
+	body, err := c.Body()
+	if err != nil {
+		return zero, err
+	}
+
+	var guest models.Guest
+	if err := gm.Db.First(&guest, id).Error; err != nil {
+		return zero, fuego.NotFoundError{}
+	}
+
+	// Verify no outstanding balance
+	settlement, err := gm.getGuestSettlement(id)
+	if err != nil {
+		return zero, fuego.InternalServerError{Title: "settlement_check_failed"}
+	}
+	if settlement.Balance > 0 {
+		return zero, fuego.BadRequestError{Title: "outstanding_balance", Detail: "Guest has outstanding balance"}
+	}
+
+	// Find active stay
+	var stay models.Stay
+	if err := gm.Db.Where("guest_id = ? AND status_id IN (SELECT id FROM stay_statuses WHERE slug = ?)", id, string(models.StayStatusResident)).First(&stay).Error; err != nil {
+		return zero, fuego.BadRequestError{Title: "no_active_stay", Detail: "No active stay to checkout"}
+	}
+
+	var checkout models.GuestCheckout
+	err = gm.Db.Transaction(func(tx *gorm.DB) error {
+		// Create checkout record
+		checkout = models.GuestCheckout{
+			GuestID:         id,
+			StayID:          stay.ID,
+			TotalRoom:       settlement.TotalRoom,
+			TotalParking:    settlement.TotalParking,
+			TotalRestaurant: settlement.TotalRestaurant,
+			TotalPaid:       settlement.TotalPaid,
+			CheckedOutAt:    time.Now().UTC(),
+		}
+		if body.PaymentMethod > 0 {
+			checkout.PaymentMethodID = &body.PaymentMethod
+		}
+		if err := tx.Create(&checkout).Error; err != nil {
+			return err
+		}
+
+		// Update stay
+		now := time.Now().UTC()
+		stay.ActualCheckOut = &now
+		var checkedOutStatus models.StayStatus
+		if err := tx.Where("slug = ?", string(models.StayStatusCheckedOut)).First(&checkedOutStatus).Error; err == nil {
+			stay.StatusID = checkedOutStatus.ID
+		}
+		if err := tx.Save(&stay).Error; err != nil {
+			return err
+		}
+
+		// Update room to cleaning
+		var cleaningStatus models.RoomStatus
+		if err := tx.Where("slug = ?", string(models.RoomStatusCleaning)).First(&cleaningStatus).Error; err == nil {
+			tx.Model(&models.Room{}).Where("id = ?", stay.RoomID).Update("status_id", cleaningStatus.ID)
+		}
+
+		// Update invoice checkout_id
+		var invoice models.Invoice
+		if err := tx.Where("stay_id = ?", stay.ID).First(&invoice).Error; err == nil {
+			invoice.CheckoutID = &checkout.ID
+			if err := tx.Save(&invoice).Error; err != nil {
+				return err
+			}
+		}
+
+		// Mark parking txns
+		var parkingTxns []models.ParkingTransaction
+		if err := tx.Where("guest_id = ?", id).Find(&parkingTxns).Error; err == nil {
+			for _, p := range parkingTxns {
+				p.CheckoutID = &checkout.ID
+				p.Status = "closed"
+				if err := tx.Save(&p).Error; err != nil {
+					return err
+				}
+			}
+		}
+
+		// Mark restaurant bills
+		var bills []models.RestaurantBill
+		if err := tx.Where("guest_id = ? AND settled = ?", id, false).Find(&bills).Error; err == nil {
+			now := time.Now().UTC()
+			for _, b := range bills {
+				b.Settled = true
+				b.SettledAt = &now
+				b.CheckoutID = &checkout.ID
+				if err := tx.Save(&b).Error; err != nil {
+					return err
+				}
+			}
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return zero, fuego.BadRequestError{Title: "checkout_failed"}
+	}
+
+	return CheckoutGuestResponse{CheckoutID: checkout.ID}, nil
 }
 
 func (gm *GuestsModule) getGuestSettlementHandler(c fuego.ContextNoBody) (GuestSettlementResponse, error) {
