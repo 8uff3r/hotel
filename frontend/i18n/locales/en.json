@@ -14,7 +14,9 @@
     "editGuest": "Edit Guest",
     "saveChanges": "Save Changes",
     "close": "Close",
-    "add": "Add"
+    "add": "Add",
+    "change": "Change",
+    "actions": "Actions"
   },
   "restaurant": {
     "title": "Restaurant",
@@ -270,6 +272,9 @@
     "view": "View",
     "edit": "Edit",
     "status": "Status",
+    "name": "Name",
+    "nationalId": "National ID",
+    "phone": "Phone",
     "columns": {
       "id": "ID",
       "name": "Name",
@@ -331,6 +336,8 @@
     "status": "Status",
     "descriptionPlaceholder": "Room description...",
     "amenities": "Amenities",
+    "capacity": "Capacity",
+    "type": "Type",
     "confirmDelete": "Are you sure you want to delete room {roomNumber}?",
     "columns": {
       "roomNumber": "Room #",
@@ -784,6 +791,7 @@
     "notSynced": "Not Synced",
     "columns": {
       "name": "Name",
+      "lastName": "Last Name",
       "nationalId": "National ID",
       "recordMosafer": "Passenger Code",
       "shomarePaziresh": "Reception Number",
@@ -808,6 +816,39 @@
     "departureDate": "Departure Date",
     "status": "Status",
     "actions": "Actions",
-    "count": "{count} Receptions"
+    "count": "{count} Receptions",
+    "detailTitle": "Reception Details",
+    "checkIn": "Check In",
+    "checkOut": "Check Out",
+    "changeRoom": "Change Room",
+    "addService": "Add Service",
+    "changeDuration": "Change Duration",
+    "guestInfo": "Guest Info",
+    "roomInfo": "Room Info",
+    "stayInfo": "Stay Info",
+    "numberOfPeople": "Number of People",
+    "roomPrice": "Room Price",
+    "earlyCheckInFee": "Early Check-in Fee",
+    "halfDayFee": "Half Day Fee",
+    "invoice": "Invoice",
+    "totalAmount": "Total Amount",
+    "paidAmount": "Paid Amount",
+    "remainingAmount": "Remaining Amount",
+    "paymentStatus": "Payment Status",
+    "goToSettlement": "Go to Settlement",
+    "noInvoice": "No Invoice",
+    "invoiceItems": "Invoice Items",
+    "unpaid": "Unpaid",
+    "settled": "Settled",
+    "newRoom": "New Room",
+    "service": "Service",
+    "quantity": "Quantity",
+    "description": "Description",
+    "add": "Add",
+    "newDuration": "New Duration",
+    "updateDuration": "Update Duration",
+    "itemType": "Item Type",
+    "unitPrice": "Unit Price",
+    "totalPrice": "Total Price"
   }
 }

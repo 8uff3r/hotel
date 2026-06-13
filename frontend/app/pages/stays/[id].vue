@@ -72,10 +72,11 @@
         </template>
         <div class="space-y-2">
           <p>
-            <strong>{{ t("stays.entryDate") }}:</strong> {{ formatDate(stay.entryDate ?? '') }}
+            <strong>{{ t("stays.entryDate") }}:</strong> {{ formatDate(stay.entryDate ?? "") }}
           </p>
           <p>
-            <strong>{{ t("stays.departureDate") }}:</strong> {{ formatDate(stay.departureDate ?? '') }}
+            <strong>{{ t("stays.departureDate") }}:</strong>
+            {{ formatDate(stay.departureDate ?? "") }}
           </p>
           <p>
             <strong>{{ t("stays.numberOfPeople") }}:</strong> {{ stay.numberOfPeople }}
@@ -96,7 +97,7 @@
         <template #header>
           <h2 class="font-semibold">{{ t("stays.invoice") }}</h2>
         </template>
-        <div v-if="invoice" class="space-y-2">
+        <div v-if="invoice" class="flex flex-col space-y-2">
           <p>
             <strong>{{ t("stays.totalAmount") }}:</strong> {{ invoice.totalAmount }}
           </p>
@@ -109,7 +110,9 @@
           <p>
             <strong>{{ t("stays.paymentStatus") }}:</strong> {{ invoice.paymentStatus }}
           </p>
-          <UButton size="xs" :to="`/guests/${stay.guestId}/settle`">{{ t("stays.goToSettlement") }}</UButton>
+          <UButton size="xs" :to="`/guests/${stay.guestId}/settle`" class="self-end">
+            {{ t("stays.goToSettlement") }}
+          </UButton>
         </div>
         <div v-else>{{ t("stays.noInvoice") }}</div>
       </UCard>
@@ -122,7 +125,10 @@
       </template>
       <UTable :data="invoice.items" :columns="itemColumns">
         <template #actions-cell="{ row }">
-          <UBadge v-if="((row.original as unknown as InvoiceItem).remainingAmount ?? 0) > 0" color="warning">
+          <UBadge
+            v-if="((row.original as unknown as InvoiceItem).remainingAmount ?? 0) > 0"
+            color="warning"
+          >
             {{ t("stays.unpaid") }}
           </UBadge>
           <UBadge v-else color="success">{{ t("stays.settled") }}</UBadge>
@@ -131,71 +137,71 @@
     </UCard>
 
     <!-- Room Change Modal -->
-    <UModal v-model="showRoomChange">
-      <UCard>
-        <template #header>
-          <h3 class="font-semibold">{{ t("stays.changeRoom") }}</h3>
-        </template>
+    <UModal v-model:open="showRoomChange">
+      <template #header>
+        <h3 class="font-semibold">{{ t("stays.changeRoom") }}</h3>
+      </template>
+      <template #body>
         <UForm :state="roomChangeState" @submit="doRoomChange">
-          <UFormGroup :label="t('stays.newRoom')" name="newRoomId">
+          <UFormField :label="t('stays.newRoom')" name="newRoomId">
             <USelect v-model="roomChangeState.newRoomId" :items="roomOptions" />
-          </UFormGroup>
+          </UFormField>
           <div class="mt-4 flex gap-2">
             <UButton type="submit" :loading="roomChangeLoading">{{ t("actions.change") }}</UButton>
-            <UButton variant="outline" @click="showRoomChange = false">{{
-              t("actions.cancel")
-            }}</UButton>
+            <UButton variant="outline" @click="showRoomChange = false">
+              {{ t("actions.cancel") }}
+            </UButton>
           </div>
         </UForm>
-      </UCard>
+      </template>
     </UModal>
 
     <!-- Add Service Modal -->
-    <UModal v-model="showService">
-      <UCard>
-        <template #header>
-          <h3 class="font-semibold">{{ t("stays.addService") }}</h3>
-        </template>
+    <UModal v-model:open="showService">
+      <template #header>
+        <h3 class="font-semibold">{{ t("stays.addService") }}</h3>
+      </template>
+      <template #body>
         <UForm :state="serviceState" @submit="doAddService">
-          <UFormGroup :label="t('stays.service')" name="serviceId">
+          <UFormField :label="t('stays.service')" name="serviceId">
             <USelect v-model="serviceState.serviceId" :items="serviceOptions" />
-          </UFormGroup>
-          <UFormGroup :label="t('stays.quantity')" name="quantity" class="mt-2">
+          </UFormField>
+          <UFormField :label="t('stays.quantity')" name="quantity" class="mt-2">
             <UInput v-model.number="serviceState.quantity" type="number" />
-          </UFormGroup>
-          <UFormGroup :label="t('stays.description')" name="description" class="mt-2">
+          </UFormField>
+          <UFormField :label="t('stays.description')" name="description" class="mt-2">
             <UTextarea v-model="serviceState.description" />
-          </UFormGroup>
+          </UFormField>
           <div class="mt-4 flex gap-2">
             <UButton type="submit" :loading="serviceLoading">{{ t("stays.add") }}</UButton>
-            <UButton variant="outline" @click="showService = false">{{
-              t("actions.cancel")
-            }}</UButton>
+            <UButton variant="outline" @click="showService = false">
+              {{ t("actions.cancel") }}
+            </UButton>
           </div>
         </UForm>
-      </UCard>
+      </template>
     </UModal>
 
     <!-- Change Duration Modal -->
-    <UModal v-model="showExtend">
-      <UCard>
-        <template #header>
-          <h3 class="font-semibold">{{ t("stays.changeDuration") }}</h3>
-        </template>
+    <UModal v-model:open="showExtend">
+      <template #header>
+        <h3 class="font-semibold">{{ t("stays.changeDuration") }}</h3>
+      </template>
+      <template #body>
         <UForm :state="extendState" @submit="doChangeDuration">
-          <UFormGroup :label="t('stays.newDuration')" name="durationOfStay" required>
+          <UFormField :label="t('stays.newDuration')" name="durationOfStay" required>
             <UInput v-model.number="extendState.durationOfStay" type="number" min="1" />
-          </UFormGroup>
+          </UFormField>
           <div class="mt-4 flex gap-2">
-            <UButton type="submit" :loading="extendLoading">{{
-              t("stays.updateDuration")
-            }}</UButton>
-            <UButton variant="outline" @click="showExtend = false">{{
-              t("actions.cancel")
-            }}</UButton>
+            <UButton type="submit" :loading="extendLoading">
+              {{ t("stays.updateDuration") }}
+            </UButton>
+            <UButton variant="outline" @click="showExtend = false">
+              {{ t("actions.cancel") }}
+            </UButton>
           </div>
         </UForm>
-      </UCard>
+      </template>
     </UModal>
   </div>
 </template>
@@ -210,38 +216,47 @@ import {
 import type { Invoice, InvoiceItem, Room, Service, Stay } from "~/utils/client";
 
 const route = useRoute();
-const stayId = route.params.id as string;
+const stayId = computed(() => route.params.id as string);
 const { t } = useI18n();
 
-const { data: stay, refresh: refreshStay } = useFetch(`/api/stays/${stayId}`, {
-  key: `stay-${stayId}`,
-  transform: (res) => (res as { data?: Stay })?.data,
+const { data: stay, refresh: refreshStay } = useQuery({
+  key: () => ["stay", stayId.value],
+  query: async () => {
+    const res = await getApiStaysId({ path: { id: stayId.value } });
+    return res.data;
+  },
 });
 
-const { data: invoice, refresh: refreshInvoice } = useFetch(`/api/stays/${stayId}/invoice`, {
-  key: `stay-invoice-${stayId}`,
-  transform: (res) => (res as { data?: Invoice })?.data,
+const { data: invoice, refresh: refreshInvoice } = useQuery({
+  key: () => ["stay", stayId.value, "invoice"],
+  query: async () => {
+    const res = await getApiStaysIdInvoice({ path: { id: stayId.value } });
+    return res.data;
+  },
 });
 
-const { data: rooms } = useFetch("/api/rooms", {
-  key: "rooms",
-  transform: (res) =>
-    (res as { data?: Room[] })?.data?.map((r) => ({ value: r.id, label: r.roomNumber })) ?? [],
+const { data: rooms } = useQuery({
+  key: ["rooms", "list", "options"],
+  query: async () => {
+    const res = await getApiRooms({ query: { limit: -1 } });
+    return res.data?.data;
+  },
 });
 
-const { data: services } = useFetch("/api/services", {
-  key: "services",
-  transform: (res) =>
-    (res as { data?: Service[] })?.data?.map((s) => ({ value: s.id, label: s.name })) ?? [],
+const { data: services } = useQuery({
+  key: () => ["services", "list"],
+  query: async () => {
+    const res = await getApiServices({});
+    return res.data?.data;
+  },
 });
 
-const { data: paymentMethods } = useFetch("/api/accounting/payment-methods", {
-  key: "payment-methods",
-  transform: (res) =>
-    (res as { data?: { id: number; label: string }[] })?.data?.map((m) => ({
-      value: m.id,
-      label: m.label,
-    })) ?? [],
+const { data: paymentMethods } = useQuery({
+  key: ["payment-methods", "list"],
+  query: async () => {
+    const res = await getApiAccountingPaymentMethods({ query: { limit: -1 } });
+    return res.data?.data;
+  },
 });
 
 const actionLoading = ref(false);
@@ -272,14 +287,24 @@ const itemColumns = [
   { accessorKey: "actions", header: t("actions.actions") },
 ];
 
-const roomOptions = computed(() => rooms.value ?? []);
-const serviceOptions = computed(() => services.value ?? []);
-const paymentMethodOptions = computed(() => paymentMethods.value ?? []);
+const roomOptions = computed(
+  () => rooms.value?.map((v) => ({ value: v.id, label: v.roomNumber })) ?? []
+);
+const serviceOptions = computed(
+  () => services.value?.map((s) => ({ value: s.id, label: s.name })) ?? []
+);
+const paymentMethodOptions = computed(
+  () =>
+    paymentMethods.value?.map((m) => ({
+      value: m.id,
+      label: m.label,
+    })) ?? []
+);
 
 async function checkIn() {
   actionLoading.value = true;
   try {
-    await postApiStaysIdCheckIn({ path: { id: stayId }, body: {} });
+    await postApiStaysIdCheckIn({ path: { id: stayId.value }, body: {} });
     refreshStay();
   } catch (e) {
     console.error(e);
@@ -292,7 +317,7 @@ async function doRoomChange() {
   roomChangeLoading.value = true;
   try {
     await postApiStaysIdChangeRoom({
-      path: { id: stayId },
+      path: { id: stayId.value },
       body: { newRoomId: roomChangeState.newRoomId },
     });
     showRoomChange.value = false;
@@ -308,7 +333,7 @@ async function doAddService() {
   serviceLoading.value = true;
   try {
     await postApiStaysIdServices({
-      path: { id: stayId },
+      path: { id: stayId.value },
       body: {
         serviceId: serviceState.serviceId,
         quantity: serviceState.quantity,
@@ -344,7 +369,7 @@ async function doChangeDuration() {
 function formatDate(date: string | Date) {
   if (!date) return "-";
   const d = typeof date === "string" ? new Date(date) : date;
-  return d.toLocaleDateString("en-US", {
+  return d.toLocaleDateString("fa-IR", {
     year: "numeric",
     month: "short",
     day: "numeric",

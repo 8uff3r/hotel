@@ -14,7 +14,9 @@
     "editGuest": "ویرایش مهمان",
     "saveChanges": "ذخیره تغییرات",
     "add": "افزودن",
-    "close": "بستن"
+    "close": "بستن",
+    "change": "تغییر",
+    "actions": "عملیات"
   },
   "restaurant": {
     "title": "رستوران",
@@ -271,6 +273,9 @@
     "view": "مشاهده",
     "edit": "ویرایش",
     "status": "وضعیت",
+    "name": "نام",
+    "nationalId": "کد ملی",
+    "phone": "تلفن",
     "columns": {
       "id": "شناسه",
       "name": "نام",
@@ -333,6 +338,8 @@
     "status": "وضعیت",
     "descriptionPlaceholder": "توضیحات اتاق...",
     "amenities": "امکانات",
+    "capacity": "ظرفیت",
+    "type": "نوع",
     "confirmDelete": "آیا از حذف اتاق {roomNumber} مطمئن هستید؟",
     "columns": {
       "roomNumber": "شماره اتاق",
@@ -775,6 +782,7 @@
     "notSynced": "همگام‌سازی نشده",
     "columns": {
       "name": "نام",
+      "lastName": "نام خانوادگی",
       "nationalId": "کد ملی",
       "recordMosafer": "کد مسافر",
       "shomarePaziresh": "شماره پذیرش",
@@ -800,6 +808,39 @@
     "status": "وضعیت",
     "actions": "عملیات",
     "count": "{count} پذیرش",
-    "createTitle": "ایجاد پذیرش"
+    "createTitle": "ایجاد پذیرش",
+    "detailTitle": "جزئیات پذیرش",
+    "checkIn": "ورود",
+    "checkOut": "خروج",
+    "changeRoom": "تغییر اتاق",
+    "addService": "افزودن خدمات",
+    "changeDuration": "تغییر مدت",
+    "guestInfo": "اطلاعات مهمان",
+    "roomInfo": "اطلاعات اتاق",
+    "stayInfo": "اطلاعات اقامت",
+    "numberOfPeople": "تعداد افراد",
+    "roomPrice": "قیمت اتاق",
+    "earlyCheckInFee": "هزینه ورود زودهنگام",
+    "halfDayFee": "هزینه نیم روز",
+    "invoice": "فاکتور",
+    "totalAmount": "مبلغ کل",
+    "paidAmount": "مبلغ پرداخت شده",
+    "remainingAmount": "مبلغ باقیمانده",
+    "paymentStatus": "وضعیت پرداخت",
+    "goToSettlement": "رفتن به صفحه تسویه",
+    "noInvoice": "فاکتوری وجود ندارد",
+    "invoiceItems": "موارد فاکتور",
+    "unpaid": "پرداخت نشده",
+    "settled": "تسویه شده",
+    "newRoom": "اتاق جدید",
+    "service": "خدمات",
+    "quantity": "مقدار",
+    "description": "توضیحات",
+    "add": "افزودن",
+    "newDuration": "مدت جدید",
+    "updateDuration": "به‌روزرسانی مدت",
+    "itemType": "نوع مورد",
+    "unitPrice": "قیمت واحد",
+    "totalPrice": "قیمت کل"
   }
 }
