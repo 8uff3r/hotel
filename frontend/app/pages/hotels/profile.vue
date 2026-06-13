@@ -136,15 +136,6 @@
 </template>
 
 <script setup lang="ts">
-import {
-  getApiHotelsId,
-  getApiHotelsIdSettings,
-  getApiHotelsIdPictures,
-  postApiHotelsIdPictures,
-  deleteApiHotelsIdPicturesPictureId,
-  putApiHotelsId,
-} from "~/utils/client";
-import type { Hotel, HotelPicture, HotelSetting } from "~/utils/client";
 import { useAuthStore } from "~/stores/auth";
 
 const authStore = useAuthStore();

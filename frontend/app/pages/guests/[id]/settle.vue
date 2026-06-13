@@ -22,8 +22,12 @@
             <h3 class="text-lg font-semibold">{{ t("accounting.roomCharges") }}</h3>
           </template>
           <div v-if="settlement?.stays?.length">
-            <div v-for="stay in settlement.stays" :key="stay.id" class="mb-4 border-b pb-4 last:border-0">
-              <div class="flex items-center justify-between mb-2">
+            <div
+              v-for="stay in settlement.stays"
+              :key="stay.id"
+              class="mb-4 border-b pb-4 last:border-0"
+            >
+              <div class="mb-2 flex items-center justify-between">
                 <div>
                   <p class="font-medium">{{ stay.acceptanceId }}</p>
                   <p class="text-sm text-gray-500">
@@ -34,24 +38,20 @@
                   {{ stay.statusLabel || stay.status }}
                 </UBadge>
               </div>
-              <table class="w-full text-sm">
-                <thead>
-                  <tr class="border-b text-left text-gray-500">
-                    <th class="pb-1">{{ t("accounting.item") }}</th>
-                    <th class="pb-1 text-right">{{ t("accounting.amount") }}</th>
-                    <th class="pb-1 text-right">{{ t("accounting.paid") }}</th>
-                    <th class="pb-1 text-right">{{ t("accounting.remaining") }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in stay.items" :key="item.id" class="border-b">
-                    <td class="py-1">{{ item.description || item.itemType }}</td>
-                    <td class="py-1 text-right">${{ item.totalPrice?.toFixed(2) }}</td>
-                    <td class="py-1 text-right">${{ item.paidAmount?.toFixed(2) }}</td>
-                    <td class="py-1 text-right">${{ item.remainingAmount?.toFixed(2) }}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <UTable :data="stay.items" :columns="itemColumns" striped>
+                <template #description-cell="{ row }">
+                  {{ row.original.description || row.original.itemType }}
+                </template>
+                <template #totalPrice-cell="{ row }">
+                  ${{ row.original.totalPrice?.toFixed(2) }}
+                </template>
+                <template #paidAmount-cell="{ row }">
+                  ${{ row.original.paidAmount?.toFixed(2) }}
+                </template>
+                <template #remainingAmount-cell="{ row }">
+                  ${{ row.original.remainingAmount?.toFixed(2) }}
+                </template>
+              </UTable>
               <div class="mt-2 flex justify-between font-medium">
                 <span>{{ t("accounting.stayTotal") }}:</span>
                 <span>${{ stay.totalAmount?.toFixed(2) }}</span>
@@ -61,7 +61,7 @@
                 <span>${{ stay.paidAmount?.toFixed(2) }}</span>
               </div>
               <div class="flex justify-between text-sm text-red-600">
-                <span>{{ t("accounting.remaining") }}:</span>
+                <span>{{ t("accounting.remainingAmount") }}:</span>
                 <span>${{ stay.remainingAmount?.toFixed(2) }}</span>
               </div>
             </div>
@@ -77,26 +77,24 @@
             <h3 class="text-lg font-semibold">{{ t("accounting.parkingCharges") }}</h3>
           </template>
           <div v-if="settlement?.parkingTransactions?.length">
-            <table class="w-full">
-              <thead>
-                <tr class="border-b text-left text-sm text-gray-500">
-                  <th class="pb-2">{{ t("parking.licensePlate") }}</th>
-                  <th class="pb-2">{{ t("parking.entryTime") }}</th>
-                  <th class="pb-2 text-right">{{ t("parking.hours") }}</th>
-                  <th class="pb-2 text-right">{{ t("accounting.amount") }}</th>
-                  <th class="pb-2 text-right">{{ t("accounting.paid") }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="pt in settlement.parkingTransactions" :key="pt.id" class="border-b">
-                  <td class="py-3">{{ pt.licensePlate }}</td>
-                  <td class="py-3">{{ formatDateTime(pt.entryTime) }}</td>
-                  <td class="py-3 text-right">{{ pt.hoursParked?.toFixed(1) }}</td>
-                  <td class="py-3 text-right">${{ pt.amountDue?.toFixed(2) }}</td>
-                  <td class="py-3 text-right">${{ pt.amountPaid?.toFixed(2) }}</td>
-                </tr>
-              </tbody>
-            </table>
+            <UTable
+              :data="settlement.parkingTransactions"
+              :columns="parkingColumns"
+              striped
+            >
+              <template #entryTime-cell="{ row }">
+                {{ formatDateTime(row.original.entryTime) }}
+              </template>
+              <template #hoursParked-cell="{ row }">
+                {{ row.original.hoursParked?.toFixed(1) }}
+              </template>
+              <template #amountDue-cell="{ row }">
+                ${{ row.original.amountDue?.toFixed(2) }}
+              </template>
+              <template #amountPaid-cell="{ row }">
+                ${{ row.original.amountPaid?.toFixed(2) }}
+              </template>
+            </UTable>
           </div>
           <div v-else class="py-4 text-center text-gray-500">
             {{ t("accounting.noParkingCharges") }}
@@ -109,29 +107,32 @@
             <h3 class="text-lg font-semibold">{{ t("accounting.restaurantCharges") }}</h3>
           </template>
           <div v-if="settlement?.restaurantBills?.length">
-            <table class="w-full">
-              <thead>
-                <tr class="border-b text-left text-sm text-gray-500">
-                  <th class="pb-2">{{ t("accounting.billDate") }}</th>
-                  <th class="pb-2 text-right">{{ t("accounting.amount") }}</th>
-                  <th class="pb-2">{{ t("accounting.external") }}</th>
-                  <th class="pb-2">{{ t("common.notes") }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="bill in settlement.restaurantBills" :key="bill.id" class="border-b">
-                  <td class="py-3">{{ formatDate(bill.billDate) }}</td>
-                  <td class="py-3 text-right">${{ bill.totalAmount?.toFixed(2) }}</td>
-                  <td class="py-3">
-                    <UBadge v-if="bill.isExternal" color="warning" variant="soft" size="sm">
-                      {{ t("accounting.external") }}
-                    </UBadge>
-                    <span v-else class="text-sm text-gray-500">---</span>
-                  </td>
-                  <td class="max-w-xs truncate py-3">{{ bill.notes || "---" }}</td>
-                </tr>
-              </tbody>
-            </table>
+            <UTable
+              :data="settlement.restaurantBills"
+              :columns="restaurantColumns"
+              striped
+            >
+              <template #billDate-cell="{ row }">
+                {{ formatDate(row.original.billDate) }}
+              </template>
+              <template #totalAmount-cell="{ row }">
+                ${{ row.original.totalAmount?.toFixed(2) }}
+              </template>
+              <template #isExternal-cell="{ row }">
+                <UBadge
+                  v-if="row.original.isExternal"
+                  color="warning"
+                  variant="soft"
+                  size="sm"
+                >
+                  {{ t("accounting.external") }}
+                </UBadge>
+                <span v-else class="text-sm text-gray-500">---</span>
+              </template>
+              <template #notes-cell="{ row }">
+                <span class="max-w-xs truncate">{{ row.original.notes || "---" }}</span>
+              </template>
+            </UTable>
           </div>
           <div v-else class="py-4 text-center text-gray-500">
             {{ t("accounting.noRestaurantCharges") }}
@@ -224,7 +225,9 @@
             </div>
           </template>
           <template #footer>
-            <UButton variant="outline" @click="showPaymentForm = false">{{ t("actions.cancel") }}</UButton>
+            <UButton variant="outline" @click="showPaymentForm = false">{{
+              t("actions.cancel")
+            }}</UButton>
             <UButton color="success" @click="handlePayment" :loading="paying">
               {{ t("accounting.recordPayment") }}
             </UButton>
@@ -236,6 +239,7 @@
 </template>
 
 <script setup lang="ts">
+import type { TableColumn } from "@nuxt/ui";
 import {
   getApiAccountingPaymentMethods,
   getApiGuestsIdSettle,
@@ -246,11 +250,36 @@ import {
 const { t } = useI18n();
 const route = useRoute();
 const guestId = route.params.id as string;
+const qc = useQueryCache();
 
-const loading = ref(true);
+const { data: settlement, isPending: loading } = useQuery({
+  key: () => ["guests", guestId, "settle"],
+  query: async () => {
+    const res = await getApiGuestsIdSettle({ path: { id: guestId } });
+    return res.data as Settlement;
+  },
+});
+
+const { data: paymentMethods } = useQuery({
+  key: ["payment-methods", "list"],
+  query: async () => {
+    const res = await getApiAccountingPaymentMethods();
+    return res.data?.data ?? [];
+  },
+});
+
 const paying = ref(false);
 const checkingOut = ref(false);
 const showPaymentForm = ref(false);
+
+interface StayItem {
+  id: number;
+  description: string;
+  itemType: string;
+  totalPrice: number;
+  paidAmount: number;
+  remainingAmount: number;
+}
 
 interface StayInvoiceSettlement {
   id: number;
@@ -262,14 +291,7 @@ interface StayInvoiceSettlement {
   totalAmount: number;
   paidAmount: number;
   remainingAmount: number;
-  items: Array<{
-    id: number;
-    description: string;
-    itemType: string;
-    totalPrice: number;
-    paidAmount: number;
-    remainingAmount: number;
-  }>;
+  items: StayItem[];
 }
 
 interface ParkingSettlement {
@@ -311,9 +333,6 @@ interface PaymentMethod {
   label?: string;
 }
 
-const settlement = ref<Settlement | null>(null);
-const paymentMethods = ref<PaymentMethod[]>([]);
-
 const paymentForm = reactive({
   amount: 0,
   paymentMethod: undefined as number | undefined,
@@ -322,32 +341,36 @@ const paymentForm = reactive({
 });
 
 const paymentMethodOptions = computed(() => {
-  return paymentMethods.value.map((pm) => ({
-    value: pm.id,
-    label: pm.label,
-  }));
+  return (
+    (paymentMethods.value as PaymentMethod[] | undefined)?.map((pm) => ({
+      value: pm.id,
+      label: pm.label,
+    })) ?? []
+  );
 });
 
-const fetchPaymentMethods = async () => {
-  try {
-    const res = await getApiAccountingPaymentMethods();
-    paymentMethods.value = res.data?.data ?? [];
-  } catch (e) {
-    console.error("Failed to fetch payment methods:", e);
-  }
-};
+const itemColumns: TableColumn<StayItem>[] = [
+  { accessorKey: "description", header: t("accounting.item") },
+  { accessorKey: "itemType", header: t("stays.itemType") },
+  { accessorKey: "totalPrice", header: t("accounting.amount") },
+  { accessorKey: "paidAmount", header: t("accounting.paid") },
+  { accessorKey: "remainingAmount", header: t("accounting.remainingAmount") },
+];
 
-const fetchSettlement = async () => {
-  loading.value = true;
-  try {
-    const response = await getApiGuestsIdSettle({ path: { id: guestId } });
-    settlement.value = response.data as Settlement;
-  } catch (error) {
-    console.error("Failed to fetch settlement:", error);
-  } finally {
-    loading.value = false;
-  }
-};
+const parkingColumns: TableColumn<ParkingSettlement>[] = [
+  { accessorKey: "licensePlate", header: t("parking.licensePlate") },
+  { accessorKey: "entryTime", header: t("parking.entryTime") },
+  { accessorKey: "hoursParked", header: t("parking.hours") },
+  { accessorKey: "amountDue", header: t("accounting.amount") },
+  { accessorKey: "amountPaid", header: t("accounting.paid") },
+];
+
+const restaurantColumns: TableColumn<RestaurantSettlement>[] = [
+  { accessorKey: "billDate", header: t("accounting.billDate") },
+  { accessorKey: "totalAmount", header: t("accounting.amount") },
+  { accessorKey: "isExternal", header: t("accounting.external") },
+  { accessorKey: "notes", header: t("common.notes") },
+];
 
 const handlePayment = async () => {
   if (paymentForm.amount <= 0) return;
@@ -355,17 +378,15 @@ const handlePayment = async () => {
 
   paying.value = true;
   try {
-    // Gather invoice IDs for active stays
-    const invoiceIds = settlement.value?.stays
-      ?.filter((s) => s.remainingAmount > 0)
-      ?.map((s) => s.id) ?? [];
+    const invoiceIds =
+      settlement.value?.stays?.filter((s) => s.remainingAmount > 0)?.map((s) => s.id) ?? [];
 
-    const parkingTxnIds = settlement.value?.parkingTransactions
-      ?.filter((p) => p.amountDue > p.amountPaid)
-      ?.map((p) => p.id) ?? [];
+    const parkingTxnIds =
+      settlement.value?.parkingTransactions
+        ?.filter((p) => p.amountDue > p.amountPaid)
+        ?.map((p) => p.id) ?? [];
 
-    const restaurantBillIds = settlement.value?.restaurantBills
-      ?.map((b) => b.id) ?? [];
+    const restaurantBillIds = settlement.value?.restaurantBills?.map((b) => b.id) ?? [];
 
     await postApiGuestsIdSettle({
       path: { id: guestId },
@@ -384,7 +405,7 @@ const handlePayment = async () => {
     paymentForm.amount = 0;
     paymentForm.reference = "";
     paymentForm.notes = "";
-    await fetchSettlement();
+    qc.invalidateQueries({ key: ["guests", guestId, "settle"] });
   } catch (error) {
     console.error("Failed to settle:", error);
   } finally {
@@ -425,9 +446,4 @@ const formatDateTime = (date: string) => {
     minute: "2-digit",
   });
 };
-
-onMounted(() => {
-  fetchPaymentMethods();
-  fetchSettlement();
-});
 </script>
