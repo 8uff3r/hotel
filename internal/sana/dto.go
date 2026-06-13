@@ -58,6 +58,7 @@ type SabtMosaferinResponse struct {
 	RecordMosafer   int
 	CodeError       int
 	IsOK            bool
+	RawMessage      string
 }
 
 type ErrorCodeItem struct {

@@ -122,7 +122,24 @@
       </UCard>
     </div>
 
-    <!-- Sync All Modal -->
+    <!-- Error Modal -->
+    <UModal v-model:open="errorModalOpen">
+      <template #header>
+        <h2 class="text-lg font-semibold text-red-600">{{ errorModalTitle }}</h2>
+      </template>
+      <template #body>
+        <div class="text-sm whitespace-pre-wrap text-gray-700 dark:text-gray-300">
+          {{ errorModalMessage }}
+        </div>
+      </template>
+      <template #footer>
+        <div class="flex justify-end">
+          <UButton color="primary" @click="errorModalOpen = false">
+            {{ t("actions.ok") }}
+          </UButton>
+        </div>
+      </template>
+    </UModal>
   </div>
 </template>
 
@@ -160,8 +177,18 @@ interface SanaRoomRack {
   lastError?: string;
 }
 
+interface SanaSyncAllResult {
+  status: string;
+  guestsSynced: number;
+  guestsFailed: number;
+  roomsSynced: number;
+  roomsFailed: number;
+  errors?: string[];
+}
+
 const guestColumns: TableColumn<SanaGuest>[] = [
   { accessorKey: "guest.firstName", header: t("sana.columns.name") },
+  { accessorKey: "guest.lastName", header: t("sana.columns.lastName") },
   { accessorKey: "guest.nationalId", header: t("sana.columns.nationalId") },
   { accessorKey: "recordMosafer", header: t("sana.columns.recordMosafer") },
   { accessorKey: "shomarePaziresh", header: t("sana.columns.shomarePaziresh") },
@@ -183,6 +210,25 @@ const syncAllModalOpen = ref(false);
 const syncingAll = ref(false);
 const syncingGuestId = ref<number | null>(null);
 const syncingRoomId = ref<number | null>(null);
+
+const errorModalOpen = ref(false);
+const errorModalTitle = ref("");
+const errorModalMessage = ref("");
+
+const showError = (title: string, message: string) => {
+  errorModalTitle.value = title;
+  errorModalMessage.value = message;
+  errorModalOpen.value = true;
+};
+
+const extractErrorMessage = (error: any): string => {
+  if (typeof error === "string") return error;
+  if (error?.data?.error) return error.data.error;
+  if (error?.data?.detail) return error.data.detail;
+  if (error?.data?.message) return error.data.message;
+  if (error?.message) return error.message;
+  return t("sana.unknownError");
+};
 
 const {
   data: guests,
@@ -209,10 +255,11 @@ const formatDate = (dateString: string) => {
 const syncGuest = async (guest: SanaGuest) => {
   syncingGuestId.value = guest.id;
   try {
-    await $fetch(`/api/sana/guests/${guest.id}/sync`, { method: "POST" });
+    await postApiSanaGuestsIdSync({ path: { id: guest.id.toString() } });
     await refreshGuests();
-  } catch (error) {
-    console.error("Failed to sync guest:", error);
+  } catch (error: any) {
+    const msg = extractErrorMessage(error);
+    showError(t("sana.syncGuestError"), msg);
   } finally {
     syncingGuestId.value = null;
   }
@@ -221,10 +268,11 @@ const syncGuest = async (guest: SanaGuest) => {
 const syncRoom = async (roomRack: SanaRoomRack) => {
   syncingRoomId.value = roomRack.id;
   try {
-    await $fetch(`/api/sana/rooms/${roomRack.id}/sync`, { method: "POST" });
+    await postApiSanaRoomsIdSync({ path: { id: roomRack.id.toString() } });
     await refreshRooms();
-  } catch (error) {
-    console.error("Failed to sync room:", error);
+  } catch (error: any) {
+    const msg = extractErrorMessage(error);
+    showError(t("sana.syncRoomError"), msg);
   } finally {
     syncingRoomId.value = null;
   }
@@ -233,14 +281,21 @@ const syncRoom = async (roomRack: SanaRoomRack) => {
 const syncAll = async () => {
   syncingAll.value = true;
   try {
-    await postApiSanaSyncAll({
+    const result = (await postApiSanaSyncAll({
       requestValidator: undefined,
-    });
+    })) as unknown as SanaSyncAllResult;
+
     await refreshGuests();
     await refreshRooms();
     syncAllModalOpen.value = false;
-  } catch (error) {
-    console.error("Failed to sync all:", error);
+
+    if (result.errors && result.errors.length > 0) {
+      const summary = `${t("sana.syncAllPartial")}\n\n${result.errors.join("\n")}`;
+      showError(t("sana.syncAllError"), summary);
+    }
+  } catch (error: any) {
+    const msg = extractErrorMessage(error);
+    showError(t("sana.syncAllError"), msg);
   } finally {
     syncingAll.value = false;
   }

@@ -131,27 +131,27 @@ type GuestWithStaysAndReservationsResponse struct {
 
 type GuestSettlementResponse struct {
 	Stays           []StayInvoiceSettlement `json:"stays"`
-	ParkingTxns     []ParkingSettlement       `json:"parkingTransactions"`
-	RestaurantBills []RestaurantSettlement    `json:"restaurantBills"`
-	TotalRoom       float64                   `json:"totalRoom"`
-	TotalParking    float64                   `json:"totalParking"`
-	TotalRestaurant float64                   `json:"totalRestaurant"`
-	TotalDue        float64                   `json:"totalDue"`
-	TotalPaid       float64                   `json:"totalPaid"`
-	Balance         float64                   `json:"balance"`
-	CanCheckout     bool                      `json:"canCheckout"`
+	ParkingTxns     []ParkingSettlement     `json:"parkingTransactions"`
+	RestaurantBills []RestaurantSettlement  `json:"restaurantBills"`
+	TotalRoom       float64                 `json:"totalRoom"`
+	TotalParking    float64                 `json:"totalParking"`
+	TotalRestaurant float64                 `json:"totalRestaurant"`
+	TotalDue        float64                 `json:"totalDue"`
+	TotalPaid       float64                 `json:"totalPaid"`
+	Balance         float64                 `json:"balance"`
+	CanCheckout     bool                    `json:"canCheckout"`
 }
 
 type StayInvoiceSettlement struct {
-	ID              uint               `json:"id"`
-	AcceptanceID    string             `json:"acceptanceId"`
-	EntryDate       string             `json:"entryDate"`
-	DepartureDate   string             `json:"departureDate"`
-	Status          string             `json:"status"`
-	StatusLabel     string             `json:"statusLabel"`
-	TotalAmount     float64            `json:"totalAmount"`
-	PaidAmount      float64            `json:"paidAmount"`
-	RemainingAmount float64            `json:"remainingAmount"`
+	ID              uint                 `json:"id"`
+	AcceptanceID    string               `json:"acceptanceId"`
+	EntryDate       string               `json:"entryDate"`
+	DepartureDate   string               `json:"departureDate"`
+	Status          string               `json:"status"`
+	StatusLabel     string               `json:"statusLabel"`
+	TotalAmount     float64              `json:"totalAmount"`
+	PaidAmount      float64              `json:"paidAmount"`
+	RemainingAmount float64              `json:"remainingAmount"`
 	Items           []models.InvoiceItem `json:"items"`
 }
 
@@ -883,7 +883,6 @@ func (gm *GuestsModule) checkoutGuest(c fuego.ContextWithBody[CheckoutGuestReque
 
 		return nil
 	})
-
 	if err != nil {
 		return zero, fuego.BadRequestError{Title: "checkout_failed"}
 	}

@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -42,7 +43,9 @@ func (c *Client) buildURL(function string, params map[string]string) string {
 }
 
 func (c *Client) get(function string, params map[string]string) ([]byte, error) {
+	logger := log.Default()
 	url := c.buildURL(function, params)
+	logger.Printf("Sending request to SANA URL: %s", url)
 	resp, err := c.httpClient.Get(url)
 	if err != nil {
 		return nil, err
@@ -180,9 +183,10 @@ type SabtMosaferinInput struct {
 	Tel_Moaref       string
 	NameKarbareSabt  string
 	ID_NoeDadeh      MosafereDataType
+	Tozihat          string
 }
 
-func (c *Client) Sabt_Mosaferin(req SabtMosaferinInput) (SabtMosaferinResponse, error) {
+func (c *Client) SabtMosaferin(req SabtMosaferinInput) (SabtMosaferinResponse, error) {
 	params := c.baseParams()
 	params["NameMosafer"] = req.NameMosafer
 	params["FamilMosafer"] = req.FamilMosafer
@@ -216,6 +220,7 @@ func (c *Client) Sabt_Mosaferin(req SabtMosaferinInput) (SabtMosaferinResponse, 
 	params["Tel_Moaref"] = req.Tel_Moaref
 	params["NameKarbareSabt"] = req.NameKarbareSabt
 	params["ID_NoeDadeh"] = fmt.Sprintf("%d", req.ID_NoeDadeh)
+	params["Tozihat"] = req.Tozihat
 
 	body, err := c.get("Sabt_Mosaferin", params)
 	if err != nil {
@@ -229,19 +234,19 @@ func (c *Client) Sabt_Mosaferin(req SabtMosaferinInput) (SabtMosaferinResponse, 
 	codeError := 0
 
 	if strings.Contains(response, "OK") {
-		parts := strings.Split(response, " ")
-		for _, part := range parts {
-			if strings.HasPrefix(part, "ShomareOtagh=") {
-				shomareOtagh = strings.TrimPrefix(part, "ShomareOtagh=")
+		parts := strings.SplitSeq(response, " ")
+		for part := range parts {
+			if after, ok := strings.CutPrefix(part, "ShomareOtagh="); ok {
+				shomareOtagh = after
 			}
-			if strings.HasPrefix(part, "ShomarePaziresh=") {
-				shomarePaziresh = strings.TrimPrefix(part, "ShomarePaziresh=")
+			if after, ok := strings.CutPrefix(part, "ShomarePaziresh="); ok {
+				shomarePaziresh = after
 			}
-			if strings.HasPrefix(part, "RecordMosafer=") {
-				fmt.Sscanf(strings.TrimPrefix(part, "RecordMosafer="), "%d", &recordMosafer)
+			if after, ok := strings.CutPrefix(part, "RecordMosafer="); ok {
+				fmt.Sscanf(after, "%d", &recordMosafer)
 			}
-			if strings.HasPrefix(part, "CodeError=") {
-				fmt.Sscanf(strings.TrimPrefix(part, "CodeError="), "%d", &codeError)
+			if after, ok := strings.CutPrefix(part, "CodeError="); ok {
+				fmt.Sscanf(after, "%d", &codeError)
 			}
 		}
 	} else {
@@ -259,6 +264,7 @@ func (c *Client) Sabt_Mosaferin(req SabtMosaferinInput) (SabtMosaferinResponse, 
 		RecordMosafer:   recordMosafer,
 		CodeError:       codeError,
 		IsOK:            strings.Contains(response, "OK"),
+		RawMessage:      response,
 	}, nil
 }
 

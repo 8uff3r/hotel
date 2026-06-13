@@ -6788,6 +6788,18 @@ export type SanaRoomResponse = {
 };
 
 /**
+ * SanaSyncAllResult schema
+ */
+export type SanaSyncAllResult = {
+    errors?: Array<string>;
+    guestsFailed?: number;
+    guestsSynced?: number;
+    roomsFailed?: number;
+    roomsSynced?: number;
+    status?: string;
+};
+
+/**
  * SanitizedAdmin schema
  */
 export type SanitizedAdmin = {
@@ -13519,9 +13531,11 @@ export type PostApiSanaGuestsIdSyncData = {
     headers?: {
         Accept?: string;
     };
-    path?: never;
+    path: {
+        id: string;
+    };
     query?: never;
-    url: '/api/sana/guests/:id/sync';
+    url: '/api/sana/guests/{id}/sync';
 };
 
 export type PostApiSanaGuestsIdSyncErrors = {
@@ -13651,9 +13665,11 @@ export type PostApiSanaRoomsIdSyncData = {
     headers?: {
         Accept?: string;
     };
-    path?: never;
+    path: {
+        id: string;
+    };
     query?: never;
-    url: '/api/sana/rooms/:id/sync';
+    url: '/api/sana/rooms/{id}/sync';
 };
 
 export type PostApiSanaRoomsIdSyncErrors = {
@@ -13707,7 +13723,7 @@ export type PostApiSanaSyncAllResponses = {
     /**
      * OK
      */
-    200: String;
+    200: SanaSyncAllResult;
 };
 
 export type PostApiSanaSyncAllResponse = PostApiSanaSyncAllResponses[keyof PostApiSanaSyncAllResponses];

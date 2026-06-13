@@ -6763,6 +6763,18 @@ export const zSanaRoomResponse = z.object({
 });
 
 /**
+ * SanaSyncAllResult schema
+ */
+export const zSanaSyncAllResult = z.object({
+    errors: z.array(z.string()).optional(),
+    guestsFailed: z.int().optional(),
+    guestsSynced: z.int().optional(),
+    roomsFailed: z.int().optional(),
+    roomsSynced: z.int().optional(),
+    status: z.string().optional()
+});
+
+/**
  * SanitizedAdmin schema
  */
 export const zSanitizedAdmin = z.object({
@@ -10066,6 +10078,10 @@ export const zPostApiSanaGuestsIdSyncHeaders = z.object({
     Accept: z.string().optional()
 });
 
+export const zPostApiSanaGuestsIdSyncPath = z.object({
+    id: z.string()
+});
+
 export const zGetApiSanaNationalitiesHeaders = z.object({
     Accept: z.string().optional()
 });
@@ -10080,6 +10096,10 @@ export const zGetApiSanaRoomsHeaders = z.object({
 
 export const zPostApiSanaRoomsIdSyncHeaders = z.object({
     Accept: z.string().optional()
+});
+
+export const zPostApiSanaRoomsIdSyncPath = z.object({
+    id: z.string()
 });
 
 export const zPostApiSanaSyncAllHeaders = z.object({

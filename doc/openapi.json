@@ -22097,6 +22097,35 @@
 				},
 				"type": "object"
 			},
+			"SanaSyncAllResult": {
+				"description": "SanaSyncAllResult schema",
+				"properties": {
+					"errors": {
+						"items": {
+							"nullable": true,
+							"type": "string"
+						},
+						"nullable": true,
+						"type": "array"
+					},
+					"guestsFailed": {
+						"type": "integer"
+					},
+					"guestsSynced": {
+						"type": "integer"
+					},
+					"roomsFailed": {
+						"type": "integer"
+					},
+					"roomsSynced": {
+						"type": "integer"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"type": "object"
+			},
 			"SanitizedAdmin": {
 				"description": "SanitizedAdmin schema",
 				"properties": {
@@ -39314,7 +39343,7 @@
 				]
 			}
 		},
-		"/api/sana/guests/:id/sync": {
+		"/api/sana/guests/{id}/sync": {
 			"post": {
 				"description": "#### Controller: \n\n`hotel/internal/httpapi/sana.SanaModule.syncGuest`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/sana/guests/:id/sync",
@@ -39322,6 +39351,14 @@
 					{
 						"in": "header",
 						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
 						"schema": {
 							"type": "string"
 						}
@@ -39608,7 +39645,7 @@
 				]
 			}
 		},
-		"/api/sana/rooms/:id/sync": {
+		"/api/sana/rooms/{id}/sync": {
 			"post": {
 				"description": "#### Controller: \n\n`hotel/internal/httpapi/sana.SanaModule.syncRoom`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
 				"operationId": "POST_/api/sana/rooms/:id/sync",
@@ -39616,6 +39653,14 @@
 					{
 						"in": "header",
 						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
 						"schema": {
 							"type": "string"
 						}
@@ -39695,12 +39740,12 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/string"
+									"$ref": "#/components/schemas/SanaSyncAllResult"
 								}
 							},
 							"application/xml": {
 								"schema": {
-									"$ref": "#/components/schemas/string"
+									"$ref": "#/components/schemas/SanaSyncAllResult"
 								}
 							}
 						},

@@ -16,6 +16,8 @@ type SanaRoomRack struct {
 	Base
 	HotelID      string    `gorm:"not null;index" json:"hotelId"`
 	Hotel        Hotel     `gorm:"foreignKey:HotelID" json:"-"`
+	RoomID       *uint     `gorm:"index" json:"roomId"`
+	Room         Room      `gorm:"foreignKey:RoomID" json:"-"`
 	Rac          string    `gorm:"type:text" json:"rac"`
 	LastSyncTime time.Time `json:"lastSyncTime"`
 	IsSynced     bool      `gorm:"default:false" json:"isSynced"`
