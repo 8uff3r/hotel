@@ -41,7 +41,7 @@
             {{ stay.guest?.lastName }}
           </p>
           <p>
-            <strong>{{ t("guests.nationalId") }}:</strong> {{ stay.guest?.nationalId }}
+            <strong>{{ t("guests.idNumber") }}:</strong> {{ stay.guest?.idNumber }}
           </p>
           <p>
             <strong>{{ t("guests.phone") }}:</strong> {{ stay.guest?.phone }}

@@ -532,9 +532,6 @@
 						"minLength": 2,
 						"type": "string"
 					},
-					"nationalId": {
-						"type": "string"
-					},
 					"nationality": {
 						"properties": {
 							"id": {
@@ -555,9 +552,6 @@
 						"type": "integer"
 					},
 					"occupation": {
-						"type": "string"
-					},
-					"passport": {
 						"type": "string"
 					},
 					"phone": {
@@ -1040,9 +1034,6 @@
 								"minLength": 2,
 								"type": "string"
 							},
-							"nationalId": {
-								"type": "string"
-							},
 							"nationality": {
 								"properties": {
 									"id": {
@@ -1063,9 +1054,6 @@
 								"type": "integer"
 							},
 							"occupation": {
-								"type": "string"
-							},
-							"passport": {
 								"type": "string"
 							},
 							"phone": {
@@ -1375,9 +1363,6 @@
 								"minLength": 2,
 								"type": "string"
 							},
-							"nationalId": {
-								"type": "string"
-							},
 							"nationality": {
 								"properties": {
 									"id": {
@@ -1398,9 +1383,6 @@
 								"type": "integer"
 							},
 							"occupation": {
-								"type": "string"
-							},
-							"passport": {
 								"type": "string"
 							},
 							"phone": {
@@ -1670,9 +1652,6 @@
 										"minLength": 2,
 										"type": "string"
 									},
-									"nationalId": {
-										"type": "string"
-									},
 									"nationality": {
 										"properties": {
 											"id": {
@@ -1693,9 +1672,6 @@
 										"type": "integer"
 									},
 									"occupation": {
-										"type": "string"
-									},
-									"passport": {
 										"type": "string"
 									},
 									"phone": {
@@ -2223,9 +2199,6 @@
 								"minLength": 2,
 								"type": "string"
 							},
-							"nationalId": {
-								"type": "string"
-							},
 							"nationality": {
 								"properties": {
 									"id": {
@@ -2246,9 +2219,6 @@
 								"type": "integer"
 							},
 							"occupation": {
-								"type": "string"
-							},
-							"passport": {
 								"type": "string"
 							},
 							"phone": {
@@ -2558,9 +2528,6 @@
 								"minLength": 2,
 								"type": "string"
 							},
-							"nationalId": {
-								"type": "string"
-							},
 							"nationality": {
 								"properties": {
 									"id": {
@@ -2581,9 +2548,6 @@
 								"type": "integer"
 							},
 							"occupation": {
-								"type": "string"
-							},
-							"passport": {
 								"type": "string"
 							},
 							"phone": {
@@ -2870,9 +2834,6 @@
 										"minLength": 2,
 										"type": "string"
 									},
-									"nationalId": {
-										"type": "string"
-									},
 									"nationality": {
 										"properties": {
 											"id": {
@@ -2893,9 +2854,6 @@
 										"type": "integer"
 									},
 									"occupation": {
-										"type": "string"
-									},
-									"passport": {
 										"type": "string"
 									},
 									"phone": {
@@ -3305,9 +3263,6 @@
 												"minLength": 2,
 												"type": "string"
 											},
-											"nationalId": {
-												"type": "string"
-											},
 											"nationality": {
 												"properties": {
 													"id": {
@@ -3328,9 +3283,6 @@
 												"type": "integer"
 											},
 											"occupation": {
-												"type": "string"
-											},
-											"passport": {
 												"type": "string"
 											},
 											"phone": {
@@ -4032,9 +3984,6 @@
 								"minLength": 2,
 								"type": "string"
 							},
-							"nationalId": {
-								"type": "string"
-							},
 							"nationality": {
 								"properties": {
 									"id": {
@@ -4055,9 +4004,6 @@
 								"type": "integer"
 							},
 							"occupation": {
-								"type": "string"
-							},
-							"passport": {
 								"type": "string"
 							},
 							"phone": {
@@ -4266,9 +4212,6 @@
 											"minLength": 2,
 											"type": "string"
 										},
-										"nationalId": {
-											"type": "string"
-										},
 										"nationality": {
 											"properties": {
 												"id": {
@@ -4289,9 +4232,6 @@
 											"type": "integer"
 										},
 										"occupation": {
-											"type": "string"
-										},
-										"passport": {
 											"type": "string"
 										},
 										"phone": {
@@ -4798,9 +4738,6 @@
 											"minLength": 2,
 											"type": "string"
 										},
-										"nationalId": {
-											"type": "string"
-										},
 										"nationality": {
 											"properties": {
 												"id": {
@@ -4821,9 +4758,6 @@
 											"type": "integer"
 										},
 										"occupation": {
-											"type": "string"
-										},
-										"passport": {
 											"type": "string"
 										},
 										"phone": {
@@ -5233,9 +5167,6 @@
 													"minLength": 2,
 													"type": "string"
 												},
-												"nationalId": {
-													"type": "string"
-												},
 												"nationality": {
 													"properties": {
 														"id": {
@@ -5256,9 +5187,6 @@
 													"type": "integer"
 												},
 												"occupation": {
-													"type": "string"
-												},
-												"passport": {
 													"type": "string"
 												},
 												"phone": {
@@ -6585,9 +6513,6 @@
 										"minLength": 2,
 										"type": "string"
 									},
-									"nationalId": {
-										"type": "string"
-									},
 									"nationality": {
 										"properties": {
 											"id": {
@@ -6608,9 +6533,6 @@
 										"type": "integer"
 									},
 									"occupation": {
-										"type": "string"
-									},
-									"passport": {
 										"type": "string"
 									},
 									"phone": {
@@ -7123,9 +7045,6 @@
 										"minLength": 2,
 										"type": "string"
 									},
-									"nationalId": {
-										"type": "string"
-									},
 									"nationality": {
 										"properties": {
 											"id": {
@@ -7146,9 +7065,6 @@
 										"type": "integer"
 									},
 									"occupation": {
-										"type": "string"
-									},
-									"passport": {
 										"type": "string"
 									},
 									"phone": {
@@ -7558,9 +7474,6 @@
 												"minLength": 2,
 												"type": "string"
 											},
-											"nationalId": {
-												"type": "string"
-											},
 											"nationality": {
 												"properties": {
 													"id": {
@@ -7581,9 +7494,6 @@
 												"type": "integer"
 											},
 											"occupation": {
-												"type": "string"
-											},
-											"passport": {
 												"type": "string"
 											},
 											"phone": {
@@ -9847,9 +9757,6 @@
 									"minLength": 2,
 									"type": "string"
 								},
-								"nationalId": {
-									"type": "string"
-								},
 								"nationality": {
 									"properties": {
 										"id": {
@@ -9870,9 +9777,6 @@
 									"type": "integer"
 								},
 								"occupation": {
-									"type": "string"
-								},
-								"passport": {
 									"type": "string"
 								},
 								"phone": {
@@ -10599,9 +10503,6 @@
 													"minLength": 2,
 													"type": "string"
 												},
-												"nationalId": {
-													"type": "string"
-												},
 												"nationality": {
 													"properties": {
 														"id": {
@@ -10622,9 +10523,6 @@
 													"type": "integer"
 												},
 												"occupation": {
-													"type": "string"
-												},
-												"passport": {
 													"type": "string"
 												},
 												"phone": {
@@ -11137,9 +11035,6 @@
 													"minLength": 2,
 													"type": "string"
 												},
-												"nationalId": {
-													"type": "string"
-												},
 												"nationality": {
 													"properties": {
 														"id": {
@@ -11160,9 +11055,6 @@
 													"type": "integer"
 												},
 												"occupation": {
-													"type": "string"
-												},
-												"passport": {
 													"type": "string"
 												},
 												"phone": {
@@ -11572,9 +11464,6 @@
 															"minLength": 2,
 															"type": "string"
 														},
-														"nationalId": {
-															"type": "string"
-														},
 														"nationality": {
 															"properties": {
 																"id": {
@@ -11595,9 +11484,6 @@
 															"type": "integer"
 														},
 														"occupation": {
-															"type": "string"
-														},
-														"passport": {
 															"type": "string"
 														},
 														"phone": {
@@ -13433,9 +13319,6 @@
 											"minLength": 2,
 											"type": "string"
 										},
-										"nationalId": {
-											"type": "string"
-										},
 										"nationality": {
 											"properties": {
 												"id": {
@@ -13456,9 +13339,6 @@
 											"type": "integer"
 										},
 										"occupation": {
-											"type": "string"
-										},
-										"passport": {
 											"type": "string"
 										},
 										"phone": {
@@ -13851,9 +13731,6 @@
 													"minLength": 2,
 													"type": "string"
 												},
-												"nationalId": {
-													"type": "string"
-												},
 												"nationality": {
 													"properties": {
 														"id": {
@@ -13874,9 +13751,6 @@
 													"type": "integer"
 												},
 												"occupation": {
-													"type": "string"
-												},
-												"passport": {
 													"type": "string"
 												},
 												"phone": {
@@ -14755,9 +14629,6 @@
 											"minLength": 2,
 											"type": "string"
 										},
-										"nationalId": {
-											"type": "string"
-										},
 										"nationality": {
 											"properties": {
 												"id": {
@@ -14778,9 +14649,6 @@
 											"type": "integer"
 										},
 										"occupation": {
-											"type": "string"
-										},
-										"passport": {
 											"type": "string"
 										},
 										"phone": {
@@ -15406,9 +15274,6 @@
 											"minLength": 2,
 											"type": "string"
 										},
-										"nationalId": {
-											"type": "string"
-										},
 										"nationality": {
 											"properties": {
 												"id": {
@@ -15429,9 +15294,6 @@
 											"type": "integer"
 										},
 										"occupation": {
-											"type": "string"
-										},
-										"passport": {
 											"type": "string"
 										},
 										"phone": {
@@ -15658,9 +15520,6 @@
 													"minLength": 2,
 													"type": "string"
 												},
-												"nationalId": {
-													"type": "string"
-												},
 												"nationality": {
 													"properties": {
 														"id": {
@@ -15681,9 +15540,6 @@
 													"type": "integer"
 												},
 												"occupation": {
-													"type": "string"
-												},
-												"passport": {
 													"type": "string"
 												},
 												"phone": {
@@ -17199,9 +17055,6 @@
 											"minLength": 2,
 											"type": "string"
 										},
-										"nationalId": {
-											"type": "string"
-										},
 										"nationality": {
 											"properties": {
 												"id": {
@@ -17222,9 +17075,6 @@
 											"type": "integer"
 										},
 										"occupation": {
-											"type": "string"
-										},
-										"passport": {
 											"type": "string"
 										},
 										"phone": {
@@ -17634,9 +17484,6 @@
 													"minLength": 2,
 													"type": "string"
 												},
-												"nationalId": {
-													"type": "string"
-												},
 												"nationality": {
 													"properties": {
 														"id": {
@@ -17657,9 +17504,6 @@
 													"type": "integer"
 												},
 												"occupation": {
-													"type": "string"
-												},
-												"passport": {
 													"type": "string"
 												},
 												"phone": {
@@ -18431,9 +18275,6 @@
 											"minLength": 2,
 											"type": "string"
 										},
-										"nationalId": {
-											"type": "string"
-										},
 										"nationality": {
 											"properties": {
 												"id": {
@@ -18454,9 +18295,6 @@
 											"type": "integer"
 										},
 										"occupation": {
-											"type": "string"
-										},
-										"passport": {
 											"type": "string"
 										},
 										"phone": {
@@ -19197,9 +19035,6 @@
 								"minLength": 2,
 								"type": "string"
 							},
-							"nationalId": {
-								"type": "string"
-							},
 							"nationality": {
 								"properties": {
 									"id": {
@@ -19220,9 +19055,6 @@
 								"type": "integer"
 							},
 							"occupation": {
-								"type": "string"
-							},
-							"passport": {
 								"type": "string"
 							},
 							"phone": {
@@ -19615,9 +19447,6 @@
 										"minLength": 2,
 										"type": "string"
 									},
-									"nationalId": {
-										"type": "string"
-									},
 									"nationality": {
 										"properties": {
 											"id": {
@@ -19638,9 +19467,6 @@
 										"type": "integer"
 									},
 									"occupation": {
-										"type": "string"
-									},
-									"passport": {
 										"type": "string"
 									},
 									"phone": {
@@ -20378,9 +20204,6 @@
 								"minLength": 2,
 								"type": "string"
 							},
-							"nationalId": {
-								"type": "string"
-							},
 							"nationality": {
 								"properties": {
 									"id": {
@@ -20401,9 +20224,6 @@
 								"type": "integer"
 							},
 							"occupation": {
-								"type": "string"
-							},
-							"passport": {
 								"type": "string"
 							},
 							"phone": {
@@ -20967,9 +20787,6 @@
 								"minLength": 2,
 								"type": "string"
 							},
-							"nationalId": {
-								"type": "string"
-							},
 							"nationality": {
 								"properties": {
 									"id": {
@@ -20990,9 +20807,6 @@
 								"type": "integer"
 							},
 							"occupation": {
-								"type": "string"
-							},
-							"passport": {
 								"type": "string"
 							},
 							"phone": {
@@ -21219,9 +21033,6 @@
 										"minLength": 2,
 										"type": "string"
 									},
-									"nationalId": {
-										"type": "string"
-									},
 									"nationality": {
 										"properties": {
 											"id": {
@@ -21242,9 +21053,6 @@
 										"type": "integer"
 									},
 									"occupation": {
-										"type": "string"
-									},
-									"passport": {
 										"type": "string"
 									},
 									"phone": {
@@ -22024,10 +21832,10 @@
 							"firstName": {
 								"type": "string"
 							},
-							"lastName": {
+							"idNumber": {
 								"type": "string"
 							},
-							"nationalId": {
+							"lastName": {
 								"type": "string"
 							}
 						},
@@ -22113,6 +21921,25 @@
 					},
 					"guestsSynced": {
 						"type": "integer"
+					},
+					"roomsFailed": {
+						"type": "integer"
+					},
+					"roomsSynced": {
+						"type": "integer"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"type": "object"
+			},
+			"SanaSyncRoomsResult": {
+				"description": "SanaSyncRoomsResult schema",
+				"properties": {
+					"error": {
+						"nullable": true,
+						"type": "string"
 					},
 					"roomsFailed": {
 						"type": "integer"
@@ -22776,9 +22603,6 @@
 								"minLength": 2,
 								"type": "string"
 							},
-							"nationalId": {
-								"type": "string"
-							},
 							"nationality": {
 								"properties": {
 									"id": {
@@ -22799,9 +22623,6 @@
 								"type": "integer"
 							},
 							"occupation": {
-								"type": "string"
-							},
-							"passport": {
 								"type": "string"
 							},
 							"phone": {
@@ -23211,9 +23032,6 @@
 										"minLength": 2,
 										"type": "string"
 									},
-									"nationalId": {
-										"type": "string"
-									},
 									"nationality": {
 										"properties": {
 											"id": {
@@ -23234,9 +23052,6 @@
 										"type": "integer"
 									},
 									"occupation": {
-										"type": "string"
-									},
-									"passport": {
 										"type": "string"
 									},
 									"phone": {
@@ -23989,9 +23804,6 @@
 								"minLength": 2,
 								"type": "string"
 							},
-							"nationalId": {
-								"type": "string"
-							},
 							"nationality": {
 								"properties": {
 									"id": {
@@ -24012,9 +23824,6 @@
 								"type": "integer"
 							},
 							"occupation": {
-								"type": "string"
-							},
-							"passport": {
 								"type": "string"
 							},
 							"phone": {
@@ -24450,9 +24259,6 @@
 								"minLength": 2,
 								"type": "string"
 							},
-							"nationalId": {
-								"type": "string"
-							},
 							"nationality": {
 								"properties": {
 									"id": {
@@ -24473,9 +24279,6 @@
 								"type": "integer"
 							},
 							"occupation": {
-								"type": "string"
-							},
-							"passport": {
 								"type": "string"
 							},
 							"phone": {
@@ -24885,9 +24688,6 @@
 										"minLength": 2,
 										"type": "string"
 									},
-									"nationalId": {
-										"type": "string"
-									},
 									"nationality": {
 										"properties": {
 											"id": {
@@ -24908,9 +24708,6 @@
 										"type": "integer"
 									},
 									"occupation": {
-										"type": "string"
-									},
-									"passport": {
 										"type": "string"
 									},
 									"phone": {
@@ -25674,9 +25471,6 @@
 								"minLength": 2,
 								"type": "string"
 							},
-							"nationalId": {
-								"type": "string"
-							},
 							"nationality": {
 								"properties": {
 									"id": {
@@ -25697,9 +25491,6 @@
 								"type": "integer"
 							},
 							"occupation": {
-								"type": "string"
-							},
-							"passport": {
 								"type": "string"
 							},
 							"phone": {
@@ -26113,9 +25904,6 @@
 										"minLength": 2,
 										"type": "string"
 									},
-									"nationalId": {
-										"type": "string"
-									},
 									"nationality": {
 										"properties": {
 											"id": {
@@ -26136,9 +25924,6 @@
 										"type": "integer"
 									},
 									"occupation": {
-										"type": "string"
-									},
-									"passport": {
 										"type": "string"
 									},
 									"phone": {
@@ -26857,9 +26642,6 @@
 								"minLength": 2,
 								"type": "string"
 							},
-							"nationalId": {
-								"type": "string"
-							},
 							"nationality": {
 								"properties": {
 									"id": {
@@ -26880,9 +26662,6 @@
 								"type": "integer"
 							},
 							"occupation": {
-								"type": "string"
-							},
-							"passport": {
 								"type": "string"
 							},
 							"phone": {
@@ -27393,9 +27172,6 @@
 								"minLength": 2,
 								"type": "string"
 							},
-							"nationalId": {
-								"type": "string"
-							},
 							"nationality": {
 								"properties": {
 									"id": {
@@ -27416,9 +27192,6 @@
 								"type": "integer"
 							},
 							"occupation": {
-								"type": "string"
-							},
-							"passport": {
 								"type": "string"
 							},
 							"phone": {
@@ -27828,9 +27601,6 @@
 										"minLength": 2,
 										"type": "string"
 									},
-									"nationalId": {
-										"type": "string"
-									},
 									"nationality": {
 										"properties": {
 											"id": {
@@ -27851,9 +27621,6 @@
 										"type": "integer"
 									},
 									"occupation": {
-										"type": "string"
-									},
-									"passport": {
 										"type": "string"
 									},
 									"phone": {
@@ -39645,83 +39412,6 @@
 				]
 			}
 		},
-		"/api/sana/rooms/{id}/sync": {
-			"post": {
-				"description": "#### Controller: \n\n`hotel/internal/httpapi/sana.SanaModule.syncRoom`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
-				"operationId": "POST_/api/sana/rooms/:id/sync",
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Accept",
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/SanaRoomResponse"
-								}
-							},
-							"application/xml": {
-								"schema": {
-									"$ref": "#/components/schemas/SanaRoomResponse"
-								}
-							}
-						},
-						"description": "OK"
-					},
-					"400": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/HTTPError"
-								}
-							},
-							"application/xml": {
-								"schema": {
-									"$ref": "#/components/schemas/HTTPError"
-								}
-							}
-						},
-						"description": "Bad Request _(validation or deserialization error)_"
-					},
-					"500": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/HTTPError"
-								}
-							},
-							"application/xml": {
-								"schema": {
-									"$ref": "#/components/schemas/HTTPError"
-								}
-							}
-						},
-						"description": "Internal Server Error _(panics)_"
-					},
-					"default": {
-						"description": ""
-					}
-				},
-				"summary": "sync room",
-				"tags": [
-					"/SANA"
-				]
-			}
-		},
 		"/api/sana/sync-all": {
 			"post": {
 				"description": "#### Controller: \n\n`hotel/internal/httpapi/sana.SanaModule.syncAll`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
@@ -39786,6 +39476,75 @@
 					}
 				},
 				"summary": "sync all",
+				"tags": [
+					"/SANA"
+				]
+			}
+		},
+		"/api/sana/sync-rooms": {
+			"post": {
+				"description": "#### Controller: \n\n`hotel/internal/httpapi/sana.SanaModule.syncRooms`\n\n#### Middlewares:\n\n- `github.com/go-fuego/fuego.defaultLogger.middleware`\n- `hotel/internal/httpapi.(*API).AuthMiddleware`\n\n---\n\n",
+				"operationId": "POST_/api/sana/sync-rooms",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "Accept",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SanaSyncRoomsResult"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/SanaSyncRoomsResult"
+								}
+							}
+						},
+						"description": "OK"
+					},
+					"400": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Bad Request _(validation or deserialization error)_"
+					},
+					"500": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPError"
+								}
+							}
+						},
+						"description": "Internal Server Error _(panics)_"
+					},
+					"default": {
+						"description": ""
+					}
+				},
+				"summary": "sync rooms",
 				"tags": [
 					"/SANA"
 				]

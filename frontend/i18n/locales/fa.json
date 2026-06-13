@@ -689,7 +689,7 @@
     "dateOfBirth": "تاریخ تولد",
     "placeOfBirth": "محل تولد",
     "nationalId": "کد ملی",
-    "idPassportNumber": "شماره شناسه/گذرنامه",
+    "idNumber": "شماره شناسایی",
     "passport": "گذرنامه",
     "occupation": "شغل",
     "phone": "تلفن",

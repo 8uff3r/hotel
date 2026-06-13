@@ -58,16 +58,8 @@
               <p class="font-medium">{{ guest.placeOfBirth }}</p>
             </div>
             <div>
-              <p class="text-sm text-gray-500">{{ t("guest.nationalId") }}</p>
-              <p class="font-medium">{{ guest.nationalId }}</p>
-            </div>
-            <div>
-              <p class="text-sm text-gray-500">{{ t("guest.idPassportNumber") }}</p>
+              <p class="text-sm text-gray-500">{{ t("guest.idNumber") }}</p>
               <p class="font-medium">{{ guest.idNumber }}</p>
-            </div>
-            <div>
-              <p class="text-sm text-gray-500">{{ t("guest.passport") }}</p>
-              <p class="font-medium">{{ guest.passport }}</p>
             </div>
             <div>
               <p class="text-sm text-gray-500">{{ t("guest.occupation") }}</p>
@@ -448,7 +440,7 @@ const openReservationModal = (reservation: Reservation) => {
 
 const formatDate = (date: Date | string | undefined) => {
   if (!date) return "";
-  return new Date(date).toLocaleDateString("en-US", {
+  return new Date(date).toLocaleDateString("fa-IR", {
     year: "numeric",
     month: "short",
     day: "numeric",

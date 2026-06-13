@@ -54,11 +54,7 @@ const { data: countries } = useCountriesQuery();
     <UInput v-model="form.guest.placeOfBirth" :disabled="loading" />
   </UFormField>
 
-  <UFormField :label="t('guest.nationalId')" name="guest.nationalId">
-    <UInput v-model="form.guest.nationalId" :disabled="loading" />
-  </UFormField>
-
-  <UFormField :label="t('guest.idPassportNumber')" name="guest.idNumber">
+  <UFormField :label="t('guest.idNumber')" name="guest.idNumber">
     <UInput v-model="form.guest.idNumber" :disabled="loading" />
   </UFormField>
 

@@ -699,7 +699,7 @@
     "passport": "Passport",
     "placeOfBirth": "Place of Birth",
     "nationalId": "National ID",
-    "idPassportNumber": "ID/Passport Number",
+    "idNumber": "ID Number",
     "occupation": "Occupation",
     "phone": "Phone",
     "postalCode": "Postal Code",

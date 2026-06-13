@@ -76,7 +76,19 @@
         <template #header>
           <div class="flex items-center justify-between">
             <span class="text-lg font-semibold">{{ t("sana.rooms") }}</span>
-            <UBadge color="primary">{{ rooms?.length || 0 }}</UBadge>
+            <div class="flex items-center gap-3">
+              <UBadge color="primary">{{ rooms?.length || 0 }}</UBadge>
+              <UButton
+                color="primary"
+                variant="soft"
+                size="sm"
+                :loading="syncingRooms"
+                @click="syncRooms"
+              >
+                <UIcon name="i-lucide-refresh-cw" class="mr-1 h-4 w-4" />
+                {{ t("sana.syncRooms") }}
+              </UButton>
+            </div>
           </div>
         </template>
 
@@ -108,15 +120,7 @@
           </template>
 
           <template #actions-cell="{ row }">
-            <UButton
-              variant="ghost"
-              size="sm"
-              color="primary"
-              :loading="syncingRoomId === row.original.id"
-              @click="syncRoom(row.original)"
-            >
-              <UIcon name="i-lucide-refresh-cw" class="h-4 w-4" />
-            </UButton>
+            <span></span>
           </template>
         </UTable>
       </UCard>
@@ -146,7 +150,7 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
 import { useI18n } from "vue-i18n";
-import { postApiSanaSyncAll } from "~/utils/client";
+import { postApiSanaGuestsIdSync, postApiSanaSyncAll } from "~/utils/client";
 
 const { t } = useI18n();
 
@@ -186,6 +190,13 @@ interface SanaSyncAllResult {
   errors?: string[];
 }
 
+interface SanaSyncRoomsResult {
+  status: string;
+  roomsSynced: number;
+  roomsFailed: number;
+  error?: string;
+}
+
 const guestColumns: TableColumn<SanaGuest>[] = [
   { accessorKey: "guest.firstName", header: t("sana.columns.name") },
   { accessorKey: "guest.lastName", header: t("sana.columns.lastName") },
@@ -208,8 +219,8 @@ const roomColumns: TableColumn<SanaRoomRack>[] = [
 
 const syncAllModalOpen = ref(false);
 const syncingAll = ref(false);
+const syncingRooms = ref(false);
 const syncingGuestId = ref<number | null>(null);
-const syncingRoomId = ref<number | null>(null);
 
 const errorModalOpen = ref(false);
 const errorModalTitle = ref("");
@@ -265,16 +276,22 @@ const syncGuest = async (guest: SanaGuest) => {
   }
 };
 
-const syncRoom = async (roomRack: SanaRoomRack) => {
-  syncingRoomId.value = roomRack.id;
+
+const syncRooms = async () => {
+  syncingRooms.value = true;
   try {
-    await postApiSanaRoomsIdSync({ path: { id: roomRack.id.toString() } });
+    const result = await $fetch<SanaSyncRoomsResult>("/api/sana/sync-rooms", {
+      method: "POST",
+    });
     await refreshRooms();
+    if (result.error) {
+      showError(t("sana.syncRoomsError"), result.error);
+    }
   } catch (error: any) {
     const msg = extractErrorMessage(error);
-    showError(t("sana.syncRoomError"), msg);
+    showError(t("sana.syncRoomsError"), msg);
   } finally {
-    syncingRoomId.value = null;
+    syncingRooms.value = false;
   }
 };
 

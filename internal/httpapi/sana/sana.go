@@ -37,9 +37,9 @@ func (m SanaModule) RegisterRoutes(api *httpapi.API, s *fuego.Server) {
 	h.Get(s, "/rooms", m.getSanaRooms)
 
 	h.Post(s, "/guests/{id}/sync", m.syncGuest)
-	h.Post(s, "/rooms/{id}/sync", m.syncRoom)
 
 	h.Post(s, "/sync-all", m.syncAll)
+	h.Post(s, "/sync-rooms", m.syncRooms)
 }
 
 func (m SanaModule) getTravelReasons(c h.ContextNoBody) ([]models.TravelReason, error) {
@@ -105,9 +105,9 @@ type SanaGuestResponse struct {
 }
 
 type GuestInfo struct {
-	FirstName  string `json:"firstName"`
-	LastName   string `json:"lastName"`
-	NationalID string `json:"nationalId"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	IDNumber  string `json:"idNumber"`
 }
 
 func getActiveStayRoomNumber(db *gorm.DB, guestID uint) string {
@@ -140,9 +140,9 @@ func (m SanaModule) getSanaGuests(c h.ContextNoBody) ([]SanaGuestResponse, error
 	var response []SanaGuestResponse
 	for _, g := range guests {
 		gi := &GuestInfo{
-			FirstName:  g.FirstName,
-			LastName:   g.LastName,
-			NationalID: g.NationalID,
+			FirstName: g.FirstName,
+			LastName:  g.LastName,
+			IDNumber:  g.IDNumber,
 		}
 
 		// Find or create SanaGuest record
@@ -289,7 +289,7 @@ func (m SanaModule) syncGuest(c fuego.ContextNoBody) (SanaGuestResponse, error) 
 		NameMosafer:      guest.FirstName,
 		FamilMosafer:     guest.LastName,
 		NamePedar:        guest.FatherName,
-		ShomareShenasaee: guest.NationalID,
+		ShomareShenasaee: guest.IDNumber,
 		TarikhTavalod:    guest.DateOfBirth.Format("2006/01/02"),
 		ID_Jensiat:       gender,
 		TedadHamrah:      0,
@@ -332,116 +332,6 @@ func (m SanaModule) syncGuest(c fuego.ContextNoBody) (SanaGuestResponse, error) 
 		ShomarePaziresh: sanaGuest.ShomarePaziresh,
 		ShomareOtagh:    sanaGuest.ShomareOtagh,
 		SyncTime:        syncTime,
-	}, nil
-}
-
-func (m SanaModule) syncRoom(c fuego.ContextNoBody) (SanaRoomResponse, error) {
-	idStr := c.PathParam("id")
-	roomRackID, err := strconv.ParseUint(idStr, 10, 64)
-	if err != nil {
-		return SanaRoomResponse{}, fuego.BadRequestError{Title: "invalid_id"}
-	}
-
-	var roomRack models.SanaRoomRack
-	if err := m.db.First(&roomRack, roomRackID).Error; err != nil {
-		return SanaRoomResponse{}, err
-	}
-
-	var room models.Room
-	if roomRack.RoomID != nil {
-		if err := m.db.First(&room, *roomRack.RoomID).Error; err != nil {
-			return SanaRoomResponse{}, err
-		}
-	} else {
-		return SanaRoomResponse{}, fuego.BadRequestError{Title: "room_not_linked"}
-	}
-
-	client := sana.NewClient(sana.Config{
-		KelidVahed:     m.sanaCfg.KelidVahed,
-		KelidPeimankar: m.sanaCfg.KelidPeimankar,
-		CodeVahed:      m.sanaCfg.CodeVahed,
-	})
-
-	// Build full hotel RAC from all rooms
-	var allRooms []models.Room
-	if err := m.db.Preload("Floor").Find(&allRooms).Error; err != nil {
-		return SanaRoomResponse{}, err
-	}
-
-	// Group rooms by floor
-	floorMap := make(map[int][]string)
-	for _, r := range allRooms {
-		floorNum := 0
-		if r.Floor != nil {
-			floorNum = r.Floor.Number
-		}
-		floorMap[floorNum] = append(floorMap[floorNum], r.RoomNumber)
-	}
-
-	// Sort floors
-	var floors []int
-	for f := range floorMap {
-		floors = append(floors, f)
-	}
-	sort.Ints(floors)
-
-	var sanaFloors []sana.Floor
-	for _, f := range floors {
-		// Sort rooms within floor
-		sort.Strings(floorMap[f])
-		sanaFloors = append(sanaFloors, sana.Floor{
-			Number: f,
-			Rooms:  floorMap[f],
-		})
-	}
-
-	input := sana.SabtChidemanInput{
-		Sakhteman:  1,
-		TedadOtagh: len(allRooms),
-		Floors:     sanaFloors,
-	}
-
-	result, err := client.SabtChidemanVahed(input)
-	if err != nil {
-		roomRack.LastError = err.Error()
-		m.db.Save(&roomRack)
-		return SanaRoomResponse{}, fuego.BadRequestError{Title: "sana_api_error", Detail: err.Error()}
-	}
-
-	if !result.IsOK {
-		roomRack.LastError = result.Message
-		m.db.Save(&roomRack)
-		return SanaRoomResponse{}, fuego.BadRequestError{Title: "sana_api_error", Detail: result.Message}
-	}
-
-	roomRack.IsSynced = true
-	roomRack.LastError = ""
-	roomRack.LastSyncTime = time.Now()
-	m.db.Save(&roomRack)
-
-	// Also update all other room racks for the same hotel to share sync status
-	// since SabtChidemanVahed is for the whole hotel
-	m.db.Model(&models.SanaRoomRack{}).
-		Where("hotel_id = ?", roomRack.HotelID).
-		Updates(map[string]interface{}{
-			"is_synced":      true,
-			"last_sync_time": time.Now(),
-			"last_error":     "",
-		})
-
-	lastSyncTime := ""
-	if !roomRack.LastSyncTime.IsZero() {
-		lastSyncTime = roomRack.LastSyncTime.Format("2006-01-02T15:04:05Z")
-	}
-
-	return SanaRoomResponse{
-		ID:           roomRack.ID,
-		HotelID:      roomRack.HotelID,
-		Room:         &RoomInfo{ID: room.ID, RoomNumber: room.RoomNumber},
-		Rac:          roomRack.Rac,
-		LastSyncTime: lastSyncTime,
-		IsSynced:     roomRack.IsSynced,
-		LastError:    roomRack.LastError,
 	}, nil
 }
 
@@ -497,7 +387,7 @@ func (m SanaModule) syncAll(c h.ContextNoBody) (SanaSyncAllResult, error) {
 			NameMosafer:      guest.FirstName,
 			FamilMosafer:     guest.LastName,
 			NamePedar:        guest.FatherName,
-			ShomareShenasaee: guest.NationalID,
+			ShomareShenasaee: guest.IDNumber,
 			TarikhTavalod:    guest.DateOfBirth.Format("2006/01/02"),
 			ID_Jensiat:       gender,
 			TedadHamrah:      0,
@@ -587,5 +477,92 @@ func (m SanaModule) syncAll(c h.ContextNoBody) (SanaSyncAllResult, error) {
 	} else {
 		result.Status = "completed"
 	}
+	return result, nil
+}
+
+type SanaSyncRoomsResult struct {
+	Status      string `json:"status"`
+	RoomsSynced int    `json:"roomsSynced"`
+	RoomsFailed int    `json:"roomsFailed"`
+	Error       string `json:"error,omitempty"`
+}
+
+func (m SanaModule) syncRooms(c h.ContextNoBody) (SanaSyncRoomsResult, error) {
+	client := sana.NewClient(sana.Config{
+		KelidVahed:     m.sanaCfg.KelidVahed,
+		KelidPeimankar: m.sanaCfg.KelidPeimankar,
+		CodeVahed:      m.sanaCfg.CodeVahed,
+	})
+
+	var result SanaSyncRoomsResult
+
+	var allRooms []models.Room
+	if err := m.db.Preload("Floor").Find(&allRooms).Error; err != nil {
+		result.Status = "failed"
+		result.RoomsFailed = 1
+		result.Error = err.Error()
+		return result, nil
+	}
+
+	floorMap := make(map[int][]string)
+	for _, r := range allRooms {
+		floorNum := 0
+		if r.Floor != nil {
+			floorNum = r.Floor.Number
+		}
+		floorMap[floorNum] = append(floorMap[floorNum], r.RoomNumber)
+	}
+
+	var floors []int
+	for f := range floorMap {
+		floors = append(floors, f)
+	}
+	sort.Ints(floors)
+
+	var sanaFloors []sana.Floor
+	for _, f := range floors {
+		sort.Strings(floorMap[f])
+		sanaFloors = append(sanaFloors, sana.Floor{
+			Number: f,
+			Rooms:  floorMap[f],
+		})
+	}
+
+	input := sana.SabtChidemanInput{
+		Sakhteman:  1,
+		TedadOtagh: len(allRooms),
+		Floors:     sanaFloors,
+	}
+
+	apiResult, err := client.SabtChidemanVahed(input)
+	if err != nil {
+		result.Status = "failed"
+		result.RoomsFailed = 1
+		result.Error = err.Error()
+		m.db.Model(&models.SanaRoomRack{}).
+			Where("hotel_id = ?", "default").
+			Update("last_error", err.Error())
+		return result, nil
+	}
+
+	if !apiResult.IsOK {
+		result.Status = "failed"
+		result.RoomsFailed = 1
+		result.Error = apiResult.Message
+		m.db.Model(&models.SanaRoomRack{}).
+			Where("hotel_id = ?", "default").
+			Update("last_error", apiResult.Message)
+		return result, nil
+	}
+
+	result.Status = "completed"
+	result.RoomsSynced = 1
+	m.db.Model(&models.SanaRoomRack{}).
+		Where("hotel_id = ?", "default").
+		Updates(map[string]interface{}{
+			"is_synced":      true,
+			"last_sync_time": time.Now(),
+			"last_error":     "",
+		})
 	return result, nil
 }

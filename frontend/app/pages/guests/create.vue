@@ -229,7 +229,7 @@ const companionColumns = [
   { accessorKey: "firstName", header: t("forms.firstName") },
   { accessorKey: "lastName", header: t("forms.lastName") },
   { accessorKey: "nationalId", header: t("guest.nationalId") },
-  { accessorKey: "idNumber", header: t("guest.idPassportNumber") },
+  { accessorKey: "idNumber", header: t("guest.idNumber") },
   { accessorKey: "relation", header: t("guests.companionRelation") },
   { accessorKey: "actions", header: t("guests.columns.actions") },
 ];

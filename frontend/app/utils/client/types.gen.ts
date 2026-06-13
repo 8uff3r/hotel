@@ -201,7 +201,6 @@ export type Guest = {
     job?: string;
     landline?: string;
     lastName: string;
-    nationalId?: string;
     nationality?: {
         id?: number;
         label?: string;
@@ -209,7 +208,6 @@ export type Guest = {
     };
     nationalityID: number;
     occupation?: string;
-    passport?: string;
     phone?: string;
     placeOfBirth?: string;
     postalCode?: string;
@@ -354,7 +352,6 @@ export type GuestWithReservationRequest = {
         job?: string;
         landline?: string;
         lastName: string;
-        nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
@@ -362,7 +359,6 @@ export type GuestWithReservationRequest = {
         };
         nationalityID: number;
         occupation?: string;
-        passport?: string;
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
@@ -456,7 +452,6 @@ export type GuestWithReservationResponse = {
         job?: string;
         landline?: string;
         lastName: string;
-        nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
@@ -464,7 +459,6 @@ export type GuestWithReservationResponse = {
         };
         nationalityID: number;
         occupation?: string;
-        passport?: string;
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
@@ -543,7 +537,6 @@ export type GuestWithReservationResponse = {
             job?: string;
             landline?: string;
             lastName: string;
-            nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
@@ -551,7 +544,6 @@ export type GuestWithReservationResponse = {
             };
             nationalityID: number;
             occupation?: string;
-            passport?: string;
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
@@ -708,7 +700,6 @@ export type GuestWithStayRequest = {
         job?: string;
         landline?: string;
         lastName: string;
-        nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
@@ -716,7 +707,6 @@ export type GuestWithStayRequest = {
         };
         nationalityID: number;
         occupation?: string;
-        passport?: string;
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
@@ -810,7 +800,6 @@ export type GuestWithStayResponse = {
         job?: string;
         landline?: string;
         lastName: string;
-        nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
@@ -818,7 +807,6 @@ export type GuestWithStayResponse = {
         };
         nationalityID: number;
         occupation?: string;
-        passport?: string;
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
@@ -901,7 +889,6 @@ export type GuestWithStayResponse = {
             job?: string;
             landline?: string;
             lastName: string;
-            nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
@@ -909,7 +896,6 @@ export type GuestWithStayResponse = {
             };
             nationalityID: number;
             occupation?: string;
-            passport?: string;
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
@@ -1025,7 +1011,6 @@ export type GuestWithStayResponse = {
                 job?: string;
                 landline?: string;
                 lastName: string;
-                nationalId?: string;
                 nationality?: {
                     id?: number;
                     label?: string;
@@ -1033,7 +1018,6 @@ export type GuestWithStayResponse = {
                 };
                 nationalityID: number;
                 occupation?: string;
-                passport?: string;
                 phone?: string;
                 placeOfBirth?: string;
                 postalCode?: string;
@@ -1240,7 +1224,6 @@ export type GuestWithStaysAndReservationsResponse = {
         job?: string;
         landline?: string;
         lastName: string;
-        nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
@@ -1248,7 +1231,6 @@ export type GuestWithStaysAndReservationsResponse = {
         };
         nationalityID: number;
         occupation?: string;
-        passport?: string;
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
@@ -1308,7 +1290,6 @@ export type GuestWithStaysAndReservationsResponse = {
             job?: string;
             landline?: string;
             lastName: string;
-            nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
@@ -1316,7 +1297,6 @@ export type GuestWithStaysAndReservationsResponse = {
             };
             nationalityID: number;
             occupation?: string;
-            passport?: string;
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
@@ -1461,7 +1441,6 @@ export type GuestWithStaysAndReservationsResponse = {
             job?: string;
             landline?: string;
             lastName: string;
-            nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
@@ -1469,7 +1448,6 @@ export type GuestWithStaysAndReservationsResponse = {
             };
             nationalityID: number;
             occupation?: string;
-            passport?: string;
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
@@ -1585,7 +1563,6 @@ export type GuestWithStaysAndReservationsResponse = {
                 job?: string;
                 landline?: string;
                 lastName: string;
-                nationalId?: string;
                 nationality?: {
                     id?: number;
                     label?: string;
@@ -1593,7 +1570,6 @@ export type GuestWithStaysAndReservationsResponse = {
                 };
                 nationalityID: number;
                 occupation?: string;
-                passport?: string;
                 phone?: string;
                 placeOfBirth?: string;
                 postalCode?: string;
@@ -2022,7 +1998,6 @@ export type Income = {
             job?: string;
             landline?: string;
             lastName: string;
-            nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
@@ -2030,7 +2005,6 @@ export type Income = {
             };
             nationalityID: number;
             occupation?: string;
-            passport?: string;
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
@@ -2177,7 +2151,6 @@ export type Income = {
             job?: string;
             landline?: string;
             lastName: string;
-            nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
@@ -2185,7 +2158,6 @@ export type Income = {
             };
             nationalityID: number;
             occupation?: string;
-            passport?: string;
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
@@ -2301,7 +2273,6 @@ export type Income = {
                 job?: string;
                 landline?: string;
                 lastName: string;
-                nationalId?: string;
                 nationality?: {
                     id?: number;
                     label?: string;
@@ -2309,7 +2280,6 @@ export type Income = {
                 };
                 nationalityID: number;
                 occupation?: string;
-                passport?: string;
                 phone?: string;
                 placeOfBirth?: string;
                 postalCode?: string;
@@ -3032,7 +3002,6 @@ export type PaginatedResponseModelsGuest = {
         job?: string;
         landline?: string;
         lastName: string;
-        nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
@@ -3040,7 +3009,6 @@ export type PaginatedResponseModelsGuest = {
         };
         nationalityID: number;
         occupation?: string;
-        passport?: string;
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
@@ -3259,7 +3227,6 @@ export type PaginatedResponseModelsIncome = {
                 job?: string;
                 landline?: string;
                 lastName: string;
-                nationalId?: string;
                 nationality?: {
                     id?: number;
                     label?: string;
@@ -3267,7 +3234,6 @@ export type PaginatedResponseModelsIncome = {
                 };
                 nationalityID: number;
                 occupation?: string;
-                passport?: string;
                 phone?: string;
                 placeOfBirth?: string;
                 postalCode?: string;
@@ -3414,7 +3380,6 @@ export type PaginatedResponseModelsIncome = {
                 job?: string;
                 landline?: string;
                 lastName: string;
-                nationalId?: string;
                 nationality?: {
                     id?: number;
                     label?: string;
@@ -3422,7 +3387,6 @@ export type PaginatedResponseModelsIncome = {
                 };
                 nationalityID: number;
                 occupation?: string;
-                passport?: string;
                 phone?: string;
                 placeOfBirth?: string;
                 postalCode?: string;
@@ -3538,7 +3502,6 @@ export type PaginatedResponseModelsIncome = {
                     job?: string;
                     landline?: string;
                     lastName: string;
-                    nationalId?: string;
                     nationality?: {
                         id?: number;
                         label?: string;
@@ -3546,7 +3509,6 @@ export type PaginatedResponseModelsIncome = {
                     };
                     nationalityID: number;
                     occupation?: string;
-                    passport?: string;
                     phone?: string;
                     placeOfBirth?: string;
                     postalCode?: string;
@@ -4130,7 +4092,6 @@ export type PaginatedResponseModelsParkingTransaction = {
             job?: string;
             landline?: string;
             lastName: string;
-            nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
@@ -4138,7 +4099,6 @@ export type PaginatedResponseModelsParkingTransaction = {
             };
             nationalityID: number;
             occupation?: string;
-            passport?: string;
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
@@ -4253,7 +4213,6 @@ export type PaginatedResponseModelsParkingTransaction = {
                 job?: string;
                 landline?: string;
                 lastName: string;
-                nationalId?: string;
                 nationality?: {
                     id?: number;
                     label?: string;
@@ -4261,7 +4220,6 @@ export type PaginatedResponseModelsParkingTransaction = {
                 };
                 nationalityID: number;
                 occupation?: string;
-                passport?: string;
                 phone?: string;
                 placeOfBirth?: string;
                 postalCode?: string;
@@ -4535,7 +4493,6 @@ export type PaginatedResponseModelsReservation = {
             job?: string;
             landline?: string;
             lastName: string;
-            nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
@@ -4543,7 +4500,6 @@ export type PaginatedResponseModelsReservation = {
             };
             nationalityID: number;
             occupation?: string;
-            passport?: string;
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
@@ -4733,7 +4689,6 @@ export type PaginatedResponseModelsRestaurantBill = {
             job?: string;
             landline?: string;
             lastName: string;
-            nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
@@ -4741,7 +4696,6 @@ export type PaginatedResponseModelsRestaurantBill = {
             };
             nationalityID: number;
             occupation?: string;
-            passport?: string;
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
@@ -4806,7 +4760,6 @@ export type PaginatedResponseModelsRestaurantBill = {
                 job?: string;
                 landline?: string;
                 lastName: string;
-                nationalId?: string;
                 nationality?: {
                     id?: number;
                     label?: string;
@@ -4814,7 +4767,6 @@ export type PaginatedResponseModelsRestaurantBill = {
                 };
                 nationalityID: number;
                 occupation?: string;
-                passport?: string;
                 phone?: string;
                 placeOfBirth?: string;
                 postalCode?: string;
@@ -5288,7 +5240,6 @@ export type PaginatedResponseModelsStay = {
             job?: string;
             landline?: string;
             lastName: string;
-            nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
@@ -5296,7 +5247,6 @@ export type PaginatedResponseModelsStay = {
             };
             nationalityID: number;
             occupation?: string;
-            passport?: string;
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
@@ -5412,7 +5362,6 @@ export type PaginatedResponseModelsStay = {
                 job?: string;
                 landline?: string;
                 lastName: string;
-                nationalId?: string;
                 nationality?: {
                     id?: number;
                     label?: string;
@@ -5420,7 +5369,6 @@ export type PaginatedResponseModelsStay = {
                 };
                 nationalityID: number;
                 occupation?: string;
-                passport?: string;
                 phone?: string;
                 placeOfBirth?: string;
                 postalCode?: string;
@@ -5652,7 +5600,6 @@ export type PaginatedResponseModelsVehicle = {
             job?: string;
             landline?: string;
             lastName: string;
-            nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
@@ -5660,7 +5607,6 @@ export type PaginatedResponseModelsVehicle = {
             };
             nationalityID: number;
             occupation?: string;
-            passport?: string;
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
@@ -5899,7 +5845,6 @@ export type ParkingTransaction = {
         job?: string;
         landline?: string;
         lastName: string;
-        nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
@@ -5907,7 +5852,6 @@ export type ParkingTransaction = {
         };
         nationalityID: number;
         occupation?: string;
-        passport?: string;
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
@@ -6022,7 +5966,6 @@ export type ParkingTransaction = {
             job?: string;
             landline?: string;
             lastName: string;
-            nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
@@ -6030,7 +5973,6 @@ export type ParkingTransaction = {
             };
             nationalityID: number;
             occupation?: string;
-            passport?: string;
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
@@ -6255,7 +6197,6 @@ export type Reservation = {
         job?: string;
         landline?: string;
         lastName: string;
-        nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
@@ -6263,7 +6204,6 @@ export type Reservation = {
         };
         nationalityID: number;
         occupation?: string;
-        passport?: string;
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
@@ -6431,7 +6371,6 @@ export type RestaurantBill = {
         job?: string;
         landline?: string;
         lastName: string;
-        nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
@@ -6439,7 +6378,6 @@ export type RestaurantBill = {
         };
         nationalityID: number;
         occupation?: string;
-        passport?: string;
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
@@ -6504,7 +6442,6 @@ export type RestaurantBill = {
             job?: string;
             landline?: string;
             lastName: string;
-            nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
@@ -6512,7 +6449,6 @@ export type RestaurantBill = {
             };
             nationalityID: number;
             occupation?: string;
-            passport?: string;
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
@@ -6760,8 +6696,8 @@ export type SanaCity = {
 export type SanaGuestResponse = {
     guest?: {
         firstName?: string;
+        idNumber?: string;
         lastName?: string;
-        nationalId?: string;
     };
     guestId?: number;
     id?: number;
@@ -6794,6 +6730,16 @@ export type SanaSyncAllResult = {
     errors?: Array<string>;
     guestsFailed?: number;
     guestsSynced?: number;
+    roomsFailed?: number;
+    roomsSynced?: number;
+    status?: string;
+};
+
+/**
+ * SanaSyncRoomsResult schema
+ */
+export type SanaSyncRoomsResult = {
+    error?: string;
     roomsFailed?: number;
     roomsSynced?: number;
     status?: string;
@@ -7009,7 +6955,6 @@ export type Stay = {
         job?: string;
         landline?: string;
         lastName: string;
-        nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
@@ -7017,7 +6962,6 @@ export type Stay = {
         };
         nationalityID: number;
         occupation?: string;
-        passport?: string;
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
@@ -7133,7 +7077,6 @@ export type Stay = {
             job?: string;
             landline?: string;
             lastName: string;
-            nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
@@ -7141,7 +7084,6 @@ export type Stay = {
             };
             nationalityID: number;
             occupation?: string;
-            passport?: string;
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
@@ -7372,7 +7314,6 @@ export type Vehicle = {
         job?: string;
         landline?: string;
         lastName: string;
-        nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
@@ -7380,7 +7321,6 @@ export type Vehicle = {
         };
         nationalityID: number;
         occupation?: string;
-        passport?: string;
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
@@ -7544,7 +7484,6 @@ export type ChangeDurationResponse = {
         job?: string;
         landline?: string;
         lastName: string;
-        nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
@@ -7552,7 +7491,6 @@ export type ChangeDurationResponse = {
         };
         nationalityID: number;
         occupation?: string;
-        passport?: string;
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
@@ -7668,7 +7606,6 @@ export type ChangeDurationResponse = {
             job?: string;
             landline?: string;
             lastName: string;
-            nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
@@ -7676,7 +7613,6 @@ export type ChangeDurationResponse = {
             };
             nationalityID: number;
             occupation?: string;
-            passport?: string;
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
@@ -7913,7 +7849,6 @@ export type CheckInResponse = {
         job?: string;
         landline?: string;
         lastName: string;
-        nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
@@ -7921,7 +7856,6 @@ export type CheckInResponse = {
         };
         nationalityID: number;
         occupation?: string;
-        passport?: string;
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
@@ -8038,7 +7972,6 @@ export type CheckInResponse = {
             job?: string;
             landline?: string;
             lastName: string;
-            nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
@@ -8046,7 +7979,6 @@ export type CheckInResponse = {
             };
             nationalityID: number;
             occupation?: string;
-            passport?: string;
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
@@ -8258,7 +8190,6 @@ export type CreateReservationResponse = {
         job?: string;
         landline?: string;
         lastName: string;
-        nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
@@ -8266,7 +8197,6 @@ export type CreateReservationResponse = {
         };
         nationalityID: number;
         occupation?: string;
-        passport?: string;
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
@@ -8416,7 +8346,6 @@ export type CreateStayResponse = {
         job?: string;
         landline?: string;
         lastName: string;
-        nationalId?: string;
         nationality?: {
             id?: number;
             label?: string;
@@ -8424,7 +8353,6 @@ export type CreateStayResponse = {
         };
         nationalityID: number;
         occupation?: string;
-        passport?: string;
         phone?: string;
         placeOfBirth?: string;
         postalCode?: string;
@@ -8540,7 +8468,6 @@ export type CreateStayResponse = {
             job?: string;
             landline?: string;
             lastName: string;
-            nationalId?: string;
             nationality?: {
                 id?: number;
                 label?: string;
@@ -8548,7 +8475,6 @@ export type CreateStayResponse = {
             };
             nationalityID: number;
             occupation?: string;
-            passport?: string;
             phone?: string;
             placeOfBirth?: string;
             postalCode?: string;
@@ -13660,41 +13586,6 @@ export type GetApiSanaRoomsResponses = {
 
 export type GetApiSanaRoomsResponse = GetApiSanaRoomsResponses[keyof GetApiSanaRoomsResponses];
 
-export type PostApiSanaRoomsIdSyncData = {
-    body?: never;
-    headers?: {
-        Accept?: string;
-    };
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: '/api/sana/rooms/{id}/sync';
-};
-
-export type PostApiSanaRoomsIdSyncErrors = {
-    /**
-     * Bad Request _(validation or deserialization error)_
-     */
-    400: HttpError;
-    /**
-     * Internal Server Error _(panics)_
-     */
-    500: HttpError;
-    default: unknown;
-};
-
-export type PostApiSanaRoomsIdSyncError = PostApiSanaRoomsIdSyncErrors[keyof PostApiSanaRoomsIdSyncErrors];
-
-export type PostApiSanaRoomsIdSyncResponses = {
-    /**
-     * OK
-     */
-    200: SanaRoomResponse;
-};
-
-export type PostApiSanaRoomsIdSyncResponse = PostApiSanaRoomsIdSyncResponses[keyof PostApiSanaRoomsIdSyncResponses];
-
 export type PostApiSanaSyncAllData = {
     body?: never;
     headers?: {
@@ -13727,6 +13618,39 @@ export type PostApiSanaSyncAllResponses = {
 };
 
 export type PostApiSanaSyncAllResponse = PostApiSanaSyncAllResponses[keyof PostApiSanaSyncAllResponses];
+
+export type PostApiSanaSyncRoomsData = {
+    body?: never;
+    headers?: {
+        Accept?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/sana/sync-rooms';
+};
+
+export type PostApiSanaSyncRoomsErrors = {
+    /**
+     * Bad Request _(validation or deserialization error)_
+     */
+    400: HttpError;
+    /**
+     * Internal Server Error _(panics)_
+     */
+    500: HttpError;
+    default: unknown;
+};
+
+export type PostApiSanaSyncRoomsError = PostApiSanaSyncRoomsErrors[keyof PostApiSanaSyncRoomsErrors];
+
+export type PostApiSanaSyncRoomsResponses = {
+    /**
+     * OK
+     */
+    200: SanaSyncRoomsResult;
+};
+
+export type PostApiSanaSyncRoomsResponse = PostApiSanaSyncRoomsResponses[keyof PostApiSanaSyncRoomsResponses];
 
 export type GetApiSanaTravelReasonsData = {
     body?: never;

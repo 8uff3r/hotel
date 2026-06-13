@@ -26,9 +26,7 @@ type Guest struct {
 	FirstName    string    `gorm:"not null" json:"firstName" validate:"required,min=2,max=50"`
 	LastName     string    `gorm:"not null" json:"lastName" validate:"required,min=2,max=50"`
 	FatherName   string    `gorm:"not null" json:"fatherName"`
-	NationalID   string    `gorm:"index" json:"nationalId"`
 	IDNumber     string    `json:"idNumber"`
-	Passport     string    `json:"passport"`
 	Gender       string    `json:"gender"`
 	DateOfBirth  time.Time `json:"dateOfBirth" validate:"required"`
 	PlaceOfBirth string    `json:"placeOfBirth"`

@@ -199,7 +199,6 @@ export const zGuest = z.object({
     job: z.string().optional(),
     landline: z.string().optional(),
     lastName: z.string().min(2).max(50),
-    nationalId: z.string().optional(),
     nationality: z.object({
         id: z.int().gte(0).optional(),
         label: z.string().optional(),
@@ -207,7 +206,6 @@ export const zGuest = z.object({
     }).optional(),
     nationalityID: z.int().gte(0),
     occupation: z.string().optional(),
-    passport: z.string().optional(),
     phone: z.string().optional(),
     placeOfBirth: z.string().optional(),
     postalCode: z.string().optional(),
@@ -352,7 +350,6 @@ export const zGuestWithReservationRequest = z.object({
         job: z.string().optional(),
         landline: z.string().optional(),
         lastName: z.string().min(2).max(50),
-        nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
@@ -360,7 +357,6 @@ export const zGuestWithReservationRequest = z.object({
         }).optional(),
         nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
-        passport: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
@@ -454,7 +450,6 @@ export const zGuestWithReservationResponse = z.object({
         job: z.string().optional(),
         landline: z.string().optional(),
         lastName: z.string().min(2).max(50),
-        nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
@@ -462,7 +457,6 @@ export const zGuestWithReservationResponse = z.object({
         }).optional(),
         nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
-        passport: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
@@ -541,7 +535,6 @@ export const zGuestWithReservationResponse = z.object({
             job: z.string().optional(),
             landline: z.string().optional(),
             lastName: z.string().min(2).max(50),
-            nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
@@ -549,7 +542,6 @@ export const zGuestWithReservationResponse = z.object({
             }).optional(),
             nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
-            passport: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
@@ -706,7 +698,6 @@ export const zGuestWithStayRequest = z.object({
         job: z.string().optional(),
         landline: z.string().optional(),
         lastName: z.string().min(2).max(50),
-        nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
@@ -714,7 +705,6 @@ export const zGuestWithStayRequest = z.object({
         }).optional(),
         nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
-        passport: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
@@ -808,7 +798,6 @@ export const zGuestWithStayResponse = z.object({
         job: z.string().optional(),
         landline: z.string().optional(),
         lastName: z.string().min(2).max(50),
-        nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
@@ -816,7 +805,6 @@ export const zGuestWithStayResponse = z.object({
         }).optional(),
         nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
-        passport: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
@@ -899,7 +887,6 @@ export const zGuestWithStayResponse = z.object({
             job: z.string().optional(),
             landline: z.string().optional(),
             lastName: z.string().min(2).max(50),
-            nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
@@ -907,7 +894,6 @@ export const zGuestWithStayResponse = z.object({
             }).optional(),
             nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
-            passport: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
@@ -1023,7 +1009,6 @@ export const zGuestWithStayResponse = z.object({
                 job: z.string().optional(),
                 landline: z.string().optional(),
                 lastName: z.string().min(2).max(50),
-                nationalId: z.string().optional(),
                 nationality: z.object({
                     id: z.int().gte(0).optional(),
                     label: z.string().optional(),
@@ -1031,7 +1016,6 @@ export const zGuestWithStayResponse = z.object({
                 }).optional(),
                 nationalityID: z.int().gte(0),
                 occupation: z.string().optional(),
-                passport: z.string().optional(),
                 phone: z.string().optional(),
                 placeOfBirth: z.string().optional(),
                 postalCode: z.string().optional(),
@@ -1238,7 +1222,6 @@ export const zGuestWithStaysAndReservationsResponse = z.object({
         job: z.string().optional(),
         landline: z.string().optional(),
         lastName: z.string().min(2).max(50),
-        nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
@@ -1246,7 +1229,6 @@ export const zGuestWithStaysAndReservationsResponse = z.object({
         }).optional(),
         nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
-        passport: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
@@ -1306,7 +1288,6 @@ export const zGuestWithStaysAndReservationsResponse = z.object({
             job: z.string().optional(),
             landline: z.string().optional(),
             lastName: z.string().min(2).max(50),
-            nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
@@ -1314,7 +1295,6 @@ export const zGuestWithStaysAndReservationsResponse = z.object({
             }).optional(),
             nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
-            passport: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
@@ -1459,7 +1439,6 @@ export const zGuestWithStaysAndReservationsResponse = z.object({
             job: z.string().optional(),
             landline: z.string().optional(),
             lastName: z.string().min(2).max(50),
-            nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
@@ -1467,7 +1446,6 @@ export const zGuestWithStaysAndReservationsResponse = z.object({
             }).optional(),
             nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
-            passport: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
@@ -1583,7 +1561,6 @@ export const zGuestWithStaysAndReservationsResponse = z.object({
                 job: z.string().optional(),
                 landline: z.string().optional(),
                 lastName: z.string().min(2).max(50),
-                nationalId: z.string().optional(),
                 nationality: z.object({
                     id: z.int().gte(0).optional(),
                     label: z.string().optional(),
@@ -1591,7 +1568,6 @@ export const zGuestWithStaysAndReservationsResponse = z.object({
                 }).optional(),
                 nationalityID: z.int().gte(0),
                 occupation: z.string().optional(),
-                passport: z.string().optional(),
                 phone: z.string().optional(),
                 placeOfBirth: z.string().optional(),
                 postalCode: z.string().optional(),
@@ -1997,7 +1973,6 @@ export const zIncome = z.object({
             job: z.string().optional(),
             landline: z.string().optional(),
             lastName: z.string().min(2).max(50),
-            nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
@@ -2005,7 +1980,6 @@ export const zIncome = z.object({
             }).optional(),
             nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
-            passport: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
@@ -2152,7 +2126,6 @@ export const zIncome = z.object({
             job: z.string().optional(),
             landline: z.string().optional(),
             lastName: z.string().min(2).max(50),
-            nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
@@ -2160,7 +2133,6 @@ export const zIncome = z.object({
             }).optional(),
             nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
-            passport: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
@@ -2276,7 +2248,6 @@ export const zIncome = z.object({
                 job: z.string().optional(),
                 landline: z.string().optional(),
                 lastName: z.string().min(2).max(50),
-                nationalId: z.string().optional(),
                 nationality: z.object({
                     id: z.int().gte(0).optional(),
                     label: z.string().optional(),
@@ -2284,7 +2255,6 @@ export const zIncome = z.object({
                 }).optional(),
                 nationalityID: z.int().gte(0),
                 occupation: z.string().optional(),
-                passport: z.string().optional(),
                 phone: z.string().optional(),
                 placeOfBirth: z.string().optional(),
                 postalCode: z.string().optional(),
@@ -3007,7 +2977,6 @@ export const zPaginatedResponseModelsGuest = z.object({
         job: z.string().optional(),
         landline: z.string().optional(),
         lastName: z.string().min(2).max(50),
-        nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
@@ -3015,7 +2984,6 @@ export const zPaginatedResponseModelsGuest = z.object({
         }).optional(),
         nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
-        passport: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
@@ -3234,7 +3202,6 @@ export const zPaginatedResponseModelsIncome = z.object({
                 job: z.string().optional(),
                 landline: z.string().optional(),
                 lastName: z.string().min(2).max(50),
-                nationalId: z.string().optional(),
                 nationality: z.object({
                     id: z.int().gte(0).optional(),
                     label: z.string().optional(),
@@ -3242,7 +3209,6 @@ export const zPaginatedResponseModelsIncome = z.object({
                 }).optional(),
                 nationalityID: z.int().gte(0),
                 occupation: z.string().optional(),
-                passport: z.string().optional(),
                 phone: z.string().optional(),
                 placeOfBirth: z.string().optional(),
                 postalCode: z.string().optional(),
@@ -3389,7 +3355,6 @@ export const zPaginatedResponseModelsIncome = z.object({
                 job: z.string().optional(),
                 landline: z.string().optional(),
                 lastName: z.string().min(2).max(50),
-                nationalId: z.string().optional(),
                 nationality: z.object({
                     id: z.int().gte(0).optional(),
                     label: z.string().optional(),
@@ -3397,7 +3362,6 @@ export const zPaginatedResponseModelsIncome = z.object({
                 }).optional(),
                 nationalityID: z.int().gte(0),
                 occupation: z.string().optional(),
-                passport: z.string().optional(),
                 phone: z.string().optional(),
                 placeOfBirth: z.string().optional(),
                 postalCode: z.string().optional(),
@@ -3513,7 +3477,6 @@ export const zPaginatedResponseModelsIncome = z.object({
                     job: z.string().optional(),
                     landline: z.string().optional(),
                     lastName: z.string().min(2).max(50),
-                    nationalId: z.string().optional(),
                     nationality: z.object({
                         id: z.int().gte(0).optional(),
                         label: z.string().optional(),
@@ -3521,7 +3484,6 @@ export const zPaginatedResponseModelsIncome = z.object({
                     }).optional(),
                     nationalityID: z.int().gte(0),
                     occupation: z.string().optional(),
-                    passport: z.string().optional(),
                     phone: z.string().optional(),
                     placeOfBirth: z.string().optional(),
                     postalCode: z.string().optional(),
@@ -4105,7 +4067,6 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
             job: z.string().optional(),
             landline: z.string().optional(),
             lastName: z.string().min(2).max(50),
-            nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
@@ -4113,7 +4074,6 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
             }).optional(),
             nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
-            passport: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
@@ -4228,7 +4188,6 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
                 job: z.string().optional(),
                 landline: z.string().optional(),
                 lastName: z.string().min(2).max(50),
-                nationalId: z.string().optional(),
                 nationality: z.object({
                     id: z.int().gte(0).optional(),
                     label: z.string().optional(),
@@ -4236,7 +4195,6 @@ export const zPaginatedResponseModelsParkingTransaction = z.object({
                 }).optional(),
                 nationalityID: z.int().gte(0),
                 occupation: z.string().optional(),
-                passport: z.string().optional(),
                 phone: z.string().optional(),
                 placeOfBirth: z.string().optional(),
                 postalCode: z.string().optional(),
@@ -4510,7 +4468,6 @@ export const zPaginatedResponseModelsReservation = z.object({
             job: z.string().optional(),
             landline: z.string().optional(),
             lastName: z.string().min(2).max(50),
-            nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
@@ -4518,7 +4475,6 @@ export const zPaginatedResponseModelsReservation = z.object({
             }).optional(),
             nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
-            passport: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
@@ -4708,7 +4664,6 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
             job: z.string().optional(),
             landline: z.string().optional(),
             lastName: z.string().min(2).max(50),
-            nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
@@ -4716,7 +4671,6 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
             }).optional(),
             nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
-            passport: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
@@ -4781,7 +4735,6 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
                 job: z.string().optional(),
                 landline: z.string().optional(),
                 lastName: z.string().min(2).max(50),
-                nationalId: z.string().optional(),
                 nationality: z.object({
                     id: z.int().gte(0).optional(),
                     label: z.string().optional(),
@@ -4789,7 +4742,6 @@ export const zPaginatedResponseModelsRestaurantBill = z.object({
                 }).optional(),
                 nationalityID: z.int().gte(0),
                 occupation: z.string().optional(),
-                passport: z.string().optional(),
                 phone: z.string().optional(),
                 placeOfBirth: z.string().optional(),
                 postalCode: z.string().optional(),
@@ -5263,7 +5215,6 @@ export const zPaginatedResponseModelsStay = z.object({
             job: z.string().optional(),
             landline: z.string().optional(),
             lastName: z.string().min(2).max(50),
-            nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
@@ -5271,7 +5222,6 @@ export const zPaginatedResponseModelsStay = z.object({
             }).optional(),
             nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
-            passport: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
@@ -5387,7 +5337,6 @@ export const zPaginatedResponseModelsStay = z.object({
                 job: z.string().optional(),
                 landline: z.string().optional(),
                 lastName: z.string().min(2).max(50),
-                nationalId: z.string().optional(),
                 nationality: z.object({
                     id: z.int().gte(0).optional(),
                     label: z.string().optional(),
@@ -5395,7 +5344,6 @@ export const zPaginatedResponseModelsStay = z.object({
                 }).optional(),
                 nationalityID: z.int().gte(0),
                 occupation: z.string().optional(),
-                passport: z.string().optional(),
                 phone: z.string().optional(),
                 placeOfBirth: z.string().optional(),
                 postalCode: z.string().optional(),
@@ -5627,7 +5575,6 @@ export const zPaginatedResponseModelsVehicle = z.object({
             job: z.string().optional(),
             landline: z.string().optional(),
             lastName: z.string().min(2).max(50),
-            nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
@@ -5635,7 +5582,6 @@ export const zPaginatedResponseModelsVehicle = z.object({
             }).optional(),
             nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
-            passport: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
@@ -5874,7 +5820,6 @@ export const zParkingTransaction = z.object({
         job: z.string().optional(),
         landline: z.string().optional(),
         lastName: z.string().min(2).max(50),
-        nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
@@ -5882,7 +5827,6 @@ export const zParkingTransaction = z.object({
         }).optional(),
         nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
-        passport: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
@@ -5997,7 +5941,6 @@ export const zParkingTransaction = z.object({
             job: z.string().optional(),
             landline: z.string().optional(),
             lastName: z.string().min(2).max(50),
-            nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
@@ -6005,7 +5948,6 @@ export const zParkingTransaction = z.object({
             }).optional(),
             nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
-            passport: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
@@ -6230,7 +6172,6 @@ export const zReservation = z.object({
         job: z.string().optional(),
         landline: z.string().optional(),
         lastName: z.string().min(2).max(50),
-        nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
@@ -6238,7 +6179,6 @@ export const zReservation = z.object({
         }).optional(),
         nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
-        passport: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
@@ -6406,7 +6346,6 @@ export const zRestaurantBill = z.object({
         job: z.string().optional(),
         landline: z.string().optional(),
         lastName: z.string().min(2).max(50),
-        nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
@@ -6414,7 +6353,6 @@ export const zRestaurantBill = z.object({
         }).optional(),
         nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
-        passport: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
@@ -6479,7 +6417,6 @@ export const zRestaurantBill = z.object({
             job: z.string().optional(),
             landline: z.string().optional(),
             lastName: z.string().min(2).max(50),
-            nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
@@ -6487,7 +6424,6 @@ export const zRestaurantBill = z.object({
             }).optional(),
             nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
-            passport: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
@@ -6735,8 +6671,8 @@ export const zSanaCity = z.object({
 export const zSanaGuestResponse = z.object({
     guest: z.object({
         firstName: z.string().optional(),
-        lastName: z.string().optional(),
-        nationalId: z.string().optional()
+        idNumber: z.string().optional(),
+        lastName: z.string().optional()
     }).optional(),
     guestId: z.int().gte(0).optional(),
     id: z.int().gte(0).optional(),
@@ -6769,6 +6705,16 @@ export const zSanaSyncAllResult = z.object({
     errors: z.array(z.string()).optional(),
     guestsFailed: z.int().optional(),
     guestsSynced: z.int().optional(),
+    roomsFailed: z.int().optional(),
+    roomsSynced: z.int().optional(),
+    status: z.string().optional()
+});
+
+/**
+ * SanaSyncRoomsResult schema
+ */
+export const zSanaSyncRoomsResult = z.object({
+    error: z.string().optional(),
     roomsFailed: z.int().optional(),
     roomsSynced: z.int().optional(),
     status: z.string().optional()
@@ -6984,7 +6930,6 @@ export const zStay = z.object({
         job: z.string().optional(),
         landline: z.string().optional(),
         lastName: z.string().min(2).max(50),
-        nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
@@ -6992,7 +6937,6 @@ export const zStay = z.object({
         }).optional(),
         nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
-        passport: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
@@ -7108,7 +7052,6 @@ export const zStay = z.object({
             job: z.string().optional(),
             landline: z.string().optional(),
             lastName: z.string().min(2).max(50),
-            nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
@@ -7116,7 +7059,6 @@ export const zStay = z.object({
             }).optional(),
             nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
-            passport: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
@@ -7347,7 +7289,6 @@ export const zVehicle = z.object({
         job: z.string().optional(),
         landline: z.string().optional(),
         lastName: z.string().min(2).max(50),
-        nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
@@ -7355,7 +7296,6 @@ export const zVehicle = z.object({
         }).optional(),
         nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
-        passport: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
@@ -7519,7 +7459,6 @@ export const zChangeDurationResponse = z.object({
         job: z.string().optional(),
         landline: z.string().optional(),
         lastName: z.string().min(2).max(50),
-        nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
@@ -7527,7 +7466,6 @@ export const zChangeDurationResponse = z.object({
         }).optional(),
         nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
-        passport: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
@@ -7643,7 +7581,6 @@ export const zChangeDurationResponse = z.object({
             job: z.string().optional(),
             landline: z.string().optional(),
             lastName: z.string().min(2).max(50),
-            nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
@@ -7651,7 +7588,6 @@ export const zChangeDurationResponse = z.object({
             }).optional(),
             nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
-            passport: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
@@ -7888,7 +7824,6 @@ export const zCheckInResponse = z.object({
         job: z.string().optional(),
         landline: z.string().optional(),
         lastName: z.string().min(2).max(50),
-        nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
@@ -7896,7 +7831,6 @@ export const zCheckInResponse = z.object({
         }).optional(),
         nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
-        passport: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
@@ -8013,7 +7947,6 @@ export const zCheckInResponse = z.object({
             job: z.string().optional(),
             landline: z.string().optional(),
             lastName: z.string().min(2).max(50),
-            nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
@@ -8021,7 +7954,6 @@ export const zCheckInResponse = z.object({
             }).optional(),
             nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
-            passport: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
@@ -8233,7 +8165,6 @@ export const zCreateReservationResponse = z.object({
         job: z.string().optional(),
         landline: z.string().optional(),
         lastName: z.string().min(2).max(50),
-        nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
@@ -8241,7 +8172,6 @@ export const zCreateReservationResponse = z.object({
         }).optional(),
         nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
-        passport: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
@@ -8391,7 +8321,6 @@ export const zCreateStayResponse = z.object({
         job: z.string().optional(),
         landline: z.string().optional(),
         lastName: z.string().min(2).max(50),
-        nationalId: z.string().optional(),
         nationality: z.object({
             id: z.int().gte(0).optional(),
             label: z.string().optional(),
@@ -8399,7 +8328,6 @@ export const zCreateStayResponse = z.object({
         }).optional(),
         nationalityID: z.int().gte(0),
         occupation: z.string().optional(),
-        passport: z.string().optional(),
         phone: z.string().optional(),
         placeOfBirth: z.string().optional(),
         postalCode: z.string().optional(),
@@ -8515,7 +8443,6 @@ export const zCreateStayResponse = z.object({
             job: z.string().optional(),
             landline: z.string().optional(),
             lastName: z.string().min(2).max(50),
-            nationalId: z.string().optional(),
             nationality: z.object({
                 id: z.int().gte(0).optional(),
                 label: z.string().optional(),
@@ -8523,7 +8450,6 @@ export const zCreateStayResponse = z.object({
             }).optional(),
             nationalityID: z.int().gte(0),
             occupation: z.string().optional(),
-            passport: z.string().optional(),
             phone: z.string().optional(),
             placeOfBirth: z.string().optional(),
             postalCode: z.string().optional(),
@@ -10094,15 +10020,11 @@ export const zGetApiSanaRoomsHeaders = z.object({
     Accept: z.string().optional()
 });
 
-export const zPostApiSanaRoomsIdSyncHeaders = z.object({
+export const zPostApiSanaSyncAllHeaders = z.object({
     Accept: z.string().optional()
 });
 
-export const zPostApiSanaRoomsIdSyncPath = z.object({
-    id: z.string()
-});
-
-export const zPostApiSanaSyncAllHeaders = z.object({
+export const zPostApiSanaSyncRoomsHeaders = z.object({
     Accept: z.string().optional()
 });
 
