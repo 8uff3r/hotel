@@ -394,11 +394,14 @@ const { t } = useI18n();
 const route = useRoute();
 const guestId = route.params.id as string;
 
-const { data: guestData, pending } = useAsyncData(async () => {
-  const response = await getApiGuestsIdWithStay({
-    path: { id: guestId },
-  });
-  return response.data;
+const { data: guestData, isPending: pending } = useQuery({
+  key: () => ["guests", guestId, "detail"],
+  query: async () => {
+    const response = await getApiGuestsIdWithStay({
+      path: { id: guestId },
+    });
+    return response.data;
+  },
 });
 
 const guest = computed(() => guestData.value?.guest);

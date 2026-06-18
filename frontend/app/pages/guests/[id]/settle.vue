@@ -420,6 +420,9 @@ const handleCheckout = async () => {
       path: { id: guestId },
       body: { paymentMethod: paymentForm.paymentMethod ?? 0 },
     });
+    qc.invalidateQueries({ key: ["guests", guestId] });
+    qc.invalidateQueries({ key: ["guests", "list"] });
+    qc.invalidateQueries({ key: ["rooms"] });
     await navigateTo(`/guests/${guestId}`);
   } catch (error) {
     console.error("Failed to checkout:", error);
