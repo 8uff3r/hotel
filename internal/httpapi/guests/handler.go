@@ -516,6 +516,13 @@ type SettleGuestRequest struct {
 	Notes             string  `json:"notes"`
 }
 
+func minFloat(a, b float64) float64 {
+	if a < b {
+		return a
+	}
+	return b
+}
+
 func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRequest]) (okResponse, error) {
 	var zero okResponse
 	id, err := h.ParseID(c.PathParam("id"))
@@ -538,10 +545,14 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 	}
 
 	receivedStatusID := resolvePaymentStatus(gm.Db, "received")
+	remainingPayment := body.Amount
 
 	err = gm.Db.WithContext(c).Transaction(func(tx *gorm.DB) error {
 		// Pay invoices (room charges)
 		for _, invID := range body.InvoiceIDs {
+			if remainingPayment <= 0.001 {
+				break
+			}
 			var inv models.Invoice
 			if err := tx.First(&inv, invID).Error; err != nil {
 				continue
@@ -553,9 +564,16 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 			if stay.GuestID != id {
 				continue
 			}
-			inv.PaidAmount += body.Amount
+
+			unpaid := inv.TotalAmount - inv.PaidAmount
+			if unpaid <= 0 {
+				continue
+			}
+
+			toPay := minFloat(remainingPayment, unpaid)
+			inv.PaidAmount += toPay
 			inv.RemainingAmount = inv.TotalAmount - inv.PaidAmount
-			if inv.RemainingAmount <= 0 {
+			if inv.RemainingAmount <= 0.001 {
 				inv.PaymentStatus = string(models.PaymentStatusCleared)
 				inv.RemainingAmount = 0
 			} else {
@@ -568,11 +586,42 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 				return err
 			}
 
+			// Distribute toPay across InvoiceItems
+			var items []models.InvoiceItem
+			if err := tx.Where("invoice_id = ?", inv.ID).Find(&items).Error; err == nil {
+				itemRemaining := toPay
+				for i := range items {
+					if itemRemaining <= 0.001 {
+						break
+					}
+					itemUnpaid := items[i].TotalPrice - items[i].PaidAmount
+					if itemUnpaid <= 0 {
+						continue
+					}
+					itemToPay := minFloat(itemRemaining, itemUnpaid)
+					items[i].PaidAmount += itemToPay
+					items[i].RemainingAmount = items[i].TotalPrice - items[i].PaidAmount
+					if items[i].RemainingAmount <= 0.001 {
+						items[i].PaymentStatus = string(models.PaymentStatusCleared)
+						items[i].RemainingAmount = 0
+					} else {
+						items[i].PaymentStatus = string(models.PaymentStatusPartiallyPaid)
+					}
+					if body.PaymentMethod > 0 {
+						items[i].PaymentMethodID = &body.PaymentMethod
+					}
+					if err := tx.Save(&items[i]).Error; err != nil {
+						return err
+					}
+					itemRemaining -= itemToPay
+				}
+			}
+
 			// Create income record
 			income := models.Income{
 				IncomeDate:      time.Now().UTC(),
 				Description:     "Room payment - Invoice #" + formatID(inv.ID),
-				Amount:          body.Amount,
+				Amount:          toPay,
 				Source:          guest.FirstName + " " + guest.LastName,
 				PaymentMethodID: body.PaymentMethod,
 				Notes:           body.Notes,
@@ -584,9 +633,15 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 			if err := tx.Create(&income).Error; err != nil {
 				return err
 			}
+
+			remainingPayment -= toPay
 		}
 
+		// Pay parking transactions
 		for _, pID := range body.ParkingTxnIDs {
+			if remainingPayment <= 0.001 {
+				break
+			}
 			var pt models.ParkingTransaction
 			if err := tx.First(&pt, pID).Error; err != nil {
 				continue
@@ -594,16 +649,31 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 			if pt.GuestID == nil || *pt.GuestID != id {
 				continue
 			}
-			pt.AmountPaid = pt.AmountDue
-			pt.PaymentStatus = "paid"
-			pt.PaymentMethodID = &body.PaymentMethod
+
+			unpaid := pt.AmountDue - pt.AmountPaid
+			if unpaid <= 0 {
+				continue
+			}
+
+			toPay := minFloat(remainingPayment, unpaid)
+			pt.AmountPaid += toPay
+			if pt.AmountDue - pt.AmountPaid <= 0.001 {
+				pt.PaymentStatus = "paid"
+				pt.Status = "closed"
+			} else {
+				pt.PaymentStatus = "partially_paid"
+			}
+			if body.PaymentMethod > 0 {
+				pt.PaymentMethodID = &body.PaymentMethod
+			}
 			if err := tx.Save(&pt).Error; err != nil {
 				return err
 			}
+
 			income := models.Income{
 				IncomeDate:      time.Now().UTC(),
 				Description:     "Parking payment - " + pt.LicensePlate,
-				Amount:          pt.AmountDue,
+				Amount:          toPay,
 				Source:          guest.FirstName + " " + guest.LastName,
 				PaymentMethodID: body.PaymentMethod,
 				Notes:           body.Notes,
@@ -614,9 +684,15 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 			if err := tx.Create(&income).Error; err != nil {
 				return err
 			}
+
+			remainingPayment -= toPay
 		}
 
+		// Pay restaurant bills
 		for _, billID := range body.RestaurantBillIDs {
+			if remainingPayment <= 0.001 {
+				break
+			}
 			var bill models.RestaurantBill
 			if err := tx.First(&bill, billID).Error; err != nil {
 				continue
@@ -624,7 +700,11 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 			if bill.GuestID == nil || *bill.GuestID != id {
 				continue
 			}
+			if bill.Settled {
+				continue
+			}
 
+			toPay := minFloat(remainingPayment, bill.TotalAmount)
 			now := time.Now().UTC()
 			bill.Settled = true
 			bill.SettledAt = &now
@@ -635,7 +715,7 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 			income := models.Income{
 				IncomeDate:      now,
 				Description:     "Restaurant payment - Bill #" + formatID(bill.ID),
-				Amount:          bill.TotalAmount,
+				Amount:          toPay,
 				Source:          guest.FirstName + " " + guest.LastName,
 				PaymentMethodID: body.PaymentMethod,
 				Notes:           body.Notes,
@@ -649,6 +729,8 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 			if err := tx.Create(&income).Error; err != nil {
 				return err
 			}
+
+			remainingPayment -= toPay
 		}
 
 		return nil
@@ -667,20 +749,21 @@ func formatID(id uint) string {
 func (gm *GuestsModule) getGuestSettlement(id uint) (GuestSettlementResponse, error) {
 	var zero GuestSettlementResponse
 
-	// Find active/resident stays for the guest
+	// Find stays for the guest that are not checked out (i.e. invoice checkout_id is NULL)
 	var stays []models.Stay
 	if err := gm.Db.Preload("Status").Preload("Invoice.Items").Preload("Invoice.Items.Service").
-		Where("guest_id = ?", id).Order("entry_date desc").Find(&stays).Error; err != nil {
+		Where("guest_id = ? AND (stays.id IN (SELECT stay_id FROM invoices WHERE checkout_id IS NULL) OR stays.id NOT IN (SELECT stay_id FROM invoices))", id).
+		Order("entry_date desc").Find(&stays).Error; err != nil {
 		return zero, err
 	}
 
 	var parkingTxns []models.ParkingTransaction
-	if err := gm.Db.Where("guest_id = ?", id).Find(&parkingTxns).Error; err != nil {
+	if err := gm.Db.Where("guest_id = ? AND checkout_id IS NULL", id).Find(&parkingTxns).Error; err != nil {
 		return zero, err
 	}
 
 	var bills []models.RestaurantBill
-	if err := gm.Db.Where("guest_id = ? AND settled = ?", id, false).Find(&bills).Error; err != nil {
+	if err := gm.Db.Where("guest_id = ? AND settled = ? AND checkout_id IS NULL", id, false).Find(&bills).Error; err != nil {
 		return zero, err
 	}
 
@@ -800,7 +883,7 @@ func (gm *GuestsModule) checkoutGuest(c fuego.ContextWithBody[CheckoutGuestReque
 	if err != nil {
 		return zero, fuego.InternalServerError{Title: "settlement_check_failed"}
 	}
-	if settlement.Balance > 0 {
+	if settlement.Balance > 0.001 {
 		return zero, fuego.BadRequestError{Title: "outstanding_balance", Detail: "Guest has outstanding balance"}
 	}
 
@@ -857,7 +940,7 @@ func (gm *GuestsModule) checkoutGuest(c fuego.ContextWithBody[CheckoutGuestReque
 
 		// Mark parking txns
 		var parkingTxns []models.ParkingTransaction
-		if err := tx.Where("guest_id = ?", id).Find(&parkingTxns).Error; err == nil {
+		if err := tx.Where("guest_id = ? AND checkout_id IS NULL", id).Find(&parkingTxns).Error; err == nil {
 			for _, p := range parkingTxns {
 				p.CheckoutID = &checkout.ID
 				p.Status = "closed"
@@ -869,11 +952,13 @@ func (gm *GuestsModule) checkoutGuest(c fuego.ContextWithBody[CheckoutGuestReque
 
 		// Mark restaurant bills
 		var bills []models.RestaurantBill
-		if err := tx.Where("guest_id = ? AND settled = ?", id, false).Find(&bills).Error; err == nil {
+		if err := tx.Where("guest_id = ? AND checkout_id IS NULL", id).Find(&bills).Error; err == nil {
 			now := time.Now().UTC()
 			for _, b := range bills {
-				b.Settled = true
-				b.SettledAt = &now
+				if !b.Settled {
+					b.Settled = true
+					b.SettledAt = &now
+				}
 				b.CheckoutID = &checkout.ID
 				if err := tx.Save(&b).Error; err != nil {
 					return err
