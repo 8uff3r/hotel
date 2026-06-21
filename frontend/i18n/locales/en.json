@@ -1,4 +1,7 @@
 {
+  "general": {
+    "index": "Index"
+  },
   "actions": {
     "back": "Back",
     "backToUsers": "Back to Users",
@@ -682,7 +685,8 @@
     "restaurantTotal": "Restaurant Total",
     "selectAll": "Select All",
     "billDate": "Bill Date",
-    "external": "External"
+    "external": "External",
+    "account": "Account"
   },
   "guest": {
     "personalInfo": "Guest Personal Info",

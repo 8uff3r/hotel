@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 type Room struct {
 	Base
-	HotelID     *uint     `json:"hotelId,omitempty"`
+	HotelID     *string   `json:"hotelId,omitempty"`
 	Name        string    `json:"name"`
 	RoomNumber  string    `gorm:"not null;uniqueIndex:idx_room_number_hotel" json:"roomNumber"`
 	FloorID     *uint     `json:"floorId"`

@@ -405,7 +405,7 @@ func (sm *StaysModule) createIncomeRecord(hotelID string, amount float64, source
 	if err := sm.Db.Where("slug = ?", "received").First(&ps).Error; err == nil {
 		income.PaymentStatusID = ps.ID
 	}
-	income.HotelID = &hotelID
+	income.HotelID = hotelID
 	sm.Db.Create(&income)
 }
 
@@ -597,7 +597,8 @@ func (sm *StaysModule) stayChangeDuration(c fuego.ContextWithBody[changeDuration
 		// Delete old duration-based items
 		var removedTotal float64
 		sm.Db.Model(&models.InvoiceItem{}).
-			Where("invoice_id = ? AND stay_id = ? AND item_type IN (?, ?, ?, ?, ?)",
+			Where(
+				"invoice_id = ? AND stay_id = ? AND item_type IN (?, ?, ?, ?, ?)",
 				invoice.ID, stay.ID,
 				string(models.InvoiceItemTypeRoomCharge),
 				string(models.InvoiceItemTypeBreakfast),
@@ -608,7 +609,8 @@ func (sm *StaysModule) stayChangeDuration(c fuego.ContextWithBody[changeDuration
 			Select("COALESCE(SUM(total_price), 0)").
 			Scan(&removedTotal)
 
-		sm.Db.Where("invoice_id = ? AND stay_id = ? AND item_type IN (?, ?, ?, ?, ?)",
+		sm.Db.Where(
+			"invoice_id = ? AND stay_id = ? AND item_type IN (?, ?, ?, ?, ?)",
 			invoice.ID, stay.ID,
 			string(models.InvoiceItemTypeRoomCharge),
 			string(models.InvoiceItemTypeBreakfast),

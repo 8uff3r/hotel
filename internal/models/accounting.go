@@ -6,16 +6,16 @@ import (
 
 type Account struct {
 	Base
-	HotelID        *uint  `json:"hotelId"`
-	AccountCode    string `gorm:"not null" json:"accountCode"`
-	AccountName    string `gorm:"not null" json:"accountName"`
-	AccountType    string `gorm:"not null" json:"accountType"`
-	AccountSubType string `json:"accountSubType"`
-	ParentID       *uint  `json:"parentId"`
-	IsActive       bool   `gorm:"not null;default:true" json:"isActive"`
-	IsSystem       bool   `gorm:"not null;default:false" json:"isSystem"`
-	Description    string `json:"description"`
-	NormalBalance  string `gorm:"not null;default:debit" json:"normalBalance"`
+	HotelID        *string `json:"hotelId"`
+	AccountCode    string  `gorm:"not null" json:"accountCode"`
+	AccountName    string  `gorm:"not null" json:"accountName"`
+	AccountType    string  `gorm:"not null" json:"accountType"`
+	AccountSubType string  `json:"accountSubType"`
+	ParentID       *uint   `json:"parentId"`
+	IsActive       bool    `gorm:"not null;default:true" json:"isActive"`
+	IsSystem       bool    `gorm:"not null;default:false" json:"isSystem"`
+	Description    string  `json:"description"`
+	NormalBalance  string  `gorm:"not null;default:debit" json:"normalBalance"`
 }
 
 type PaymentMethod struct {
@@ -75,8 +75,8 @@ type Income struct {
 	Notes       string    `json:"notes"`
 	CreatedBy   *uint     `json:"createdBy"`
 
-	HotelID *string `gorm:"not null" json:"hotelId"`
-	Hotel   Hotel   `gorm:"foreignKey:HotelID" json:"hotel"`
+	HotelID string `gorm:"not null" json:"hotelId"`
+	Hotel   Hotel  `gorm:"foreignKey:HotelID" json:"hotel"`
 
 	AccountID *uint   `gorm:"not null" json:"accountId"`
 	Account   Account `gorm:"foreignKey:AccountID" json:"account,omitzero"`

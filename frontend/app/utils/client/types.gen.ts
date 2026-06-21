@@ -13,7 +13,7 @@ export type Account = {
     accountSubType?: string;
     accountType?: string;
     description?: string;
-    hotelId?: number;
+    hotelId?: string;
     id?: number;
     isActive?: boolean;
     isSystem?: boolean;
@@ -67,7 +67,7 @@ export type Expense = {
         accountSubType?: string;
         accountType?: string;
         description?: string;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         isActive?: boolean;
         isSystem?: boolean;
@@ -604,7 +604,7 @@ export type GuestWithReservationResponse = {
                 number?: number;
             };
             floorId?: number;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             name?: string;
             pictures?: Array<{
@@ -751,7 +751,7 @@ export type GuestWithStayRequest = {
         parking?: boolean;
         purposeOfTravel?: string;
         roomPrice?: number;
-        rooms?: Array<number>;
+        rooms: Array<number>;
         stayCode?: string;
     };
 };
@@ -1078,7 +1078,7 @@ export type GuestWithStayResponse = {
                     number?: number;
                 };
                 floorId?: number;
-                hotelId?: number;
+                hotelId?: string;
                 id?: number;
                 name?: string;
                 pictures?: Array<{
@@ -1129,7 +1129,7 @@ export type GuestWithStayResponse = {
                 number?: number;
             };
             floorId?: number;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             name?: string;
             pictures?: Array<{
@@ -1357,7 +1357,7 @@ export type GuestWithStaysAndReservationsResponse = {
                 number?: number;
             };
             floorId?: number;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             name?: string;
             pictures?: Array<{
@@ -1630,7 +1630,7 @@ export type GuestWithStaysAndReservationsResponse = {
                     number?: number;
                 };
                 floorId?: number;
-                hotelId?: number;
+                hotelId?: string;
                 id?: number;
                 name?: string;
                 pictures?: Array<{
@@ -1681,7 +1681,7 @@ export type GuestWithStaysAndReservationsResponse = {
                 number?: number;
             };
             floorId?: number;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             name?: string;
             pictures?: Array<{
@@ -1844,7 +1844,7 @@ export type Income = {
         accountSubType?: string;
         accountType?: string;
         description?: string;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         isActive?: boolean;
         isSystem?: boolean;
@@ -2065,7 +2065,7 @@ export type Income = {
                 number?: number;
             };
             floorId?: number;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             name?: string;
             pictures?: Array<{
@@ -2340,7 +2340,7 @@ export type Income = {
                     number?: number;
                 };
                 floorId?: number;
-                hotelId?: number;
+                hotelId?: string;
                 id?: number;
                 name?: string;
                 pictures?: Array<{
@@ -2391,7 +2391,7 @@ export type Income = {
                 number?: number;
             };
             floorId?: number;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             name?: string;
             pictures?: Array<{
@@ -2803,7 +2803,7 @@ export type PaginatedResponseModelsAccount = {
         accountSubType?: string;
         accountType?: string;
         description?: string;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         isActive?: boolean;
         isSystem?: boolean;
@@ -2857,7 +2857,7 @@ export type PaginatedResponseModelsExpense = {
             accountSubType?: string;
             accountType?: string;
             description?: string;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             isActive?: boolean;
             isSystem?: boolean;
@@ -3073,7 +3073,7 @@ export type PaginatedResponseModelsIncome = {
             accountSubType?: string;
             accountType?: string;
             description?: string;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             isActive?: boolean;
             isSystem?: boolean;
@@ -3294,7 +3294,7 @@ export type PaginatedResponseModelsIncome = {
                     number?: number;
                 };
                 floorId?: number;
-                hotelId?: number;
+                hotelId?: string;
                 id?: number;
                 name?: string;
                 pictures?: Array<{
@@ -3569,7 +3569,7 @@ export type PaginatedResponseModelsIncome = {
                         number?: number;
                     };
                     floorId?: number;
-                    hotelId?: number;
+                    hotelId?: string;
                     id?: number;
                     name?: string;
                     pictures?: Array<{
@@ -3620,7 +3620,7 @@ export type PaginatedResponseModelsIncome = {
                     number?: number;
                 };
                 floorId?: number;
-                hotelId?: number;
+                hotelId?: string;
                 id?: number;
                 name?: string;
                 pictures?: Array<{
@@ -4280,7 +4280,7 @@ export type PaginatedResponseModelsParkingTransaction = {
                     number?: number;
                 };
                 floorId?: number;
-                hotelId?: number;
+                hotelId?: string;
                 id?: number;
                 name?: string;
                 pictures?: Array<{
@@ -4560,7 +4560,7 @@ export type PaginatedResponseModelsReservation = {
                 number?: number;
             };
             floorId?: number;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             name?: string;
             pictures?: Array<{
@@ -4827,7 +4827,7 @@ export type PaginatedResponseModelsRestaurantBill = {
                     number?: number;
                 };
                 floorId?: number;
-                hotelId?: number;
+                hotelId?: string;
                 id?: number;
                 name?: string;
                 pictures?: Array<{
@@ -4878,7 +4878,7 @@ export type PaginatedResponseModelsRestaurantBill = {
                 number?: number;
             };
             floorId?: number;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             name?: string;
             pictures?: Array<{
@@ -4961,7 +4961,7 @@ export type PaginatedResponseModelsRoom = {
             number?: number;
         };
         floorId?: number;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         name?: string;
         pictures?: Array<{
@@ -5429,7 +5429,7 @@ export type PaginatedResponseModelsStay = {
                     number?: number;
                 };
                 floorId?: number;
-                hotelId?: number;
+                hotelId?: string;
                 id?: number;
                 name?: string;
                 pictures?: Array<{
@@ -5480,7 +5480,7 @@ export type PaginatedResponseModelsStay = {
                 number?: number;
             };
             floorId?: number;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             name?: string;
             pictures?: Array<{
@@ -6033,7 +6033,7 @@ export type ParkingTransaction = {
                 number?: number;
             };
             floorId?: number;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             name?: string;
             pictures?: Array<{
@@ -6264,7 +6264,7 @@ export type Reservation = {
             number?: number;
         };
         floorId?: number;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         name?: string;
         pictures?: Array<{
@@ -6509,7 +6509,7 @@ export type RestaurantBill = {
                 number?: number;
             };
             floorId?: number;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             name?: string;
             pictures?: Array<{
@@ -6560,7 +6560,7 @@ export type RestaurantBill = {
             number?: number;
         };
         floorId?: number;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         name?: string;
         pictures?: Array<{
@@ -6632,7 +6632,7 @@ export type Room = {
         number?: number;
     };
     floorId?: number;
-    hotelId?: number;
+    hotelId?: string;
     id?: number;
     name?: string;
     pictures?: Array<{
@@ -6892,6 +6892,7 @@ export type Service = {
  * SettleGuestRequest schema
  */
 export type SettleGuestRequest = {
+    accountId?: number;
     amount?: number;
     invoiceIds?: Array<number>;
     notes?: string;
@@ -7144,7 +7145,7 @@ export type Stay = {
                 number?: number;
             };
             floorId?: number;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             name?: string;
             pictures?: Array<{
@@ -7195,7 +7196,7 @@ export type Stay = {
             number?: number;
         };
         floorId?: number;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         name?: string;
         pictures?: Array<{
@@ -7673,7 +7674,7 @@ export type ChangeDurationResponse = {
                 number?: number;
             };
             floorId?: number;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             name?: string;
             pictures?: Array<{
@@ -7724,7 +7725,7 @@ export type ChangeDurationResponse = {
             number?: number;
         };
         floorId?: number;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         name?: string;
         pictures?: Array<{
@@ -8039,7 +8040,7 @@ export type CheckInResponse = {
                 number?: number;
             };
             floorId?: number;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             name?: string;
             pictures?: Array<{
@@ -8090,7 +8091,7 @@ export type CheckInResponse = {
             number?: number;
         };
         floorId?: number;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         name?: string;
         pictures?: Array<{
@@ -8257,7 +8258,7 @@ export type CreateReservationResponse = {
             number?: number;
         };
         floorId?: number;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         name?: string;
         pictures?: Array<{
@@ -8535,7 +8536,7 @@ export type CreateStayResponse = {
                 number?: number;
             };
             floorId?: number;
-            hotelId?: number;
+            hotelId?: string;
             id?: number;
             name?: string;
             pictures?: Array<{
@@ -8586,7 +8587,7 @@ export type CreateStayResponse = {
             number?: number;
         };
         floorId?: number;
-        hotelId?: number;
+        hotelId?: string;
         id?: number;
         name?: string;
         pictures?: Array<{

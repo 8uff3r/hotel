@@ -71,7 +71,7 @@ type StayRequest struct {
 	RoomPrice       float64   `json:"roomPrice"`
 	StayCode        string    `json:"stayCode"`
 	Notes           string    `json:"notes"`
-	Rooms           []uint    `json:"rooms"`
+	Rooms           []uint    `json:"rooms" validate:"required"`
 }
 
 type GuestWithStayRequest struct {
@@ -388,7 +388,7 @@ func (gm *GuestsModule) createGuestWithStay(c fuego.ContextWithBody[GuestWithSta
 		return nil
 	})
 	if err != nil {
-		return zero, fuego.BadRequestError{Title: "create_failed"}
+		return zero, fuego.BadRequestError{Title: "create_failed", Detail: err.Error()}
 	}
 
 	return result, nil
@@ -512,6 +512,7 @@ type SettleGuestRequest struct {
 	RestaurantBillIDs []uint  `json:"restaurantBillIds"`
 	Amount            float64 `json:"amount"`
 	PaymentMethod     uint    `json:"paymentMethod"`
+	AccountID         *uint   `json:"accountId"`
 	Reference         string  `json:"reference"`
 	Notes             string  `json:"notes"`
 }
@@ -548,6 +549,21 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 	remainingPayment := body.Amount
 
 	err = gm.Db.WithContext(c).Transaction(func(tx *gorm.DB) error {
+		// Resolve the account this payment should be posted to.
+		// Prefer the user-selected account; fall back to the default "1000" account.
+		accountID := body.AccountID
+		if accountID == nil || *accountID == 0 {
+			accountID = resolveAccount(tx, "1000")
+		} else {
+			var acc models.Account
+			if err := tx.First(&acc, *accountID).Error; err != nil {
+				return fuego.BadRequestError{Title: "invalid_account", Detail: "Account not found"}
+			}
+		}
+		if accountID == nil {
+			return fuego.BadRequestError{Title: "no_account", Detail: "No account available to post payment"}
+		}
+
 		// Pay invoices (room charges)
 		for _, invID := range body.InvoiceIDs {
 			if remainingPayment <= 0.001 {
@@ -619,6 +635,9 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 
 			// Create income record
 			income := models.Income{
+				HotelID: guest.HotelID,
+				// FIXME: this is needed
+				// AccountID:       ,
 				IncomeDate:      time.Now().UTC(),
 				Description:     "Room payment - Invoice #" + formatID(inv.ID),
 				Amount:          toPay,
@@ -629,7 +648,7 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 			}
 			income.CategoryID = resolveIncomeCategory(tx, "room_revenue")
 			income.PaymentStatusID = receivedStatusID
-			income.AccountID = resolveAccount(tx, "1000")
+			income.AccountID = accountID
 			if err := tx.Create(&income).Error; err != nil {
 				return err
 			}
@@ -657,7 +676,7 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 
 			toPay := minFloat(remainingPayment, unpaid)
 			pt.AmountPaid += toPay
-			if pt.AmountDue - pt.AmountPaid <= 0.001 {
+			if pt.AmountDue-pt.AmountPaid <= 0.001 {
 				pt.PaymentStatus = "paid"
 				pt.Status = "closed"
 			} else {
@@ -680,7 +699,7 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 			}
 			income.CategoryID = resolveIncomeCategory(tx, "parking")
 			income.PaymentStatusID = receivedStatusID
-			income.AccountID = resolveAccount(tx, "1000")
+			income.AccountID = accountID
 			if err := tx.Create(&income).Error; err != nil {
 				return err
 			}
@@ -722,7 +741,7 @@ func (gm *GuestsModule) settleGuestAccount(c fuego.ContextWithBody[SettleGuestRe
 			}
 			income.CategoryID = resolveIncomeCategory(tx, "restaurant")
 			income.PaymentStatusID = receivedStatusID
-			income.AccountID = resolveAccount(tx, "1000")
+			income.AccountID = accountID
 			if bill.ReservationID != nil {
 				income.ReservationID = bill.ReservationID
 			}

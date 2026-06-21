@@ -1,4 +1,7 @@
 {
+  "general": {
+    "index": "ردیف"
+  },
   "actions": {
     "back": "بازگشت",
     "backToUsers": "بازگشت به کاربران",
@@ -673,7 +676,8 @@
     "restaurantTotal": "مجموع رستوران",
     "selectAll": "انتخاب همه",
     "billDate": "تاریخ صورتحساب",
-    "external": "خارجی"
+    "external": "خارجی",
+    "account": "حساب"
   },
   "guest": {
     "personalInfo": "اطلاعات شخصی مهمان",

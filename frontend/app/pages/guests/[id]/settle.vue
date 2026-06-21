@@ -11,7 +11,7 @@
     </div>
 
     <div v-if="loading" class="flex justify-center py-12">
-      <ULoader size="lg" />
+      <UIcon name="i-lucide-loader-2" class="h-8 w-8 animate-spin" />
     </div>
 
     <div v-else class="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -39,8 +39,8 @@
                 </UBadge>
               </div>
               <UTable :data="stay.items" :columns="itemColumns" striped>
-                <template #description-cell="{ row }">
-                  {{ row.original.description || row.original.itemType }}
+                <template #index-cell="{ row }">
+                  {{ row.index + 1 }}
                 </template>
                 <template #totalPrice-cell="{ row }">
                   ${{ row.original.totalPrice?.toFixed(2) }}
@@ -53,7 +53,7 @@
                 </template>
               </UTable>
               <div class="mt-2 flex justify-between font-medium">
-                <span>{{ t("accounting.stayTotal") }}:</span>
+                <span>{{ t("accounting.roomTotal") }}:</span>
                 <span>${{ stay.totalAmount?.toFixed(2) }}</span>
               </div>
               <div class="flex justify-between text-sm text-gray-500">
@@ -77,11 +77,7 @@
             <h3 class="text-lg font-semibold">{{ t("accounting.parkingCharges") }}</h3>
           </template>
           <div v-if="settlement?.parkingTransactions?.length">
-            <UTable
-              :data="settlement.parkingTransactions"
-              :columns="parkingColumns"
-              striped
-            >
+            <UTable :data="settlement.parkingTransactions" :columns="parkingColumns" striped>
               <template #entryTime-cell="{ row }">
                 {{ formatDateTime(row.original.entryTime) }}
               </template>
@@ -107,11 +103,7 @@
             <h3 class="text-lg font-semibold">{{ t("accounting.restaurantCharges") }}</h3>
           </template>
           <div v-if="settlement?.restaurantBills?.length">
-            <UTable
-              :data="settlement.restaurantBills"
-              :columns="restaurantColumns"
-              striped
-            >
+            <UTable :data="settlement.restaurantBills" :columns="restaurantColumns" striped>
               <template #billDate-cell="{ row }">
                 {{ formatDate(row.original.billDate) }}
               </template>
@@ -119,12 +111,7 @@
                 ${{ row.original.totalAmount?.toFixed(2) }}
               </template>
               <template #isExternal-cell="{ row }">
-                <UBadge
-                  v-if="row.original.isExternal"
-                  color="warning"
-                  variant="soft"
-                  size="sm"
-                >
+                <UBadge v-if="row.original.isExternal" color="warning" variant="soft" size="sm">
                   {{ t("accounting.external") }}
                 </UBadge>
                 <span v-else class="text-sm text-gray-500">---</span>
@@ -180,16 +167,49 @@
           </div>
         </UCard>
 
-        <!-- Pay Now Button (only if balance > 0) -->
-        <UButton
-          v-if="settlement && settlement.balance > 0"
-          color="success"
-          block
-          @click="showPaymentForm = true"
-        >
-          <UIcon name="i-lucide-credit-card" class="mr-2" />
-          {{ t("accounting.payNow") }}
-        </UButton>
+        <!-- Payment Form Modal -->
+        <UModal>
+          <UButton v-if="settlement && settlement.balance > 0" color="success" block>
+            <UIcon name="i-lucide-credit-card" class="mr-2" />
+            {{ t("accounting.processPayment") }}
+          </UButton>
+          <template #body>
+            <div class="space-y-4">
+              <h3 class="text-lg font-semibold">{{ t("accounting.recordPayment") }}</h3>
+              <div class="grid grid-cols-1 gap-4">
+                <UFormField :label="t('accounting.amount')" name="amount">
+                  <UInput
+                    dir="ltr"
+                    v-model.number="paymentForm.amount"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                  />
+                </UFormField>
+                <UFormField :label="t('accounting.payment_method')" name="paymentMethod">
+                  <USelect v-model="paymentForm.paymentMethod" :items="paymentMethodOptions" />
+                </UFormField>
+                <UFormField :label="t('accounting.account')" name="accountId">
+                  <USelect v-model="paymentForm.accountId" :items="accountOptions" />
+                </UFormField>
+                <UFormField :label="t('accounting.reference')" name="reference">
+                  <UInput v-model="paymentForm.reference" />
+                </UFormField>
+                <UFormField :label="t('common.notes')" name="notes">
+                  <UTextarea v-model="paymentForm.notes" :rows="2" />
+                </UFormField>
+              </div>
+            </div>
+          </template>
+          <template #footer="{ close }">
+            <UButton variant="outline" @click="close">
+              {{ t("actions.cancel") }}
+            </UButton>
+            <UButton color="success" @click="handlePayment" :loading="paying">
+              {{ t("accounting.recordPayment") }}
+            </UButton>
+          </template>
+        </UModal>
 
         <!-- Checkout Button (only if balance == 0) -->
         <UButton
@@ -202,37 +222,6 @@
           <UIcon name="i-lucide-log-out" class="mr-2" />
           {{ t("accounting.checkout") }}
         </UButton>
-
-        <!-- Payment Form Modal -->
-        <UModal v-model="showPaymentForm">
-          <template #body>
-            <div class="space-y-4">
-              <h3 class="text-lg font-semibold">{{ t("accounting.recordPayment") }}</h3>
-              <div class="grid grid-cols-1 gap-4">
-                <UFormField :label="t('accounting.amount')" name="amount">
-                  <UInput v-model.number="paymentForm.amount" type="number" min="0" step="0.01" />
-                </UFormField>
-                <UFormField :label="t('accounting.paymentMethod')" name="paymentMethod">
-                  <USelect v-model="paymentForm.paymentMethod" :items="paymentMethodOptions" />
-                </UFormField>
-                <UFormField :label="t('accounting.reference')" name="reference">
-                  <UInput v-model="paymentForm.reference" />
-                </UFormField>
-                <UFormField :label="t('common.notes')" name="notes">
-                  <UTextarea v-model="paymentForm.notes" :rows="2" />
-                </UFormField>
-              </div>
-            </div>
-          </template>
-          <template #footer>
-            <UButton variant="outline" @click="showPaymentForm = false">{{
-              t("actions.cancel")
-            }}</UButton>
-            <UButton color="success" @click="handlePayment" :loading="paying">
-              {{ t("accounting.recordPayment") }}
-            </UButton>
-          </template>
-        </UModal>
       </div>
     </div>
   </div>
@@ -241,6 +230,7 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
 import {
+  getApiAccountingAccounts,
   getApiAccountingPaymentMethods,
   getApiGuestsIdSettle,
   postApiGuestsIdSettle,
@@ -264,6 +254,14 @@ const { data: paymentMethods } = useQuery({
   key: ["payment-methods", "list"],
   query: async () => {
     const res = await getApiAccountingPaymentMethods();
+    return res.data?.data ?? [];
+  },
+});
+
+const { data: accounts } = useQuery({
+  key: ["accounts", "list"],
+  query: async () => {
+    const res = await getApiAccountingAccounts();
     return res.data?.data ?? [];
   },
 });
@@ -333,9 +331,18 @@ interface PaymentMethod {
   label?: string;
 }
 
+interface Account {
+  id?: number;
+  accountCode?: string;
+  accountName?: string;
+  accountType?: string;
+  isActive?: boolean;
+}
+
 const paymentForm = reactive({
   amount: 0,
   paymentMethod: undefined as number | undefined,
+  accountId: undefined as number | undefined,
   reference: "",
   notes: "",
 });
@@ -349,8 +356,19 @@ const paymentMethodOptions = computed(() => {
   );
 });
 
+const accountOptions = computed(() => {
+  return (
+    (accounts.value as Account[] | undefined)
+      ?.filter((acc) => acc.isActive !== false)
+      ?.map((acc) => ({
+        value: acc.id,
+        label: `${acc.accountCode} - ${acc.accountName}`,
+      })) ?? []
+  );
+});
+
 const itemColumns: TableColumn<StayItem>[] = [
-  { accessorKey: "description", header: t("accounting.item") },
+  { id: "index", header: t("general.index") },
   { accessorKey: "itemType", header: t("stays.itemType") },
   { accessorKey: "totalPrice", header: t("accounting.amount") },
   { accessorKey: "paidAmount", header: t("accounting.paid") },
@@ -375,6 +393,7 @@ const restaurantColumns: TableColumn<RestaurantSettlement>[] = [
 const handlePayment = async () => {
   if (paymentForm.amount <= 0) return;
   if (!paymentForm.paymentMethod) return;
+  if (!paymentForm.accountId) return;
 
   paying.value = true;
   try {
@@ -396,6 +415,7 @@ const handlePayment = async () => {
         restaurantBillIds,
         amount: paymentForm.amount,
         paymentMethod: paymentForm.paymentMethod,
+        accountId: paymentForm.accountId,
         reference: paymentForm.reference,
         notes: paymentForm.notes,
       },
@@ -403,6 +423,7 @@ const handlePayment = async () => {
 
     showPaymentForm.value = false;
     paymentForm.amount = 0;
+    paymentForm.accountId = undefined;
     paymentForm.reference = "";
     paymentForm.notes = "";
     qc.invalidateQueries({ key: ["guests", guestId, "settle"] });
