@@ -3,6 +3,7 @@ package seed
 import (
 	_ "embed"
 	"encoding/json"
+	"errors"
 	"log"
 	"os"
 	"os/exec"
@@ -63,7 +64,11 @@ func seedPermissions(db *gorm.DB) {
 			},
 		})
 	}
-	seed(db, categories)
+	err := seed(db, categories)
+	if err != nil {
+		log.Fatalf("failed to seed: %v", err)
+		return
+	}
 
 	var seededCategories []models.PermissionCategory
 	db.Find(&seededCategories)
@@ -87,7 +92,11 @@ func seedPermissions(db *gorm.DB) {
 			}
 		}
 	}
-	seed(db, perms)
+	err = seed(db, perms)
+	if err != nil {
+		log.Fatalf("failed to seed: %v", err)
+		return
+	}
 }
 
 func seedPermissionTemplates(db *gorm.DB) {
@@ -103,16 +112,20 @@ func seedPermissionTemplates(db *gorm.DB) {
 	}
 
 	var adminTemplate models.PermissionTemplate
-	if err := db.Where("slug = ?", "admin").First(&adminTemplate).Error; err == gorm.ErrRecordNotFound {
+	if err := db.Where("slug = ?", "admin").First(&adminTemplate).Error; errors.Is(err, gorm.ErrRecordNotFound) {
 		adminTemplate = models.PermissionTemplate{
 			TranslateBase: models.TranslateBase{Slug: "admin", Translation: t["admin"]},
 		}
 		db.Create(&adminTemplate)
 	}
-	db.Model(&adminTemplate).Association("Permissions").Append(&allPerms)
+	err := db.Model(&adminTemplate).Association("Permissions").Append(&allPerms)
+	if err != nil {
+		log.Fatalf("failed to add permissions: %v", err)
+		return
+	}
 
 	var managerTemplate models.PermissionTemplate
-	if err := db.Where("slug = ?", "manager").First(&managerTemplate).Error; err == gorm.ErrRecordNotFound {
+	if err := db.Where("slug = ?", "manager").First(&managerTemplate).Error; errors.Is(err, gorm.ErrRecordNotFound) {
 		managerTemplate = models.PermissionTemplate{
 			TranslateBase: models.TranslateBase{Slug: "manager", Translation: t["manager"]},
 		}
@@ -124,10 +137,14 @@ func seedPermissionTemplates(db *gorm.DB) {
 			managerPerms = append(managerPerms, p)
 		}
 	}
-	db.Model(&managerTemplate).Association("Permissions").Replace(&managerPerms)
+	err = db.Model(&managerTemplate).Association("Permissions").Replace(&managerPerms)
+	if err != nil {
+		log.Fatalf("failed to add permissions: %v", err)
+		return
+	}
 
 	var receptionistTemplate models.PermissionTemplate
-	if err := db.Where("slug = ?", "receptionist").First(&receptionistTemplate).Error; err == gorm.ErrRecordNotFound {
+	if err := db.Where("slug = ?", "receptionist").First(&receptionistTemplate).Error; errors.Is(err, gorm.ErrRecordNotFound) {
 		receptionistTemplate = models.PermissionTemplate{
 			TranslateBase: models.TranslateBase{Slug: "receptionist", Translation: t["receptionist"]},
 		}
@@ -144,10 +161,14 @@ func seedPermissionTemplates(db *gorm.DB) {
 			receptionistPerms = append(receptionistPerms, p)
 		}
 	}
-	db.Model(&receptionistTemplate).Association("Permissions").Replace(&receptionistPerms)
+	err = db.Model(&receptionistTemplate).Association("Permissions").Replace(&receptionistPerms)
+	if err != nil {
+		log.Fatalf("failed to add permissions: %v", err)
+		return
+	}
 
 	var staffTemplate models.PermissionTemplate
-	if err := db.Where("slug = ?", "staff").First(&staffTemplate).Error; err == gorm.ErrRecordNotFound {
+	if err := db.Where("slug = ?", "staff").First(&staffTemplate).Error; errors.Is(err, gorm.ErrRecordNotFound) {
 		staffTemplate = models.PermissionTemplate{
 			TranslateBase: models.TranslateBase{Slug: "staff", Translation: t["staff"]},
 		}
@@ -159,10 +180,14 @@ func seedPermissionTemplates(db *gorm.DB) {
 			staffPerms = append(staffPerms, p)
 		}
 	}
-	db.Model(&staffTemplate).Association("Permissions").Replace(&staffPerms)
+	err = db.Model(&staffTemplate).Association("Permissions").Replace(&staffPerms)
+	if err != nil {
+		log.Fatalf("failed to add permissions: %v", err)
+		return
+	}
 
 	var housekeeperTemplate models.PermissionTemplate
-	if err := db.Where("slug = ?", "housekeeper").First(&housekeeperTemplate).Error; err == gorm.ErrRecordNotFound {
+	if err := db.Where("slug = ?", "housekeeper").First(&housekeeperTemplate).Error; errors.Is(err, gorm.ErrRecordNotFound) {
 		housekeeperTemplate = models.PermissionTemplate{
 			TranslateBase: models.TranslateBase{Slug: "housekeeper", Translation: t["housekeeper"]},
 		}
@@ -174,5 +199,9 @@ func seedPermissionTemplates(db *gorm.DB) {
 			housekeeperPerms = append(housekeeperPerms, p)
 		}
 	}
-	db.Model(&housekeeperTemplate).Association("Permissions").Replace(&housekeeperPerms)
+	err = db.Model(&housekeeperTemplate).Association("Permissions").Replace(&housekeeperPerms)
+	if err != nil {
+		log.Fatalf("failed to add permissions: %v", err)
+		return
+	}
 }
