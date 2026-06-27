@@ -220,7 +220,7 @@
           :loading="checkingOut"
         >
           <UIcon name="i-lucide-log-out" class="mr-2" />
-          {{ t("accounting.checkout") }}
+          {{ t("actions.backToGuest") }}
         </UButton>
       </div>
     </div>
